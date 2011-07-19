@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="it.sasabz.android.sasabus" android:versionCode="1" android:versionName="0.1">
+	<application android:label="@string/app_name" android:icon="@drawable/icon">
+		<activity android:name=".SplashScreen" android:label="@string/app_name" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name="CheckDatabaseActivity" android:label="@string/check_database">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name="SelectBacinoActivity" android:label="@string/select_bacino">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name="SelectLineaActivity" android:label="@string/select_linea">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+		<activity android:label="@string/select_destination"
+			android:name="SelectDestinazioneActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+		<intent-filter></intent-filter>
+		<activity android:label="@string/select_palina" android:name="SelectPalinaActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+		<activity android:name="ShowOrariActivity" android:label="@string/show_orari">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+	</application>
+	<activity android:name="SelectLineaActivity" android:label="@string/select_linea"></activity>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />	
+</manifest>

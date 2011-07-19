@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="no_values">Kein Wert verfügbar.</string>
+<string name="check_database">Prüfe Datenbank</string>
+<string name="select_bacino">Stadt wählen</string>
+<string name="select_linea">Buslinie wählen</string>
+<string name="select_destination">Ziel wählen</string>
+<string name="select_palina">Haltestelle wählen</string>
+<string name="show_orari">Fahrzeiten anzeigen</string>
+<string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
+<string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
+<string name="db_ok">SASAbus Datenbank (v%1$s) ist bereit.</string>
+<string name="menu_about">Über SASAbus</string>
+<string name="updates">... Aktualisierungen ...</string>
+<string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
+<string name="copyright">Copyright (C) %1$s Paolo Dongilli</string>
+<string name="disclaimer">Die Veröffentlichung von SASAbus erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.</string>
+<string name="gpl">Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe &lt;http://www.gnu.org/licenses/&gt;.</string>
+<string name="sd_card_not_mounted">External storage (SD-Card) not mounted.</string>
+<string name="no_network_connection">Keine Netzwerkverbindung verfügbar.</string>
+<string name="downloading_db">Herunterladen der SASAbus-Datenbank ...</string>
+<string name="downloading_md5">Herunterladen der MD5-Prüfsumme ...</string>
+<string name="unzipping_db">Entpacken der SASAbus-Datenbank ...</string>
+</resources>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="#ffffff">
+	<ImageView android:background="#ffffff" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:src="@drawable/bus"
+		android:scaleType="fitStart" android:layout_weight="3" android:paddingTop="5px"/>
+	<TextView android:background="#ffffff" android:textColor="#f1942d"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:text="@string/app_name" android:textSize="56sp"
+		android:textStyle="bold" android:gravity="right"
+		android:layout_weight="8" android:paddingRight="5px"/>
+	<TextView android:background="#ffffff" android:textColor="#f1942d"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:text="@string/version" android:textSize="20sp"
+		android:textStyle="bold" android:gravity="right"
+		android:layout_weight="8" android:paddingRight="5px" />
+</LinearLayout>

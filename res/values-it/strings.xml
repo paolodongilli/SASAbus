@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="no_values">Nessun dato disponibile.</string>
+<string name="check_database">Verifica Database</string>
+<string name="select_bacino">Scegli la città</string>
+<string name="select_linea">Scegli la linea</string>
+<string name="select_destination">Scegli la destinazione</string>
+<string name="select_palina">Scegli la fermata</string>
+<string name="show_orari">Visualizzazione orari</string>
+<string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
+<string name="db_download_error">Errore durante il download del database SASAbus.</string>
+<string name="db_ok">Il database SASAbus (v%1$s) è pronto.</string>
+<string name="menu_about">About</string>
+<string name="updates">... lista updates ...</string>
+<string name="license">SASAbus è software libero: puoi ridistribuirlo e/o modificarlo secondo i termini della licenza GNU General Public License, così come è pubblicata dalla Free Software Foundation nella versione 3 o superiore.</string>
+<string name="copyright">Copyright (C) %1$s Paolo Dongilli</string>
+<string name="disclaimer">SASAbus è distribuito nella speranza che possa essere utile, ma viene fornito "così com'è", senza alcun tipo di garanzia, né esplicita, né implicita; ciò comprende, senza limitarsi a questo, la garanzia implicita di COMMERCIABILITÀ e UTILIZZABILITÀ PER UN PARTICOLARE SCOPO. Fare riferimento alla GNU General Public License per ulteriori dettagli. </string>
+<string name="gpl">Questo programma deve essere distribuito assieme ad una copia della GNU General Public License; in caso contrario, fare riferimento a &lt;http://www.gnu.org/licenses/&gt;.</string>
+<string name="sd_card_not_mounted">Memoria esterna (SD-Card) non accessibile.</string>
+<string name="no_network_connection">Nessuna connessione di rete disponibile.</string>
+<string name="downloading_db">Sto scaricando il database SASAbus ...</string>
+<string name="downloading_md5">Sto scaricando il checksum MD5 ...</string>
+<string name="unzipping_db">Sto decomprimendo il database SASAbus ...</string>
+</resources>

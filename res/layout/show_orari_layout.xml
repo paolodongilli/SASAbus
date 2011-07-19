@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    show_orari_layout.xml
+
+    Created: Jan 16, 2011 11:41:06 AM
+ 
+    Copyright (C) 2011 Paolo Dongilli
+
+    This file is part of SasaBus.
+
+    SasaBus is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SasaBus is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="4dp"
+        android:paddingRight="4dp">
+
+	<ListView android:id="@id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+  	<TextView android:id="@id/android:empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="@string/no_values"/>
+</LinearLayout>
