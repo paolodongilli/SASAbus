@@ -5,6 +5,7 @@
     <string name="version">v0.1</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_version">2011-04-03_2</string>
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>
-    <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>
+    <string name="repository_url">http://freeweb.dnet.it/dongilli/sasa/</string>
+    <!-- string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string -->
 </resources>
 
