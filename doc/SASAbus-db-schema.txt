@@ -1,0 +1,65 @@
+------------------------------------------------------------------------
+			  SASAbus DB-Schema
+------------------------------------------------------------------------
+
+The schema of the SASAbus SQLite database is composed by 5 tables:
+linee, linee_corse, orari_passaggio, paline, and android_metadata. The
+first 4 tables host the data coming from 4 CSV files that SASA
+S.p.A./AG made available.
+
+The current SASAbus database (zipped) and its MD5 checksum file can
+be found here:
+
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_2011-04-03_2.db.zip
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_2011-04-03_2.db.md5
+
+------------------------------------------------------------------------
+CREATE TABLE linee ( -- bus lines
+   "abbrev" TEXT, -- line abbreviation 
+   "denom" TEXT, -- line name
+   "denom_it" TEXT, -- Italian name with main stops 
+   "denom_de" TEXT, -- German name with main stops
+   "localita" TEXT, -- Italian-German name of place 
+   "_id" INTEGER PRIMARY KEY AUTOINCREMENT, -- id
+   "linea" TEXT, -- line name (= abbrev without abbreviation of the city)
+   "citta" TEXT -- city in Italian only
+)
+------------------------------------------------------------------------
+CREATE TABLE linee_corse ( -- bus lines and runs
+   "_id" INTEGER PRIMARY KEY AUTOINCREMENT, --codice_corsa in other tables
+   "orario_partenza" TEXT, -- time of departure
+   "codice_linea" INTEGER, -- bus line code
+   "id_linea_breve" TEXT, -- bus line id
+   "bacino" TEXT, -- area
+   "destinazione_it" TEXT, -- destination in Italian
+   "destinazione_de" TEXT, -- destination in German
+   "senso" TEXT, -- direction
+   "da_data" TEXT, -- start validity date for the given run
+   "effettuazione" TEXT -- string of 365 bits containing defining the 
+                        -- days when the line with the given _id runs
+                        -- starting from the day da_data
+)
+------------------------------------------------------------------------
+CREATE TABLE orari_passaggio ( -- time schedule
+   "_id" INTEGER PRIMARY KEY AUTOINCREMENT,
+   "codice_corsa" INTEGER, -- bus-run code
+   "codice_linea" INTEGER, -- bus-line code
+   "id_palina" INTEGER, -- bus-stop id
+   "progressivo" INTEGER, -- ordinal number assigned to each bus stop 
+                          -- of a given run starting with 1 assigned to
+                          -- one end of the line 
+   "orario" TEXT -- estimated time of passage
+)
+------------------------------------------------------------------------
+CREATE TABLE "paline" ( -- bus stops
+   "_id" INTEGER PRIMARY KEY, -- id_palina in other tables (bus-stop id)
+   "luogo" TEXT, -- place or name of bus stop
+   "longitudine" REAL, -- longitude
+   "latitudine" REAL, -- latitude
+   "elevazione" REAL, -- elevation
+   "linee" TEXT -- list of slash separated bus-line abbreviations
+                -- see field linee.abbrev
+)
+------------------------------------------------------------------------
+CREATE TABLE android_metadata (locale TEXT)
+------------------------------------------------------------------------
