@@ -10,8 +10,25 @@ S.p.A./AG made available.
 The current SASAbus database (zipped) and its MD5 checksum file can
 be found here:
 
-http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_2011-04-03_2.db.zip
-http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_2011-04-03_2.db.md5
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_aaaa-mm-gg_rev.db.zip
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_aaaa-mm-gg_rev.db.md5
+
+When downloaded by the SASAbus application, the file is stored in the
+following directory on your device:
+/sdcard/Android/data/it.sasabz.android.sasabus/db/
+
+Data contained in the compressed SQLite database
+SASAbus_aaaa-mm-gg_rev.db.zip (where aaaa, mm, gg represent
+respectively year, month and day of release of the database and rev
+the revision number), available at the address
+http://www.sasabz.it/fileadmin/user_upload/KML, are property of the
+SASA SpA-AG and can be used exclusively by the application for the
+Android platform SASAbus version 0.1 or following versions.
+
+The usage of these data for other purposes must be autorized in
+advance by SASA SpA-AG; in any case the source of data for the usage
+or reproduction of graphs, tables or numerical values must be clearly
+indicated.
 
 ------------------------------------------------------------------------
 CREATE TABLE linee ( -- bus lines
