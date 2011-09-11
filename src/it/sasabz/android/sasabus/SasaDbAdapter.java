@@ -140,7 +140,7 @@ public class SasaDbAdapter {
     			"	where bacino=? " +
     			"	    and  id_linea_breve=? " +
     			"	    and destinazione_it=? " + 
-    			"	    and substr(effettuazione,round(strftime('%J','now')) - round(strftime('%J','"
+    			"	    and substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','"
     			+ getDBDate() + "')) + 1,1)='1' " + 
     			"	    and orario_partenza > '0800' " +
     			"	    limit 1) " + 
@@ -166,7 +166,7 @@ public class SasaDbAdapter {
                 "  where bacino=? " +
                 "  and linee.id_linea_breve=? " + 
                 "  and linee.destinazione_it=? " + 
-                "  and substr(linee.effettuazione,round(strftime('%J','now')) - round(strftime('%J','" +
+                "  and substr(linee.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
                 getDBDate() + "')) + 1,1)='1' " + 
                 "  and linee._id=orari.codice_corsa " + 
                 "  and linee.codice_linea=orari.codice_linea " +
