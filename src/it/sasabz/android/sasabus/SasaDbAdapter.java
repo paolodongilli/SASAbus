@@ -172,7 +172,7 @@ public class SasaDbAdapter {
                 "  and linee.codice_linea=orari.codice_linea " +
                 "  and orari.id_palina=paline._id " +
                 "  and paline._id=? " +
-                "  and time(orari.orario) >= strftime('%H:%M','now','localtime') " +
+                //"  and time(orari.orario) >= strftime('%H:%M','now','localtime') " +
                 "  order by _id "
                 //+ "  limit 6"
                 , selectionArgs);
