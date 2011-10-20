@@ -25,34 +25,42 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import it.sasabz.android.sasabus.R;
 
 import android.app.ListActivity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
 
 public class ShowOrariActivity extends ListActivity {
 
-    private static final int MENU_ABOUT = 0;
-    
-	private SasaDbAdapter mDbHelper;
-    private String bacino;
-    private String linea;
-    private String destinazione;
-    private String palina;
-    
-    public ShowOrariActivity() {
-    }
+	private static final int MENU_ABOUT = 0;
 
-    /** Called with the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);        
-        Bundle extras = getIntent().getExtras();
+	private SasaDbAdapter mDbHelper;
+	private String bacino;
+	private String linea;
+	private String destinazione;
+	private String palina;
+
+	public ShowOrariActivity() {
+	}
+
+	/** Called with the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Bundle extras = getIntent().getExtras();
 		bacino = null;
 		linea = null;
 		destinazione = null;
@@ -64,45 +72,117 @@ public class ShowOrariActivity extends ListActivity {
 			palina = extras.getString("palina");
 		}
 
-        setContentView(R.layout.show_orari_layout);
-        mDbHelper = new SasaDbAdapter(this);
-        mDbHelper.open();
-        fillData();
-    }
+		setContentView(R.layout.show_orari_layout);
+		mDbHelper = new SasaDbAdapter(this);
+		mDbHelper.open();
+		Cursor c = fillData();
+		// scroll to a given position in the ListView
+		getListView().setSelection(getNextTimePosition(c));
+	}
 
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+	/**
+	 * Called when the activity is about to start interacting with the user.
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
-    private void fillData() {
-        // Get next 'orari' from the database and create the item list
-        Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina);
-        startManagingCursor(c);
-        Log.w("ShowOrariActivity", "rows=" + c.getCount());
-        String[] from = new String[] { "_id" };
-        int[] to = new int[] { R.id.orario };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter orari =
-            new SimpleCursorAdapter(this, R.layout.orari_row, c, from, to);
-        setListAdapter(orari);
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
-    }
-    
+	private Cursor fillData() {
+		// Get next 'orari' from the database and create the item list
+		Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina);
+		startManagingCursor(c);
+		Log.w("ShowOrariActivity", "rows=" + c.getCount());
+		Log.w("ShowOrariActivity", "nextTimePos=" + getNextTimePosition(c));
+		String[] from = new String[] { "_id" };
+		int[] to = new int[] { R.id.orario };
+
+		// Now create an array adapter and set it to display using our row
+		SimpleCursorAdapter orari = new SimpleCursorAdapter(this,
+				R.layout.orari_row, c, from, to) {
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				final View row = super.getView(position, convertView, parent);
+				Cursor c = getCursor();
+				c.moveToPosition(position);
+				// get current time
+				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+				Calendar cal = Calendar.getInstance();
+				try {
+					Date currentTime = timeFormat.parse(timeFormat.format(cal
+							.getTime()));
+					Date sasaTime = timeFormat.parse(c.getString(0));
+					if (sasaTime.after(currentTime))
+						row.setBackgroundColor(Color.rgb(0, 70, 0));
+					else if (sasaTime.before(currentTime))
+						row.setBackgroundColor(Color.rgb(70, 0, 0));
+					else
+						row.setBackgroundColor(Color.rgb(255, 125, 33));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return row;
+			}
+		};
+
+		setListAdapter(orari);
+		return c;
+	}
+
+	private int getNextTimePosition(Cursor c) {
+		int count = c.getCount();
+		if (count == 0) {
+			return -1;
+		} else if (count == 1) {
+			return 0;
+		} else {
+			int i = 0;
+			boolean found = false;
+			while (i < count && !found) {
+				c.moveToPosition(i);
+				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+				Calendar cal = Calendar.getInstance();
+
+				Date currentTime;
+				Date sasaTime;
+				Date sasaTimeNext;
+				try {
+					currentTime = timeFormat.parse(timeFormat.format(cal
+							.getTime()));
+					sasaTime = timeFormat.parse(c.getString(0));
+					c.moveToPosition(i + 1);
+					sasaTimeNext = timeFormat.parse(c.getString(0));
+
+					if (sasaTime.after(currentTime)
+							|| sasaTime.equals(currentTime)
+							|| sasaTime.before(currentTime)
+							&& (sasaTimeNext.equals(currentTime) || sasaTimeNext
+									.after(currentTime)))
+						found = true;
+					else
+						i++;
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return i;
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		// menu.add(...); // specific to this activity
+		SharedMenu.onCreateOptionsMenu(menu);
+		return true;
+	}
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ABOUT: new About(this).show();
+		case MENU_ABOUT:
+			new About(this).show();
 			return true;
 			// ...
 		}
