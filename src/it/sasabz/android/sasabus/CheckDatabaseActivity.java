@@ -26,6 +26,10 @@
 package it.sasabz.android.sasabus;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
@@ -50,7 +54,8 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int DOWNLOAD_ERROR_DIALOG = 1;
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
-
+	private SasaDbAdapter mDbHelper;
+	
 	public CheckDatabaseActivity() {
 	}
 
@@ -62,10 +67,9 @@ public class CheckDatabaseActivity extends ListActivity {
 		// Check if db exists
 		Resources res = getResources();
 		String appName = res.getString(R.string.app_name);
-		String dbVersion = res.getString(R.string.db_version);
 		String dbDirName = res.getString(R.string.db_dir);
 		String repositoryURL = res.getString(R.string.repository_url);
-		String dbFileName = appName + "_" + dbVersion + ".db";
+		String dbFileName = appName + ".db";
 		String dbZIPFileName = dbFileName + ".zip";
 		String dbURLName = repositoryURL + dbZIPFileName;
 		String md5FileName = dbFileName + ".md5";
@@ -97,6 +101,26 @@ public class CheckDatabaseActivity extends ListActivity {
 			
 			if (!MD5Utils.checksumOK(dbFile, md5File))
 				download = true;
+			else {
+				mDbHelper = new SasaDbAdapter(this);
+		        mDbHelper.open();
+		        String end = mDbHelper.fetchEndDate();
+		        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+		        Calendar cal = Calendar.getInstance();
+		        try {
+					Date endDate = timeFormat.parse(end);
+					Date currentDate = timeFormat.parse(timeFormat.format(cal
+							.getTime()));
+					Log.v("CheckDatabaseActivity", "endDate: " + endDate.toString() + "; currentDate: " + currentDate.toString());
+					if (currentDate.after(endDate))
+						download = true;
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		        
+			}
 		} else {
 			download = true;
 		}
@@ -171,7 +195,7 @@ public class CheckDatabaseActivity extends ListActivity {
 		case NO_NETWORK_CONNECTION:
 			return createErrorAlertDialog(R.string.no_network_connection);
 		case DOWNLOAD_SUCCESS_DIALOG:
-			return createAlertDialog(R.string.db_ok, getString(R.string.db_version));
+			return createAlertDialog(R.string.db_ok, getString(R.string.app_name) + ".db");
 		case DOWNLOAD_ERROR_DIALOG:
 			return createErrorAlertDialog(R.string.db_download_error);
 		case MD5_ERROR_DIALOG:

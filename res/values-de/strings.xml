@@ -9,7 +9,7 @@
 <string name="show_orari">Fahrzeiten anzeigen</string>
 <string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
-<string name="db_ok">SASAbus Datenbank (v%1$s) ist bereit.</string>
+<string name="db_ok">Datenbank %1$s ist bereit.</string>
 <string name="menu_about">Über SASAbus</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>

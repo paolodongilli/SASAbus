@@ -9,7 +9,7 @@
 <string name="show_orari">Visualizzazione orari</string>
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
-<string name="db_ok">Il database SASAbus (v%1$s) è pronto.</string>
+<string name="db_ok">Il database %1$s è pronto.</string>
 <string name="menu_about">About</string>
 <string name="updates">... lista updates ...</string>
 <string name="license">SASAbus è software libero: puoi ridistribuirlo e/o modificarlo secondo i termini della licenza GNU General Public License, così come è pubblicata dalla Free Software Foundation nella versione 3 o superiore.</string>

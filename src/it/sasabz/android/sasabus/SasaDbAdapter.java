@@ -30,6 +30,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * Database access helper class.
@@ -40,7 +41,7 @@ public class SasaDbAdapter {
     private SQLiteDatabase mDb;
 
     private final Context mCtx;
-	private String dbDate;
+	//private String dbDate;
 
     private static class DatabaseHelper extends ExternalStorageReadOnlyOpenHelper {
 
@@ -57,7 +58,6 @@ public class SasaDbAdapter {
      */
     public SasaDbAdapter(Context ctx) {
         this.mCtx = ctx;
-        this.dbDate = mCtx.getResources().getString(R.string.db_version).substring(0, 10);
     }
 
     /**
@@ -72,8 +72,7 @@ public class SasaDbAdapter {
     public SasaDbAdapter open() throws SQLException {
     	Resources res = mCtx.getResources();
 		String appName = res.getString(R.string.app_name);
-		String dbVersion = res.getString(R.string.db_version);
-		String dbFileName = appName + "_" + dbVersion + ".db";
+		String dbFileName = appName + ".db";
         mDbHelper = new DatabaseHelper(dbFileName,null);
         mDb = mDbHelper.getReadableDatabase();
         return this;
@@ -82,11 +81,35 @@ public class SasaDbAdapter {
     public void close() {
         mDbHelper.close();
     }
-    
-    public String getDBDate() {
-    	return this.dbDate;
+
+    /**
+     * Return a String containing the db validity start date
+     * 
+     * @return String containing a date in format YYYY-MM-DD
+     * @throws SQLException
+     */
+    public String fetchStartDate() throws SQLException {
+    	Cursor c = mDb.rawQuery("select da_data from validita", null);
+    	c.moveToFirst();
+        String date = c.getString(0);
+        c.close();
+        return date;
     }
 
+    /**
+     * Return a String containing the db validity end date
+     * 
+     * @return String containing a date in format YYYY-MM-DD
+     * @throws SQLException
+     */
+    public String fetchEndDate() throws SQLException {
+    	Cursor c = mDb.rawQuery("select a_data from validita", null);
+    	c.moveToFirst();
+        String date = c.getString(0);
+        c.close();
+        return date;
+    }
+    
     /**
      * Return a Cursor over the list of all 'bacini' in database linee_corse
      * 
@@ -140,8 +163,8 @@ public class SasaDbAdapter {
     			"	where bacino=? " +
     			"	    and  id_linea_breve=? " +
     			"	    and destinazione_it=? " + 
-    			"	    and substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','"
-    			+ getDBDate() + "')) + 1,1)='1' " + 
+    			"	    and substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
+    			fetchStartDate() + "')) + 1,1)='1' " + 
     			"	    and orario_partenza > '0800' " +
     			"	    limit 1) " + 
     			"	  and orari.id_palina=paline._id " +
@@ -167,7 +190,7 @@ public class SasaDbAdapter {
                 "  and linee.id_linea_breve=? " + 
                 "  and linee.destinazione_it=? " + 
                 "  and substr(linee.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
-                getDBDate() + "')) + 1,1)='1' " + 
+                fetchStartDate() + "')) + 1,1)='1' " + 
                 "  and linee._id=orari.codice_corsa " + 
                 "  and linee.codice_linea=orari.codice_linea " +
                 "  and orari.id_palina=paline._id " +

@@ -77,7 +77,10 @@ public class ShowOrariActivity extends ListActivity {
 		mDbHelper.open();
 		Cursor c = fillData();
 		// scroll to a given position in the ListView
-		getListView().setSelection(getNextTimePosition(c));
+		int pos = getNextTimePosition(c);
+		if (pos != -1) {
+			getListView().setSelection(pos);
+		}
 	}
 
 	/**
@@ -92,8 +95,6 @@ public class ShowOrariActivity extends ListActivity {
 		// Get next 'orari' from the database and create the item list
 		Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina);
 		startManagingCursor(c);
-		Log.w("ShowOrariActivity", "rows=" + c.getCount());
-		Log.w("ShowOrariActivity", "nextTimePos=" + getNextTimePosition(c));
 		String[] from = new String[] { "_id" };
 		int[] to = new int[] { R.id.orario };
 
@@ -139,7 +140,7 @@ public class ShowOrariActivity extends ListActivity {
 		} else {
 			int i = 0;
 			boolean found = false;
-			while (i < count && !found) {
+			while (i <= count-2 && !found) {
 				c.moveToPosition(i);
 				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 				Calendar cal = Calendar.getInstance();
