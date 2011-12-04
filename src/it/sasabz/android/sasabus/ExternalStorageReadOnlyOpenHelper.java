@@ -27,6 +27,7 @@ package it.sasabz.android.sasabus;
 import java.io.File;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.util.AndroidRuntimeException;
 
@@ -39,7 +40,8 @@ public abstract class ExternalStorageReadOnlyOpenHelper {
 			SQLiteDatabase.CursorFactory factory) {
 		this.factory = factory;
 
-		if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+		if (!Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
 			throw new AndroidRuntimeException(
 					"External storage (SD-Card) not mounted");
 		}
@@ -57,8 +59,39 @@ public abstract class ExternalStorageReadOnlyOpenHelper {
 
 	private void open() {
 		if (dbFile.exists()) {
-			database = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(),
-					factory, SQLiteDatabase.OPEN_READONLY);
+			// database = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(),
+			// factory, SQLiteDatabase.OPEN_READONLY);
+
+			// Hack to avoid the following exception:
+			// android.database.sqlite.SQLiteException: attempt to
+			// write a readonly database
+
+			try {
+				database = SQLiteDatabase.openDatabase(
+						dbFile.getAbsolutePath(), factory,
+						SQLiteDatabase.OPEN_READONLY);
+			} catch (SQLiteException e) {
+				final String message = e.getMessage();
+				if (message == null) {
+					throw e;
+				}
+				if (!message.contains("attempt to write a readonly database")) {
+					throw e;
+				}
+				// We tried to open the database in read-only mode but this
+				// failed because of a bug which manifests on Model:LG-P500
+				// Release:2.3.3 Sdk:10. The openDatabase method tries to write
+				// to the DB it opened readonly. Hoping it needs to do this only
+				// once, try to open the db in readwrite mode, close it, then
+				// try again readonly.
+				database = SQLiteDatabase.openDatabase(
+						dbFile.getAbsolutePath(), factory,
+						SQLiteDatabase.OPEN_READWRITE);
+				database.close();
+				database = SQLiteDatabase.openDatabase(
+						dbFile.getAbsolutePath(), factory,
+						SQLiteDatabase.OPEN_READONLY);
+			}
 		}
 	}
 
