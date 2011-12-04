@@ -54,6 +54,7 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int DOWNLOAD_ERROR_DIALOG = 1;
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
+	private final static int NO_DB_UPDATE_AVAILABLE = 4;
 	private SasaDbAdapter mDbHelper;
 	
 	public CheckDatabaseActivity() {
@@ -64,6 +65,7 @@ public class CheckDatabaseActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		SASAbus config = (SASAbus) getApplicationContext();
 		// Check if db exists
 		Resources res = getResources();
 		String appName = res.getString(R.string.app_name);
@@ -114,6 +116,7 @@ public class CheckDatabaseActivity extends ListActivity {
 					Log.v("CheckDatabaseActivity", "endDate: " + endDate.toString() + "; currentDate: " + currentDate.toString());
 					if (currentDate.after(endDate))
 						download = true;
+						config.setDbDownloadAttempts(config.getDbDownloadAttempts() + 1);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -128,8 +131,12 @@ public class CheckDatabaseActivity extends ListActivity {
 		if (download) {
 			// verify we have a network connection
 			if (haveNetworkConnection()) {
-				new FileRetriever(this, dbZIPFile, dbFile, md5File).execute(
-						dbURLName, md5URLName);
+				if(config.getDbDownloadAttempts() < 2) {
+					new FileRetriever(this, dbZIPFile, dbFile, md5File).execute(
+							dbURLName, md5URLName);
+				} else {
+					showDialog(NO_DB_UPDATE_AVAILABLE);
+				}
 			} else {
                 showDialog(NO_NETWORK_CONNECTION);
 			}
@@ -137,7 +144,8 @@ public class CheckDatabaseActivity extends ListActivity {
 			// verify files
 			if (!MD5Utils.checksumOK(dbFile, md5File)) {
 				showDialog(MD5_ERROR_DIALOG);
-			} else {
+			}
+			else {
 				showDialog(DOWNLOAD_SUCCESS_DIALOG);
 			}
 		}
@@ -194,6 +202,8 @@ public class CheckDatabaseActivity extends ListActivity {
 		switch (id) {
 		case NO_NETWORK_CONNECTION:
 			return createErrorAlertDialog(R.string.no_network_connection);
+		case NO_DB_UPDATE_AVAILABLE:
+			return createErrorAlertDialog(R.string.no_db_update_available);
 		case DOWNLOAD_SUCCESS_DIALOG:
 			return createAlertDialog(R.string.db_ok, getString(R.string.app_name) + ".db");
 		case DOWNLOAD_ERROR_DIALOG:
