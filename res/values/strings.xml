@@ -21,5 +21,6 @@
 <string name="downloading_db">Downloading SASAbus Database ...</string>
 <string name="downloading_md5">Downloading MD5 Checksum ...</string>
 <string name="unzipping_db">Unzipping SASAbus Database ...</string>
+<string name="no_db_update_available">Timetable update is not available. Please contact SASA SpA-AG (sasabz@sasabz.it).</string>
 </resources>
 

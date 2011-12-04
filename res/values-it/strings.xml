@@ -21,4 +21,5 @@
 <string name="downloading_db">Sto scaricando il database SASAbus ...</string>
 <string name="downloading_md5">Sto scaricando il checksum MD5 ...</string>
 <string name="unzipping_db">Sto decomprimendo il database SASAbus ...</string>
+<string name="no_db_update_available">Aggiornamento degli orari non disponibile. Si prega di contattare SASA SpA-AG (sasabz@sasabz.it).</string>
 </resources>

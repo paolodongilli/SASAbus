@@ -21,5 +21,6 @@
 <string name="downloading_db">Herunterladen der SASAbus-Datenbank ...</string>
 <string name="downloading_md5">Herunterladen der MD5-Prüfsumme ...</string>
 <string name="unzipping_db">Entpacken der SASAbus-Datenbank ...</string>
+<string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte kontaktieren Sie SASA SpA-AG (sasabz@sasabz.it).</string>
 </resources>
 
