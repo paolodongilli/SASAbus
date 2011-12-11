@@ -18,9 +18,9 @@
 <string name="gpl">You should have received a copy of the GNU General Public License along with SASAbus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
 <string name="sd_card_not_mounted">External storage (SD-Card) not mounted.</string>
 <string name="no_network_connection">No network connection available.</string>
-<string name="downloading_db">Downloading SASAbus Database ...</string>
+<string name="downloading_db">Downloading SASAbus Database Update ...</string>
 <string name="downloading_md5">Downloading MD5 Checksum ...</string>
 <string name="unzipping_db">Unzipping SASAbus Database ...</string>
-<string name="no_db_update_available">Timetable update is not available. Please contact SASA SpA-AG (sasabz@sasabz.it).</string>
+<string name="no_db_update_available">Timetable update is not available. Please try again later.</string>
 </resources>
 

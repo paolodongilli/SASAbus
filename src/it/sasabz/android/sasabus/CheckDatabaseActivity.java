@@ -25,7 +25,13 @@
 
 package it.sasabz.android.sasabus;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,15 +120,17 @@ public class CheckDatabaseActivity extends ListActivity {
 					Date currentDate = timeFormat.parse(timeFormat.format(cal
 							.getTime()));
 					Log.v("CheckDatabaseActivity", "endDate: " + endDate.toString() + "; currentDate: " + currentDate.toString());
-					if (currentDate.after(endDate))
+					if (currentDate.after(endDate)) {
 						download = true;
 						config.setDbDownloadAttempts(config.getDbDownloadAttempts() + 1);
+					}
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		        
-		        
+		        if (!download && dbUpdateAvailable(md5URLName, md5FileName, dbDir)) {
+		            download = true;	
+		        }		        
 			}
 		} else {
 			download = true;
@@ -176,6 +184,45 @@ public class CheckDatabaseActivity extends ListActivity {
 		return builder.create();
 	}
 
+	private boolean dbUpdateAvailable(String md5UrlName, String md5FileName, File dbDir) {
+		boolean update = false;
+		File md5File = new File(dbDir, md5FileName);
+		long lastLocalMod = md5File.lastModified();
+		Date lastLocalModDate = new Date(lastLocalMod);
+		String lastRemoteMod;
+		Date lastRemoteModDate;
+		
+		// verify we have a network connection, otherwise act as no update is available
+		// and update remains false
+		if (haveNetworkConnection()) {
+		
+		    try {
+				URL url = new URL(md5UrlName);
+				URLConnection conn = url.openConnection();
+				conn.connect();
+								
+				lastRemoteMod = conn.getHeaderField("Last-Modified");
+				lastRemoteModDate = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH).parse(lastRemoteMod);
+				
+				// check if date of remote file is after date of local file
+				update = lastRemoteModDate.after(lastLocalModDate);
+				
+				Log.v("CheckDatabaseActivity", "Date of local md5:  " + lastLocalModDate.toString());
+				Log.v("CheckDatabaseActivity", "Date of remote md5: " + lastRemoteModDate.toString());
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		return update;
+	}
+	
 	private final Dialog createErrorAlertDialog(int msg) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setTitle(R.string.a_given_string);

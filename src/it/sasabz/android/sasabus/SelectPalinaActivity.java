@@ -46,6 +46,7 @@ public class SelectPalinaActivity extends ListActivity {
     private String linea;
     private String destinazione;
     private String palina;
+    private String progressivo;
     
     public SelectPalinaActivity() {
     }
@@ -80,12 +81,15 @@ public class SelectPalinaActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         TextView textView = (TextView) v.findViewById(R.id.palina);
-        palina = textView.getText().toString(); 
+        palina = textView.getText().toString();
+        textView = (TextView) v.findViewById(R.id.progressivo);
+        progressivo = textView.getText().toString();
     	Intent showOrario = new Intent(this, ShowOrariActivity.class);
     	showOrario.putExtra("bacino", bacino);
     	showOrario.putExtra("linea", linea);
     	showOrario.putExtra("destinazione", destinazione);
     	showOrario.putExtra("palina", palina);
+    	showOrario.putExtra("progressivo", progressivo);
     	startActivity(showOrario);
     }
 
@@ -95,8 +99,8 @@ public class SelectPalinaActivity extends ListActivity {
         Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
         startManagingCursor(c);
 
-        String[] from = new String[] { "_id", "luogo" };
-        int[] to = new int[] { R.id.palina, R.id.luogo };
+        String[] from = new String[] { "progressivo", "_id", "luogo" };
+        int[] to = new int[] { R.id.progressivo, R.id.palina, R.id.luogo };
         
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter paline =

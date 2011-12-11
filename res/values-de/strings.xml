@@ -18,9 +18,9 @@
 <string name="gpl">Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe &lt;http://www.gnu.org/licenses/&gt;.</string>
 <string name="sd_card_not_mounted">External storage (SD-Card) not mounted.</string>
 <string name="no_network_connection">Keine Netzwerkverbindung verfügbar.</string>
-<string name="downloading_db">Herunterladen der SASAbus-Datenbank ...</string>
+<string name="downloading_db">Herunterladen der aktualisierten SASAbus-Datenbank ...</string>
 <string name="downloading_md5">Herunterladen der MD5-Prüfsumme ...</string>
 <string name="unzipping_db">Entpacken der SASAbus-Datenbank ...</string>
-<string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte kontaktieren Sie SASA SpA-AG (sasabz@sasabz.it).</string>
+<string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte versuchen Sie es später noch einmal.</string>
 </resources>
 

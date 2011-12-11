@@ -7,6 +7,11 @@
     android:paddingBottom="6dip"
     android:orientation="horizontal">
 
+    <TextView android:id="@+id/progressivo"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingRight="6dip"
+		android:textColor="#fdab29" android:textSize="20sp" />
 	<TextView android:id="@+id/palina"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"

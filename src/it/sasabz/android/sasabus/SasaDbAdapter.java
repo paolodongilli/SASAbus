@@ -157,7 +157,7 @@ public class SasaDbAdapter {
     	
     	String[] selectionArgs = {bacino, linea, destinazione};
     	return mDb.rawQuery(
-    			"select orari.id_palina as _id, paline.luogo as luogo from orari_passaggio as orari, paline " +
+    			"select orari.progressivo as progressivo, orari.id_palina as _id, paline.luogo as luogo from orari_passaggio as orari, paline " +
     			"where orari.codice_corsa = " +
     			" (select _id from linee_corse " + 
     			"	where bacino=? " +
@@ -180,9 +180,9 @@ public class SasaDbAdapter {
      * @param palina bus stop
      * @return Cursor over the 'orari' of a given linea
      */
-    public Cursor fetchOrari(String bacino, String linea, String destinazione, String palina) throws SQLException {
+    public Cursor fetchOrari(String bacino, String linea, String destinazione, String palina, String progressivo) throws SQLException {
     	
-    	String[] selectionArgs = {bacino, linea, destinazione, palina};
+    	String[] selectionArgs = {bacino, linea, destinazione, palina, progressivo};
     	return mDb.rawQuery(
     			"select strftime('%H:%M',orari.orario) as _id " + 
                 "  from linee_corse as linee, orari_passaggio as orari, paline " +
@@ -195,6 +195,7 @@ public class SasaDbAdapter {
                 "  and linee.codice_linea=orari.codice_linea " +
                 "  and orari.id_palina=paline._id " +
                 "  and paline._id=? " +
+                "  and orari.progressivo=? " +
                 //"  and time(orari.orario) >= strftime('%H:%M','now','localtime') " +
                 "  order by _id "
                 //+ "  limit 6"

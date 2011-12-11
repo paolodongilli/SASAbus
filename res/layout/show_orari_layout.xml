@@ -27,7 +27,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+    android:paddingRight="4dp">
 
 	<ListView android:id="@id/android:list"
         android:layout_width="fill_parent"

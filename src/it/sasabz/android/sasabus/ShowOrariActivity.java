@@ -52,6 +52,7 @@ public class ShowOrariActivity extends ListActivity {
 	private String linea;
 	private String destinazione;
 	private String palina;
+	private String progressivo;
 
 	public ShowOrariActivity() {
 	}
@@ -70,6 +71,7 @@ public class ShowOrariActivity extends ListActivity {
 			linea = extras.getString("linea");
 			destinazione = extras.getString("destinazione");
 			palina = extras.getString("palina");
+			progressivo = extras.getString("progressivo");
 		}
 
 		setContentView(R.layout.show_orari_layout);
@@ -93,7 +95,7 @@ public class ShowOrariActivity extends ListActivity {
 
 	private Cursor fillData() {
 		// Get next 'orari' from the database and create the item list
-		Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina);
+		Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina, progressivo);
 		startManagingCursor(c);
 		String[] from = new String[] { "_id" };
 		int[] to = new int[] { R.id.orario };
