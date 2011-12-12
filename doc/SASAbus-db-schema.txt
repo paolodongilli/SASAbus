@@ -2,7 +2,7 @@
 			  SASAbus DB-Schema
 ------------------------------------------------------------------------
 
-The schema of the SASAbus SQLite database is composed by 5 tables:
+The schema of the SASAbus SQLite database is composed by 6 tables:
 linee, linee_corse, orari_passaggio, paline, and android_metadata. The
 first 4 tables host the data coming from 4 CSV files that SASA
 S.p.A./AG made available.
@@ -10,17 +10,15 @@ S.p.A./AG made available.
 The current SASAbus database (zipped) and its MD5 checksum file can
 be found here:
 
-http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_aaaa-mm-gg_rev.db.zip
-http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus_aaaa-mm-gg_rev.db.md5
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus.db.zip
+http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus.db.md5
 
 When downloaded by the SASAbus application, the file is stored in the
 following directory on your device:
 /sdcard/Android/data/it.sasabz.android.sasabus/db/
 
 Data contained in the compressed SQLite database
-SASAbus_aaaa-mm-gg_rev.db.zip (where aaaa, mm, gg represent
-respectively year, month and day of release of the database and rev
-the revision number), available at the address
+SASAbus.db.zip available at the address
 http://www.sasabz.it/fileadmin/user_upload/KML, are property of the
 SASA SpA-AG and can be used exclusively by the application for the
 Android platform SASAbus version 0.1 or following versions.
@@ -77,6 +75,11 @@ CREATE TABLE "paline" ( -- bus stops
    "linee" TEXT -- list of slash separated bus-line abbreviations
                 -- see field linee.abbrev
 )
+------------------------------------------------------------------------
+CREATE TABLE "validita" ( -- timetable validity
+    "da_data" TEXT, -- start date 
+    "a_data" TEXT -- end date
+);
 ------------------------------------------------------------------------
 CREATE TABLE android_metadata (locale TEXT)
 ------------------------------------------------------------------------
