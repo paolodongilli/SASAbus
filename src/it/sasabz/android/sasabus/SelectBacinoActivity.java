@@ -26,6 +26,7 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.BacinoList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -75,7 +76,8 @@ public class SelectBacinoActivity extends ListActivity {
     
     private void fillData() {
         // Get all 'bacini' from the database and create the item list
-        Cursor c = mDbHelper.fetchBacini();
+        //Cursor c = mDbHelper.fetchBacini();
+    	Cursor c = BacinoList.getCursor();
         startManagingCursor(c);
 
         String[] from = new String[] { "_id" };

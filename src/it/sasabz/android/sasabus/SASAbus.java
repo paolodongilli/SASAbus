@@ -25,17 +25,29 @@
 package it.sasabz.android.sasabus;
 
 import android.app.Application;
+import android.content.Context;
 
 public class SASAbus extends Application {
     private int dbDownloadAttempts;
+    
+    private static Context context = null;
  
     @Override
     public void onCreate() {
         // Init values which could be loaded from files stored in res/raw
         setDbDownloadAttempts(0);
         super.onCreate();
+        context = this.getApplicationContext();
     }
 
+    /**
+     * @return the Strings and Variables stored in the Context;
+     */
+    public static Context getContext()
+    {
+    	return context;
+    }
+    
 	/**
 	 * @param dbDownloadAttempts the dbDownloadAttempts to set
 	 */
