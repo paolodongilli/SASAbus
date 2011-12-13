@@ -4,7 +4,7 @@
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -75,8 +75,8 @@ public class SelectBacinoActivity extends ListActivity {
     }
     
     private void fillData() {
-        // Get all 'bacini' from the database and create the item list
         //Cursor c = mDbHelper.fetchBacini();
+    	// Get all 'bacini' from the database and create the item list
     	Cursor c = BacinoList.getCursor();
         startManagingCursor(c);
 

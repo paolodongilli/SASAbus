@@ -26,6 +26,8 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.LineaList;
+import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -84,7 +86,8 @@ public class SelectLineaActivity extends ListActivity {
     
     private void fillData(String bacino) {
         // Get all 'linee' from the database and create the item list
-        Cursor c = mDbHelper.fetchLinee(bacino);
+       // Cursor c = mDbHelper.fetchLinee(bacino);
+    	Cursor c = LineaList.getCursorBacino(bacino);
         startManagingCursor(c);
 
         String[] from = new String[] { "_id" };

@@ -1,10 +1,11 @@
 /**
+ * 
  *
- * BacinoList.java
+ * LineaList.java
  * 
- * Created: Dez 13, 2011 16:20:40 PM
+ * Created: 13.12.2011 20:13:31
  * 
- * Copyright (C) 2011 Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
  * 
  *
  * This file is part of SasaBus.
@@ -23,7 +24,6 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
 package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.SASAbus;
@@ -33,9 +33,12 @@ import java.util.Vector;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class BacinoList extends DBObjectList {
+/**
+ * @author Markus Windegger (markus@mowiso.com)
+ *
+ */
+public class LineaList extends DBObjectList {
 	
-	 
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
@@ -51,7 +54,6 @@ public class BacinoList extends DBObjectList {
 				Bacino element = new Bacino();
 				element.setBacinoName(cursor.getString(cursor.getColumnIndex("bacino")));
 				element.setId(id);
-				list.add(element);
 				++id;
 			} while(!cursor.isLast());
 		}
@@ -60,11 +62,36 @@ public class BacinoList extends DBObjectList {
 		return list;
 	}
 	
+	public static Vector <DBObject> getListBacino(String bacino)
+	{
+		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] args = {bacino};
+		Cursor cursor = sqlite.rawQuery("select *  from linee where localita = ?", args);
+		if(cursor.getCount() != 0)
+		{
+			do {
+				Linea element = new Linea(cursor);
+				list.add(element);
+			} while(!cursor.isLast());
+		}
+		else
+			list = null;
+		return list;
+	}
+	
+	public static Cursor getCursorBacino(String bacino)
+	{
+		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] args = {bacino};
+		Cursor cursor = sqlite.rawQuery("select * from linee where localita = ?", args);
+		return cursor;
+	}
+	
+	
 	public static Cursor getCursor ()
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select distinct bacino as _id from linee_corse where bacino <> ''", null);
+		Cursor cursor = sqlite.rawQuery("select * from linee", null);
 		return cursor;
 	}
-
 }

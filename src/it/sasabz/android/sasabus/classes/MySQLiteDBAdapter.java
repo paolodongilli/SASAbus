@@ -37,10 +37,14 @@ public class MySQLiteDBAdapter {
 	private static SQLiteDatabase sqlite= null;
 	private static DatabaseHelper helper = null;
 	
-	
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static SQLiteDatabase getInstance(Context context)
 	{
-		if(sqlite == null || !sqlite.isOpen())
+		if(sqlite == null)
 		{
 			Resources res = context.getResources();
 			String appName = res.getString(R.string.app_name);

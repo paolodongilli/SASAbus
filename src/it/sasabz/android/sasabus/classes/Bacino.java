@@ -26,6 +26,8 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import android.database.Cursor;
+
 public class Bacino extends DBObject {
 	
 	/*
@@ -60,6 +62,12 @@ public class Bacino extends DBObject {
 		this.bacinoName = bacinoName;
 	}
 	
+	
+	public Bacino(Cursor c)
+	{
+		super(c.getInt(c.getColumnIndex("_id")));
+		this.setBacinoName(c.getString(c.getColumnIndex("bacino")));
+	}
 	
 	/**
 	 * Is the getter method for BacinoName
