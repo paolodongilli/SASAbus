@@ -25,6 +25,8 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Locale;
+
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
@@ -90,7 +92,12 @@ public class SelectLineaActivity extends ListActivity {
     	Cursor c = LineaList.getCursorBacino(bacino);
         startManagingCursor(c);
 
-        String[] from = new String[] { "_id" };
+        String[] from = null;
+        Locale l = Locale.getDefault();
+        if(l.getDisplayLanguage() == "de")
+        	from = new String[] {"descr_de"};
+        else
+        	from = new String[] {"descr_it"};
         int[] to = new int[] { R.id.linea };
         
         // Now create an array adapter and set it to display using our row
