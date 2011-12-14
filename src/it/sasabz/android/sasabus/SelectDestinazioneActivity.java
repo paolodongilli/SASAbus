@@ -30,7 +30,6 @@ import java.util.Locale;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Destinazione;
 import it.sasabz.android.sasabus.classes.DestinazioneList;
-import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -111,7 +110,7 @@ public class SelectDestinazioneActivity extends ListActivity {
     private void fillData() {
         // Get all 'destinazioni' from the database and create the item list
         //Cursor c = mDbHelper.fetchDestinazioni(bacino,linea);
-    	Cursor c = DestinazioneList.getCursorBacinoLinea(bacino, linea);
+    	Cursor c = DestinazioneList.getCursor(bacino, linea);
         startManagingCursor(c);
 
         String[] from = null;

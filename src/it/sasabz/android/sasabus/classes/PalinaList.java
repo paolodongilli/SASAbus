@@ -40,6 +40,11 @@ public class PalinaList {
 	
 	private static Vector <Palina> list = new Vector<Palina> ();
 	
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
 	public static Vector <Palina> getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -58,13 +63,21 @@ public class PalinaList {
 		return list;
 	}
 	
-	public static Cursor getCursorBacinoLineaDest(String bacino, String linea, String destinazione)
+	
+	/**
+	 * Retuns all busstops which have the following properties
+	 * @param bacino is the city of the busstop
+	 * @param linea is the line which passes the busstop
+	 * @param destinazione is the destination of the line, important for the direction of the line
+	 * @return a cursor ouver all the selected busstops
+	 */
+	public static Cursor getCursor(String bacino, String linea, String destinazione)
 	{
 		String[] selectionArgs = {bacino, linea, destinazione};
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor c = null;
 		try {
-			c = sqlite.rawQuery(
+		c = sqlite.rawQuery(
 			"select orari.progressivo as progressivo, orari.id_palina as _id, paline.luogo as luogo from orari_passaggio as orari, paline " +
 			"where orari.codice_corsa = " +
 			" (select _id from linee_corse " + 
@@ -80,6 +93,7 @@ public class PalinaList {
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			System.exit(-1);
 		}
 		return c;

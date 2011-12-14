@@ -80,7 +80,7 @@ public class DestinazioneList{
 	 * bacino and the linea                                                                                                                      
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
 	 */
-	public static  Vector <Destinazione>  getListBacinoLinea(String bacino, String linea) throws Exception
+	public static  Vector <Destinazione>  getList(String bacino, String linea) throws Exception
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		
@@ -112,7 +112,7 @@ public class DestinazioneList{
 	 * This method returns a Cursor of all bacinos present in the database
 	 * @return a cursor to the bacinos present in the database
 	 */
-	public static Cursor getCursorBacinoLinea (String bacino, String linea)
+	public static Cursor getCursor(String bacino, String linea)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		

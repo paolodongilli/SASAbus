@@ -29,7 +29,6 @@ import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.LineaList;
-import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;

@@ -31,12 +31,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.PassaggioList;
 
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,7 +95,7 @@ public class ShowOrariActivity extends ListActivity {
 
 	private Cursor fillData() {
 		// Get next 'orari' from the database and create the item list
-		Cursor c = mDbHelper.fetchOrari(bacino, linea, destinazione, palina, progressivo);
+		Cursor c = PassaggioList.getCursor(bacino, linea, destinazione, palina, progressivo);
 		startManagingCursor(c);
 		String[] from = new String[] { "_id" };
 		int[] to = new int[] { R.id.orario };

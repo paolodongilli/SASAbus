@@ -109,7 +109,10 @@ public class Palina extends DBObject{
 		}
 	}
 	
-	
+	/**  
+	 * Returns if the Locationvariables are loadet or not
+	 * @return true when the location variables are loadet, false otherwise
+	 */
 	public boolean isLocationLoadet()
 	{
 		if(longitude == 0 && latitude == 0)

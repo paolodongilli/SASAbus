@@ -80,7 +80,7 @@ public class LineaList {
 	 * @param bacino is the bacino where we are searching the linee 
 	 * @return a vector of DBObjects with the linee located in the bacino
 	 */
-	public static Vector <Linea> getListBacino(String bacino)
+	public static Vector <Linea> getList(String bacino)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
@@ -105,7 +105,7 @@ public class LineaList {
 	 * @param bacino is the location where we search the linee
 	 * @return a cursor which contains the linee present in the database
 	 */
-	public static Cursor getCursorBacino(String bacino)
+	public static Cursor getCursor(String bacino)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
