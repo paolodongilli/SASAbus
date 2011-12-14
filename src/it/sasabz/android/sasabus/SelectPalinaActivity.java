@@ -42,7 +42,6 @@ import android.widget.TextView;
 public class SelectPalinaActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
-	private SasaDbAdapter mDbHelper;
     private String bacino;
     private String linea;
     private String destinazione;
@@ -66,8 +65,6 @@ public class SelectPalinaActivity extends ListActivity {
 			destinazione = extras.getString("destinazione");
 		}
         setContentView(R.layout.select_palina_layout);
-        mDbHelper = new SasaDbAdapter(this);
-        mDbHelper.open();
         fillData();
     }
 

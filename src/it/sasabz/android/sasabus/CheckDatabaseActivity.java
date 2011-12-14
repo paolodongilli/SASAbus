@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.Config;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -61,7 +62,6 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
-	private SasaDbAdapter mDbHelper;
 	
 	public CheckDatabaseActivity() {
 	}
@@ -110,9 +110,15 @@ public class CheckDatabaseActivity extends ListActivity {
 			if (!MD5Utils.checksumOK(dbFile, md5File))
 				download = true;
 			else {
-				mDbHelper = new SasaDbAdapter(this);
-		        mDbHelper.open();
-		        String end = mDbHelper.fetchEndDate();
+		        String end = null;
+		        try
+		        {
+		        	end = Config.getEndDate();
+		        }
+		        catch(Exception e)
+		        {
+		        	e.printStackTrace();
+		        }
 		        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
 		        Calendar cal = Calendar.getInstance();
 		        try {

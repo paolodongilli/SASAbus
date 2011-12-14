@@ -42,7 +42,6 @@ import android.widget.TextView;
 public class SelectBacinoActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
-	private SasaDbAdapter mDbHelper;
     
     public SelectBacinoActivity() {
     }
@@ -52,8 +51,6 @@ public class SelectBacinoActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_bacino_layout);
-        mDbHelper = new SasaDbAdapter(this);
-        mDbHelper.open();
         fillData();
     }
 

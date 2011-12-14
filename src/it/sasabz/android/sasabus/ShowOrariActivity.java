@@ -47,7 +47,6 @@ public class ShowOrariActivity extends ListActivity {
 
 	private static final int MENU_ABOUT = 0;
 
-	private SasaDbAdapter mDbHelper;
 	private String bacino;
 	private String linea;
 	private String destinazione;
@@ -75,8 +74,6 @@ public class ShowOrariActivity extends ListActivity {
 		}
 
 		setContentView(R.layout.show_orari_layout);
-		mDbHelper = new SasaDbAdapter(this);
-		mDbHelper.open();
 		Cursor c = fillData();
 		// scroll to a given position in the ListView
 		int pos = getNextTimePosition(c);

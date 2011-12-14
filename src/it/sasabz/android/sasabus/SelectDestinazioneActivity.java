@@ -45,7 +45,6 @@ import android.widget.TextView;
 public class SelectDestinazioneActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
-	private SasaDbAdapter mDbHelper;
     private String bacino;
     private String linea;
     private String destinazione;
@@ -66,8 +65,6 @@ public class SelectDestinazioneActivity extends ListActivity {
 		}
         
         setContentView(R.layout.select_destinazione_layout);
-        mDbHelper = new SasaDbAdapter(this);
-        mDbHelper.open();
         fillData();
     }
 

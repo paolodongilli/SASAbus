@@ -44,7 +44,6 @@ import android.widget.TextView;
 public class SelectLineaActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
-	private SasaDbAdapter mDbHelper;
     private String bacino;
     private String linea;
     
@@ -62,8 +61,6 @@ public class SelectLineaActivity extends ListActivity {
 		}
 
         setContentView(R.layout.select_linea_layout);
-        mDbHelper = new SasaDbAdapter(this);
-        mDbHelper.open();
         fillData(bacino);
     }
 
