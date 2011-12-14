@@ -26,25 +26,26 @@
 
 package it.sasabz.android.sasabus.classes;
 
-import it.sasabz.android.sasabus.ExternalStorageReadOnlyOpenHelper;
 import it.sasabz.android.sasabus.R;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class MySQLiteDBAdapter {
 	
 	private static SQLiteDatabase sqlite= null;
 	private static DatabaseHelper helper = null;
+	private static int counteropen = 0;
 	
 	/**
 	 * 
 	 * @param context
 	 * @return
 	 */
-	public static SQLiteDatabase getInstance(Context context)
+	public static MySQLiteDBAdapter getInstance(Context context)
 	{
-		if(sqlite == null)
+		if(counteropen == 0)
 		{
 			Resources res = context.getResources();
 			String appName = res.getString(R.string.app_name);
@@ -52,16 +53,37 @@ public class MySQLiteDBAdapter {
 	        helper = new DatabaseHelper(dbFileName,null);
 	        sqlite = helper.getReadableDatabase();
 		}
-		return sqlite;
+		++counteropen;
+		return new MySQLiteDBAdapter();
 	}
 	
-	public static boolean close() 
+	private MySQLiteDBAdapter()
 	{
-		helper.close();
-		return true;
+		//do nothing
 	}
 	
+	public static void closeAll() 
+	{
+			helper.close();
+			sqlite.close();
+	}
 	
+	public void close() 
+	{
+		--counteropen;
+		if(counteropen == 0)
+		{
+			helper.close();
+			sqlite.close();
+		}
+	}
+	
+	public Cursor rawQuery(String query, String[] args)
+	{
+		Cursor ret = null;
+		ret = sqlite.rawQuery(query, args);
+		return ret;
+	}
 	
 
 	/**
@@ -69,7 +91,7 @@ public class MySQLiteDBAdapter {
 	 * @author Markus Windegger (markus@mowiso.com)
 	 *
 	 */
-	private static class DatabaseHelper extends ExternalStorageReadOnlyOpenHelper {
+	private static class DatabaseHelper extends DBFileManager {
 
         DatabaseHelper(String dbFileName, SQLiteDatabase.CursorFactory factory) {
             super(dbFileName, factory);

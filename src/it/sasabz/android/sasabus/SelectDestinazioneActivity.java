@@ -30,6 +30,7 @@ import java.util.Locale;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Destinazione;
 import it.sasabz.android.sasabus.classes.DestinazioneList;
+import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -88,7 +89,7 @@ public class SelectDestinazioneActivity extends ListActivity {
     	selPalina.putExtra("linea", linea);
     	//Getting the destinationonject to choose how getting on
     	Destinazione dest = null;
-			dest = DestinazioneList.getFromLocalString(destinazione, Locale.getDefault());
+		dest = DestinazioneList.getFromLocalString(destinazione, Locale.getDefault());	
     	if(dest != null)
     	{
     		selPalina.putExtra("destinazione", dest.getNome_it());

@@ -31,11 +31,10 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 public class BacinoList {
 	
-	private static Vector <Bacino> list = new Vector<Bacino>();
+	private static Vector <Bacino> list = null;
 	 
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
@@ -43,11 +42,13 @@ public class BacinoList {
 	 */
 	public static  Vector <Bacino>  getList()
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select distinct bacino from linee_corse where bacino <> ''", null);
+		list = null;
 		if(cursor.moveToFirst())
 		{
 			int id = 0;
+			list = new Vector<Bacino>();
 			do {
 				Bacino element = new Bacino();
 				element.setBacinoName(cursor.getString(cursor.getColumnIndex("bacino")));
@@ -56,11 +57,8 @@ public class BacinoList {
 				++id;
 			} while(cursor.moveToNext());
 		}
-		else
-		{
-			list = null;
-		}
 		cursor.close();
+		sqlite.close();
 		return list;
 	}
 	
@@ -70,7 +68,7 @@ public class BacinoList {
 	 */
 	public static Cursor getCursor ()
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select distinct bacino as _id from linee_corse where bacino <> ''", null);
 		return cursor;
 	}

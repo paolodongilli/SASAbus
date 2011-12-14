@@ -22,7 +22,7 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
 
 import java.io.File;
 
@@ -30,12 +30,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.AndroidRuntimeException;
 
-public abstract class ExternalStorageReadOnlyOpenHelper {
+public abstract class DBFileManager {
+	
 	private SQLiteDatabase database;
 	private File dbFile;
 	private SQLiteDatabase.CursorFactory factory;
 
-	public ExternalStorageReadOnlyOpenHelper(String dbFileName,
+	public DBFileManager(String dbFileName,
 			SQLiteDatabase.CursorFactory factory) {
 		this.factory = factory;
 

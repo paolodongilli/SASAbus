@@ -80,7 +80,7 @@ public class SelectLineaActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         TextView textView = (TextView) v.findViewById(R.id.linea);
         linea = textView.getText().toString(); 
-    	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);
+    	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
     	selDest.putExtra("bacino", bacino);
     	selDest.putExtra("linea", linea);
     	startActivity(selDest);

@@ -25,6 +25,7 @@
 
 package it.sasabz.android.sasabus;
 
+import it.sasabz.android.sasabus.classes.DBFileManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -43,7 +44,7 @@ public class SasaDbAdapter {
     private final Context mCtx;
 	//private String dbDate;
 
-    private static class DatabaseHelper extends ExternalStorageReadOnlyOpenHelper {
+    private static class DatabaseHelper extends DBFileManager {
 
         DatabaseHelper(String dbFileName, SQLiteDatabase.CursorFactory factory) {
             super(dbFileName, factory);

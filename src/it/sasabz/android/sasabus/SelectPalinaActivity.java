@@ -26,6 +26,7 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -96,7 +97,8 @@ public class SelectPalinaActivity extends ListActivity {
     
     private void fillData() {
         // Get all 'paline' from the database and create the item list
-        Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
+        //Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
+    	Cursor c = PalinaList.getCursorBacinoLineaDest(bacino, linea, destinazione);
         startManagingCursor(c);
 
         String[] from = new String[] { "progressivo", "_id", "luogo" };

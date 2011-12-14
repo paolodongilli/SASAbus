@@ -27,6 +27,7 @@ package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;

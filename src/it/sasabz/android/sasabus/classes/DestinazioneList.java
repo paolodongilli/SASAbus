@@ -33,7 +33,7 @@ import java.util.Locale;
 import java.util.Vector;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -41,7 +41,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class DestinazioneList{
 	
-	private static Vector <Destinazione> list = new Vector<Destinazione>();
+	private static Vector <Destinazione> list = null;
 	
 	
 	/**                                                                                                                                                                                                          
@@ -50,13 +50,16 @@ public class DestinazioneList{
 	 */
 	public static  Vector <Destinazione>  getList()
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		
     	Cursor cursor = sqlite.rawQuery("select  distinct destinazione_it, destinazione_de from linee_corse", null);
 		
+    	list = null;
+    	
 		if(cursor.moveToFirst())
 		{
 			int id = 0;
+			list = new Vector<Destinazione>();
 			do {
 				Destinazione element = new Destinazione();
 				element.setNome_de(cursor.getString(cursor.getColumnIndex("destinazione_de")));
@@ -66,11 +69,8 @@ public class DestinazioneList{
 				++id;
 			} while(cursor.moveToNext());
 		}
-		else
-		{
-			list = null;
-		}
 		cursor.close();
+		sqlite.close();
 		return list;
 	}
 	
@@ -82,14 +82,17 @@ public class DestinazioneList{
 	 */
 	public static  Vector <Destinazione>  getListBacinoLinea(String bacino, String linea) throws Exception
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		
     	String[] selectionArgs = {bacino, linea};
     	Cursor cursor = sqlite.rawQuery("select distinct destinazione_it as _id, destinazione_de from linee_corse where bacino=? and id_linea_breve=?", selectionArgs);
 		
+    	list = null;
+    	
 		if(cursor.getCount() != 0)
 		{
 			int id = 0;
+			list = new Vector<Destinazione>();
 			do {
 				Destinazione element = new Destinazione();
 				element.setNome_de(cursor.getString(cursor.getColumnIndex("destinazione_de")));
@@ -99,11 +102,8 @@ public class DestinazioneList{
 				++id;
 			} while(!cursor.isLast());
 		}
-		else
-		{
-			list = null;
-		}
 		cursor.close();
+		sqlite.close();
 		return list;
 	}
 	
@@ -114,7 +114,7 @@ public class DestinazioneList{
 	 */
 	public static Cursor getCursorBacinoLinea (String bacino, String linea)
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		
 		String[] selectionArgs = {bacino, linea};
     	Cursor cursor = sqlite.rawQuery("select distinct destinazione_it as _id, destinazione_de from linee_corse where bacino=? and id_linea_breve=?", selectionArgs);

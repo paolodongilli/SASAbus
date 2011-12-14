@@ -31,7 +31,6 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -39,7 +38,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class LineaList {
 	
-	private static Vector <Linea> list = new Vector<Linea>();
+	private static Vector <Linea> list = null;
 	
 	
 	/**                                                                                                                                                                                                          
@@ -48,21 +47,19 @@ public class LineaList {
 	 */
 	public static  Vector <Linea>  getList()
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select  _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
-				"var_a, var_r, num_lin from linee", null);
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select  _id, num_lin from linee", null);
+		list = null;
 		if(cursor.moveToFirst())
 		{
+			list = new Vector<Linea>();
 			do {
 				Linea element = new Linea(cursor);
 				list.add(element);
 			} while(cursor.moveToNext());
 		}
-		else
-		{
-			list = null;
-		}
 		cursor.close();
+		sqlite.close();
 		return list;
 	}
 	
@@ -72,9 +69,9 @@ public class LineaList {
 	 */
 	public static Cursor getCursor ()
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
-				"var_a, var_r, num_lin from linee", null);
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select _id,  num_lin from linee", null);
+		
 		return cursor;
 	}
 	
@@ -85,22 +82,20 @@ public class LineaList {
 	 */
 	public static Vector <Linea> getListBacino(String bacino)
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
-		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
-				"var_a, var_r, num_lin  from linee where localita = ?", args);
+		Cursor cursor = sqlite.rawQuery("select _id,  num_lin  from linee where localita = ?", args);
+		list = null;
 		if(cursor.moveToFirst())
 		{
+			list = new Vector<Linea>();
 			do {
 				Linea element = new Linea(cursor);
 				list.add(element);
 			} while(cursor.moveToNext());
 		}
-		else
-		{
-			list = null;
-		}
 		cursor.close();
+		sqlite.close();
 		return list;
 	}
 	
@@ -112,10 +107,9 @@ public class LineaList {
 	 */
 	public static Cursor getCursorBacino(String bacino)
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
-		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
-				"var_a, var_r, num_lin from linee where localita = ?", args);
+		Cursor cursor = sqlite.rawQuery("select _id, num_lin from linee where localita = ?", args);
 		return cursor;
 	}
 	
@@ -127,7 +121,7 @@ public class LineaList {
 	 */
 	public static Cursor getCursorBacinoView(String bacino)
 	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
 		Cursor cursor = sqlite.rawQuery("select distinct num_lin as _id from linee where localita = ?", args);
 		return cursor;

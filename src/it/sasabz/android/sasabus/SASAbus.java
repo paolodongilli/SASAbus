@@ -45,7 +45,8 @@ public class SASAbus extends Application {
     @Override
     public void onTerminate()
     {
-    	MySQLiteDBAdapter.close();
+    	//do nothing
+    	MySQLiteDBAdapter.closeAll();
     }
     
     /**
