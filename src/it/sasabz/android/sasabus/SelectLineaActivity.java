@@ -89,15 +89,18 @@ public class SelectLineaActivity extends ListActivity {
     private void fillData(String bacino) {
         // Get all 'linee' from the database and create the item list
        // Cursor c = mDbHelper.fetchLinee(bacino);
-    	Cursor c = LineaList.getCursorBacino(bacino);
+    	Cursor c = LineaList.getCursorBacinoView(bacino);
         startManagingCursor(c);
 
         String[] from = null;
-        Locale l = Locale.getDefault();
-        if(l.getDisplayLanguage() == "de")
-        	from = new String[] {"descr_de"};
+        if(Locale.getDefault().equals(Locale.GERMANY))
+        {
+        	from = new String[] {"_id"};
+        }
         else
-        	from = new String[] {"descr_it"};
+        {
+        	from = new String[] {"_id"};
+        }
         int[] to = new int[] { R.id.linea };
         
         // Now create an array adapter and set it to display using our row

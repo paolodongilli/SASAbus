@@ -33,18 +33,19 @@ import java.util.Vector;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class BacinoList extends DBObjectList {
+public class BacinoList {
 	
+	private static Vector <Bacino> list = new Vector<Bacino>();
 	 
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
 	 */
-	public static  Vector <DBObject>  getList() throws Exception
+	public static  Vector <Bacino>  getList()
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select distinct bacino from linee_corse where bacino <> ''", null);
-		if(cursor.getCount() != 0)
+		if(cursor.moveToFirst())
 		{
 			int id = 0;
 			do {
@@ -53,13 +54,20 @@ public class BacinoList extends DBObjectList {
 				element.setId(id);
 				list.add(element);
 				++id;
-			} while(!cursor.isLast());
+			} while(cursor.moveToNext());
 		}
 		else
+		{
 			list = null;
+		}
+		cursor.close();
 		return list;
 	}
 	
+	/**
+	 * This method returns a Cursor of all bacinos present in the database
+	 * @return a cursor to the bacinos present in the database
+	 */
 	public static Cursor getCursor ()
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());

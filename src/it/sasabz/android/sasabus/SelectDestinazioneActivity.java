@@ -25,7 +25,11 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Locale;
+
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.Destinazione;
+import it.sasabz.android.sasabus.classes.DestinazioneList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -82,17 +86,42 @@ public class SelectDestinazioneActivity extends ListActivity {
     	Intent selPalina = new Intent(this, SelectPalinaActivity.class);
     	selPalina.putExtra("bacino", bacino);
     	selPalina.putExtra("linea", linea);
-    	selPalina.putExtra("destinazione", destinazione);
-    	startActivity(selPalina);
+    	//Getting the destinationonject to choose how getting on
+    	Destinazione dest = null;
+			dest = DestinazioneList.getFromLocalString(destinazione, Locale.getDefault());
+    	if(dest != null)
+    	{
+    		selPalina.putExtra("destinazione", dest.getNome_it());
+    		startActivity(selPalina);
+    	}
+    	else
+    	{
+    		textView = (TextView) v.findViewById(R.id.linea);
+    		linea = textView.getText().toString(); 
+    		Intent selDest = new Intent(this, SelectDestinazioneActivity.class);
+    		selDest.putExtra("bacino", bacino);
+    		selDest.putExtra("linea", linea);
+    		startActivity(selDest);
+    	}
+    	
     }
 
     
     private void fillData() {
         // Get all 'destinazioni' from the database and create the item list
-        Cursor c = mDbHelper.fetchDestinazioni(bacino,linea);
+        //Cursor c = mDbHelper.fetchDestinazioni(bacino,linea);
+    	Cursor c = DestinazioneList.getCursorBacinoLinea(bacino, linea);
         startManagingCursor(c);
 
-        String[] from = new String[] { "_id" };
+        String[] from = null;
+        if(Locale.getDefault().equals( Locale.GERMANY))
+        {
+        	from = new String[] {"destinazione_de"};
+        }
+        else
+        {
+        	from = new String[] {"destinazione_it"};
+        }
         int[] to = new int[] { R.id.destinazione };
         
         // Now create an array adapter and set it to display using our row

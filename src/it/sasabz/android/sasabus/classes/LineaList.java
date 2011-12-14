@@ -37,61 +37,102 @@ import android.database.sqlite.SQLiteDatabase;
  * @author Markus Windegger (markus@mowiso.com)
  *
  */
-public class LineaList extends DBObjectList {
+public class LineaList {
+	
+	private static Vector <Linea> list = new Vector<Linea>();
+	
 	
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
 	 */
-	public static  Vector <DBObject>  getList() throws Exception
+	public static  Vector <Linea>  getList()
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select distinct bacino from linee_corse where bacino <> ''", null);
-		if(cursor.getCount() != 0)
-		{
-			int id = 0;
-			do {
-				Bacino element = new Bacino();
-				element.setBacinoName(cursor.getString(cursor.getColumnIndex("bacino")));
-				element.setId(id);
-				++id;
-			} while(!cursor.isLast());
-		}
-		else
-			list = null;
-		return list;
-	}
-	
-	public static Vector <DBObject> getListBacino(String bacino)
-	{
-		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] args = {bacino};
-		Cursor cursor = sqlite.rawQuery("select *  from linee where localita = ?", args);
-		if(cursor.getCount() != 0)
+		Cursor cursor = sqlite.rawQuery("select  _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
+				"var_a, var_r, num_lin from linee", null);
+		if(cursor.moveToFirst())
 		{
 			do {
 				Linea element = new Linea(cursor);
 				list.add(element);
-			} while(!cursor.isLast());
+			} while(cursor.moveToNext());
 		}
 		else
+		{
 			list = null;
+		}
+		cursor.close();
 		return list;
 	}
 	
+	/**
+	 * This method returns a cursor to the db-table content of linee
+	 * @return a cursor which point on the content of the linee-table in the database
+	 */
+	public static Cursor getCursor ()
+	{
+		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
+				"var_a, var_r, num_lin from linee", null);
+		return cursor;
+	}
+	
+	/**
+	 * This method returns a vector of linee which are located in the bacino 
+	 * @param bacino is the bacino where we are searching the linee 
+	 * @return a vector of DBObjects with the linee located in the bacino
+	 */
+	public static Vector <Linea> getListBacino(String bacino)
+	{
+		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] args = {bacino};
+		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
+				"var_a, var_r, num_lin  from linee where localita = ?", args);
+		if(cursor.moveToFirst())
+		{
+			do {
+				Linea element = new Linea(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		else
+		{
+			list = null;
+		}
+		cursor.close();
+		return list;
+	}
+	
+	
+	/**
+	 * This ethod returns a cursor tho the linee present in the bacino
+	 * @param bacino is the location where we search the linee
+	 * @return a cursor which contains the linee present in the database
+	 */
 	public static Cursor getCursorBacino(String bacino)
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {bacino};
-		Cursor cursor = sqlite.rawQuery("select * from linee where localita = ?", args);
+		Cursor cursor = sqlite.rawQuery("select _id, abbrev, denom_it, denom_de, descr_it, descr_de, localita, linea_it, linea_de, " +
+				"var_a, var_r, num_lin from linee where localita = ?", args);
 		return cursor;
 	}
 	
 	
-	public static Cursor getCursor ()
+	/**
+	 * This method prepares the cursor for the list view, the lines are showed just 1 time, there are no duplicates
+	 * @param bacino location where we search the linee
+	 * @return a cursor to the linee which we can add to a listview
+	 */
+	public static Cursor getCursorBacinoView(String bacino)
 	{
 		SQLiteDatabase sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select * from linee", null);
+		String[] args = {bacino};
+		Cursor cursor = sqlite.rawQuery("select distinct num_lin as _id from linee where localita = ?", args);
 		return cursor;
 	}
+	
+	
+	
 }
