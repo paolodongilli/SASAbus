@@ -27,24 +27,19 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.classes.PalinaList;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -60,20 +55,42 @@ public class SelectPalinaLocationActivity extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        /*
-		bacino = null;
-		linea = null;
-		destinazione = null;
-		if (extras != null) {
-			bacino = extras.getString("bacino");
-			linea = extras.getString("linea");
-			destinazione = extras.getString("destinazione");
-		}
-		*/
 
+        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		LocationListener mlocListener = new MyLocationListener();
+		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+    }
+    
+    public class MyLocationListener implements LocationListener
+	{
+		@Override
+		public void onLocationChanged(Location loc)
+		{
+			onLocationRecieve(loc);	
+		}
+
+		@Override
+		public void onProviderDisabled(String provider)
+		{
+			
+		}
+
+		@Override
+		public void onProviderEnabled(String provider)
+		{
+			
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras)
+		{
+		}
+
+	}
+    
+    public void onLocationRecieve(Location loc) {
         setContentView(R.layout.select_palina_layout);
-        fillData();
+        fillData(loc);
     }
 
     /**
@@ -86,40 +103,25 @@ public class SelectPalinaLocationActivity extends ListActivity{
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.palina);
-       // palina = textView.getText().toString();
-        textView = (TextView) v.findViewById(R.id.progressivo);
-        //progressivo = textView.getText().toString();
-    	//Intent showOrario = new Intent(this, ShowOrariActivity.class);
-    	//showOrario.putExtra("bacino", bacino);
-    	//showOrario.putExtra("linea", linea);
-    	//showOrario.putExtra("destinazione", destinazione);
-    	//showOrario.putExtra("palina", palina);
-    	//showOrario.putExtra("progressivo", progressivo);
-    	//startActivity(showOrario);
+        Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
+		startActivity(selLinea);
+
     }
 
     
-    private void fillData() {
+    private void fillData(Location loc) {
         // Get all 'paline' from the database and create the item list
     	//Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
-    	final Location aktloc = null;
-    	
-    	// Acquire a reference to the system Location Manager
-    	LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-    	Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    	
     	
     	Cursor c = PalinaList.getCursorGPS(loc);
         startManagingCursor(c);
 
-        String[] from = new String[] { "progressivo", "_id", "luogo" };
-        int[] to = new int[] { R.id.progressivo, R.id.palina, R.id.luogo };
+        String[] from = new String[] { "_id", "luogo"};
+        int[] to = new int[] {R.id.palina, R.id.luogo };
         
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter paline =
-            new SimpleCursorAdapter(this, R.layout.paline_row, c, from, to);
+            new SimpleCursorAdapter(this, R.layout.paline_location_row, c, from, to);
         setListAdapter(paline);
     }
     
@@ -140,8 +142,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
 			}
 			case SharedMenu.MENU_TEST:
 			{
-				Intent selLinea = new Intent(this, SelectLineaActivity.class);
-				selLinea.putExtra("bacino", "Merano-Meran");
+				Intent selLinea = new Intent(this, SelectBacinoActivity.class);
 				startActivity(selLinea);
 				return true;
 			}

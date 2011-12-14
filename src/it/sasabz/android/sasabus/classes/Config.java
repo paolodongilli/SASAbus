@@ -35,7 +35,8 @@ import android.database.SQLException;
  *
  */
 public class Config {
-
+	
+	public static final double DELTA = 0.005;
 	
 	 /**
      * Return a String containing the db validity start date

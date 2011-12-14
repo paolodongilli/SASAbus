@@ -30,14 +30,11 @@ import it.sasabz.android.sasabus.SASAbus;
 
 import java.util.Vector;
 
-import android.app.ListActivity;
-import android.content.Context;
+
 import android.database.Cursor;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.Bundle;
+import android.util.Log;
+
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -109,18 +106,16 @@ public class PalinaList {
 	public static Cursor getCursorGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor c = null;
-		String latitudemin = Double.toString(loc.getLatitude()-0.05);
-		String longitudemin = Double.toString(loc.getLongitude()-0.05);
-		String latitudemax = Double.toString(loc.getLatitude()+0.05);
-		String longitudemax = Double.toString(loc.getLongitude()+0.05);
+		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA);
+		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA);
+		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA);
+		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA);
 		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, longitudemin, longitudemax, latitudemin, latitudemax};
-		sqlite.rawQuery("Select * from palina where longitude > ? " +
-				"and longitude < ? " +
-				"and latitude > ? " +
-				"and latitude < ? " +
-				"order by min(abs(longitude - ?), abs(longitude - ?)) + min(abs(latitude - ?), abs(latitude - ?))", args);
-		return c;
+		return sqlite.rawQuery("Select * from paline where longitudine > ? " +
+				" and longitudine < ? " +
+				" and latitudine > ? " +
+				" and latitudine < ? " +
+				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
 	}
 	
 	

@@ -103,8 +103,7 @@ public class SelectBacinoActivity extends ListActivity {
 			}
 			case SharedMenu.MENU_TEST:
 			{
-				Intent selLinea = new Intent(this, SelectLineaActivity.class);
-		    	selLinea.putExtra("bacino", "Merano-Meran");
+				Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
 		    	startActivity(selLinea);
 		    	return true;
 			}
