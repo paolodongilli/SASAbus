@@ -11,6 +11,7 @@
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
 <string name="db_ok">Datenbank %1$s ist bereit.</string>
 <string name="menu_about">Über SASAbus</string>
+<string name="menu_test">Das ist ein Test</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
 <string name="copyright">Copyright (C) %1$s Paolo Dongilli</string>

@@ -34,6 +34,7 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,7 +46,6 @@ import android.widget.SimpleCursorAdapter;
 
 public class ShowOrariActivity extends ListActivity {
 
-	private static final int MENU_ABOUT = 0;
 
 	private String bacino;
 	private String linea;
@@ -181,10 +181,18 @@ public class ShowOrariActivity extends ListActivity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ABOUT:
-			new About(this).show();
-			return true;
-			// ...
+			case SharedMenu.MENU_ABOUT:
+			{
+				new About(this).show();
+				return true;
+			}
+			case SharedMenu.MENU_TEST:
+			{
+				Intent selLinea = new Intent(this, SelectLineaActivity.class);
+				selLinea.putExtra("bacino", "Merano-Meran");
+				startActivity(selLinea);
+				return true;
+			}
 		}
 		return false;
 	}

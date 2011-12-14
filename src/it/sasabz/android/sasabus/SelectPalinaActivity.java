@@ -41,7 +41,6 @@ import android.widget.TextView;
 
 public class SelectPalinaActivity extends ListActivity {
 
-    private static final int MENU_ABOUT = 0;
     private String bacino;
     private String linea;
     private String destinazione;
@@ -117,9 +116,18 @@ public class SelectPalinaActivity extends ListActivity {
     
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ABOUT: new About(this).show();
-			return true;
-			// ...
+			case SharedMenu.MENU_ABOUT:
+			{
+				new About(this).show();
+				return true;
+			}
+			case SharedMenu.MENU_TEST:
+			{
+				Intent selLinea = new Intent(this, SelectLineaActivity.class);
+				selLinea.putExtra("bacino", "Merano-Meran");
+				startActivity(selLinea);
+				return true;
+			}
 		}
 		return false;
 	}

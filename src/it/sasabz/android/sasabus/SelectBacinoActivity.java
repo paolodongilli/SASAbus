@@ -41,7 +41,6 @@ import android.widget.TextView;
 
 public class SelectBacinoActivity extends ListActivity {
 
-    private static final int MENU_ABOUT = 0;
     
     public SelectBacinoActivity() {
     }
@@ -95,10 +94,20 @@ public class SelectBacinoActivity extends ListActivity {
     }
 
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case MENU_ABOUT: new About(this).show();
-			return true;
-			// ...
+		switch (item.getItemId()) 
+		{
+			case SharedMenu.MENU_ABOUT:
+			{
+				new About(this).show();
+				return true;
+			}
+			case SharedMenu.MENU_TEST:
+			{
+				Intent selLinea = new Intent(this, SelectLineaActivity.class);
+		    	selLinea.putExtra("bacino", "Merano-Meran");
+		    	startActivity(selLinea);
+		    	return true;
+			}
 		}
 		return false;
 	}

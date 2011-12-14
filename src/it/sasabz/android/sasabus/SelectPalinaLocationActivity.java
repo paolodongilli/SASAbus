@@ -1,10 +1,12 @@
 /**
+ * 
  *
- * SelectLineaActivity.java
+ * SelectPalinaLocationActivity.java
  * 
- * Created: Jan 16, 2011 11:41:06 AM
+ * Created: 14.12.2011 19:04:53
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * 
  *
  * This file is part of SasaBus.
 
@@ -22,18 +24,20 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
 package it.sasabz.android.sasabus;
 
-import java.util.Locale;
-
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.Destinazione;
-import it.sasabz.android.sasabus.classes.DestinazioneList;
-
+import it.sasabz.android.sasabus.classes.PalinaList;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,13 +46,14 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SelectDestinazioneActivity extends ListActivity {
+/**
+ * @author Markus Windegger (markus@mowiso.com)
+ *
+ */
+public class SelectPalinaLocationActivity extends ListActivity{
 
-    private String bacino;
-    private String linea;
-    private String destinazione;
     
-    public SelectDestinazioneActivity() {
+    public SelectPalinaLocationActivity() {
     }
 
     /** Called with the activity is first created. */
@@ -56,14 +61,18 @@ public class SelectDestinazioneActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
+        /*
 		bacino = null;
 		linea = null;
+		destinazione = null;
 		if (extras != null) {
 			bacino = extras.getString("bacino");
 			linea = extras.getString("linea");
+			destinazione = extras.getString("destinazione");
 		}
-        
-        setContentView(R.layout.select_destinazione_layout);
+		*/
+
+        setContentView(R.layout.select_palina_layout);
         fillData();
     }
 
@@ -77,53 +86,41 @@ public class SelectDestinazioneActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.destinazione);
-        destinazione = textView.getText().toString(); 
-    	Intent selPalina = new Intent(this, SelectPalinaActivity.class);
-    	selPalina.putExtra("bacino", bacino);
-    	selPalina.putExtra("linea", linea);
-    	//Getting the destinationonject to choose how getting on
-    	Destinazione dest = null;
-		dest = DestinazioneList.getFromLocalString(destinazione, Locale.getDefault());	
-    	if(dest != null)
-    	{
-    		selPalina.putExtra("destinazione", dest.getNome_it());
-    		startActivity(selPalina);
-    	}
-    	else
-    	{
-    		textView = (TextView) v.findViewById(R.id.linea);
-    		linea = textView.getText().toString(); 
-    		Intent selDest = new Intent(this, SelectDestinazioneActivity.class);
-    		selDest.putExtra("bacino", bacino);
-    		selDest.putExtra("linea", linea);
-    		startActivity(selDest);
-    	}
-    	
+        TextView textView = (TextView) v.findViewById(R.id.palina);
+       // palina = textView.getText().toString();
+        textView = (TextView) v.findViewById(R.id.progressivo);
+        //progressivo = textView.getText().toString();
+    	//Intent showOrario = new Intent(this, ShowOrariActivity.class);
+    	//showOrario.putExtra("bacino", bacino);
+    	//showOrario.putExtra("linea", linea);
+    	//showOrario.putExtra("destinazione", destinazione);
+    	//showOrario.putExtra("palina", palina);
+    	//showOrario.putExtra("progressivo", progressivo);
+    	//startActivity(showOrario);
     }
 
     
     private void fillData() {
-        // Get all 'destinazioni' from the database and create the item list
-        //Cursor c = mDbHelper.fetchDestinazioni(bacino,linea);
-    	Cursor c = DestinazioneList.getCursor(bacino, linea);
+        // Get all 'paline' from the database and create the item list
+    	//Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
+    	final Location aktloc = null;
+    	
+    	// Acquire a reference to the system Location Manager
+    	LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+    	Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    	
+    	
+    	Cursor c = PalinaList.getCursorGPS(loc);
         startManagingCursor(c);
 
-        String[] from = null;
-        if(Locale.getDefault().equals( Locale.GERMANY))
-        {
-        	from = new String[] {"destinazione_de"};
-        }
-        else
-        {
-        	from = new String[] {"destinazione_it"};
-        }
-        int[] to = new int[] { R.id.destinazione };
+        String[] from = new String[] { "progressivo", "_id", "luogo" };
+        int[] to = new int[] { R.id.progressivo, R.id.palina, R.id.luogo };
         
         // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter destinazioni =
-            new SimpleCursorAdapter(this, R.layout.destinazioni_row, c, from, to);
-        setListAdapter(destinazioni);
+        SimpleCursorAdapter paline =
+            new SimpleCursorAdapter(this, R.layout.paline_row, c, from, to);
+        setListAdapter(paline);
     }
     
     @Override
