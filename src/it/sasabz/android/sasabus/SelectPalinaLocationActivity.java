@@ -27,6 +27,7 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.classes.PalinaList;
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,16 +50,16 @@ import android.widget.SimpleCursorAdapter;
 public class SelectPalinaLocationActivity extends ListActivity{
 
     
-    public SelectPalinaLocationActivity() {
-    }
+	private LocationManager mlocManager = null;
+	private LocationListener mlocListener = null;
 
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		LocationListener mlocListener = new MyLocationListener();
+        mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		mlocListener = new MyLocationListener();
 		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
     }
     
@@ -72,7 +74,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
 		@Override
 		public void onProviderDisabled(String provider)
 		{
-			
+			gpsDisabled();
 		}
 
 		@Override
@@ -84,15 +86,33 @@ public class SelectPalinaLocationActivity extends ListActivity{
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras)
 		{
+			if(status == LocationProvider.TEMPORARILY_UNAVAILABLE || status == LocationProvider.OUT_OF_SERVICE)
+			{
+				gpsDisabled();
+			}
 		}
 
 	}
     
+    public void gpsDisabled()
+    {
+    	mlocManager.removeUpdates(mlocListener);
+    	new GPSDisabled(getMe()).show();
+		//Intent selBac = new Intent(getMe(), SelectBacinoActivity.class);
+		//startActivity(selBac);
+    }
+    
     public void onLocationRecieve(Location loc) {
+    	mlocManager.removeUpdates(mlocListener);
         setContentView(R.layout.select_palina_layout);
         fillData(loc);
     }
 
+    public Activity getMe()
+    {
+    	return this;
+    }
+    
     /**
      * Called when the activity is about to start interacting with the user.
      */

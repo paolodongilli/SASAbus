@@ -23,5 +23,7 @@
 <string name="downloading_md5">Herunterladen der MD5-Prüfsumme ...</string>
 <string name="unzipping_db">Entpacken der SASAbus-Datenbank ...</string>
 <string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte versuchen Sie es später noch einmal.</string>
+<string name="gps_disabled_title">GPS deaktiviert</string>
+<string name="gps_disabled">Kein Empfang von GPS-Daten möglich. Bitte schalten Sie Ihr GPS ein oder versuchen Sie es später nocheinmal.</string>
 </resources>
 

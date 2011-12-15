@@ -23,5 +23,7 @@
 <string name="downloading_md5">Downloading MD5 Checksum ...</string>
 <string name="unzipping_db">Unzipping SASAbus Database ...</string>
 <string name="no_db_update_available">Timetable update is not available. Please try again later.</string>
+<string name="gps_disabled_title">Gps disabled</string>
+<string name="gps_disabled">The GPS-data on your Mobilephone is not available, please turn your GPS on or try again later.</string>
 </resources>
 

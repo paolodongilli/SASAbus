@@ -23,4 +23,6 @@
 <string name="downloading_md5">Sto scaricando il checksum MD5 ...</string>
 <string name="unzipping_db">Sto decomprimendo il database SASAbus ...</string>
 <string name="no_db_update_available">Aggiornamento degli orari non disponibile. Si prega di riprovare più tardi.</string>
+<string name="gps_disabled_title">GPS disattivato</string>
+<string name="gps_disabled">Dati GPS non disponibile. Si prega di ativare il GPS o di riprovare più tardi.</string>
 </resources>
