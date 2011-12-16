@@ -60,7 +60,7 @@ public class Config {
      * @return String containing a date in format YYYY-MM-DD
      * @throws SQLException
      */
-    public static String getEndDate() throws Exception{
+    public static String getEndDate() throws Exception {
     	MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
     	Cursor c = sqlite.rawQuery("select a_data from validita", null);
     	if(!c.moveToFirst())

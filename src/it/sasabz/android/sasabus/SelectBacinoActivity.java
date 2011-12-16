@@ -25,6 +25,8 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Locale;
+
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.BacinoList;
 
@@ -72,13 +74,16 @@ public class SelectBacinoActivity extends ListActivity {
     }
     
     private void fillData() {
-        //Cursor c = mDbHelper.fetchBacini();
     	// Get all 'bacini' from the database and create the item list
     	Cursor c = BacinoList.getCursor();
         startManagingCursor(c);
-
-        String[] from = new String[] { "_id" };
-        int[] to = new int[] { R.id.bacino };
+        String bacino = "nome_it";
+        if(Locale.getDefault().equals(Locale.GERMANY))
+        {
+        	bacino = "nome_de";
+        }
+        String[] from = new String[] { "_id", bacino };
+        int[] to = new int[] { R.id.bacinoId, R.id.bacino };
         
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter bacini =

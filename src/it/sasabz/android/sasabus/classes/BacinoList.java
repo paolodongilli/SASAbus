@@ -43,18 +43,14 @@ public class BacinoList {
 	public static  Vector <Bacino>  getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select distinct bacino from linee_corse where bacino <> ''", null);
+		Cursor cursor = sqlite.rawQuery("select * from  bacini", null);
 		list = null;
 		if(cursor.moveToFirst())
 		{
-			int id = 0;
 			list = new Vector<Bacino>();
 			do {
-				Bacino element = new Bacino();
-				element.setBacinoName(cursor.getString(cursor.getColumnIndex("bacino")));
-				element.setId(id);
+				Bacino element = new Bacino(cursor);
 				list.add(element);
-				++id;
 			} while(cursor.moveToNext());
 		}
 		cursor.close();
@@ -69,7 +65,7 @@ public class BacinoList {
 	public static Cursor getCursor ()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select distinct bacino as _id from linee_corse where bacino <> ''", null);
+		Cursor cursor = sqlite.rawQuery("select id as _id, nome_de, nome_it from bacini", null);
 		return cursor;
 	}
 
