@@ -106,15 +106,15 @@ public class PalinaList {
 	public static Cursor getCursorGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA);
-		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA);
-		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA);
-		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, longitudemin, longitudemax, latitudemin, latitudemax};
-		return sqlite.rawQuery("Select * from paline where longitudine > ? " +
-				" and longitudine < ? " +
-				" and latitudine > ? " +
-				" and latitudine < ? " +
+		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
+		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
+		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
+		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
+		Log.v("GPS QUERY", "longitude : " + Double.toString(loc.getLongitude() + Config.DELTALONG));
+		Log.v("GPS QUERY", "latitude : " + Double.toString(loc.getLatitude() + Config.DELTALAT));
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
+		return sqlite.rawQuery("Select * from paline where " +
+				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
 	}
 	

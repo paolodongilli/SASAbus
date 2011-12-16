@@ -36,7 +36,14 @@ import android.database.SQLException;
  */
 public class Config {
 	
-	public static final double DELTA = 0.005;
+	
+	//0.0045 is ca 500m wide radius to your position 
+	public static final double DELTA = 0.0045;
+	
+	
+	//For testing the aplication in other cities (differences to bolzano entered here)
+	public static final double DELTALAT = 0;
+	public static final double DELTALONG = 0;
 	
 	 /**
      * Return a String containing the db validity start date
