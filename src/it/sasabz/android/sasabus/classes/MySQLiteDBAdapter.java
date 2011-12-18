@@ -37,6 +37,7 @@ public class MySQLiteDBAdapter {
 	private static SQLiteDatabase sqlite= null;
 	private static DatabaseHelper helper = null;
 	private static int counteropen = 0;
+	private static int transactioncounter = 0;
 	
 	/**
 	 * 
@@ -85,7 +86,21 @@ public class MySQLiteDBAdapter {
 		return ret;
 	}
 	
-
+	public void beginTransaction()
+	{
+		transactioncounter++;
+		sqlite.beginTransaction();
+	}
+	
+	public void endTransaction()
+	{
+		transactioncounter--;
+		if(transactioncounter == 0)
+		{
+			sqlite.endTransaction();
+		}
+	}
+	
 	/**
 	 * This classes helps to open the database read only and close it correctly after using
 	 * @author Markus Windegger (markus@mowiso.com)

@@ -29,6 +29,7 @@ package it.sasabz.android.sasabus.classes;
 import it.sasabz.android.sasabus.SASAbus;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.util.Log;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -50,6 +51,7 @@ public class Config {
     		date = c.getString(c.getColumnIndex("da_data"));
     	c.close();
     	sqlite.close();
+    	Log.v("config", date);
     	return date;
     }
 
@@ -66,6 +68,7 @@ public class Config {
     		date = c.getString(c.getColumnIndex("a_data"));
         c.close();
         sqlite.close();
+        Log.v("config", date);
         return date;
     }
 	

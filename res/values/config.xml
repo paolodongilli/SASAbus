@@ -4,5 +4,9 @@
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.1.8</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>
+    <!--
     <string name="repository_url">http://www.mowiso.com/</string>
+    <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>
+    -->
+    <string name="repository_url">http://www.mowiso.com/</string>    
 </resources>

@@ -1,9 +1,9 @@
 /**
  *
  * SelectLineaActivity.java
- * 
+ *
  * Created: Jan 16, 2011 11:41:06 AM
- * 
+ *
  * Copyright (C) 2011 Paolo Dongilli
  *
  * This file is part of SasaBus.
@@ -15,12 +15,12 @@
  *
  * SasaBus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package it.sasabz.android.sasabus;
@@ -42,6 +42,7 @@ import it.sasabz.android.sasabus.classes.Config;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,7 +61,7 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
-	
+
 	public CheckDatabaseActivity() {
 	}
 
@@ -83,7 +84,7 @@ public class CheckDatabaseActivity extends ListActivity {
 
 		Log.v("CheckDatabaseActivity", "***** dbURLName: " + dbURLName);
 		Log.v("CheckDatabaseActivity", "***** md5URLNAme: " + md5URLName);
-		
+
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			throw new AndroidRuntimeException(getResources().getString(R.string.sd_card_not_mounted));
@@ -99,27 +100,30 @@ public class CheckDatabaseActivity extends ListActivity {
 		File dbZIPFile = new File(dbDir, dbZIPFileName);
 		File md5File = new File(dbDir, md5FileName);
 
+		
 		boolean download = false;
 		if (dbFile.exists() && md5File.exists()) {
-			
+
 			Log.v("CheckDatabaseActivity", "***** MD5: " + MD5Utils.extractMD5(md5File));
 			Log.v("CheckDatabaseActivity", "***** calculated MD5: " + MD5Utils.calculateMD5(dbFile));
-			
+
 			if (!MD5Utils.checksumOK(dbFile, md5File))
+			{
 				download = true;
+			}
 			else {
-		        String end = null;
-		        try
-		        {
-		        	end = Config.getEndDate();
-		        }
-		        catch(Exception e)
-		        {
-		        	e.printStackTrace();
-		        }
-		        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
-		        Calendar cal = Calendar.getInstance();
-		        try {
+				String end = null;
+				try
+				{
+					end = Config.getEndDate();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar cal = Calendar.getInstance();
+				try {
 					Date endDate = timeFormat.parse(end);
 					Date currentDate = timeFormat.parse(timeFormat.format(cal
 							.getTime()));
@@ -132,9 +136,9 @@ public class CheckDatabaseActivity extends ListActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		        if (!download && dbUpdateAvailable(md5URLName, md5FileName, dbDir)) {
-		            download = true;	
-		        }		        
+				if (!download && dbUpdateAvailable(md5URLName, md5FileName, dbDir)) {
+					download = true;
+				}
 			}
 		} else {
 			download = true;
@@ -144,13 +148,13 @@ public class CheckDatabaseActivity extends ListActivity {
 			// verify we have a network connection
 			if (haveNetworkConnection()) {
 				if(config.getDbDownloadAttempts() < 2) {
-					new FileRetriever(this, dbZIPFile, dbFile, md5File).execute(
-							dbURLName, md5URLName);
+					FileRetriever fileret = new FileRetriever(this, dbZIPFile, dbFile, md5File);
+					fileret.execute(dbURLName, md5URLName);
 				} else {
 					showDialog(NO_DB_UPDATE_AVAILABLE);
 				}
 			} else {
-                showDialog(NO_NETWORK_CONNECTION);
+				showDialog(NO_NETWORK_CONNECTION);
 			}
 		} else {
 			// verify files
@@ -195,23 +199,23 @@ public class CheckDatabaseActivity extends ListActivity {
 		Date lastLocalModDate = new Date(lastLocalMod);
 		String lastRemoteMod;
 		Date lastRemoteModDate;
-		
+
 		// verify we have a network connection, otherwise act as no update is available
 		// and update remains false
 		if (haveNetworkConnection()) {
-		
-		    try {
+
+			try {
 				URL url = new URL(md5UrlName);
 				URLConnection conn = url.openConnection();
 				conn.connect();
-								
+
 				lastRemoteMod = conn.getHeaderField("Last-Modified");
 				lastRemoteModDate = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH).parse(lastRemoteMod);
-				
+
 				// check if date of remote file is after date of local file
 				update = lastRemoteModDate.after(lastLocalModDate);
-				
-				Log.v("CheckDatabaseActivity", "Date of local md5:  " + lastLocalModDate.toString());
+
+				Log.v("CheckDatabaseActivity", "Date of local md5: " + lastLocalModDate.toString());
 				Log.v("CheckDatabaseActivity", "Date of remote md5: " + lastRemoteModDate.toString());
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
@@ -222,11 +226,11 @@ public class CheckDatabaseActivity extends ListActivity {
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
 		}
 		return update;
 	}
-	
+
 	private final Dialog createErrorAlertDialog(int msg) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setTitle(R.string.a_given_string);
@@ -265,7 +269,7 @@ public class CheckDatabaseActivity extends ListActivity {
 			return null;
 		}
 	}
-	
+
 	private boolean haveNetworkConnection() {
 		boolean haveConnectedWifi = false;
 		boolean haveConnectedMobile = false;
@@ -283,4 +287,5 @@ public class CheckDatabaseActivity extends ListActivity {
 		return haveConnectedWifi || haveConnectedMobile;
 	}
 
+	
 }

@@ -99,7 +99,7 @@ public class PalinaList {
 		String [] args = {Integer.toString(linea), nome_de};
 		Cursor cursor = sqlite.rawQuery("SELECT DISTINCT part_nome_it as nome_it, part_nome_de as nome_de " +
 				"from palineProgressive where lineaId = ? and dest_nome_de = ? " +
-				"AND substr(linee.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
+				"AND substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
                 Config.getStartDate() + "')) + 1,1)='1'", args);
 		list = null;
 		if(cursor.moveToFirst())
@@ -116,40 +116,5 @@ public class PalinaList {
 	}
 	
 	
-	
-	/**
-	 * Retuns all busstops which have the following properties
-	 * @param bacino is the city of the busstop
-	 * @param linea is the line which passes the busstop
-	 * @param destinazione is the destination of the line, important for the direction of the line
-	 * @return a cursor ouver all the selected busstops
-	 */
-	public static Cursor getCursor(String bacino, String linea, String destinazione)
-	{
-		String[] selectionArgs = {bacino, linea, destinazione};
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor c = null;
-		try {
-		c = sqlite.rawQuery(
-			"select orari.progressivo as progressivo, orari.id_palina as _id, paline.luogo as luogo from orari_passaggio as orari, paline " +
-			"where orari.codice_corsa = " +
-			" (select _id from linee_corse " + 
-			"	where bacino=? " +
-			"	    and  id_linea_breve=? " +
-			"	    and destinazione_it=? " + 
-			"	    and substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
-			Config.getStartDate() + "')) + 1,1)='1' " + 
-			"	    and orario_partenza > '0800' " +
-			"	    limit 1) " + 
-			"	  and orari.id_palina=paline._id " +
-			"	 order by orari.progressivo", selectionArgs);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		return c;
-	}
 	
 }
