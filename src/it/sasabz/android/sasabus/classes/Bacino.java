@@ -26,12 +26,14 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import java.util.Locale;
+
 import android.database.Cursor;
 
 public class Bacino extends DBObject {
 	
 	/*
-	 * Is the name of the current Bacino
+	 * Is the name of the current Bacino in italian and german
 	 */
 	private String bacino_de = null;
 	
@@ -94,6 +96,14 @@ public class Bacino extends DBObject {
 		this.bacino_it = bacino_it;
 	}
 
-
+	public String toString()
+	{
+		if(Locale.getDefault().equals(Locale.GERMANY))
+		{
+			return this.getBacino_de();
+		}
+		
+		return this.getBacino_it();
+	}
 	
 }

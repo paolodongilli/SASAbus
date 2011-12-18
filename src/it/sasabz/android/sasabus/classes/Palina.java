@@ -26,6 +26,8 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import java.util.Locale;
+
 import android.database.Cursor;
 
 /**
@@ -90,37 +92,20 @@ public class Palina extends DBObject{
 	 * This constructer fills the palina-object with information from a cursor
 	 * if the position flag is set, then it fills the position variables longitude and latitude
 	 * @param c is the cursor with the information from the db
-	 * @param position is the flag which sets the position when it's true, don't set it when it's false
 	 */
-	public Palina(Cursor c, boolean position)
+	public Palina(Cursor c)
 	{
-		super(c.getInt(c.getColumnIndex("_id")));
-		String luogo = c.getString(c.getColumnIndex("luogo"));
-		String [] splitted = luogo.split("-");
-		if(splitted.length == 2)
-		{
-			this.setName_de(splitted[1]);
-			this.setName_it(splitted[0]);
-		}
-		if(position)
-		{
+		if (c.getColumnIndex("id") != -1)
+			this.setId(c.getInt(c.getColumnIndex("id")));
+		this.setName_de(c.getString(c.getColumnIndex("nome_de")));
+		this.setName_it(c.getString(c.getColumnIndex("nome_it")));
+		if(c.getColumnIndex("longitudine") != -1)
 			this.setLongitude(c.getDouble(c.getColumnIndex("longitudine")));
+		if (c.getColumnIndex("latitudine") != -1)
 			this.setLatitude(c.getDouble(c.getColumnIndex("latitudine")));
-		}
 	}
+
 	
-	/**  
-	 * Returns if the Locationvariables are loadet or not
-	 * @return true when the location variables are loadet, false otherwise
-	 */
-	public boolean isLocationLoadet()
-	{
-		if(longitude == 0 && latitude == 0)
-		{
-			return false;
-		}
-		return true;
-	}
 	
 	/**
 	 * @return the name_de
@@ -176,6 +161,15 @@ public class Palina extends DBObject{
 	 */
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
+	}
+	
+	public String toString()
+	{
+		if(Locale.getDefault().equals(Locale.GERMANY))
+		{
+			return this.getName_de();
+		}
+		return this.getName_it();
 	}
 	
 }

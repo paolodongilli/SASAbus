@@ -34,23 +34,25 @@ import android.database.Cursor;
 
 public class BacinoList {
 	
-	private static Vector <Bacino> list = null;
+	private static Vector <DBObject> list = null;
 	 
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
 	 */
-	public static  Vector <Bacino>  getList()
+	public static  Vector <DBObject>  getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select * from  bacini", null);
 		list = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<Bacino>();
+			int i = 0;
+			list = new Vector<DBObject>();
 			do {
 				Bacino element = new Bacino(cursor);
-				list.add(element);
+				list.add(i, element);
+				++i;
 			} while(cursor.moveToNext());
 		}
 		cursor.close();

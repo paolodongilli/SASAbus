@@ -26,14 +26,19 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Locale;
+import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.MyListAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +49,8 @@ import android.widget.TextView;
 public class SelectBacinoActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
+    
+    private Vector<DBObject> list = null;
     
     public SelectBacinoActivity() {
     }
@@ -66,28 +73,15 @@ public class SelectBacinoActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.bacino);
-        String bacino = textView.getText().toString(); 
+        int bacino = list.get(position).getId();
     	Intent selLinea = new Intent(this, SelectLineaActivity.class);
     	selLinea.putExtra("bacino", bacino);
     	startActivity(selLinea);
     }
     
     private void fillData() {
-    	// Get all 'bacini' from the database and create the item list
-    	Cursor c = BacinoList.getCursor();
-        startManagingCursor(c);
-        String bacino = "nome_it";
-        if(Locale.getDefault().equals(Locale.GERMANY))
-        {
-        	bacino = "nome_de";
-        }
-        String[] from = new String[] { "_id", bacino };
-        int[] to = new int[] { R.id.bacinoId, R.id.bacino };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter bacini =
-            new SimpleCursorAdapter(this, R.layout.bacini_row, c, from, to);
+        list = BacinoList.getList();
+        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.bacino, R.layout.bacini_row, list);
         setListAdapter(bacini);
     }
     

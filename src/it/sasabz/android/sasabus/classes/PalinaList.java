@@ -31,6 +31,7 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 import android.database.Cursor;
+import android.util.Log;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -38,23 +39,23 @@ import android.database.Cursor;
  */
 public class PalinaList {
 	
-	private static Vector <Palina> list = new Vector<Palina> ();
+	private static Vector <DBObject> list = new Vector<DBObject> ();
 	
 	
 	/**
 	 * Returns a list of all bus-stops avaiable in the database
 	 * @return a vector of all bus-stops in the database
 	 */
-	public static Vector <Palina> getList()
+	public static Vector <DBObject> getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select *  from paline", null);
 		list = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<Palina>();
+			list = new Vector<DBObject>();
 			do {
-				Palina element = new Palina(cursor, true);
+				Palina element = new Palina(cursor);
 				list.add(element);
 			} while(cursor.moveToNext());
 		}
@@ -62,6 +63,58 @@ public class PalinaList {
 		sqlite.close();
 		return list;
 	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getListLinea(int linea)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea)};
+		Cursor cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+				"from paline, corse, orarii where corse.lineaId = ? AND " +
+				"orarii.corsaId = corse.id AND orarii.palinaId = paline.id", args);
+		list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getListDestinazione(String nome_de, int linea)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea), nome_de};
+		Cursor cursor = sqlite.rawQuery("SELECT DISTINCT part_nome_it as nome_it, part_nome_de as nome_de " +
+				"from palineProgressive where lineaId = ? and dest_nome_de = ? " +
+				"AND substr(linee.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
+                Config.getStartDate() + "')) + 1,1)='1'", args);
+		list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
 	
 	
 	/**

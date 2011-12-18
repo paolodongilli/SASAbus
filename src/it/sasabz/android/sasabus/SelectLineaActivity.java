@@ -26,9 +26,12 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Locale;
+import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
+import it.sasabz.android.sasabus.classes.MyListAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -42,10 +45,12 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class SelectLineaActivity extends ListActivity {
-
+	
+	
+	
     private static final int MENU_ABOUT = 0;
-    private String bacino;
-    private String linea;
+
+    private Vector<DBObject> list = null;
     
     public SelectLineaActivity() {
     }
@@ -55,11 +60,10 @@ public class SelectLineaActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		bacino = null;
+		int bacino = 0;
 		if (extras != null) {
-			bacino = extras.getString("bacino");
+			bacino = extras.getInt("bacino");
 		}
-
         setContentView(R.layout.select_linea_layout);
         fillData(bacino);
     }
@@ -74,34 +78,15 @@ public class SelectLineaActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.linea);
-        linea = textView.getText().toString(); 
+        int linea = list.get(position).getId(); 
     	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
-    	selDest.putExtra("bacino", bacino);
     	selDest.putExtra("linea", linea);
     	startActivity(selDest);
     }
     
-    private void fillData(String bacino) {
-        // Get all 'linee' from the database and create the item list
-       // Cursor c = mDbHelper.fetchLinee(bacino);
-    	Cursor c = LineaList.getCursorBacinoView(bacino);
-        startManagingCursor(c);
-
-        String[] from = null;
-        if(Locale.getDefault().equals(Locale.GERMANY))
-        {
-        	from = new String[] {"_id"};
-        }
-        else
-        {
-        	from = new String[] {"_id"};
-        }
-        int[] to = new int[] { R.id.linea };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter linee =
-            new SimpleCursorAdapter(this, R.layout.linee_row, c, from, to);
+    private void fillData(int bacino) {
+    	list = LineaList.getList(bacino);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
         setListAdapter(linee);
     }  
     

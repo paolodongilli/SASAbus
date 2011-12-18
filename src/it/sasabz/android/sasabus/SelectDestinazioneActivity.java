@@ -26,10 +26,13 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Locale;
+import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.Destinazione;
-import it.sasabz.android.sasabus.classes.DestinazioneList;
+import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -45,9 +48,10 @@ import android.widget.TextView;
 public class SelectDestinazioneActivity extends ListActivity {
 
     private static final int MENU_ABOUT = 0;
-    private String bacino;
-    private String linea;
-    private String destinazione;
+    
+    private Vector<DBObject> list = null;
+    
+    private int linea;
     
     public SelectDestinazioneActivity() {
     }
@@ -57,11 +61,9 @@ public class SelectDestinazioneActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-		bacino = null;
-		linea = null;
+        linea = 0;
 		if (extras != null) {
-			bacino = extras.getString("bacino");
-			linea = extras.getString("linea");
+			linea = extras.getInt("linea");
 		}
         
         setContentView(R.layout.select_destinazione_layout);
@@ -78,52 +80,18 @@ public class SelectDestinazioneActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.destinazione);
-        destinazione = textView.getText().toString(); 
-    	Intent selPalina = new Intent(this, SelectPalinaActivity.class);
-    	selPalina.putExtra("bacino", bacino);
-    	selPalina.putExtra("linea", linea);
-    	//Getting the destinationonject to choose how getting on
-    	Destinazione dest = null;
-		dest = DestinazioneList.getFromLocalString(destinazione, Locale.getDefault());	
-    	if(dest != null)
-    	{
-    		selPalina.putExtra("destinazione", dest.getNome_it());
-    		startActivity(selPalina);
-    	}
-    	else
-    	{
-    		textView = (TextView) v.findViewById(R.id.linea);
-    		linea = textView.getText().toString(); 
-    		Intent selDest = new Intent(this, SelectDestinazioneActivity.class);
-    		selDest.putExtra("bacino", bacino);
-    		selDest.putExtra("linea", linea);
-    		startActivity(selDest);
-    	}
+    	Palina destinazione = (Palina)list.get(position);
+    	Intent selDest = new Intent(this, SelectPalinaActivity.class);
+    	selDest.putExtra("destinazione", destinazione.getName_de());
+    	selDest.putExtra("linea", linea);
+    	startActivity(selDest);
     	
     }
 
     
     private void fillData() {
-        // Get all 'destinazioni' from the database and create the item list
-        //Cursor c = mDbHelper.fetchDestinazioni(bacino,linea);
-    	Cursor c = DestinazioneList.getCursor(bacino, linea);
-        startManagingCursor(c);
-
-        String[] from = null;
-        if(Locale.getDefault().equals( Locale.GERMANY))
-        {
-        	from = new String[] {"destinazione_de"};
-        }
-        else
-        {
-        	from = new String[] {"destinazione_it"};
-        }
-        int[] to = new int[] { R.id.destinazione };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter destinazioni =
-            new SimpleCursorAdapter(this, R.layout.destinazioni_row, c, from, to);
+    	list = PalinaList.getListLinea(linea);
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
         setListAdapter(destinazioni);
     }
     
