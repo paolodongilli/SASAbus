@@ -162,5 +162,35 @@ public class PassaggioList {
 		return c;
 	}
 	
+	public static Cursor getCursor(int linea,String destinazione,String partenza)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione};
+		Cursor c = null;
+		String query = "select strftime('%H:%M',o1.orario) as _id " + 
+				"  from corse corse, orarii o1, orarii o2, paline p1, paline p2" +
+				"  where  corse.lineaId = ?" +
+				"  and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
+				Config.getStartDate() + "')) + 1,1)='1' " + 
+				"  and p1.nome_de = ? " +
+				" and p2.nome_de = ?" +
+				" and p1.id = o1.palinaId" +
+				" and p2.id = o2.palinaId" +
+				" and o1.progressivo < o2.progressivo" +
+				" and o1.corsaId = corse.id" +
+				" and o2.corsaId = corse.id" +
+				" order by _id ";
+		try
+		{
+			c = sqlite.rawQuery(query, selectionArgs);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		return c;
+	}
+	
 	
 }

@@ -51,7 +51,6 @@ public class Config {
     		date = c.getString(c.getColumnIndex("da_data"));
     	c.close();
     	sqlite.close();
-    	Log.v("config", date);
     	return date;
     }
 
@@ -68,7 +67,6 @@ public class Config {
     		date = c.getString(c.getColumnIndex("a_data"));
         c.close();
         sqlite.close();
-        Log.v("config", date);
         return date;
     }
 	
