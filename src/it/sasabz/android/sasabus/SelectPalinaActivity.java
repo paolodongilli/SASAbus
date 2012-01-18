@@ -81,7 +81,7 @@ public class SelectPalinaActivity extends ListActivity {
     	showOrario.putExtra("linea", linea);
     	showOrario.putExtra("destinazione", destinazione);
     	Palina palina = (Palina)list.get(position);
-    	showOrario.putExtra("palina", palina.getName_de());
+    	showOrario.putExtra("palina", palina.getId());
     	startActivity(showOrario);
     }
 

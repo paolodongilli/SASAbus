@@ -51,7 +51,7 @@ public class ShowOrariActivity extends ListActivity {
 	
 	private int linea;
 	private String destinazione;
-	private String partenza;
+	private int  partenza;
 	private Vector<DBObject> list;
 
 	public ShowOrariActivity() {
@@ -64,11 +64,11 @@ public class ShowOrariActivity extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		linea = 0;
 		destinazione = null;
-		partenza = null;
+		partenza = 0;
 		if (extras != null) {
 			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
-			partenza = extras.getString("palina");
+			partenza = extras.getInt("palina");
 		}
 
 		setContentView(R.layout.show_orari_layout);

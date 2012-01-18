@@ -168,10 +168,10 @@ public class PassaggioList {
 		return c;
 	}
 	
-	public static Cursor getCursor(int linea,String destinazione,String partenza)
+	public static Cursor getCursor(int linea,String destinazione,int partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {Integer.toString(linea), destinazione, partenza};
+		String[] selectionArgs = {Integer.toString(linea), Integer.toString(partenza), destinazione};
 		Cursor c = null;
 		String query = "select strftime('%H:%M',o1.orario) as _id " +
 				"from "+
@@ -182,9 +182,7 @@ public class PassaggioList {
 				"and lineaId = ?) as c, " +
 				"(select progressivo, orario, corsaId "+
 				"from orarii "+
-				"where palinaId IN ( " +
-				"select id from paline where nome_de = ? " +
-				")) as o1, " +
+				"where palinaId = ? ) as o1, " +
 				"(select progressivo , corsaId "+
 				"from orarii " +
 				"where palinaId IN ( " +
@@ -194,8 +192,6 @@ public class PassaggioList {
 				"and c.id = o2.corsaId " +
 				"and o1.progressivo < o2.progressivo " +
 				"order by _id";
-		Log.v("SQLITEQUERY", query);
-		Log.v("PARAMS", partenza + " | " + destinazione);
 		try
 		{
 			c = sqlite.rawQuery(query, selectionArgs);

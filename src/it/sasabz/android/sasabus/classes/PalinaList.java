@@ -97,7 +97,7 @@ public class PalinaList {
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String [] args = {Integer.toString(linea),nome_de};
-		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it, p.id as id " +
 				"from " +
 				"(select id, lineaId " +
 				"from corse " +
@@ -116,7 +116,7 @@ public class PalinaList {
 				"o1.corsaId = c.id " +
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
-				"and o1.progressivo < o2.progressivo " +
+				"and o1.progressivo > o2.progressivo " +
 				"order by o2.progressivo";
 		Cursor cursor = sqlite.rawQuery(query, args);
 		list = null;
