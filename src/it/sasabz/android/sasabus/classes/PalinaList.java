@@ -94,18 +94,31 @@ public class PalinaList {
 	 * @return a vector of all bus-stops in the database
 	 */
 	public static Vector <DBObject> getListDestinazione(String nome_de, int linea)
-	{
+	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String [] args = {Integer.toString(linea), nome_de};
-			String query = "Select distinct p.nome_it as nome_it, p.nome_de as nome_de from paline p, orarii o, corse c " +
-					"where c.lineaId = ? AND " +
-					"c.id = o.corsaId AND " +
-					"o.palinaId = p.id AND p.nome_de <> ?";
+		String [] args = {Integer.toString(linea),nome_de};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+				"from " +
+				"(select id, lineaId " +
+				"from corse " +
+				"where  " +
+				"lineaId = ? " +
+				"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+				") as c, " +
+				"(select progressivo, orario, corsaId " +
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +		
+				")) as o1, " +
+				"orarii as o2, " +
+				"paline p " +
+				"where " +
+				"o1.corsaId = c.id " +
+				"and o2.corsaId = o1.corsaId " +
+				"and o2.palinaId = p.id " +
+				"and o1.progressivo < o2.progressivo " +
+				"order by o2.progressivo";
 		Cursor cursor = sqlite.rawQuery(query, args);
-		//Cursor cursor = sqlite.rawQuery("SELECT DISTINCT part_nome_it as nome_it, part_nome_de as nome_de " +
-		//		"from palineProgressive where lineaId = ? and dest_nome_de = ? " +
-		//		"AND substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
-        //       Config.getStartDate() + "')) + 1,1)='1'", args);
 		list = null;
 		if(cursor.moveToFirst())
 		{
