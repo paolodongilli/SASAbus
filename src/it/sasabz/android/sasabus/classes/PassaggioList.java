@@ -98,7 +98,7 @@ public class PassaggioList {
     				"from corse "+
     				"where "+
     				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', " + Config.getStartDate() + ")) + 1,1)='1' "+ 
-    				"and lineaId = 4) as c, " +
+    				"and lineaId = ? ) as c, " +
     				"(select progressivo, orario, corsaId "+
     				"from orarii "+
     				"where palinaId IN (" +

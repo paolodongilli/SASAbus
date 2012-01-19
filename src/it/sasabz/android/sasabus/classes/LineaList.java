@@ -48,7 +48,7 @@ public class LineaList {
 	public static  Vector <DBObject>  getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select  * from linee", null);
+		Cursor cursor = sqlite.rawQuery("select * from linee", null);
 		list = null;
 		if(cursor.moveToFirst())
 		{
@@ -84,7 +84,7 @@ public class LineaList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {Integer.toString(bacino)};
-		Cursor cursor = sqlite.rawQuery("select *  from linee where bacinoId = ? order by num_lin", args);
+		Cursor cursor = sqlite.rawQuery("select * from linee where bacinoId = ? order by num_lin", args);
 		list = null;
 		if(cursor.moveToFirst())
 		{

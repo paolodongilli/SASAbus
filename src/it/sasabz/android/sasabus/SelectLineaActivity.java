@@ -30,6 +30,7 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 
@@ -37,6 +38,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,6 +81,7 @@ public class SelectLineaActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int linea = list.get(position).getId(); 
+        Log.v("LINEA ID", Integer.toString(linea));
     	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
     	selDest.putExtra("linea", linea);
     	startActivity(selDest);
