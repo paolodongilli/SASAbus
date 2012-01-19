@@ -145,6 +145,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
         setListAdapter(paline);
     }
     
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
