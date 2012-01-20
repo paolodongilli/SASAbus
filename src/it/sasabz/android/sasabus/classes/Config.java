@@ -29,6 +29,7 @@ package it.sasabz.android.sasabus.classes;
 import it.sasabz.android.sasabus.SASAbus;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.util.Log;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -49,14 +50,13 @@ public class Config {
      * Return a String containing the db validity start date
      * 
      * @return String containing a date in format YYYY-MM-DD
-     * @throws SQLException
      */
-    public static String getStartDate() throws Exception{
+    public static String getStartDate() {
     	MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
     	Cursor c = sqlite.rawQuery("select da_data from validita", null);
-    	if(!c.moveToFirst())
-    		throw new Exception("There is no data in the table validita");
-    	String date = c.getString(c.getColumnIndex("da_data"));
+    	String date = null;
+    	if(c.moveToFirst())
+    		date = c.getString(c.getColumnIndex("da_data"));
     	c.close();
     	sqlite.close();
     	return date;
@@ -66,14 +66,13 @@ public class Config {
      * Return a String containing the db validity end date
      * 
      * @return String containing a date in format YYYY-MM-DD
-     * @throws SQLException
      */
-    public static String getEndDate() throws Exception{
+    public static String getEndDate() {
     	MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
     	Cursor c = sqlite.rawQuery("select a_data from validita", null);
-    	if(!c.moveToFirst())
-    		throw new Exception("there is no data in the table validita");
-        String date = c.getString(0);
+    	String date = null;
+    	if(c.moveToFirst())
+    		date = c.getString(c.getColumnIndex("a_data"));
         c.close();
         sqlite.close();
         return date;

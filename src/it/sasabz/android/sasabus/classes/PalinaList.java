@@ -32,9 +32,13 @@ import java.util.Vector;
 
 
 import android.database.Cursor;
+<<<<<<< .merge_file_b321qM
 import android.location.Location;
 import android.util.Log;
 
+=======
+import android.util.Log;
+>>>>>>> .merge_file_La2WDM
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -42,23 +46,23 @@ import android.util.Log;
  */
 public class PalinaList {
 	
-	private static Vector <Palina> list = new Vector<Palina> ();
+	private static Vector <DBObject> list = new Vector<DBObject> ();
 	
 	
 	/**
 	 * Returns a list of all bus-stops avaiable in the database
 	 * @return a vector of all bus-stops in the database
 	 */
-	public static Vector <Palina> getList()
+	public static Vector <DBObject> getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select *  from paline", null);
 		list = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<Palina>();
+			list = new Vector<DBObject>();
 			do {
-				Palina element = new Palina(cursor, true);
+				Palina element = new Palina(cursor);
 				list.add(element);
 			} while(cursor.moveToNext());
 		}
@@ -67,42 +71,79 @@ public class PalinaList {
 		return list;
 	}
 	
-	
 	/**
-	 * Retuns all busstops which have the following properties
-	 * @param bacino is the city of the busstop
-	 * @param linea is the line which passes the busstop
-	 * @param destinazione is the destination of the line, important for the direction of the line
-	 * @return a cursor ouver all the selected busstops
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
 	 */
-	public static Cursor getCursor(String bacino, String linea, String destinazione)
+	public static Vector <DBObject> getListLinea(int linea)
 	{
-		String[] selectionArgs = {bacino, linea, destinazione};
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor c = null;
-		try {
-		c = sqlite.rawQuery(
-			"select orari.progressivo as progressivo, orari.id_palina as _id, paline.luogo as luogo from orari_passaggio as orari, paline " +
-			"where orari.codice_corsa = " +
-			" (select _id from linee_corse " + 
-			"	where bacino=? " +
-			"	    and  id_linea_breve=? " +
-			"	    and destinazione_it=? " + 
-			"	    and substr(effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
-			Config.getStartDate() + "')) + 1,1)='1' " + 
-			"	    and orario_partenza > '0800' " +
-			"	    limit 1) " + 
-			"	  and orari.id_palina=paline._id " +
-			"	 order by orari.progressivo", selectionArgs);
-		}
-		catch (Exception e)
+		String [] args = {Integer.toString(linea)};
+		Cursor cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+				"from paline, " +
+				"(select id from corse where lineaId = ?) as corse, " +
+				"orarii " +
+				"where orarii.corsaId = corse.id " +
+				"AND orarii.palinaId = paline.id", args);
+		list = null;
+		if(cursor.moveToFirst())
 		{
-			e.printStackTrace();
-			System.exit(-1);
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
 		}
-		return c;
+		cursor.close();
+		sqlite.close();
+		return list;
 	}
 	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getListDestinazione(String nome_de, int linea)
+	{	
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea),nome_de};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it, p.id as id " +
+				"from " +
+				"(select id, lineaId " +
+				"from corse " +
+				"where  " +
+				"lineaId = ? " +
+				"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+				") as c, " +
+				"(select progressivo, orario, corsaId " +
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +		
+				")) as o1, " +
+				"orarii as o2, " +
+				"paline p " +
+				"where " +
+				"o1.corsaId = c.id " +
+				"and o2.corsaId = o1.corsaId " +
+				"and o2.palinaId = p.id " +
+				"and o1.progressivo > o2.progressivo " +
+				"order by o2.progressivo";
+		Cursor cursor = sqlite.rawQuery(query, args);
+		list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+<<<<<<< .merge_file_b321qM
 	public static Cursor getCursorGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -117,6 +158,8 @@ public class PalinaList {
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
 	}
+=======
+>>>>>>> .merge_file_La2WDM
 	
 	
 }

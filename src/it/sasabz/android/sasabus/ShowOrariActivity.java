@@ -26,11 +26,13 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Date;
+import java.util.Vector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
 import android.app.ListActivity;
@@ -46,12 +48,18 @@ import android.widget.SimpleCursorAdapter;
 
 public class ShowOrariActivity extends ListActivity {
 
+<<<<<<< .merge_file_2cxcxF
 
 	private String bacino;
 	private String linea;
+=======
+	private static final int MENU_ABOUT = 0;
+	
+	private int linea;
+>>>>>>> .merge_file_x1tDGF
 	private String destinazione;
-	private String palina;
-	private String progressivo;
+	private int  partenza;
+	private Vector<DBObject> list;
 
 	public ShowOrariActivity() {
 	}
@@ -61,21 +69,17 @@ public class ShowOrariActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		bacino = null;
-		linea = null;
+		linea = 0;
 		destinazione = null;
-		palina = null;
+		partenza = 0;
 		if (extras != null) {
-			bacino = extras.getString("bacino");
-			linea = extras.getString("linea");
+			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
-			palina = extras.getString("palina");
-			progressivo = extras.getString("progressivo");
+			partenza = extras.getInt("palina");
 		}
 
 		setContentView(R.layout.show_orari_layout);
 		Cursor c = fillData();
-		// scroll to a given position in the ListView
 		int pos = getNextTimePosition(c);
 		if (pos != -1) {
 			getListView().setSelection(pos);
@@ -92,7 +96,7 @@ public class ShowOrariActivity extends ListActivity {
 
 	private Cursor fillData() {
 		// Get next 'orari' from the database and create the item list
-		Cursor c = PassaggioList.getCursor(bacino, linea, destinazione, palina, progressivo);
+		Cursor c = PassaggioList.getCursor(linea, destinazione, partenza);
 		startManagingCursor(c);
 		String[] from = new String[] { "_id" };
 		int[] to = new int[] { R.id.orario };

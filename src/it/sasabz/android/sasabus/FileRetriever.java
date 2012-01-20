@@ -1,9 +1,9 @@
 /**
  *
  * FileRetriever.java
- * 
+ *
  * Created: Feb 3, 2011 10:59:34 PM
- * 
+ *
  * Copyright (C) 2011 Paolo Dongilli
  *
  * This file is part of SasaBus.
@@ -15,12 +15,12 @@
  *
  * SasaBus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 package it.sasabz.android.sasabus;
@@ -43,12 +43,16 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.util.Log;
 
 // FileDownloader is my own delegate class that performs the
 // actual downloading and is initialized with the source URL.
 public class FileRetriever extends AsyncTask<String, String, String> {
 	private static final String TAG = "FileRetriever";
+	
 	private ProgressDialog progressDialog;
+
+
 	private AlertDialog alertDialog;
 	private File dbFile;
 	private File dbZIPFile;
@@ -81,7 +85,7 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 		super.onPreExecute();
 		originalRequestedOrientation = activity.getRequestedOrientation();
 		activity
-				.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		wakeLock.acquire();
 	}
 
@@ -105,12 +109,13 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 
 			// this will be useful so that you can show a typical 0-100%
 			// progress bar
-			int lenghtOfFile = conn.getContentLength();
+			
 
 			// download the file
 			InputStream input = new BufferedInputStream(url.openStream());
 			OutputStream output = new FileOutputStream(dbZIPFile);
 
+			int lenghtOfFile = conn.getContentLength();
 			byte data[] = new byte[1024];
 			long total = 0;
 
@@ -138,7 +143,8 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 			d.unzip();
 			dbZIPFile.delete();
 			progressDialog.dismiss();
-
+			
+			
 			// download md5sum
 
 			progressDialog = new ProgressDialog(this.activity);
@@ -189,6 +195,7 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 		progressDialog.show();
 	}
 
+	
 	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
@@ -201,5 +208,19 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 		Intent checkDB = new Intent(this.activity, CheckDatabaseActivity.class);
 		this.activity.startActivity(checkDB);
 
+	}
+	
+	/**
+	 * @return the progressDialog
+	 */
+	public ProgressDialog getProgressDialog() {
+		return progressDialog;
+	}
+
+	/**
+	 * @param progressDialog the progressDialog to set
+	 */
+	public void setProgressDialog(ProgressDialog progressDialog) {
+		this.progressDialog = progressDialog;
 	}
 }

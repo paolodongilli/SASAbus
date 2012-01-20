@@ -26,24 +26,21 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import java.util.Locale;
+
 import android.database.Cursor;
 
 public class Bacino extends DBObject {
 	
 	/*
-	 * Is the name of the current Bacino
+	 * Is the name of the current Bacino in italian and german
 	 */
-	private String bacinoName = null;
+	private String bacino_de = null;
+	
+	private String bacino_it = null;
 	
 	
-	/*
-	 * This are the localized strings for the bacinoNames, they are not in the database
-	 */
-	/*
-	private String bacinoName_de = null;
-
-	private String bacinoName_it = null;
-	 */
+	
 	
 	/*
 	 * The standard-constructor
@@ -57,74 +54,56 @@ public class Bacino extends DBObject {
 	 * @param identifyer is the id from the database
 	 * @param bacinoName is the name of the bacino
 	 */
-	public Bacino (int identifyer, String bacinoName){
+	public Bacino (int identifyer, String bacino_it, String bacino_de){
 		super(identifyer);
-		this.bacinoName = bacinoName;
+		this.bacino_it = bacino_it;
+		this.bacino_de = bacino_de;
 	}
 	
 	
 	public Bacino(Cursor c)
 	{
-		super(c.getInt(c.getColumnIndex("_id")));
-		this.setBacinoName(c.getString(c.getColumnIndex("bacino")));
+		super(c.getInt(c.getColumnIndex("id")));
+		this.setBacino_de(c.getString(c.getColumnIndex("nome_de")));
+		this.setBacino_it(c.getString(c.getColumnIndex("nome_it")));
 	}
 	
 	/**
-	 * Is the getter method for BacinoName
-	 * @return a String which is the name of the bacino
+	 * @return the bacino_de
 	 */
-	public String getBacinoName()
-	{
-		return this.bacinoName;
+	public String getBacino_de() {
+		return bacino_de;
 	}
-	
-	/**
-	 * This is the setter method for bacinoNames, it allows you to set the name of the bacino
-	 * @param bacinoName is the name of the bacino to set in the object
-	 */
-	public void setBacinoName(String bacinoName)
-	{
-		this.bacinoName = bacinoName;
-	}
-	
-	
-	/**
-	 * @return the bacinoName_de
-	 */
-	/*
-	public String getBacinoName_de()
-	{
-		return bacinoName_de;
-	}
-	 */	
-	/**
-	 * @param bacinoName_de the bacinoName_de to set
-	 */
-	/*
-	public void setBacinoName_de(String bacinoName_de) 
-	{
-		this.bacinoName_de = bacinoName_de;
-	}
-	 */
 
 	/**
-	 * @return the bacinoName_it
+	 * @param bacino_de the bacino_de to set
 	 */
-	/*
-	public String getBacinoName_it() 
-	{
-		return bacinoName_it;
+	public void setBacino_de(String bacino_de) {
+		this.bacino_de = bacino_de;
 	}
-	 */
-	/**
-	 * @param bacinoName_it the bacinoName_it to set
-	 */
-	/*
-	public void setBacinoName_it(String bacinoName_it) 
-	{
-		this.bacinoName_it = bacinoName_it;
-	}
-	*/
 
+	/**
+	 * @return the bacino_it
+	 */
+	public String getBacino_it() {
+		return bacino_it;
+	}
+
+	/**
+	 * @param bacino_it the bacino_it to set
+	 */
+	public void setBacino_it(String bacino_it) {
+		this.bacino_it = bacino_it;
+	}
+
+	public String toString()
+	{
+		if(Locale.getDefault().equals(Locale.GERMANY))
+		{
+			return this.getBacino_de();
+		}
+		
+		return this.getBacino_it();
+	}
 	
 }

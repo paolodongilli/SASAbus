@@ -88,7 +88,6 @@ public class MD5Utils {
 			e.printStackTrace();
 		}
 
-		Log.i("FileRetriever", "md5: " + md5 + " length: " + md5.length());
 
 		return md5;
 	}

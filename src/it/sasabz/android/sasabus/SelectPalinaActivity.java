@@ -25,27 +25,34 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Vector;
+
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 public class SelectPalinaActivity extends ListActivity {
 
+<<<<<<< .merge_file_01GdmH
     private String bacino;
     private String linea;
+=======
+    private static final int MENU_ABOUT = 0;
+    private int linea;
+>>>>>>> .merge_file_EVsVwH
     private String destinazione;
-    private String palina;
-    private String progressivo;
+    private Vector<DBObject> list;
+
     
     public SelectPalinaActivity() {
     }
@@ -55,12 +62,10 @@ public class SelectPalinaActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-		bacino = null;
-		linea = null;
+		linea = 0;
 		destinazione = null;
 		if (extras != null) {
-			bacino = extras.getString("bacino");
-			linea = extras.getString("linea");
+			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
 		}
         setContentView(R.layout.select_palina_layout);
@@ -77,32 +82,18 @@ public class SelectPalinaActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        TextView textView = (TextView) v.findViewById(R.id.palina);
-        palina = textView.getText().toString();
-        textView = (TextView) v.findViewById(R.id.progressivo);
-        progressivo = textView.getText().toString();
     	Intent showOrario = new Intent(this, ShowOrariActivity.class);
-    	showOrario.putExtra("bacino", bacino);
     	showOrario.putExtra("linea", linea);
     	showOrario.putExtra("destinazione", destinazione);
-    	showOrario.putExtra("palina", palina);
-    	showOrario.putExtra("progressivo", progressivo);
+    	Palina palina = (Palina)list.get(position);
+    	showOrario.putExtra("palina", palina.getId());
     	startActivity(showOrario);
     }
 
     
     private void fillData() {
-        // Get all 'paline' from the database and create the item list
-        //Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
-    	Cursor c = PalinaList.getCursor(bacino, linea, destinazione);
-        startManagingCursor(c);
-
-        String[] from = new String[] { "progressivo", "_id", "luogo" };
-        int[] to = new int[] { R.id.progressivo, R.id.palina, R.id.luogo };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter paline =
-            new SimpleCursorAdapter(this, R.layout.paline_row, c, from, to);
+        list = PalinaList.getListDestinazione(destinazione, linea);
+        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
         setListAdapter(paline);
     }
     
