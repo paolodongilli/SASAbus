@@ -33,6 +33,5 @@ public class SharedMenu {
 	
 	public static void onCreateOptionsMenu(Menu menu) {
     	menu.add(0, MENU_ABOUT, 0, R.string.menu_about);
-    	menu.add(0, MENU_TEST, 0, R.string.menu_test);
     }
 }
