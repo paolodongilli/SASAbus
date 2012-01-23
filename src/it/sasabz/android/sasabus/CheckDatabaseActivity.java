@@ -248,7 +248,7 @@ public class CheckDatabaseActivity extends ListActivity {
 
 	private void startActivity() {
 		finish();
-		Intent selBacino = new Intent(this, SelectBacinoActivity.class);
+		Intent selBacino = new Intent(this, SelectModeActivity.class);
 		startActivity(selBacino);
 	}
 

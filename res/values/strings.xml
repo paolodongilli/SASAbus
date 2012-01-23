@@ -7,6 +7,7 @@
 <string name="select_destination">Select destination</string>
 <string name="select_palina">Select bus stop</string>
 <string name="show_orari">Show schedule</string>
+<string name="select_mode">Select Mode</string>
 <string name="md5_error">Calculated MD5 of database file is different from downloaded MD5.</string>
 <string name="db_download_error">Error while downloading the SASAbus database.</string>
 <string name="db_ok">Database %1$s is ready.</string>

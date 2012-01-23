@@ -6,6 +6,7 @@
 <string name="select_linea">Buslinie wählen</string>
 <string name="select_destination">Ziel wählen</string>
 <string name="select_palina">Haltestelle wählen</string>
+<string name="select_mode">Modus wählen</string>
 <string name="show_orari">Fahrzeiten anzeigen</string>
 <string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
@@ -25,5 +26,7 @@
 <string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte versuchen Sie es später noch einmal.</string>
 <string name="gps_disabled_title">GPS deaktiviert</string>
 <string name="gps_disabled">Kein Empfang von GPS-Daten möglich. Bitte schalten Sie Ihr GPS ein oder versuchen Sie es später nocheinmal.</string>
+<string name="gps_modus">GPS Modus</string>
+<string name="normal_modus">Normaler modus</string>
 </resources>
 

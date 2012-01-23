@@ -185,13 +185,6 @@ public class ShowOrariLocationActivity extends ListActivity {
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_TEST:
-			{
-				Intent selLinea = new Intent(this, SelectLineaActivity.class);
-				selLinea.putExtra("bacino", "Merano-Meran");
-				startActivity(selLinea);
-				return true;
-			}
 		}
 		return false;
 	}

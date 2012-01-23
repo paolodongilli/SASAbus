@@ -100,12 +100,6 @@ public class SelectBacinoActivity extends ListActivity {
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_TEST:
-			{
-				Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-		    	startActivity(selLinea);
-		    	return true;
-			}
 		}
 		return false;
 	}

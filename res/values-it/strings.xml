@@ -7,6 +7,7 @@
 <string name="select_destination">Scegli la destinazione</string>
 <string name="select_palina">Scegli la fermata</string>
 <string name="show_orari">Visualizzazione orari</string>
+<string name="select_mode">Scegli il modo</string>
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
 <string name="db_ok">Il database %1$s è pronto.</string>
@@ -25,4 +26,6 @@
 <string name="no_db_update_available">Aggiornamento degli orari non disponibile. Si prega di riprovare più tardi.</string>
 <string name="gps_disabled_title">GPS disattivato</string>
 <string name="gps_disabled">Dati GPS non disponibile. Si prega di ativare il GPS o di riprovare più tardi.</string>
+<string name="gps_modus">Modo GPS</string>
+<string name="normal_modus">Modo normale</string>
 </resources>
