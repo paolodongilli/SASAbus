@@ -43,13 +43,9 @@ import android.widget.ListView;
 
 public class SelectPalinaActivity extends ListActivity {
 
-<<<<<<< .merge_file_01GdmH
-    private String bacino;
-    private String linea;
-=======
     private static final int MENU_ABOUT = 0;
     private int linea;
->>>>>>> .merge_file_EVsVwH
+    
     private String destinazione;
     private Vector<DBObject> list;
 

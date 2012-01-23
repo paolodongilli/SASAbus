@@ -47,17 +47,12 @@ import android.widget.TextView;
 
 public class SelectDestinazioneActivity extends ListActivity {
 
-<<<<<<< .merge_file_kzv79E
-    private String bacino;
-    private String linea;
-    private String destinazione;
-=======
+
     private static final int MENU_ABOUT = 0;
     
     private Vector<DBObject> list = null;
     
     private int linea;
->>>>>>> .merge_file_sJKukF
     
     public SelectDestinazioneActivity() {
     }

@@ -46,7 +46,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SelectLineaActivity extends ListActivity {
+public class SelectLineaLocationActivity extends ListActivity {
 
 	
 	
@@ -54,7 +54,12 @@ public class SelectLineaActivity extends ListActivity {
 
     private Vector<DBObject> list = null;
     
-    public SelectLineaActivity() {
+    private String partenza = null;
+    
+    private String destinazione = null;
+    
+    
+    public SelectLineaLocationActivity() {
     }
 
     /** Called with the activity is first created. */
@@ -62,12 +67,14 @@ public class SelectLineaActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		int bacino = 0;
+		partenza = null;
+		destinazione = null;
 		if (extras != null) {
-			bacino = extras.getInt("bacino");
+			partenza = extras.getString("partenza");
+			destinazione = extras.getString("destinazione");
 		}
         setContentView(R.layout.select_linea_layout);
-        fillData(bacino);
+        fillData();
     }
 
     /**
@@ -80,15 +87,16 @@ public class SelectLineaActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        int linea = list.get(position).getId(); 
-        Log.v("LINEA ID", Integer.toString(linea));
-    	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
+        int linea = list.get(position).getId();
+    	Intent selDest = new Intent(this, ShowOrariLocationActivity.class);;
     	selDest.putExtra("linea", linea);
+    	selDest.putExtra("partenza", partenza);
+    	selDest.putExtra("destinazione", destinazione);
     	startActivity(selDest);
     }
     
-    private void fillData(int bacino) {
-    	list = LineaList.getList(bacino);
+    private void fillData() {
+    	list = LineaList.getListDestPart(destinazione, partenza);
     	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
         setListAdapter(linee);
     }  
@@ -110,7 +118,7 @@ public class SelectLineaActivity extends ListActivity {
 			}
 			case SharedMenu.MENU_TEST:
 			{
-				Intent selLinea = new Intent(this, SelectLineaActivity.class);
+				Intent selLinea = new Intent(this, SelectLineaLocationActivity.class);
 				selLinea.putExtra("bacino", "Merano-Meran");
 				startActivity(selLinea);
 				return true;

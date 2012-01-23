@@ -26,6 +26,11 @@
  */
 package it.sasabz.android.sasabus;
 
+import java.util.Vector;
+
+import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -52,6 +57,10 @@ public class SelectPalinaLocationActivity extends ListActivity{
     
 	private LocationManager mlocManager = null;
 	private LocationListener mlocListener = null;
+	
+	private Vector <DBObject> list = null;
+	
+	private boolean ausgesucht = false;
 
     /** Called with the activity is first created. */
     @Override
@@ -97,13 +106,15 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
-    	new GPSDisabled(getMe()).show();
-		//Intent selBac = new Intent(getMe(), SelectBacinoActivity.class);
-		//startActivity(selBac);
+    	if(!ausgesucht)
+    	{
+    		new GPSDisabled(getMe()).show();
+    		Intent selBac = new Intent(getMe(), SelectBacinoActivity.class);
+    		startActivity(selBac);
+    	}
     }
     
     public void onLocationRecieve(Location loc) {
-    	mlocManager.removeUpdates(mlocListener);
         setContentView(R.layout.select_palina_layout);
         fillData(loc);
     }
@@ -123,27 +134,20 @@ public class SelectPalinaLocationActivity extends ListActivity{
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-		startActivity(selLinea);
-
+    	ausgesucht = true;
+    	Palina partenza = (Palina)list.get(position);
+    	Intent selDest = new Intent(this, SelectDestinazioneLocationActivity.class);
+    	selDest.putExtra("partenza", partenza.getName_de());
+    	mlocManager.removeUpdates(mlocListener);
+    	startActivity(selDest);
     }
 
     
     private void fillData(Location loc) {
-        // Get all 'paline' from the database and create the item list
-    	//Cursor c = mDbHelper.fetchPaline(bacino, linea, destinazione);
-    	
-    	Cursor c = PalinaList.getCursorGPS(loc);
-        startManagingCursor(c);
-
-        String[] from = new String[] { "_id", "luogo"};
-        int[] to = new int[] {R.id.palina, R.id.luogo };
-        
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter paline =
-            new SimpleCursorAdapter(this, R.layout.paline_location_row, c, from, to);
-        setListAdapter(paline);
-    }
+    	 list = PalinaList.getListGPS(loc);
+         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
+         setListAdapter(paline);
+     }
     
     
     @Override

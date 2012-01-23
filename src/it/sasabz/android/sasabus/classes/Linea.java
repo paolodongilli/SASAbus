@@ -46,6 +46,8 @@ public class Linea extends DBObject {
 	private String abbrev = null;
 	
 	private int bacinoId = 0;
+	
+	private int differenza = -1;
 
 	/**
 	 * This is the standardconstructor, which make an empty object
@@ -64,6 +66,10 @@ public class Linea extends DBObject {
 		this.setBacinoId(c.getInt(c.getColumnIndex("bacinoId")));
 		this.setDescr_de(c.getString(c.getColumnIndex("descr_de")));
 		this.setDescr_it(c.getString(c.getColumnIndex("descr_it")));
+		if(c.getColumnIndex("differenza") != -1)
+		{
+			this.setDifferenza(c.getInt(c.getColumnIndex("differenza")));
+		}
 	}
 
 	
@@ -146,13 +152,45 @@ public class Linea extends DBObject {
 		this.num_lin = num_lin;
 	}
 	
+	
+	/**
+	 * @return the num_lin
+	 */
+	public int getDifferenza() {
+		return differenza;
+	}
+
+	/**
+	 * @param num_lin the num_lin to set
+	 */
+	public void setDifferenza(int differenza) {
+		this.differenza = differenza;
+	}
+	
+	
+	public boolean equals(Object object)
+	{
+		if(!(object instanceof Linea))
+			return false;
+		Linea linea = (Linea)object;
+		if(linea.getId() != this.getId())
+			return false;
+		return true;
+	}
+	
+	
 	public String toString()
 	{
+		String diff = "";
+		if(this.differenza != -1)
+		{
+			diff = " (" + this.differenza + " min.)";
+		}
 		if(Locale.getDefault().equals(Locale.GERMANY))
 		{
-			return this.getNum_lin();
+			return this.getNum_lin() + diff;
 		}
-		return this.getNum_lin();
+		return this.getNum_lin()  + diff;
 	}
 	
 	

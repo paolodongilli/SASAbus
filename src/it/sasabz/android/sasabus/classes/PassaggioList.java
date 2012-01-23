@@ -135,38 +135,6 @@ public class PassaggioList {
 		return list;
 	}
 	
-	public static Cursor getCursor(String bacino, String linea,String destinazione,String palina,String progressivo)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {bacino, linea, destinazione, palina, progressivo};
-		Cursor c = null;
-		try
-		{
-			c = sqlite.rawQuery(
-				"select strftime('%H:%M',orari.orario) as _id " + 
-						"  from linee_corse as linee, orari_passaggio as orari, paline " +
-						"  where bacino=? " +
-						"  and linee.id_linea_breve=? " + 
-						"  and linee.destinazione_it=? " + 
-						"  and substr(linee.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J','" +
-						Config.getStartDate() + "')) + 1,1)='1' " + 
-						"  and linee._id=orari.codice_corsa " + 
-						"  and linee.codice_linea=orari.codice_linea " +
-						"  and orari.id_palina=paline._id " +
-						"  and paline._id=? " +
-						"  and orari.progressivo=? " +
-						//"  and time(orari.orario) >= strftime('%H:%M','now','localtime') " +
-						"  order by _id "
-						//+ "  limit 6"
-						, selectionArgs);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		return c;
-	}
 	
 	public static Cursor getCursor(int linea,String destinazione,int partenza)
 	{
@@ -205,5 +173,44 @@ public class PassaggioList {
 		return c;
 	}
 	
+	
+	public static Cursor getCursor(int linea,String destinazione,String partenza)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione};
+		Cursor c = null;
+		String query = "select strftime('%H:%M',o1.orario) as _id " +
+				"from "+
+				"(select id, lineaId " +
+				"from corse "+
+				"where "+
+				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' "+ 
+				"and lineaId = ?) as c, " +
+				"(select progressivo, orario, corsaId "+
+				"from orarii "+
+				"where palinaId IN (" +
+				"select id from paline where nome_de = ? " +
+				")) as o1, " +
+				"(select progressivo , corsaId "+
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +
+				")) as o2 " +
+				"where c.id = o1.corsaId " +
+				"and c.id = o2.corsaId " +
+				"and o1.progressivo < o2.progressivo " +
+				"order by _id";
+		try
+		{
+			c = sqlite.rawQuery(query, selectionArgs);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			Log.v("EXITSQL", "fehler bei rawQuery");
+			System.exit(-1);
+		}
+		return c;
+	}
 	
 }

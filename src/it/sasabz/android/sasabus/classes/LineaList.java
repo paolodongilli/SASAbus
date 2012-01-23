@@ -127,6 +127,47 @@ public class LineaList {
 		return cursor;
 	}
 	
-	
+	/**
+	 * This method returns a vector of linee which are located in the bacino 
+	 * @param bacino is the bacino where we are searching the linee 
+	 * @return a vector of DBObjects with the linee located in the bacino
+	 */
+	public static Vector <DBObject> getListDestPart(String destinazione, String partenza)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] args = {destinazione, partenza};
+		Cursor cursor = sqlite.rawQuery("select distinct l.id as id, l.num_lin as num_lin, l.abbrev as abbrev, " +
+				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de, " +
+				"round(strftime('%s', o1.orario) - strftime('%s', o2.orario))/60 as differenza from linee l, " +
+				"(select * from orarii where palinaId IN (" +
+				"select id from paline where nome_de = ?" +
+				")) as o1, " +
+				"(select * from orarii where palinaId IN (" +
+				"select id from paline where nome_de = ?" +
+				")) as o2, " +
+				"(select id, lineaId " +
+				"from corse " +
+				"where  " +
+				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+				") as c " +
+				"where c.lineaId = l.id " +
+				"and o1.corsaId = o2.corsaId " +
+				"and o2.corsaId = c.id " +
+				"and o2.progressivo < o1.progressivo " +
+				"order by differenza", args);
+		list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Linea element = new Linea(cursor);
+				if(!list.contains(element))
+					list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
 	
 }

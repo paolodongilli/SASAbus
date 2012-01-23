@@ -1,10 +1,12 @@
 /**
+ * 
  *
- * SelectLineaActivity.java
+ * SelectDestinazioneLocationActivity.java
  * 
- * Created: Jan 16, 2011 11:41:06 AM
+ * Created: 23.01.2012 17:37:02
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * 
  *
  * This file is part of SasaBus.
 
@@ -22,7 +24,6 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
 package it.sasabz.android.sasabus;
 
 import java.util.Locale;
@@ -30,15 +31,14 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.Linea;
-import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,28 +46,30 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SelectLineaActivity extends ListActivity {
+public class SelectDestinazioneLocationActivity extends ListActivity {
 
-	
-	
+
     private static final int MENU_ABOUT = 0;
-
+    
     private Vector<DBObject> list = null;
     
-    public SelectLineaActivity() {
+    private String partenza;
+    
+    public SelectDestinazioneLocationActivity() {
     }
 
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		Bundle extras = getIntent().getExtras();
-		int bacino = 0;
+        Bundle extras = getIntent().getExtras();
+        partenza = null;
 		if (extras != null) {
-			bacino = extras.getInt("bacino");
+			partenza = extras.getString("partenza");
 		}
-        setContentView(R.layout.select_linea_layout);
-        fillData(bacino);
+        
+        setContentView(R.layout.select_destinazione_layout);
+        fillData();
     }
 
     /**
@@ -80,18 +82,20 @@ public class SelectLineaActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        int linea = list.get(position).getId(); 
-        Log.v("LINEA ID", Integer.toString(linea));
-    	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
-    	selDest.putExtra("linea", linea);
+    	Palina destinazione = (Palina)list.get(position);
+    	Intent selDest = new Intent(this, SelectLineaLocationActivity.class);
+    	selDest.putExtra("destinazione", destinazione.getName_de());
+    	selDest.putExtra("partenza", partenza);
     	startActivity(selDest);
+    	
     }
+
     
-    private void fillData(int bacino) {
-    	list = LineaList.getList(bacino);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
-        setListAdapter(linee);
-    }  
+    private void fillData() {
+    	list = PalinaList.getListPartenza(partenza);
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
+        setListAdapter(destinazioni);
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,3 +123,4 @@ public class SelectLineaActivity extends ListActivity {
 		return false;
 	}
 }
+

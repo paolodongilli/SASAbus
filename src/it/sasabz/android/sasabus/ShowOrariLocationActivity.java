@@ -46,7 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
 
-public class ShowOrariActivity extends ListActivity {
+public class ShowOrariLocationActivity extends ListActivity {
 
 
 	private static final int MENU_ABOUT = 0;
@@ -54,9 +54,9 @@ public class ShowOrariActivity extends ListActivity {
 	private int linea;
 
 	private String destinazione;
-	private int  partenza;
+	private String  partenza;
 
-	public ShowOrariActivity() {
+	public ShowOrariLocationActivity() {
 	}
 
 	/** Called with the activity is first created. */
@@ -66,11 +66,11 @@ public class ShowOrariActivity extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		linea = 0;
 		destinazione = null;
-		partenza = 0;
+		partenza = null;
 		if (extras != null) {
 			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
-			partenza = extras.getInt("palina");
+			partenza = extras.getString("partenza");
 		}
 
 		setContentView(R.layout.show_orari_layout);

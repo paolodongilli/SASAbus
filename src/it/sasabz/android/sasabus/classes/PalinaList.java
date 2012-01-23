@@ -32,13 +32,10 @@ import java.util.Vector;
 
 
 import android.database.Cursor;
-<<<<<<< .merge_file_b321qM
 import android.location.Location;
+
 import android.util.Log;
 
-=======
-import android.util.Log;
->>>>>>> .merge_file_La2WDM
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -143,7 +140,33 @@ public class PalinaList {
 		return list;
 	}
 	
-<<<<<<< .merge_file_b321qM
+	public static Vector<DBObject> getListGPS (Location loc)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
+		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
+		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
+		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
+				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
+				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	
+	
+	
 	public static Cursor getCursorGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -151,15 +174,50 @@ public class PalinaList {
 		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
 		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
 		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
-		Log.v("GPS QUERY", "longitude : " + Double.toString(loc.getLongitude() + Config.DELTALONG));
-		Log.v("GPS QUERY", "latitude : " + Double.toString(loc.getLatitude() + Config.DELTALAT));
 		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
 		return sqlite.rawQuery("Select * from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
 	}
-=======
->>>>>>> .merge_file_La2WDM
+
 	
+	public static Vector <DBObject> getListPartenza(String partenza)
+	{	
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {partenza};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it, p.id as id " +
+				"from " +
+				"(select id, lineaId " +
+				"from corse " +
+				"where  " +
+				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+				") as c, " +
+				"(select progressivo, orario, corsaId " +
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +		
+				")) as o1, " +
+				"orarii as o2, " +
+				"paline p " +
+				"where " +
+				"o1.corsaId = c.id " +
+				"and o2.corsaId = o1.corsaId " +
+				"and o2.palinaId = p.id " +
+				"and o1.progressivo > o2.progressivo " +
+				"order by p.nome_de";
+		Cursor cursor = sqlite.rawQuery(query, args);
+		list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
 	
 }
