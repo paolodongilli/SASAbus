@@ -60,7 +60,6 @@ public class SelectPalinaLocationActivity extends ListActivity{
 	
 	private Vector <DBObject> list = null;
 	
-	private boolean ausgesucht = false;
 
     /** Called with the activity is first created. */
     @Override
@@ -106,12 +105,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
-    	if(!ausgesucht)
-    	{
-    		new GPSDisabled(getMe()).show();
-    		Intent selBac = new Intent(getMe(), SelectBacinoActivity.class);
-    		startActivity(selBac);
-    	}
+    	new GPSDisabled(getMe()).show();
     }
     
     public void onLocationRecieve(Location loc) {
@@ -134,7 +128,6 @@ public class SelectPalinaLocationActivity extends ListActivity{
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	ausgesucht = true;
     	Palina partenza = (Palina)list.get(position);
     	Intent selDest = new Intent(this, SelectDestinazioneLocationActivity.class);
     	selDest.putExtra("partenza", partenza.getName_de());

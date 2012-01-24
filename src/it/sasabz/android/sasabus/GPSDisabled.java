@@ -57,6 +57,8 @@ public class GPSDisabled {
 							public void onClick(
 									DialogInterface dialogInterface, int i) {
 								dialogInterface.dismiss();
+								Intent selBac = new Intent(act, SelectBacinoActivity.class);
+						    	act.startActivity(selBac);
 							}
 						});
 		builder.create().show();
