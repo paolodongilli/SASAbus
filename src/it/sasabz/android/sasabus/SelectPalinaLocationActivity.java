@@ -47,6 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -82,6 +83,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
 		@Override
 		public void onProviderDisabled(String provider)
 		{
+			Toast.makeText(SASAbus.getContext(), R.string.gps_disabled, Toast.LENGTH_SHORT).show();
 			gpsDisabled();
 		}
 
@@ -102,7 +104,8 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
-    	new GPSDisabled(getMe()).show();
+    	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
+    	startActivity(selBac);
     }
     
     public void onLocationRecieve(Location loc) {
