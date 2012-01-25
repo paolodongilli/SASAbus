@@ -177,7 +177,7 @@ public class PalinaList {
 		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
 		return sqlite.rawQuery("Select * from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
-				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
+				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) order by nome_de", args);
 	}
 
 	
