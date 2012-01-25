@@ -94,10 +94,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras)
 		{
-			if(status == LocationProvider.TEMPORARILY_UNAVAILABLE || status == LocationProvider.OUT_OF_SERVICE)
-			{
-				gpsDisabled();
-			}
+			
 		}
 
 	}
@@ -109,6 +106,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     }
     
     public void onLocationRecieve(Location loc) {
+    	mlocManager.removeUpdates(mlocListener);
         setContentView(R.layout.select_palina_layout);
         fillData(loc);
     }
@@ -131,7 +129,6 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	Palina partenza = (Palina)list.get(position);
     	Intent selDest = new Intent(this, SelectDestinazioneLocationActivity.class);
     	selDest.putExtra("partenza", partenza.getName_de());
-    	mlocManager.removeUpdates(mlocListener);
     	startActivity(selDest);
     }
 
@@ -139,6 +136,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     private void fillData(Location loc) {
     	 list = PalinaList.getListGPS(loc);
          MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
+         mlocManager.removeUpdates(mlocListener);
          setListAdapter(paline);
      }
     

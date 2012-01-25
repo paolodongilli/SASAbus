@@ -39,20 +39,19 @@ import android.util.Log;
  */
 public class PassaggioList {
 	
-	private static Vector<Passaggio> list= null;
 	
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of the entire timetable                                                                                                                     
 	 * @return a vector of Passaggio                                                                                                                              
 	 */
-	public static  Vector <Passaggio>  getList()
+	public static  Vector <DBObject>  getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select * from orari_passaggio", null);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<Passaggio>();
+			list = new Vector<DBObject>();
 			do {
 				Passaggio element = new Passaggio(cursor);
 				list.add(element);
@@ -85,7 +84,7 @@ public class PassaggioList {
 	 * @param progressivo is the number of the palina/busstop in the line
 	 * @return a vector with all the times when the bus pass the bus stop
 	 */
-	public static Vector <Passaggio> getList(String bacino, String linea,String destinazione,String palina)
+	public static Vector <DBObject> getList(String bacino, String linea,String destinazione,String palina)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {bacino, linea, destinazione, palina};
@@ -121,10 +120,10 @@ public class PassaggioList {
     		System.exit(-1);
     	}
 		
-		list = null;
+    	Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<Passaggio>();
+			list = new Vector<DBObject>();
 			do {
 				Passaggio element = new Passaggio();
 				list.add(element);

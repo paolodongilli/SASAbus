@@ -43,7 +43,6 @@ import android.util.Log;
  */
 public class PalinaList {
 	
-	private static Vector <DBObject> list = new Vector<DBObject> ();
 	
 	
 	/**
@@ -54,7 +53,7 @@ public class PalinaList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select *  from paline", null);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -82,7 +81,7 @@ public class PalinaList {
 				"orarii " +
 				"where orarii.corsaId = corse.id " +
 				"AND orarii.palinaId = paline.id", args);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -126,7 +125,7 @@ public class PalinaList {
 				"and o1.progressivo > o2.progressivo " +
 				"order by o2.progressivo";
 		Cursor cursor = sqlite.rawQuery(query, args);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -151,6 +150,7 @@ public class PalinaList {
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?))", args);
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -206,7 +206,7 @@ public class PalinaList {
 				"and o1.progressivo > o2.progressivo " +
 				"order by p.nome_de";
 		Cursor cursor = sqlite.rawQuery(query, args);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();

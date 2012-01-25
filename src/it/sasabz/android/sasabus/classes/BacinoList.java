@@ -34,7 +34,6 @@ import android.database.Cursor;
 
 public class BacinoList {
 	
-	private static Vector <DBObject> list = null;
 	 
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
@@ -44,7 +43,7 @@ public class BacinoList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select * from  bacini", null);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			int i = 0;

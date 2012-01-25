@@ -38,7 +38,6 @@ import android.database.Cursor;
  */
 public class LineaList {
 	
-	private static Vector <DBObject> list = null;
 	
 	
 	/**                                                                                                                                                                                                          
@@ -49,7 +48,7 @@ public class LineaList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		Cursor cursor = sqlite.rawQuery("select * from linee", null);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -85,7 +84,7 @@ public class LineaList {
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {Integer.toString(bacino)};
 		Cursor cursor = sqlite.rawQuery("select * from linee where bacinoId = ? order by num_lin", args);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
@@ -155,7 +154,7 @@ public class LineaList {
 				"and o2.corsaId = c.id " +
 				"and o2.progressivo < o1.progressivo " +
 				"order by differenza", args);
-		list = null;
+		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();

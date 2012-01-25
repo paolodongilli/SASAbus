@@ -10,6 +10,17 @@ S.p.A./AG made available.
 The current SASAbus database (zipped) and its MD5 checksum file can
 be found here:
 
+(testversions)
+http://www.mowiso.com/SASAbus.db.zip
+http://www.mowiso.com/SASAbus.db.md5
+
+
+(official version)
+
+
+
+instead of here:
+
 http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus.db.zip
 http://www.sasabz.it/fileadmin/user_upload/KML/SASAbus.db.md5
 
