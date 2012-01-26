@@ -140,7 +140,7 @@ public class PassaggioList {
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {Integer.toString(linea), Integer.toString(partenza), destinazione};
 		Cursor c = null;
-		String query = "select strftime('%H:%M',o1.orario) as _id " +
+		String query = "select distinct strftime('%H:%M',o1.orario) as _id " +
 				"from "+
 				"(select id, lineaId " +
 				"from corse "+

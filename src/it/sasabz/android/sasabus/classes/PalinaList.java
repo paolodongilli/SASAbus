@@ -185,7 +185,7 @@ public class PalinaList {
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String [] args = {partenza};
-		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it, p.id as id " +
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
 				"from " +
 				"(select id, lineaId " +
 				"from corse " +
