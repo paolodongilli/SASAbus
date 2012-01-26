@@ -38,8 +38,8 @@ import android.util.Log;
 public class Config {
 	
 	
-	//0.0045 is ca 500m wide radius to your position 
-	public static final double DELTA = 0.0045;
+	//0.002 is ca 220m wide radius to your position 
+	public static final double DELTA = 0.002;
 	
 	
 	//For testing the aplication in other cities (differences to bolzano entered here)

@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+﻿------------------------------------------------------------------------
 			  SASAbus DB-Schema
 ------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ http://www.mowiso.com/SASAbus.db.md5
 
 
 (official version)
-
+unknown yet
 
 
 instead of here:
@@ -39,58 +39,113 @@ advance by SASA SpA-AG; in any case the source of data for the usage
 or reproduction of graphs, tables or numerical values must be clearly
 indicated.
 
-------------------------------------------------------------------------
-CREATE TABLE linee ( -- bus lines
-   "abbrev" TEXT, -- line abbreviation 
-   "denom" TEXT, -- line name
-   "denom_it" TEXT, -- Italian name with main stops 
-   "denom_de" TEXT, -- German name with main stops
-   "localita" TEXT, -- Italian-German name of place 
-   "_id" INTEGER PRIMARY KEY AUTOINCREMENT, -- id
-   "linea" TEXT, -- line name (= abbrev without abbreviation of the city)
-   "citta" TEXT -- city in Italian only
-)
-------------------------------------------------------------------------
-CREATE TABLE linee_corse ( -- bus lines and runs
-   "_id" INTEGER PRIMARY KEY AUTOINCREMENT, --codice_corsa in other tables
-   "orario_partenza" TEXT, -- time of departure
-   "codice_linea" INTEGER, -- bus line code
-   "id_linea_breve" TEXT, -- bus line id
-   "bacino" TEXT, -- area
-   "destinazione_it" TEXT, -- destination in Italian
-   "destinazione_de" TEXT, -- destination in German
-   "senso" TEXT, -- direction
-   "da_data" TEXT, -- start validity date for the given run
-   "effettuazione" TEXT -- string of 365 bits containing defining the 
-                        -- days when the line with the given _id runs
-                        -- starting from the day da_data
-)
-------------------------------------------------------------------------
-CREATE TABLE orari_passaggio ( -- time schedule
-   "_id" INTEGER PRIMARY KEY AUTOINCREMENT,
-   "codice_corsa" INTEGER, -- bus-run code
-   "codice_linea" INTEGER, -- bus-line code
-   "id_palina" INTEGER, -- bus-stop id
-   "progressivo" INTEGER, -- ordinal number assigned to each bus stop 
-                          -- of a given run starting with 1 assigned to
-                          -- one end of the line 
-   "orario" TEXT -- estimated time of passage
-)
-------------------------------------------------------------------------
-CREATE TABLE "paline" ( -- bus stops
-   "_id" INTEGER PRIMARY KEY, -- id_palina in other tables (bus-stop id)
-   "luogo" TEXT, -- place or name of bus stop
-   "longitudine" REAL, -- longitude
-   "latitudine" REAL, -- latitude
-   "elevazione" REAL, -- elevation
-   "linee" TEXT -- list of slash separated bus-line abbreviations
-                -- see field linee.abbrev
-)
-------------------------------------------------------------------------
-CREATE TABLE "validita" ( -- timetable validity
-    "da_data" TEXT, -- start date 
-    "a_data" TEXT -- end date
+
+The database is defined by:
+
+
+-- Table: bacini
+CREATE TABLE bacini ( 
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_de TEXT,
+    nome_it TEXT 
 );
-------------------------------------------------------------------------
-CREATE TABLE android_metadata (locale TEXT)
-------------------------------------------------------------------------
+
+
+-- Table: linee
+CREATE TABLE linee ( 
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    abbrev   TEXT,
+    descr_it TEXT,
+    descr_de TEXT,
+    bacinoId INTEGER REFERENCES bacini ( id ) ON DELETE RESTRICT
+                                              ON UPDATE RESTRICT,
+    num_lin  TEXT 
+);
+
+
+-- Table: validita
+CREATE TABLE validita ( 
+    da_data DATE,
+    a_data  DATE 
+);
+
+
+-- Table: android_metadata
+CREATE TABLE android_metadata ( 
+    locale TEXT 
+);
+
+
+-- Table: corse
+CREATE TABLE corse ( 
+    id              INTEGER PRIMARY KEY,
+    lineaId         INTEGER REFERENCES linee ( id ) ON DELETE RESTRICT
+                                                    ON UPDATE RESTRICT,
+    dest_de         TEXT,
+    dest_it         TEXT,
+    effettuazione   TEXT,
+    orario_partenza TEXT 
+);
+
+
+-- Table: paline
+CREATE TABLE paline ( 
+    id          INTEGER PRIMARY KEY,
+    nome_de     TEXT,
+    nome_it     TEXT,
+    latitudine  REAL,
+    longitudine REAL 
+);
+
+
+-- Table: orarii
+CREATE TABLE orarii ( 
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    corsaId     INTEGER REFERENCES corse ( id ) ON DELETE RESTRICT
+                                                ON UPDATE RESTRICT,
+    palinaId    INTEGER,
+    progressivo INTEGER,
+    orario      TEXT 
+);
+
+
+-- Index: idx1
+CREATE INDEX idx1 ON paline ( 
+    nome_de 
+);
+;
+
+-- Index: idx2
+CREATE INDEX idx2 ON orarii ( 
+    corsaId 
+);
+;
+
+-- View: palineProgressive
+CREATE VIEW palineProgressive AS
+       SELECT p1.id AS dest_id,
+              p1.nome_de AS dest_nome_de,
+              p1.nome_it AS dest_nome_it,
+              o1.orario AS dest_orario,
+              p2.id AS part_id,
+              p2.nome_de AS part_nome_de,
+              p2.nome_it AS part_nome_it,
+              o2.orario AS part_orario,
+              corse.lineaId AS lineaId,
+              corse.effettuazione AS effettuazione
+         FROM corse, 
+              orarii o1, 
+              orarii o2, 
+              paline p1, 
+              paline p2
+        WHERE o1.corsaId = corse.id 
+              AND
+              o2.corsaId = corse.id 
+              AND
+              o1.palinaId = p1.id 
+              AND
+              o2.palinaId = p2.id 
+              AND
+              o2.progressivo < o1.progressivo;
+
+then called the command analyze orarii for optimizing the queries on the android-phone.
