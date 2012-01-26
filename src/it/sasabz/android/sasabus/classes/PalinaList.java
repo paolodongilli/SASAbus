@@ -99,10 +99,10 @@ public class PalinaList {
 	 * Returns a list of all bus-stops avaiable in the database
 	 * @return a vector of all bus-stops in the database
 	 */
-	public static Vector <DBObject> getListDestinazione(String nome_de, int linea)
+	public static Vector <DBObject> getListDestinazione(String destinazione, int linea)
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String [] args = {Integer.toString(linea),nome_de};
+		String [] args = {Integer.toString(linea),destinazione};
 		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
 				"from " +
 				"(select id, lineaId " +
@@ -203,7 +203,7 @@ public class PalinaList {
 				"o1.corsaId = c.id " +
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
-				"and o1.progressivo > o2.progressivo " +
+				"and o1.progressivo < o2.progressivo " +
 				"order by p.nome_de";
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Vector <DBObject> list = null;
