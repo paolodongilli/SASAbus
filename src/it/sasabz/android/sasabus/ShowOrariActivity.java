@@ -54,7 +54,7 @@ public class ShowOrariActivity extends ListActivity {
 	private int linea;
 
 	private String destinazione;
-	private int  partenza;
+	private String  partenza;
 
 	public ShowOrariActivity() {
 	}
@@ -66,11 +66,11 @@ public class ShowOrariActivity extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		linea = 0;
 		destinazione = null;
-		partenza = 0;
+		partenza = null;
 		if (extras != null) {
 			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
-			partenza = extras.getInt("palina");
+			partenza = extras.getString("palina");
 		}
 
 		setContentView(R.layout.show_orari_layout);
