@@ -15,7 +15,7 @@
 <string name="menu_test">Test</string>
 <string name="updates">... updates ...</string>
 <string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</string>
-<string name="copyright">Copyright (C) %1$s Paolo Dongilli</string>
+<string name="copyright">Copyright (C) %1$s Paolo Dongilli SASAbus-Team</string>
 <string name="disclaimer">SASAbus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
 <string name="gpl">You should have received a copy of the GNU General Public License along with SASAbus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
 <string name="sd_card_not_mounted">External storage (SD-Card) not mounted.</string>
@@ -26,5 +26,7 @@
 <string name="no_db_update_available">Timetable update is not available. Please try again later.</string>
 <string name="gps_disabled_title">Gps disabled</string>
 <string name="gps_disabled">The GPS-data on your Mobilephone is not available, please turn your GPS on or try again later.</string>
+<string name="error_title">Download Error</string>
+<string name="error_text">An error occours during the download. Try later again or contact the maintainer of the application</string>
 </resources>
 

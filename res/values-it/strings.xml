@@ -28,4 +28,6 @@
 <string name="gps_disabled">Dati GPS non disponibile. Si prega di ativare il GPS o di riprovare più tardi.</string>
 <string name="gps_modus">Modo GPS</string>
 <string name="normal_modus">Modo normale</string>
+<string name="error_title">Errore Download</string>
+<string name="error_text">Si e\' verificato un errore durante il download. Si prega di provare piu tardi o di contattare l\' autore dell\' applicazione</string>
 </resources>

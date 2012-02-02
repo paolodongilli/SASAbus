@@ -36,6 +36,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.net.ftp.FTPClient;
+
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
 
@@ -61,6 +63,8 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
+	
+	private int status = 0;
 
 	public CheckDatabaseActivity() {
 	}
@@ -70,6 +74,11 @@ public class CheckDatabaseActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		check();
+	}
+
+	private void check()
+	{
 		SASAbus config = (SASAbus) getApplicationContext();
 		// Check if db exists
 		Resources res = getResources();
@@ -78,12 +87,9 @@ public class CheckDatabaseActivity extends ListActivity {
 		String repositoryURL = res.getString(R.string.repository_url);
 		String dbFileName = appName + ".db";
 		String dbZIPFileName = dbFileName + ".zip";
-		String dbURLName = repositoryURL + dbZIPFileName;
 		String md5FileName = dbFileName + ".md5";
-		String md5URLName = repositoryURL + md5FileName;
+		boolean success = false;
 
-		Log.v("CheckDatabaseActivity", "***** dbURLName: " + dbURLName);
-		Log.v("CheckDatabaseActivity", "***** md5URLNAme: " + md5URLName);
 
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
@@ -102,16 +108,15 @@ public class CheckDatabaseActivity extends ListActivity {
 
 		
 		boolean download = false;
-		if (dbFile.exists() && md5File.exists()) {
-
-			Log.v("CheckDatabaseActivity", "***** MD5: " + MD5Utils.extractMD5(md5File));
-			Log.v("CheckDatabaseActivity", "***** calculated MD5: " + MD5Utils.calculateMD5(dbFile));
+		if (dbFile.exists() && md5File.exists())
+		{
 
 			if (!MD5Utils.checksumOK(dbFile, md5File))
 			{
 				download = true;
 			}
-			else {
+			else 
+			{
 				String end = null;
 				try
 				{
@@ -123,50 +128,102 @@ public class CheckDatabaseActivity extends ListActivity {
 				}
 				SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar cal = Calendar.getInstance();
-				try {
+				try 
+				{
 					Date endDate = timeFormat.parse(end);
 					Date currentDate = timeFormat.parse(timeFormat.format(cal
 							.getTime()));
 					Log.v("CheckDatabaseActivity", "endDate: " + endDate.toString() + "; currentDate: " + currentDate.toString());
-					if (currentDate.after(endDate)) {
+					if (currentDate.after(endDate)) 
+					{
 						download = true;
 						config.setDbDownloadAttempts(config.getDbDownloadAttempts() + 1);
 					}
-				} catch (ParseException e) {
+				} 
+				catch (ParseException e) 
+				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if (!download && dbUpdateAvailable(md5URLName, md5FileName, dbDir)) {
+				if (!download && dbUpdateAvailable(md5FileName, dbDir)) 
+				{
 					download = true;
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			download = true;
 		}
 
-		if (download) {
+		if (download) 
+		{
 			// verify we have a network connection
-			if (haveNetworkConnection()) {
-				if(config.getDbDownloadAttempts() < 2) {
+			if (haveNetworkConnection()) 
+			{
+				if(config.getDbDownloadAttempts() < 2) 
+				{
 					FileRetriever fileret = new FileRetriever(this, dbZIPFile, dbFile, md5File);
-					fileret.execute(dbURLName, md5URLName);
-				} else {
+					if(!fileret.download(dbZIPFileName, md5FileName))
+					{
+						showDialog(NO_DB_UPDATE_AVAILABLE);
+					} 
+					else
+					{
+						if(status == 0)
+						{
+							status = 1;
+						}
+						if(status == 1)
+						{
+							status = 3;
+						}
+						success = true;
+					}
+				}
+				else 
+				{
 					showDialog(NO_DB_UPDATE_AVAILABLE);
 				}
-			} else {
+			} 
+			else 
+			{
 				showDialog(NO_NETWORK_CONNECTION);
 			}
-		} else {
+		}
+		else 
+		{
 			// verify files
-			if (!MD5Utils.checksumOK(dbFile, md5File)) {
+			if (!MD5Utils.checksumOK(dbFile, md5File)) 
+			{
 				showDialog(MD5_ERROR_DIALOG);
 			}
-			else {
+			else 
+			{
+				if(status == 1)
+				{
+					status = 2;
+				}
 				showDialog(DOWNLOAD_SUCCESS_DIALOG);
+				success = true;
 			}
 		}
+		if(status == 1)
+		{
+			check();
+		}
+		else if(success && status == 2)
+		{
+			startActivity();
+		}
+		else if (status == 3)
+		{
+			showDialog(NO_DB_UPDATE_AVAILABLE);
+			Log.v("Download", "Datei konnte nicht gedownloadet werden");
+		}
 	}
-
+	
+	
 	/**
 	 * Called when the activity is about to start interacting with the user.
 	 */
@@ -175,7 +232,8 @@ public class CheckDatabaseActivity extends ListActivity {
 		super.onResume();
 	}
 
-	private final Dialog createAlertDialog(int msg, String placeholder) {
+	private final Dialog createAlertDialog(int msg, String placeholder) 
+	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setTitle(R.string.a_given_string);
 		builder.setIcon(R.drawable.icon);
@@ -185,45 +243,57 @@ public class CheckDatabaseActivity extends ListActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-
-				startActivity();
+				//startActivity();
 			}
 		});
 		return builder.create();
 	}
 
-	private boolean dbUpdateAvailable(String md5UrlName, String md5FileName, File dbDir) {
+	private boolean dbUpdateAvailable(String md5FileName, File dbDir) {
 		boolean update = false;
 		File md5File = new File(dbDir, md5FileName);
 		long lastLocalMod = md5File.lastModified();
 		Date lastLocalModDate = new Date(lastLocalMod);
 		String lastRemoteMod;
 		Date lastRemoteModDate;
+		Resources res = this.getResources();
 
 		// verify we have a network connection, otherwise act as no update is available
 		// and update remains false
-		if (haveNetworkConnection()) {
+		if (haveNetworkConnection()) 
+		{
 
-			try {
-				URL url = new URL(md5UrlName);
-				URLConnection conn = url.openConnection();
-				conn.connect();
+			try 
+			{
+				FTPClient ftp = new FTPClient();
+				
+				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+				
 
-				lastRemoteMod = conn.getHeaderField("Last-Modified");
-				lastRemoteModDate = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH).parse(lastRemoteMod);
+				lastRemoteMod = ftp.getModificationTime(md5FileName);
+				
+				ftp.disconnect();
+				lastRemoteModDate = new SimpleDateFormat("YYYYMMDDhhmmss").parse(lastRemoteMod);
 
 				// check if date of remote file is after date of local file
 				update = lastRemoteModDate.after(lastLocalModDate);
 
 				Log.v("CheckDatabaseActivity", "Date of local md5: " + lastLocalModDate.toString());
 				Log.v("CheckDatabaseActivity", "Date of remote md5: " + lastRemoteModDate.toString());
-			} catch (MalformedURLException e) {
+			}
+			catch (MalformedURLException e) 
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ParseException e) {
+			}
+			catch (ParseException e)
+			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -246,6 +316,8 @@ public class CheckDatabaseActivity extends ListActivity {
 		return builder.create();
 	}
 
+	
+	
 	private void startActivity() {
 		finish();
 		Intent selBacino = new Intent(this, SelectModeActivity.class);
@@ -270,7 +342,8 @@ public class CheckDatabaseActivity extends ListActivity {
 		}
 	}
 
-	private boolean haveNetworkConnection() {
+	private boolean haveNetworkConnection() 
+	{
 		boolean haveConnectedWifi = false;
 		boolean haveConnectedMobile = false;
 

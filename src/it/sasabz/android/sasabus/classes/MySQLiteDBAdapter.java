@@ -26,6 +26,9 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import it.sasabz.android.sasabus.R;
 import android.content.Context;
 import android.content.res.Resources;
@@ -53,6 +56,11 @@ public class MySQLiteDBAdapter {
 			String dbFileName = appName + ".db";
 	        helper = new DatabaseHelper(dbFileName,null);
 	        sqlite = helper.getReadableDatabase();
+	        if(sqlite == null)
+	        {
+	        	System.err.println("Die Datenbank konnte nicht geoeffnet werden");
+	        	System.exit(-2);
+	        }
 		}
 		++counteropen;
 		return new MySQLiteDBAdapter();

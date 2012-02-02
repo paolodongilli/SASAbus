@@ -25,13 +25,17 @@
 
 package it.sasabz.android.sasabus;
 
-import java.io.BufferedInputStream;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.IOException;
+
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
+
+
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.jibble.simpleftp.SimpleFTP;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,18 +44,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
-import android.os.AsyncTask;
-import android.os.Looper;
+
+
 import android.os.PowerManager;
 import android.util.Log;
 
+
 // FileDownloader is my own delegate class that performs the
 // actual downloading and is initialized with the source URL.
-public class FileRetriever extends AsyncTask<String, String, String> {
+public class FileRetriever  {
 	private static final String TAG = "FileRetriever";
 	
 	private ProgressDialog progressDialog;
-
 
 	private AlertDialog alertDialog;
 	private File dbFile;
@@ -73,62 +77,88 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 		this.activity = activity;
 		this.res = activity.getResources();
 
+		
+		
+	}
+
+	
+	public boolean download(String dbZipFileName, String md5FileName) {
+		
 		PowerManager pm = (PowerManager) this.activity
 				.getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
 				| PowerManager.ON_AFTER_RELEASE, TAG);
 		// Obtain a wakelock for SCREEN_DIM_WAKE_LOCK
-	}
-
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
 		originalRequestedOrientation = activity.getRequestedOrientation();
 		activity
 		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		wakeLock.acquire();
-	}
-
-	@Override
-	protected String doInBackground(String... params) {
-		int count;
-
+		
 		try {
 			// download dbZIPFile
-
-			Looper.prepare();
-
+			
+			
 			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			progressDialog.setMessage(res.getString(R.string.downloading_db));
 			progressDialog.setCancelable(false);
-
-			URL url = new URL(params[0]);
-			URLConnection conn = url.openConnection();
-			conn.connect();
+			progressDialog.setProgress(0);
+			progressDialog.show();
+			
+			//URL url = new URL(params[0]);
+			//URLConnection conn = url.openConnection();
+			//conn.connect();
 
 			// this will be useful so that you can show a typical 0-100%
 			// progress bar
 			
-
+			//FTPClient ftp = new FTPClient();
+			//ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+			//ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+			SimpleFTP ftp = new SimpleFTP();
+			
+			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)), 
+					res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+			
 			// download the file
-			InputStream input = new BufferedInputStream(url.openStream());
 			OutputStream output = new FileOutputStream(dbZIPFile);
-
-			int lenghtOfFile = conn.getContentLength();
-			byte data[] = new byte[1024];
-			long total = 0;
-
-			while ((count = input.read(data)) != -1) {
-				total += count;
-				// publishing the progress....
-				publishProgress("" + (int) total * 100 / lenghtOfFile);
-				output.write(data, 0, count);
+			
+			try 
+			{
+				String [] filelist = null;
+				String string = "";
+				if(filelist != null)
+				{
+					Log.v("download", "anz files: " + filelist.length);
+					for(int i = 0; i< filelist.length; ++ i)
+					{
+						string += (filelist[i] + " --|-- ");
+					}
+					Log.v("download", string);
+				}
+				Log.v("Download", ftp.pwd());
+				//ftp.retrieveFile("/" + dbZipFileName, output);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+				Log.v("Download", "Datei konnte nicht gedownloadet werden");
+				System.exit(-1);
 			}
-
-			output.flush();
-			output.close();
-			input.close();
+			finally
+			{
+				try
+				{
+					ftp.disconnect();
+					output.flush();
+					output.close();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
 
 			progressDialog.dismiss();
 
@@ -138,6 +168,7 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 			progressDialog.setMessage(res.getString(R.string.unzipping_db));
 			progressDialog.setCancelable(false);
 			progressDialog.setProgress(0);
+			progressDialog.show();
 			Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),
 					dbZIPFile.getParent());
 			d.unzip();
@@ -148,67 +179,59 @@ public class FileRetriever extends AsyncTask<String, String, String> {
 			// download md5sum
 
 			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			progressDialog.setMessage(res.getString(R.string.downloading_md5));
 			progressDialog.setCancelable(false);
 
-			url = new URL(params[1]);
-			conn = url.openConnection();
-			conn.connect();
+			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+			//ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 
+			
+			
 			// this will be useful so that you can show a typical 0-100%
 			// progress bar
-			lenghtOfFile = conn.getContentLength();
+			//lenghtOfFile = conn.getContentLength();
 
-			// download the file
-			input = new BufferedInputStream(url.openStream());
 			output = new FileOutputStream(this.md5File);
+			
+//			try {
+//				ftp.retrieveFile("/" + md5FileName, output);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				Log.v("Download", "Datei konnte nicht gedownloadet werden");
+//			}
+//			finally
+//			{
+//				try
+//				{
+//					ftp.disconnect();
+//					output.flush();
+//					output.close();
+//
+//				}
+//				catch (Exception e)
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+			// download the file
+			
 
-			data = new byte[1024];
-			total = 0;
-
-			while ((count = input.read(data)) != -1) {
-				total += count;
-				// publishing the progress....
-				publishProgress("" + (int) total * 100 / lenghtOfFile);
-				output.write(data, 0, count);
-			}
-			publishProgress("" + (int) total * 100 / lenghtOfFile);
-
-			output.flush();
-			output.close();
-			input.close();
-
+			
 			progressDialog.dismiss();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
+			Log.v("Download", "Datei konnte nicht gedownloadet werden");
 		}
-
-		return null;
-	}
-
-	@Override
-	public void onProgressUpdate(String... args) {
-		this.progressDialog.setProgress(Integer.parseInt(args[0]));
-		progressDialog.show();
-	}
-
-	
-	@Override
-	protected void onPostExecute(String result) {
-		super.onPostExecute(result);
-
+		
 		wakeLock.release();
 		activity.setRequestedOrientation(originalRequestedOrientation);
-
-		// Run next activity
-		this.activity.finish();
-		Intent checkDB = new Intent(this.activity, CheckDatabaseActivity.class);
-		this.activity.startActivity(checkDB);
-
+		
+		
+		return true;
 	}
+
 	
 	/**
 	 * @return the progressDialog

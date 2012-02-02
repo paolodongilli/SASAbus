@@ -28,5 +28,7 @@
 <string name="gps_disabled">Kein Empfang von GPS-Daten möglich. Bitte schalten Sie Ihr GPS ein oder versuchen Sie es später nocheinmal.</string>
 <string name="gps_modus">GPS Modus</string>
 <string name="normal_modus">Normaler modus</string>
+<string name="error_title">Download Fehler</string>
+<string name="error_text">Ein Fehler ist während des Herunterladens aufgetreten. Bitte versuchen Sie es später nocheinmal oder kontaktieren Sie den Veröffentlicher des Programms</string>
 </resources>
 
