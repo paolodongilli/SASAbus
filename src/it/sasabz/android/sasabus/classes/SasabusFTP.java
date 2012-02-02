@@ -1,8 +1,8 @@
 /**
  *
- * SimpleFTP.java
+ * SasabusFTP.java
  * 
- * Created: Dez 13, 2011 16:20:40 PM
+ * Created: Feb 2, 2012 16:20:40 PM
  * 
  * Copyright (C) 2011 Markus Windegger
  * 
@@ -26,6 +26,7 @@
 
 
 package it.sasabz.android.sasabus.classes;
+
 
 
 
@@ -368,7 +369,7 @@ public class SasabusFTP {
      * @return true if the file transfer was successful
      * @throws IOException if something goes wrong
      */
-    public synchronized boolean get(FileOutputStream outputStream, String filename) throws IOException
+    public synchronized boolean get(FileOutputStream outputStream, String filename, FileRetriever fileret) throws IOException
     {
     	if(!connected)
     	{
@@ -378,6 +379,8 @@ public class SasabusFTP {
     	{
     		throw new IOException("Not logged in");
     	}
+    	
+    	int lenghtOfFile = this.size(filename);
     	BufferedOutputStream output = new BufferedOutputStream(outputStream);
         
         sendLine("PASV");
@@ -416,8 +419,11 @@ public class SasabusFTP {
         BufferedInputStream input = new BufferedInputStream(dataSocket.getInputStream());
         byte[] buffer = new byte[4096];
         int bytesRead = 0;
+        long total = 0;
         while ((bytesRead = input.read(buffer)) != -1) {
             output.write(buffer, 0, bytesRead);
+            total += bytesRead;
+            fileret.publishProgress("" + (int) (total * 100 / lenghtOfFile));
         }
         output.flush();
         output.close();

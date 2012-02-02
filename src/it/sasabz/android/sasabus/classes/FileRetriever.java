@@ -23,10 +23,13 @@
  *
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
 
 
-import it.sasabz.android.sasabus.classes.SasabusFTP;
+import it.sasabz.android.sasabus.CheckDatabaseActivity;
+import it.sasabz.android.sasabus.Decompress;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.string;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,13 +48,15 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 
 
+import android.os.AsyncTask;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.util.Log;
 
 
 // FileDownloader is my own delegate class that performs the
 // actual downloading and is initialized with the source URL.
-public class FileRetriever  {
+public class FileRetriever  extends AsyncTask<String, String, String>{
 	private static final String TAG = "FileRetriever";
 	
 	private ProgressDialog progressDialog;
@@ -76,13 +81,6 @@ public class FileRetriever  {
 		this.activity = activity;
 		this.res = activity.getResources();
 
-		
-		
-	}
-
-	
-	public boolean download(String dbZipFileName, String md5FileName) {
-		
 		PowerManager pm = (PowerManager) this.activity
 				.getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
@@ -93,131 +91,10 @@ public class FileRetriever  {
 		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		wakeLock.acquire();
 		
-		try {
-			// download dbZIPFile
-			
-			
-			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(res.getString(R.string.downloading_db));
-			progressDialog.setCancelable(false);
-			progressDialog.setProgress(0);
-			progressDialog.show();
-			
-			//URL url = new URL(params[0]);
-			//URLConnection conn = url.openConnection();
-			//conn.connect();
-
-			// this will be useful so that you can show a typical 0-100%
-			// progress bar
-			
-			//FTPClient ftp = new FTPClient();
-			//ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-			//ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-			SasabusFTP ftp = new SasabusFTP();
-			
-			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)), 
-					res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-			
-			// download the file
-			FileOutputStream output = new FileOutputStream(dbZIPFile);
-			
-			try 
-			{
-				ftp.get(output, dbZIPFile.getName());
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-				return false;
-			}
-			finally
-			{
-				try
-				{
-					ftp.disconnect();
-					output.flush();
-					output.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					return false;
-				}
-			}
-			
-
-			progressDialog.dismiss();
-
-			// unzip dbZIPFile
-			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(res.getString(R.string.unzipping_db));
-			progressDialog.setCancelable(false);
-			progressDialog.setProgress(0);
-			progressDialog.show();
-			Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),
-					dbZIPFile.getParent());
-			d.unzip();
-			dbZIPFile.delete();
-			progressDialog.dismiss();
-			
-			
-			// download md5sum
-
-			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(res.getString(R.string.downloading_md5));
-			progressDialog.setCancelable(false);
-
-			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-			ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-
-			
-			
-			// this will be useful so that you can show a typical 0-100%
-			// progress bar
-
-			output = new FileOutputStream(this.md5File);
-			
-			try {
-				ftp.get(output, md5FileName);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-			finally
-			{
-				try
-				{
-					ftp.disconnect();
-					output.flush();
-					output.close();
-
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					return false;
-				}
-			}
-
-			
-
-			
-			progressDialog.dismiss();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 		
-		wakeLock.release();
-		activity.setRequestedOrientation(originalRequestedOrientation);
-		
-		
-		return true;
 	}
+
+	
 
 	
 	/**
@@ -233,4 +110,147 @@ public class FileRetriever  {
 	public void setProgressDialog(ProgressDialog progressDialog) {
 		this.progressDialog = progressDialog;
 	}
+
+	
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		originalRequestedOrientation = activity.getRequestedOrientation();
+		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		wakeLock.acquire();
+	}
+
+	@Override
+	protected String doInBackground(String... params) {	
+		try {
+			// download dbZIPFile
+			
+			Looper.prepare();
+			
+			progressDialog = new ProgressDialog(this.activity);
+			
+			progressDialog = new ProgressDialog(this.activity);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setMessage(res.getString(R.string.downloading_db));
+			progressDialog.setCancelable(false);
+			
+			SasabusFTP ftp = new SasabusFTP();
+			
+			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)), 
+					res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+			
+			// download the file
+			FileOutputStream output = new FileOutputStream(dbZIPFile);
+			
+			try 
+			{
+				ftp.bin();
+				ftp.get(output, params[0], this);
+			} 
+			catch (IOException e) 
+			{
+				e.printStackTrace();
+				return "ko";
+			}
+			finally
+			{
+				try
+				{
+					ftp.disconnect();
+					output.flush();
+					output.close();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					return "ko";
+				}
+			}
+
+			progressDialog.dismiss();
+
+			// unzip dbZIPFile
+			progressDialog = new ProgressDialog(this.activity);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage(res.getString(R.string.unzipping_db));
+			progressDialog.setCancelable(false);
+			progressDialog.setProgress(0);
+			Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),
+					dbZIPFile.getParent());
+			d.unzip();
+			dbZIPFile.delete();
+			progressDialog.dismiss();
+			
+			
+			// download md5sum
+
+			progressDialog = new ProgressDialog(this.activity);
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setMessage(res.getString(R.string.downloading_md5));
+			progressDialog.setCancelable(false);
+
+			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+			ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+
+			output = new FileOutputStream(this.md5File);
+			
+			try {
+				ftp.bin();
+				ftp.get(output, params[1], this);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return "ko";
+			}
+			finally
+			{
+				try
+				{
+					ftp.disconnect();
+					output.flush();
+					output.close();
+
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					return "ko";
+				}
+			}
+	
+			progressDialog.dismiss();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "ko";
+		}
+		
+		
+		return "ok";
+	}
+
+	public void publishProgress(String proc) {
+		super.publishProgress(proc);
+	}
+	
+	@Override
+	public void onProgressUpdate(String... args) {
+		this.progressDialog.setProgress(Integer.parseInt(args[0]));
+		progressDialog.show();
+	}
+
+	@Override
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
+
+		wakeLock.release();
+		activity.setRequestedOrientation(originalRequestedOrientation);
+
+		// Run next activity
+		this.activity.finish();
+		Intent checkDB = new Intent(this.activity, CheckDatabaseActivity.class);
+		this.activity.startActivity(checkDB);
+
+	}
+	
+	
 }

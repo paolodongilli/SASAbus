@@ -38,6 +38,7 @@ import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
+import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.SasabusFTP;
 
 import android.app.AlertDialog;
@@ -62,10 +63,9 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
-	
-	private int status = 0;
 
 	public CheckDatabaseActivity() {
+		
 	}
 
 	/** Called with the activity is first created. */
@@ -87,7 +87,6 @@ public class CheckDatabaseActivity extends ListActivity {
 		String dbFileName = appName + ".db";
 		String dbZIPFileName = dbFileName + ".zip";
 		String md5FileName = dbFileName + ".md5";
-		boolean success = false;
 
 
 		if (!Environment.getExternalStorageState().equals(
@@ -162,23 +161,7 @@ public class CheckDatabaseActivity extends ListActivity {
 			{
 				if(config.getDbDownloadAttempts() < 2) 
 				{
-					FileRetriever fileret = new FileRetriever(this, dbZIPFile, dbFile, md5File);
-					if(!fileret.download(dbZIPFileName, md5FileName))
-					{
-						showDialog(NO_DB_UPDATE_AVAILABLE);
-					} 
-					else
-					{
-						if(status == 0)
-						{
-							status = 1;
-						}
-						if(status == 1)
-						{
-							status = 3;
-						}
-						success = true;
-					}
+					new FileRetriever(this, dbZIPFile, dbFile, md5File).execute(dbZIPFileName, md5FileName);
 				}
 				else 
 				{
@@ -199,26 +182,8 @@ public class CheckDatabaseActivity extends ListActivity {
 			}
 			else 
 			{
-				if(status == 1)
-				{
-					status = 2;
-				}
 				showDialog(DOWNLOAD_SUCCESS_DIALOG);
-				success = true;
 			}
-		}
-		if(status == 1)
-		{
-			check();
-		}
-		else if(success && status == 2)
-		{
-			startActivity();
-		}
-		else if (status == 3)
-		{
-			showDialog(NO_DB_UPDATE_AVAILABLE);
-			Log.v("CheckDatabaseActivity", "" + status);
 		}
 	}
 	

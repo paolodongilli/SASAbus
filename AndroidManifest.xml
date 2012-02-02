@@ -51,7 +51,7 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:label="@string/select_palina" android:name="SelectDestinazioneLocationActivity">
+		<activity android:label="@string/select_destination" android:name="SelectDestinazioneLocationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
