@@ -24,37 +24,6 @@
  * 
  */
 
-/**
- * Copyright 2008 Bluestem Software LLC.  All Rights Reserved.
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * 
- */
-/**
- * Copyright Paul James Mutton, 2001-2004, http://www.jibble.org/
- *
- * This file is part of SimpleFTP.
- *
- * This software is dual-licensed, allowing you to choose between the GNU
- * General Public License (GPL) and the www.jibble.org Commercial License.
- * Since the GPL may be too restrictive for use in a proprietary application,
- * a commercial license is also provided. Full license information can be
- * found at http://www.jibble.org/licenses/
- *
- * $Author: pjm2 $
- * $Id: SimpleFTP.java,v 1.2 2004/05/29 19:27:37 pjm2 Exp $
- *
- */
 
 package it.sasabz.android.sasabus.classes;
 
@@ -79,15 +48,8 @@ import android.util.Log;
 
 
 
-/**
- * SimpleFTP is a simple package that implements a Java FTP client.
- * With SimpleFTP, you can connect to an FTP server and upload multiple files.
- *  <p>
- * Copyright Paul Mutton,
- *           <a href="http://www.jibble.org/">http://www.jibble.org/</a>
- * 
- */
-public class SimpleFTP {
+
+public class SasabusFTP {
     
 	 private Socket socket = null;
 	 private BufferedReader reader = null;
@@ -103,7 +65,7 @@ public class SimpleFTP {
 	 /**
 	 * @return the connected
 	 */
-	public boolean isConnected() {
+	public synchronized boolean isConnected() {
 		return connected;
 	}
 
@@ -111,13 +73,14 @@ public class SimpleFTP {
 	/**
 	 * @return the login
 	 */
-	public boolean isLogin() {
+	public synchronized boolean isLogin() {
 		return login;
 	}
 
 	 
 	 /**
      * Connects to the default port of an FTP server
+     * @throws IOEcxeption if something goes wrong
      */
     public synchronized void connect(String host) throws IOException {
         connect(host, 21);
@@ -126,6 +89,9 @@ public class SimpleFTP {
     
     /**
      * Connects to an FTP server
+     * @param host is the host to connect with
+     * @param port is the port to connect with
+     * @throws IOEcxeption if something goes wrong
      */
     public synchronized void connect(String host, int port) throws IOException {
     	if (socket != null) {
@@ -146,6 +112,11 @@ public class SimpleFTP {
     /**
      * Connects to an FTP server and logs in with the supplied username
      * and password.
+     * @param host is the hostname to connect with
+     * @param port is the port to connect with
+     * @param user is the username to use when doing the login
+     * @param pass is the password to login the user
+     * @throws IOException if something goes wrong
      */
     public synchronized void connect(String host, int port, String user, String pass) throws IOException {
        connect(host, port);
@@ -157,7 +128,7 @@ public class SimpleFTP {
      * Logs in with the supplied username and password to a cpnnected server
      * @param user the user to log in with
      * @param pass the password to login with
-     * @throws IOException when the ftp-host is not connected
+     * @throws IOException if something goes wrong
      */
     public synchronized void login(String user, String pass) throws IOException{
     	if(!connected)
@@ -180,11 +151,11 @@ public class SimpleFTP {
             throw new IOException("SimpleFTP was unable to log in with the supplied password: " + response);
         }
         login = true;
-        // Now logged in.
     }
     
     /**
      * Disconnects from the FTP server.
+     * @throws IOEcxeption if something goes wrong
      */
     public synchronized void disconnect() throws IOException {
         try {
@@ -200,6 +171,7 @@ public class SimpleFTP {
     
     /**
      * Returns the working directory of the FTP server it is connected to.
+     * @throws IOEcxeption if something goes wrong
      */
     public synchronized String pwd() throws IOException {
     	if(!connected)
@@ -223,7 +195,13 @@ public class SimpleFTP {
         return dir;
     }
     
-    public synchronized boolean exists(String file) throws IOException {
+    /**
+     * Returns a boolean wich says you if the file exists or not
+     * @param filename is the filename of the file to search for
+     * @return a boolean if the file filename exists or not
+     * @throws IOException if something goes wrong
+     */
+    public synchronized boolean exists(String filename) throws IOException {
     	if(!connected)
     	{
     		throw new IOException("Server not connected");
@@ -232,14 +210,19 @@ public class SimpleFTP {
     	{
     		throw new IOException("Not logged in");
     	}
-        sendLine("SIZE " + file);
+        sendLine("SIZE " + filename);
         String response = readLine();
         return (!response.startsWith("550 "));
     }
     
+    
     /**
-     * Changes permissions on  remote file
-     */   
+     * Changes permission to remote file   
+     * @param perms are the permissions (oktal, e.g. 755) for the file 
+     * @param file is the remote filename for what we choose the permissions
+     * @return a boolean if the operation wos successful or not
+     * @throws IOException when something goes wrong
+     */
     public synchronized boolean chmod(String perms, String file) throws IOException {
     	if(!connected)
     	{
@@ -256,9 +239,13 @@ public class SimpleFTP {
     }
 
 
+   
     /**
      * Changes the working directory (like cd). Returns true if successful.
-     */   
+     * @param dir is the dir to change in
+     * @return a boolean if the operation was succesful or not
+     * @throws IOException if something goes wrong
+     */
     public synchronized boolean cwd(String dir) throws IOException {
     	if(!connected)
     	{
@@ -275,11 +262,14 @@ public class SimpleFTP {
     }
     
     
+
     /**
      * Sends a file to be stored on the FTP server.
-     * Returns true if the file transfer was successful.
      * The file is sent in passive mode to avoid NAT or firewall problems
      * at the client end.
+     * @param file is the file to send to the server
+     * @return true if the file transfer was successful.
+     * @throws IOException if something goes wrong
      */
     public synchronized boolean stor(File file) throws IOException {
     	if(!connected)
@@ -299,12 +289,16 @@ public class SimpleFTP {
         return stor(new FileInputStream(file), filename);
     }
     
+
     
     /**
      * Sends a file to be stored on the FTP server.
-     * Returns true if the file transfer was successful.
      * The file is sent in passive mode to avoid NAT or firewall problems
      * at the client end.
+     * @param inputStream is the input stream to send to the server
+     * @param filename is the filname of the remote file
+     * @return true if the filetransfer was successful
+     * @throws IOException if something goes wrong
      */
     public synchronized boolean stor(InputStream inputStream, String filename) throws IOException {
     	if(!connected)
@@ -366,6 +360,14 @@ public class SimpleFTP {
     }
 
 
+    
+    /**
+     * 
+     * @param outputStream is the fileoutputstream to store the file from the server locally
+     * @param filename is the filename of the remote file
+     * @return true if the file transfer was successful
+     * @throws IOException if something goes wrong
+     */
     public synchronized boolean get(FileOutputStream outputStream, String filename) throws IOException
     {
     	if(!connected)
@@ -453,8 +455,8 @@ public class SimpleFTP {
     
     /**
      * Provides the last remote date
-     * @return
-     * @throws IOException
+     * @return the modification time
+     * @throws IOException if something goes wrong
      */
     public synchronized String getModificationTime(String filename) throws IOException
     {
@@ -475,8 +477,11 @@ public class SimpleFTP {
          return response.substring(4);
     }
     
+    
     /**
-     * Enter binary mode for sending binary files.
+     * Enter binary mode for sending binary files
+     * @return true if the mode was successful changed
+     * @throws IOException if something goes wrong
      */
     public synchronized boolean bin() throws IOException {
     	if(!connected)
@@ -494,10 +499,12 @@ public class SimpleFTP {
     
 
 
-	/**
+    /**
      * Enter ASCII mode for sending text files. This is usually the default
      * mode. Make sure you use binary mode if you are sending images or
      * other binary data, as ASCII mode is likely to corrupt them.
+     * @return true if mode was successfully changed
+     * @throws IOException if something goes wrong
      */
     public synchronized boolean ascii() throws IOException {
     	if(!connected)
@@ -514,8 +521,11 @@ public class SimpleFTP {
     }
     
     
+    
     /**
-     * Sends a raw command to the FTP server.
+     * Sends a raw command to the FTP server via server socket
+     * @param line is the command to send
+     * @throws IOException if something goes wrong
      */
     private void sendLine(String line) throws IOException {
         if (socket == null) {
@@ -534,6 +544,12 @@ public class SimpleFTP {
         }
     }
     
+    
+    /**
+     * Reads a line from the server socket
+     * @return the read line
+     * @throws IOException if something goes wrong
+     */
     private String readLine() throws IOException {
         String line = reader.readLine();
         if (DEBUG) {
@@ -541,7 +557,6 @@ public class SimpleFTP {
         }
         return line;
     }
-    
     
     
 }

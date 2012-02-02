@@ -38,7 +38,7 @@ import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
-import it.sasabz.android.sasabus.classes.SimpleFTP;
+import it.sasabz.android.sasabus.classes.SasabusFTP;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -264,7 +264,7 @@ public class CheckDatabaseActivity extends ListActivity {
 
 			try 
 			{
-				SimpleFTP ftp = new SimpleFTP();
+				SasabusFTP ftp = new SasabusFTP();
 				
 				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
 				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));

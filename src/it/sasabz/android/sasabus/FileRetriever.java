@@ -26,7 +26,7 @@
 package it.sasabz.android.sasabus;
 
 
-import it.sasabz.android.sasabus.classes.SimpleFTP;
+import it.sasabz.android.sasabus.classes.SasabusFTP;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -114,7 +114,7 @@ public class FileRetriever  {
 			//FTPClient ftp = new FTPClient();
 			//ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
 			//ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-			SimpleFTP ftp = new SimpleFTP();
+			SasabusFTP ftp = new SasabusFTP();
 			
 			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)), 
 					res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
