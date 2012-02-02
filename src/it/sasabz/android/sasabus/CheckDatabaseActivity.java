@@ -36,10 +36,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.commons.net.ftp.FTPClient;
-
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
+import it.sasabz.android.sasabus.classes.SimpleFTP;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -219,7 +218,7 @@ public class CheckDatabaseActivity extends ListActivity {
 		else if (status == 3)
 		{
 			showDialog(NO_DB_UPDATE_AVAILABLE);
-			Log.v("Download", "Datei konnte nicht gedownloadet werden");
+			Log.v("CheckDatabaseActivity", "" + status);
 		}
 	}
 	
@@ -243,7 +242,7 @@ public class CheckDatabaseActivity extends ListActivity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				//startActivity();
+				startActivity();
 			}
 		});
 		return builder.create();
@@ -265,16 +264,16 @@ public class CheckDatabaseActivity extends ListActivity {
 
 			try 
 			{
-				FTPClient ftp = new FTPClient();
+				SimpleFTP ftp = new SimpleFTP();
 				
 				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
 				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 				
 
 				lastRemoteMod = ftp.getModificationTime(md5FileName);
-				
+				Log.v("lastRemoteDate", "" + lastRemoteMod.length());
 				ftp.disconnect();
-				lastRemoteModDate = new SimpleDateFormat("YYYYMMDDhhmmss").parse(lastRemoteMod);
+				lastRemoteModDate = new SimpleDateFormat("yyyyMMDDhhmmss").parse(lastRemoteMod);
 
 				// check if date of remote file is after date of local file
 				update = lastRemoteModDate.after(lastLocalModDate);

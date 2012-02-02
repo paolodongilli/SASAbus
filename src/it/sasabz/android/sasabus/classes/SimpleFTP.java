@@ -107,13 +107,6 @@ public class SimpleFTP {
 		return connected;
 	}
 
-	/**
-	 * @param connected
-	 *            the connected to set
-	 */
-	public void setConnected(boolean connected) {
-		this.connected = connected;
-	}
 
 	/**
 	 * @return the login
@@ -122,13 +115,6 @@ public class SimpleFTP {
 		return login;
 	}
 
-	/**
-	 * @param login
-	 *            the login to set
-	 */
-	public void setLogin(boolean login) {
-		this.login = login;
-	}
 	 
 	 /**
      * Connects to the default port of an FTP server
@@ -216,6 +202,14 @@ public class SimpleFTP {
      * Returns the working directory of the FTP server it is connected to.
      */
     public synchronized String pwd() throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("PWD");
         String dir = null;
         String response = readLine();
@@ -230,6 +224,14 @@ public class SimpleFTP {
     }
     
     public synchronized boolean exists(String file) throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("SIZE " + file);
         String response = readLine();
         return (!response.startsWith("550 "));
@@ -239,6 +241,14 @@ public class SimpleFTP {
      * Changes permissions on  remote file
      */   
     public synchronized boolean chmod(String perms, String file) throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("SITE CHMOD " + perms + " " + file);
         String response = readLine();
         Log.v("simpleftp-logger", "chmod response: " + response);
@@ -250,6 +260,14 @@ public class SimpleFTP {
      * Changes the working directory (like cd). Returns true if successful.
      */   
     public synchronized boolean cwd(String dir) throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("CWD " + dir);
         String response = readLine();
         Log.v("simpleftp=logger","cwd response: " + response);
@@ -264,6 +282,14 @@ public class SimpleFTP {
      * at the client end.
      */
     public synchronized boolean stor(File file) throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         if (file.isDirectory()) {
             throw new IOException("SimpleFTP cannot upload a directory.");
         }
@@ -281,7 +307,14 @@ public class SimpleFTP {
      * at the client end.
      */
     public synchronized boolean stor(InputStream inputStream, String filename) throws IOException {
-
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         BufferedInputStream input = new BufferedInputStream(inputStream);
         
         sendLine("PASV");
@@ -335,6 +368,14 @@ public class SimpleFTP {
 
     public synchronized boolean get(FileOutputStream outputStream, String filename) throws IOException
     {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
     	BufferedOutputStream output = new BufferedOutputStream(outputStream);
         
         sendLine("PASV");
@@ -393,6 +434,14 @@ public class SimpleFTP {
      */
     public synchronized int size(String filename) throws IOException
     {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
     	 sendLine("SIZE " + filename);
          String response = readLine();
          if(!response.startsWith("213 "))
@@ -403,9 +452,41 @@ public class SimpleFTP {
     }
     
     /**
+     * Provides the last remote date
+     * @return
+     * @throws IOException
+     */
+    public synchronized String getModificationTime(String filename) throws IOException
+    {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
+    	 sendLine("MDTM " + filename);
+         String response = readLine();
+         if(!response.startsWith("213 "))
+         {
+        	 throw new IOException("Failure when requesting the last modification time. response: " + response);
+         }
+         return response.substring(4);
+    }
+    
+    /**
      * Enter binary mode for sending binary files.
      */
     public synchronized boolean bin() throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("TYPE I");
         String response = readLine();
         return (response.startsWith("200 "));
@@ -419,6 +500,14 @@ public class SimpleFTP {
      * other binary data, as ASCII mode is likely to corrupt them.
      */
     public synchronized boolean ascii() throws IOException {
+    	if(!connected)
+    	{
+    		throw new IOException("Server not connected");
+    	}
+    	if(!login)
+    	{
+    		throw new IOException("Not logged in");
+    	}
         sendLine("TYPE A");
         String response = readLine();
         return (response.startsWith("200 "));

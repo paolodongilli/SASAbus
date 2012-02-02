@@ -26,6 +26,8 @@
 package it.sasabz.android.sasabus;
 
 
+import it.sasabz.android.sasabus.classes.SimpleFTP;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,9 +35,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-
-import org.apache.commons.net.ftp.FTPClient;
-import org.jibble.simpleftp.SimpleFTP;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -121,29 +120,16 @@ public class FileRetriever  {
 					res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 			
 			// download the file
-			OutputStream output = new FileOutputStream(dbZIPFile);
+			FileOutputStream output = new FileOutputStream(dbZIPFile);
 			
 			try 
 			{
-				String [] filelist = null;
-				String string = "";
-				if(filelist != null)
-				{
-					Log.v("download", "anz files: " + filelist.length);
-					for(int i = 0; i< filelist.length; ++ i)
-					{
-						string += (filelist[i] + " --|-- ");
-					}
-					Log.v("download", string);
-				}
-				Log.v("Download", ftp.pwd());
-				//ftp.retrieveFile("/" + dbZipFileName, output);
+				ftp.get(output, dbZIPFile.getName());
 			} 
 			catch (IOException e) 
 			{
 				e.printStackTrace();
-				Log.v("Download", "Datei konnte nicht gedownloadet werden");
-				System.exit(-1);
+				return false;
 			}
 			finally
 			{
@@ -156,6 +142,7 @@ public class FileRetriever  {
 				catch (Exception e)
 				{
 					e.printStackTrace();
+					return false;
 				}
 			}
 			
@@ -184,37 +171,37 @@ public class FileRetriever  {
 			progressDialog.setCancelable(false);
 
 			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-			//ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+			ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 
 			
 			
 			// this will be useful so that you can show a typical 0-100%
 			// progress bar
-			//lenghtOfFile = conn.getContentLength();
 
 			output = new FileOutputStream(this.md5File);
 			
-//			try {
-//				ftp.retrieveFile("/" + md5FileName, output);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				Log.v("Download", "Datei konnte nicht gedownloadet werden");
-//			}
-//			finally
-//			{
-//				try
-//				{
-//					ftp.disconnect();
-//					output.flush();
-//					output.close();
-//
-//				}
-//				catch (Exception e)
-//				{
-//					e.printStackTrace();
-//				}
-//			}
-			// download the file
+			try {
+				ftp.get(output, md5FileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+			finally
+			{
+				try
+				{
+					ftp.disconnect();
+					output.flush();
+					output.close();
+
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+			}
+
 			
 
 			
@@ -222,7 +209,7 @@ public class FileRetriever  {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.v("Download", "Datei konnte nicht gedownloadet werden");
+			return false;
 		}
 		
 		wakeLock.release();
