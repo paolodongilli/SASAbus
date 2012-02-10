@@ -173,6 +173,11 @@ public class PassaggioList {
 	}
 	
 	
+	public static Cursor getCursorPercorso(int passaggio, String destinazione, String partenza)
+	{
+		
+	}
+	
 	public static Cursor getCursor(int linea,String destinazione,String partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
