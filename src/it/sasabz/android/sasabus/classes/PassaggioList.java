@@ -175,7 +175,7 @@ public class PassaggioList {
 	
 	public static Cursor getCursorPercorso(int passaggio, String destinazione, String partenza)
 	{
-		
+		return null;
 	}
 	
 	public static Cursor getCursor(int linea,String destinazione,String partenza)
