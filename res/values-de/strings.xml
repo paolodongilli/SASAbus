@@ -15,7 +15,7 @@
 <string name="menu_test">Das ist ein Test</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
-<string name="copyright">Copyright (C) %1$s Paolo Dongilli</string>
+<string name="copyright">Copyright (C) %1$s Paolo Dongilli and SASAbus Team</string>
 <string name="disclaimer">Die Veröffentlichung von SASAbus erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.</string>
 <string name="gpl">Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe &lt;http://www.gnu.org/licenses/&gt;.</string>
 <string name="sd_card_not_mounted">External storage (SD-Card) not mounted.</string>
