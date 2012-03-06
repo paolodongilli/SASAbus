@@ -29,9 +29,10 @@ import android.view.Menu;
 public class SharedMenu {
 
 	public static final int MENU_ABOUT = 0;
-	public static final int MENU_TEST = 1;
+	public static final int MENU_CREDITS = 1;
 	
 	public static void onCreateOptionsMenu(Menu menu) {
     	menu.add(0, MENU_ABOUT, 0, R.string.menu_about);
+    	menu.add(0, MENU_CREDITS, 1, R.string.menu_credits);
     }
 }

@@ -108,6 +108,11 @@ public class SelectPalinaActivity extends ListActivity {
 				new About(this).show();
 				return true;
 			}
+			case SharedMenu.MENU_CREDITS:
+			{
+				new Credits(this).show();
+				return true;
+			}	
 		}
 		return false;
 	}
