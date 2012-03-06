@@ -236,10 +236,9 @@ public class CheckDatabaseActivity extends ListActivity {
 				
 
 				lastRemoteMod = ftp.getModificationTime(md5FileName);
-				Log.v("lastRemoteDate", "" + lastRemoteMod.length());
 				ftp.disconnect();
-				lastRemoteModDate = new SimpleDateFormat("yyyyMMDDhhmmss").parse(lastRemoteMod);
-
+				SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
+				lastRemoteModDate = simple.parse(lastRemoteMod);
 				// check if date of remote file is after date of local file
 				update = lastRemoteModDate.after(lastLocalModDate);
 

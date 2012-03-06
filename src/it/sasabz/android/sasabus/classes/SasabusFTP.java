@@ -475,7 +475,9 @@ public class SasabusFTP {
     		throw new IOException("Not logged in");
     	}
     	 sendLine("MDTM " + filename);
+    	 Log.v("FTP", "SEND: MDTM " + filename);
          String response = readLine();
+         Log.v("FTP", "RESPONSE : " + response);
          if(!response.startsWith("213 "))
          {
         	 throw new IOException("Failure when requesting the last modification time. response: " + response);
