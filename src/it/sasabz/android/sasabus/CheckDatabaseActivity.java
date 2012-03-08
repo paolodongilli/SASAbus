@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * CheckDatabaseActivity.java
  *
  * Created: Jan 16, 2011 11:41:06 AM
  *
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -39,6 +39,7 @@ import java.util.Locale;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.FileRetriever;
+import it.sasabz.android.sasabus.classes.MD5Utils;
 import it.sasabz.android.sasabus.classes.SasabusFTP;
 
 import android.app.AlertDialog;

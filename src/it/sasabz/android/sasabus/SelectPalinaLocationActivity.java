@@ -5,7 +5,7 @@
  * 
  * Created: 14.12.2011 19:04:53
  * 
- * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  * 
  *
  * This file is part of SasaBus.
@@ -28,10 +28,13 @@ package it.sasabz.android.sasabus;
 
 import java.util.Vector;
 
+import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -49,16 +52,14 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-/**
- * @author Markus Windegger (markus@mowiso.com)
- *
- */
+
 public class SelectPalinaLocationActivity extends ListActivity{
 
-    
+    //this variabled are to manage the GPS-GPSListener
 	private LocationManager mlocManager = null;
 	private LocationListener mlocListener = null;
 	
+	//saves the list of busstops for this object
 	private Vector <DBObject> list = null;
 	
 
@@ -67,11 +68,20 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mlocListener = new MyLocationListener();
 		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
     }
     
+    /**
+     * this class provides simply simply the GPS-location update.
+     * when the GPS performs an update, this listener is being removed
+     * and the list_view where filled with the busstops which were into the 
+     * given radius
+     * @author Markus Windegger (markus@mowiso.com)
+     *
+     */
     public class MyLocationListener implements LocationListener
 	{
 		@Override
@@ -83,24 +93,28 @@ public class SelectPalinaLocationActivity extends ListActivity{
 		@Override
 		public void onProviderDisabled(String provider)
 		{
-			Toast.makeText(SASAbus.getContext(), R.string.gps_disabled, Toast.LENGTH_SHORT).show();
+			Toast.makeText(SASAbus.getContext(), R.string.gps_disabled, Toast.LENGTH_LONG).show();
 			gpsDisabled();
 		}
 
 		@Override
-		public void onProviderEnabled(String provider)
-		{
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras)
-		{
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
 			
 		}
 
 	}
     
+    /**
+     * if the GPS is disabled, then this method starts a new activity automatically
+     * in the normal mode
+     */
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
@@ -108,12 +122,21 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	startActivity(selBac);
     }
     
+    /**
+     * this method is called when the GPS has recieved an update
+     * @param loc is the location recieved with the GPS update
+     */
     public void onLocationRecieve(Location loc) {
     	mlocManager.removeUpdates(mlocListener);
         setContentView(R.layout.select_palina_layout);
         fillData(loc);
     }
 
+    /**
+     * this method returns a pointer to the object itself. it is used
+     * by the internal class MyLocationListener
+     * @return this Activity
+     */
     public Activity getMe()
     {
     	return this;
@@ -135,7 +158,11 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	startActivity(selDest);
     }
 
-    
+    /**
+     * this method fills the list_view with the possible departures when recieving the
+     * location from the GPS
+     * @param loc is the location with the newest position
+     */
     private void fillData(Location loc) {
     	 list = PalinaList.getListGPS(loc);
          MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
@@ -152,6 +179,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
         return true;
     }
     
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

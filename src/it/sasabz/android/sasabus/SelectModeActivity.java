@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * SelectModeActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -29,12 +29,15 @@ import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -75,6 +78,10 @@ public class SelectModeActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int mode = list.get(position).getId();
+        /*
+         * If the mode select is the first one, then starts the gps-mode,
+         * otherwise with the mode 2 selected, starts the normal mode
+         */
         if(mode == 1)
         {
         	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
@@ -87,22 +94,28 @@ public class SelectModeActivity extends ListActivity {
         }
     }
     
+    /**
+     * fills the list_view with the modes which are offered to the user
+     */
     public void fillData()
     {
     	list = new Vector<DBObject>();
     	
+    	//GPS Mode
     	Modus mod = new Modus();
     	mod.setId(1);
     	mod.setString_de("GPS Modus");
     	mod.setString_it("Modo GPS");
     	list.add(mod);
     	
+    	//Normal Mode
     	mod = new Modus();
     	mod.setId(2);
     	mod.setString_de("Normaler Modus");
     	mod.setString_it("Modo normale");
     	list.add(mod);
     	
+    	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
         setListAdapter(modi);
     }
@@ -115,7 +128,7 @@ public class SelectModeActivity extends ListActivity {
         return true;
     }
 
-    
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) 
 		{

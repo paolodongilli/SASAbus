@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * SelectDestinazioneActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -25,30 +25,19 @@
 
 package it.sasabz.android.sasabus;
 
-import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.Palina;
-import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.classes.*;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 public class SelectDestinazioneActivity extends ListActivity {
 
-
-    private static final int MENU_ABOUT = 0;
     
     private Vector<DBObject> list = null;
     
@@ -89,7 +78,9 @@ public class SelectDestinazioneActivity extends ListActivity {
     	
     }
 
-    
+    /**
+     * this method gets a list of palinas and fills the list_view with the palinas
+     */
     private void fillData() {
     	list = PalinaList.getListLinea(linea);
     	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
@@ -104,6 +95,7 @@ public class SelectDestinazioneActivity extends ListActivity {
         return true;
     }
     
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

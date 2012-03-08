@@ -22,8 +22,10 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
 
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.string;
 import android.view.Menu;
 
 public class SharedMenu {

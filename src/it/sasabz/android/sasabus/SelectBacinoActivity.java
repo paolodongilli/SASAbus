@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * SelectBacinoActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -29,10 +29,13 @@ import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -78,6 +81,9 @@ public class SelectBacinoActivity extends ListActivity {
     	startActivity(selLinea);
     }
     
+    /**
+     * this method gets the list from the bacinolist and then fills the list with the bacini
+     */
     private void fillData() {
         list = BacinoList.getList();
         MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.bacino, R.layout.bacini_row, list);
@@ -87,11 +93,11 @@ public class SelectBacinoActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
         SharedMenu.onCreateOptionsMenu(menu);
         return true;
     }
 
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) 
 		{

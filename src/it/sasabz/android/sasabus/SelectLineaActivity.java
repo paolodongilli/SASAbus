@@ -4,7 +4,7 @@
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -29,10 +29,13 @@ import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -47,11 +50,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class SelectLineaActivity extends ListActivity {
-
 	
-	
-    private static final int MENU_ABOUT = 0;
-
+	//this vector provides the list of lines in the entire activity
     private Vector<DBObject> list = null;
     
     public SelectLineaActivity() {
@@ -87,6 +87,10 @@ public class SelectLineaActivity extends ListActivity {
     	startActivity(selDest);
     }
     
+    /**
+     * this method fills the list_view with the lines which are situated into the bacino bacino
+     * @param bacino is the bacino chosen for getting the lines
+     */
     private void fillData(int bacino) {
     	list = LineaList.getList(bacino);
     	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
@@ -96,11 +100,11 @@ public class SelectLineaActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
         SharedMenu.onCreateOptionsMenu(menu);
         return true;
     }
     
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

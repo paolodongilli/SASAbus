@@ -32,8 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.PassaggioList;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;

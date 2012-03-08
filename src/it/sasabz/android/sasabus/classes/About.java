@@ -1,10 +1,10 @@
 /**
  *
- * Credits.java
+ * About.java
  * 
- * Created: Mar 06, 2012 17:36:09 AM
+ * Created: Jun 21, 2011 12:56:09 AM
  * 
- * Copyright (C) 2012 Markus Windegger <markus@mowiso.com>
+ * Copyright (C) 2011 Paolo Dongilli and MArkus Windegger
  *
  * This file is part of SasaBus.
 
@@ -22,7 +22,10 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
+
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.string;
 
 import java.util.Calendar;
 
@@ -33,11 +36,12 @@ import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-public class Credits {
+
+public class About {
 
 	private Activity mActivity;
 
-	public Credits(Activity context) {
+	public About(Activity context) {
 		mActivity = context;
 	}
 
@@ -56,9 +60,23 @@ public class Credits {
 		PackageInfo versionInfo = getPackageInfo();
 
 		// Show the About Dialog
-		String title = mActivity.getString(R.string.menu_credits);
+		String title = mActivity.getString(R.string.app_name) + " v"
+				+ versionInfo.versionName;
 
-		String message = mActivity.getString(R.string.credits_text);
+		String currentYear = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+		String firstCopyrightYear = mActivity.getString(R.string.copyright_first_year);
+		String copyrightYearInterval = firstCopyrightYear;
+		if (currentYear.compareTo(firstCopyrightYear) > 0) {
+			copyrightYearInterval = firstCopyrightYear + "-" + currentYear;
+		}
+		// Includes the updates as well so users know what changed.
+		String message =
+		// mActivity.getString(R.string.updates) +
+		String.format(mActivity.getString(R.string.copyright),copyrightYearInterval) + "\n\n"
+				+ mActivity.getString(R.string.supp_email) + "\n\n"
+				+ mActivity.getString(R.string.license) + "\n\n"
+				+ mActivity.getString(R.string.disclaimer) + "\n\n"
+				+ mActivity.getString(R.string.gpl);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
 				.setTitle(title).setMessage(message).setPositiveButton(

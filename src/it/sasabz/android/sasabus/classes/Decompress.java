@@ -36,9 +36,9 @@ public class Decompress {
 	private String location;
 
 	/**
-	 * this constructor creates a 
-	 * @param zipFile
-	 * @param location
+	 * this constructor creates a object of the type Decompress
+	 * @param zipFile is the name of the zip-file to decompress
+	 * @param location is the location where the zip-file is located on the sd-card
 	 */
 	public Decompress(String zipFile, String location) {
 		this.zipFile = zipFile;
@@ -47,6 +47,9 @@ public class Decompress {
 		dirChecker("");
 	}
 
+	/**
+	 * this method unzips the zip-file.
+	 */
 	public void unzip() {
 		try {
 			FileInputStream fin = new FileInputStream(zipFile);
@@ -76,6 +79,11 @@ public class Decompress {
 		}
 	}
 
+	/**
+	 * this method checks if the target directory exists, else
+	 * the directory were created
+	 * @param dir is the name of the directory to check/create
+	 */
 	private void dirChecker(String dir) {
 		File f = new File(location + dir);
 

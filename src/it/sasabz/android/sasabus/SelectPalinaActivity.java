@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * SelectPalinaActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -28,10 +28,13 @@ package it.sasabz.android.sasabus;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -43,10 +46,13 @@ import android.widget.ListView;
 
 public class SelectPalinaActivity extends ListActivity {
 
-    private static final int MENU_ABOUT = 0;
+	//saves the linea global for this object
     private int linea;
     
+    //saves the destination global for this object
     private String destinazione;
+    
+    //saves the list of possible parture bus-stops for this object
     private Vector<DBObject> list;
 
     
@@ -86,7 +92,9 @@ public class SelectPalinaActivity extends ListActivity {
     	startActivity(showOrario);
     }
 
-    
+    /**
+     * this method fills the possible parture busstops into the list_view
+     */
     private void fillData() {
         list = PalinaList.getListDestinazione(destinazione, linea);
         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
@@ -101,6 +109,7 @@ public class SelectPalinaActivity extends ListActivity {
         return true;
     }
     
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

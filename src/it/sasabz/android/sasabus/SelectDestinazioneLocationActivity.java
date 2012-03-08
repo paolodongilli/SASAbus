@@ -5,7 +5,7 @@
  * 
  * Created: 23.01.2012 17:37:02
  * 
- * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  * 
  *
  * This file is part of SasaBus.
@@ -30,10 +30,13 @@ import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -48,11 +51,10 @@ import android.widget.TextView;
 
 public class SelectDestinazioneLocationActivity extends ListActivity {
 
-
-    private static final int MENU_ABOUT = 0;
-    
+	//this is the list which provides the locations in the entire activity
     private Vector<DBObject> list = null;
     
+    //this string "saves" the chosen parture-busstop 
     private String partenza;
     
     public SelectDestinazioneLocationActivity() {
@@ -90,7 +92,9 @@ public class SelectDestinazioneLocationActivity extends ListActivity {
     	
     }
 
-    
+    /**
+     * This method gets a list of possible parture bus-stops and fill them into the list-view
+     */
     private void fillData() {
     	list = PalinaList.getListPartenza(partenza);
     	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
@@ -100,11 +104,11 @@ public class SelectDestinazioneLocationActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
         SharedMenu.onCreateOptionsMenu(menu);
         return true;
     }
     
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

@@ -4,7 +4,7 @@
  * 
  * Created: Jun 15, 2011 12:22:35 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -22,7 +22,7 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -38,6 +38,11 @@ import android.util.Log;
 
 public class MD5Utils {
 	
+	/**
+	 * this method calculate the md5-checksum of a file
+	 * @param file is the filename for calculating the md5-checksum
+	 * @return the calculated md5-checksum, if an error occurs null
+	 */
 	public static String calculateMD5(File file) {
 		try {
 			InputStream fin = new FileInputStream(file);
@@ -67,6 +72,13 @@ public class MD5Utils {
 		}
 	}
 
+	/**
+	 * this method extracts the md5-checksum from the file,
+	 * in other word reads the first 32 characters from a file which
+	 * is the md5-checksum precalculated 
+	 * @param file is the name of the file to extract the md5-checksum
+	 * @return the extracted checksum
+	 */
 	public static String extractMD5(File file) {
 		FileInputStream fis = null;
 		DataInputStream dis = null;
@@ -92,6 +104,13 @@ public class MD5Utils {
 		return md5;
 	}
 	
+	/**
+	 * This method checks if the md5-checksums in the md5 file is the same of
+	 * the checksum calculated from the file
+	 * @param file is the fale to calculated the checksum
+	 * @param md5File is the md5-checksum calculated on the server
+	 * @return a boolean if the checksums are equal
+	 */
 	public static boolean checksumOK(File file, File md5File) {
 		String md5 = extractMD5(md5File);
 		String calculatedMD5 = calculateMD5(file);
