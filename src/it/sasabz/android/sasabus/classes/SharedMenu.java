@@ -4,7 +4,7 @@
  * 
  * Created: Jun 20, 2011 9:47:34 PM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 

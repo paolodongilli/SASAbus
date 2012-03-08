@@ -4,7 +4,7 @@
  * 
  * Created: Feb 3, 2011 09:04:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -35,7 +35,7 @@ import android.view.MotionEvent;
 
 public class SplashScreen extends Activity {
     protected boolean active = true;
-    protected int splashTime = 2000;
+    protected int splashTime = 1000;
     
     /** Called when the activity is first created. */
     @Override

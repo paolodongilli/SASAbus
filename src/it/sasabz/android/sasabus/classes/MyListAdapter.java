@@ -50,6 +50,14 @@ public class MyListAdapter extends BaseAdapter {
 	private final int layoutId;
 	private final int whereId;
 
+	
+	/**
+	 * This constructor creates an object with the following parameters
+	 * @param context is the context to work with
+	 * @param whereId is the resource id where to place the string
+	 * @param layoutId is the layout id of the list_view
+	 * @param list is the list of dbobject's which are to putting in the list_view
+	 */
 	public MyListAdapter(Context context, int whereId, int layoutId, Vector<DBObject> list) {
 		this.context = context;
 		this.list = list;

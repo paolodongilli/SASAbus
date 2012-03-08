@@ -1,10 +1,10 @@
 /**
  *
- * SelectLineaActivity.java
+ * ShowOrariActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -52,11 +52,14 @@ import android.widget.SimpleCursorAdapter;
 public class ShowOrariActivity extends ListActivity {
 
 
-	private static final int MENU_ABOUT = 0;
 	
+	//provides the linea for this object
 	private int linea;
 
+	//provides the destination for this object
 	private String destinazione;
+		
+	//provides the departure in this object
 	private String  partenza;
 
 	public ShowOrariActivity() {
@@ -92,6 +95,10 @@ public class ShowOrariActivity extends ListActivity {
 		super.onResume();
 	}
 
+	/**
+	 * fills the listview with the timetable
+	 * @return a cursor to the time table
+	 */
 	private Cursor fillData() {
 		// Get next 'orari' from the database and create the item list
 		Cursor c = PassaggioList.getCursor(linea, destinazione, partenza);
@@ -132,6 +139,12 @@ public class ShowOrariActivity extends ListActivity {
 		return c;
 	}
 
+	/**
+	 * This method gets the next departure time and returns the
+	 * index of this element
+	 * @param c is the cursor to the list_view
+	 * @return the index of the next departure time
+	 */
 	private int getNextTimePosition(Cursor c) {
 		int count = c.getCount();
 		if (count == 0) {
@@ -181,6 +194,7 @@ public class ShowOrariActivity extends ListActivity {
 		return true;
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case SharedMenu.MENU_ABOUT:

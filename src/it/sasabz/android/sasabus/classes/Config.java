@@ -31,10 +31,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 
-/**
- * @author Markus Windegger (markus@mowiso.com)
- *
- */
+
 public class Config {
 	
 	
@@ -42,7 +39,10 @@ public class Config {
 	public static final double DELTA = 0.002;
 	
 	
-	//For testing the aplication in other cities (differences to bolzano entered here)
+	/*
+	 * For testing the aplication in other cities for example
+	 * Pisa (differences to bolzano entered here) 
+	 */
 	public static final double DELTALAT = 0;
 	public static final double DELTALONG = 0;
 	

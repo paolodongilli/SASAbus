@@ -4,7 +4,7 @@
  * 
  * Created: Mar 06, 2012 17:36:09 AM
  * 
- * Copyright (C) 2012 Markus Windegger <markus@mowiso.com>
+ * Copyright (C) 2012 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 

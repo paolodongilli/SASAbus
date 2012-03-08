@@ -4,7 +4,7 @@
  * 
  * Created: Feb 2, 2012 16:20:40 PM
  * 
- * Copyright (C) 2011 Markus Windegger
+ * Copyright (C) 2012 Markus Windegger
  * 
  *
  * This file is part of SasaBus.

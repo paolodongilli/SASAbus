@@ -96,8 +96,11 @@ public class PalinaList {
 	}
 	
 	/**
-	 * Returns a list of all bus-stops avaiable in the database
-	 * @return a vector of all bus-stops in the database
+	 * Returns a list of all bus-stops avaiable in the database which were connected via linea to
+	 * the destination destinazione
+	 * @param destinazione is the name of the destination busstop
+	 * @param linea is the number of the line tho connect 
+	 * @return a vector of all bus-stops in the database which were connected via linea to the destination
 	 */
 	public static Vector <DBObject> getListDestinazione(String destinazione, int linea)
 	{	
@@ -139,6 +142,9 @@ public class PalinaList {
 		return list;
 	}
 	
+	/**
+	 * 
+	 */
 	public static Vector<DBObject> getListGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -166,7 +172,11 @@ public class PalinaList {
 	
 	
 	
-	
+	/**
+	 * This method returns a cursor to the list of busstops, which are located into the calculated radius
+	 * @param loc is the location where i am
+	 * @return a cursor to the list of the possible busstops near me
+	 */
 	public static Cursor getCursorGPS (Location loc)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -180,7 +190,12 @@ public class PalinaList {
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) order by nome_de", args);
 	}
 
-	
+	/**
+	 * This methode gives me all the busstops which are connected to the departure busstop called partenza
+	 * (all possible destinations)
+	 * @param partenza is the departure busstop
+	 * @return a list of all possible destinations without changing bus
+	 */
 	public static Vector <DBObject> getListPartenza(String partenza)
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());

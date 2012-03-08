@@ -1,10 +1,10 @@
 /**
  *
- * ExternalStorageReadOnlyHelper.java
+ * DBFileManager.java
  * 
  * Created: Jan 16, 2011 5:30:31 PM
  * 
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -32,10 +32,16 @@ import android.util.AndroidRuntimeException;
 
 public abstract class DBFileManager {
 	
+	//providing name, file and sqlite databases
 	private SQLiteDatabase database;
 	private File dbFile;
 	private SQLiteDatabase.CursorFactory factory;
 
+	/**
+	 * this constructor creates an object with the dbFileName and the actual factory
+	 * @param dbFileName is the name of the db file
+	 * @param factory is the actual factory of the activity
+	 */
 	public DBFileManager(String dbFileName,
 			SQLiteDatabase.CursorFactory factory) {
 		this.factory = factory;
@@ -52,10 +58,17 @@ public abstract class DBFileManager {
 		this.dbFile = new File(appDbDir, dbFileName);
 	}
 
+	/**
+	 * This method controls if the db-file exists
+	 * @return true if the file exists, false otherwise
+	 */
 	public boolean databaseFileExists() {
 		return dbFile.exists();
 	}
 
+	/**
+	 * this method opens the db-file read_only
+	 */
 	private void open() {
 		if (dbFile.exists()) {
 			database = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(),
@@ -63,6 +76,9 @@ public abstract class DBFileManager {
 		}
 	}
 
+	/**
+	 * this synchronized method closes the database
+	 */
 	public synchronized void close() {
 		if (database != null) {
 			database.close();
@@ -70,10 +86,19 @@ public abstract class DBFileManager {
 		}
 	}
 
+	/**
+	 * this synchronized method returns a read_only database
+	 * @return this database
+	 */
 	public synchronized SQLiteDatabase getReadableDatabase() {
 		return getDatabase();
 	}
 
+	/**
+	 * this method controls if the databases is already opened, otherwise
+	 * the database getting opened and then returned
+	 * @return the open, readonly database
+	 */
 	private SQLiteDatabase getDatabase() {
 		if (database == null) {
 			open();

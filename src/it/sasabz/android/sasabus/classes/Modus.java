@@ -35,28 +35,36 @@ public class Modus extends DBObject {
 	private String string_de = null;
 	private String string_it = null;
 	
-	public void setString_de(String string_de)
-	{
-		this.string_de = string_de;
-	}
-	
-	public String getString_de()
-	{
+	/**
+	 * @return the string_de
+	 */
+	public String getString_de() {
 		return string_de;
 	}
-	
-	
-	public void setString_it(String string_it)
-	{
-		this.string_it = string_it;
+
+	/**
+	 * @param string_de the string_de to set
+	 */
+	public void setString_de(String string_de) {
+		this.string_de = string_de;
 	}
-	
-	public String getString_it()
-	{
+
+	/**
+	 * @return the string_it
+	 */
+	public String getString_it() {
 		return string_it;
 	}
-	
-	
+
+	/**
+	 * @param string_it the string_it to set
+	 */
+	public void setString_it(String string_it) {
+		this.string_it = string_it;
+	}
+
+
+	@Override
 	public String toString()
 	{
 		if(Locale.getDefault().equals(Locale.GERMANY))

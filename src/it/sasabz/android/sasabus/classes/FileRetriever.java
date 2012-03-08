@@ -4,7 +4,7 @@
  *
  * Created: Feb 3, 2011 10:59:34 PM
  *
- * Copyright (C) 2011 Paolo Dongilli
+ * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -53,8 +53,14 @@ import android.os.PowerManager;
 import android.util.Log;
 
 
-// FileDownloader is my own delegate class that performs the
-// actual downloading and is initialized with the source URL.
+
+/**
+ * FileDownloader is my own delegate class that performs the
+ * actual downloading and is initialized with the source URL.
+ * 
+ * @author Paolo Dongilli and Markus Windegger
+ *
+ */
 public class FileRetriever  extends AsyncTask<String, String, String>{
 	private static final String TAG = "FileRetriever";
 	
@@ -71,6 +77,15 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 	private Activity activity;
 	private transient int originalRequestedOrientation;
 
+	/**
+	 * This constructor takes an activity, a dbZipFile to store the 
+	 * downloaded Zip file, a dbFile to store the unzipped database and at least
+	 * a md5File to save the downloaded md5File
+	 * @param activity is the actual activity
+	 * @param dbZIPFile is the file to save the downloaded zip file
+	 * @param dbFile is the file to save the unzipped db file
+	 * @param md5File is the file to save the downloaded md5 file
+	 */
 	public FileRetriever(Activity activity, File dbZIPFile, File dbFile,
 			File md5File) {
 		super();
@@ -80,6 +95,7 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 		this.activity = activity;
 		this.res = activity.getResources();
 
+		//getting the power manager from the activity
 		PowerManager pm = (PowerManager) this.activity
 				.getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
@@ -89,8 +105,6 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 		activity
 		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		wakeLock.acquire();
-		
-		
 	}
 
 	
@@ -133,6 +147,7 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 			progressDialog.setMessage(res.getString(R.string.downloading_db));
 			progressDialog.setCancelable(false);
 			
+			//creating a new ftp connection
 			SasabusFTP ftp = new SasabusFTP();
 			
 			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)), 
@@ -227,6 +242,10 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 		return "ok";
 	}
 
+	/**
+	 * publishes the updated progress to the progressbar
+	 * @param proc is the updated progress
+	 */
 	public void publishProgress(String proc) {
 		super.publishProgress(proc);
 	}

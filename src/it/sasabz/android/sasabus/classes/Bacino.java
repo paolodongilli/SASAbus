@@ -60,7 +60,11 @@ public class Bacino extends DBObject {
 		this.bacino_de = bacino_de;
 	}
 	
-	
+	/**
+	 * This constructor creates an object from the database provinding directly the
+	 * default cursor from the database
+	 * @param c is the cursor on an object from the database
+	 */
 	public Bacino(Cursor c)
 	{
 		super(c.getInt(c.getColumnIndex("id")));
@@ -96,6 +100,10 @@ public class Bacino extends DBObject {
 		this.bacino_it = bacino_it;
 	}
 
+	/**
+	 * This method returns the string related to the locale settet on the smartphone 
+	 */
+	@Override
 	public String toString()
 	{
 		if(Locale.getDefault().equals(Locale.GERMANY))

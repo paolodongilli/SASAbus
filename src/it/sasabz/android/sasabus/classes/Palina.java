@@ -163,6 +163,7 @@ public class Palina extends DBObject{
 		this.latitude = latitude;
 	}
 	
+	@Override
 	public String toString()
 	{
 		if(Locale.getDefault().equals(Locale.GERMANY))

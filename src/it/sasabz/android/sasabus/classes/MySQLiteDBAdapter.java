@@ -35,6 +35,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+
+/**
+ * This is an object designed with the idea of the singleton pattern
+ * @author Markus Windegger (markus@mowiso.com)
+ *
+ */
 public class MySQLiteDBAdapter {
 	
 	private static SQLiteDatabase sqlite= null;
@@ -43,9 +49,9 @@ public class MySQLiteDBAdapter {
 	private static int transactioncounter = 0;
 	
 	/**
-	 * 
-	 * @param context
-	 * @return
+	 * This static method allows you tu getting an instance of the current database
+	 * @param context is the actual context
+	 * @return an opened and read only sqlite database
 	 */
 	public static MySQLiteDBAdapter getInstance(Context context)
 	{
@@ -66,17 +72,29 @@ public class MySQLiteDBAdapter {
 		return new MySQLiteDBAdapter();
 	}
 	
+	/**
+	 * makes the constructor private and so the only way to obtain an instance 
+	 * of the object is the static method getInstance
+	 */
 	private MySQLiteDBAdapter()
 	{
 		//do nothing
 	}
 	
+	/**
+	 * This method closes all open MySQLiteDBAdapter
+	 */
 	public static void closeAll() 
 	{
 			helper.close();
 			sqlite.close();
 	}
 	
+	/**
+	 * This method "closes" the database. There is a counter, because when there are more then one
+	 * instance, then the db will not be closed, it will be decrementet only the counter.
+	 * when the counter is 0, then the database will be closed
+	 */
 	public void close() 
 	{
 		--counteropen;
@@ -87,6 +105,12 @@ public class MySQLiteDBAdapter {
 		}
 	}
 	
+	/**
+	 * This method allows you to query the database
+	 * @param query is the query to send
+	 * @param args are the arguments for the query
+	 * @return a cursor to the result set of the query
+	 */
 	public Cursor rawQuery(String query, String[] args)
 	{
 		Cursor ret = null;
@@ -94,12 +118,26 @@ public class MySQLiteDBAdapter {
 		return ret;
 	}
 	
+	/**
+	 * to work with transaction management, and to provide it with the idea
+	 * of the singleton pattern, there is a counter that counts the transactions open
+	 * because the database can handle only one transaction open per dbfile
+	 */
 	public void beginTransaction()
 	{
+		if(transactioncounter == 0)
+		{
+			sqlite.beginTransaction();
+		}
 		transactioncounter++;
-		sqlite.beginTransaction();
+		
 	}
 	
+	/**
+	 * to work with transaction management, and to provide it with the idea
+	 * of the singleton pattern, there is a counter that counts the transactions closed
+	 * because the database can handle only one transaction open per dbfile
+	 */
 	public void endTransaction()
 	{
 		transactioncounter--;

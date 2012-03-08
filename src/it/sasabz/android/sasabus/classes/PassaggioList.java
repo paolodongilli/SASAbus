@@ -76,18 +76,17 @@ public class PassaggioList {
 	
 	/**
 	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
-	 * linea in the city bacino. 
+	 * linea in the city bacino from a departure to a destination
 	 * @param bacino is the city of the line
 	 * @param linea is the bus line
 	 * @param destinazione is the destination
-	 * @param palina is the busstop
-	 * @param progressivo is the number of the palina/busstop in the line
+	 * @param partenza is the departure busstop
 	 * @return a vector with all the times when the bus pass the bus stop
 	 */
-	public static Vector <DBObject> getList(String bacino, String linea,String destinazione,String palina)
+	public static Vector <DBObject> getList(String bacino, String linea,String destinazione,String partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {bacino, linea, destinazione, palina};
+		String[] selectionArgs = {bacino, linea, destinazione, partenza};
     	Cursor cursor = null;
     	try
     	{
@@ -134,7 +133,14 @@ public class PassaggioList {
 		return list;
 	}
 	
-	
+	/**
+	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
+	 * linea in the city bacino from a departure to a destination
+	 * @param linea is the bus line
+	 * @param destinazione is the destination
+	 * @param partenza is the departure busstop
+	 * @return a cursor with all the times when the bus pass the bus stop
+	 */
 	public static Cursor getCursor(int linea,String destinazione,int partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -172,12 +178,26 @@ public class PassaggioList {
 		return c;
 	}
 	
-	
-	public static Cursor getCursorPercorso(int passaggio, String destinazione, String partenza)
+	/**
+	 * This is a prorotype for the next version to add a function to see the way which the bus is driving
+	 * @param passaggio is the id of the selected departure time in the timetable
+	 * @param destinazione is the destination
+	 * @return a list of times which were ordered by the progressivo and rappresent the way from departure 
+	 * to destination
+	 */
+	public static Cursor getCursorPercorso(int passaggio, String destinazione)
 	{
 		return null;
 	}
 	
+	/**
+	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
+	 * linea in the city bacino from a departure to a destination
+	 * @param linea is the bus line
+	 * @param destinazione is the destination
+	 * @param partenza is the departure busstop
+	 * @return a cursor with all the times when the bus pass the bus stop
+	 */
 	public static Cursor getCursor(int linea,String destinazione,String partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());

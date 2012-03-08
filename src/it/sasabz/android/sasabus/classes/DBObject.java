@@ -33,13 +33,20 @@ public class DBObject {
 	 */
 	private int id = 0;
 
-	
+	/**
+	 * This constructor creates an dbobject
+	 */
 	public DBObject()
 	{
 		super();
 		//Nothing to do
 	}
 	
+	/**
+	 * this creates an dbobject with an identifyer, which is the id
+	 * provided in the database 
+	 * @param identifyer is the identifyer from the database
+	 */
 	public DBObject(int identifyer)
 	{
 		super();

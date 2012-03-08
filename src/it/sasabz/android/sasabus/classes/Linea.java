@@ -57,7 +57,11 @@ public class Linea extends DBObject {
 		super();
 	}
 	
-	
+	/**
+	 * this constructor creates an object from the standtart
+	 * cursor to an entry in the database
+	 * @param c is the curser to an entry in the database
+	 */
 	public Linea(Cursor c)
 	{
 		super(c.getInt(c.getColumnIndex("id")));
@@ -167,7 +171,7 @@ public class Linea extends DBObject {
 		this.differenza = differenza;
 	}
 	
-	
+	@Override
 	public boolean equals(Object object)
 	{
 		if(!(object instanceof Linea))
@@ -179,6 +183,10 @@ public class Linea extends DBObject {
 	}
 	
 	
+	/**
+	 * This toString takes control of the localized output
+	 */
+	@Override
 	public String toString()
 	{
 		String diff = "";

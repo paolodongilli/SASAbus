@@ -45,11 +45,22 @@ public class Passaggio extends DBObject {
 	private Time orario = null;
 
 	
+	/**
+	 * Creates a new Object
+	 */
 	public Passaggio()
 	{
 		super();
 	}
 	
+	/**
+	 * Creates a new Object with the following parameters:
+	 * @param id is the identifyer in the database
+	 * @param idPalina is the id-code of the busstop
+	 * @param codCorsa is the id-code of the course
+	 * @param progressivo is the progressiv number which are course-related (1-2-3-4....etc)
+	 * @param orario is the time when the bus starts from this busstop
+	 */
 	public Passaggio(int id, int idPalina, int codCorsa, int progressivo, Time orario)
 	{
 		super(id);
@@ -59,6 +70,14 @@ public class Passaggio extends DBObject {
 		this.setOrario(orario);
 	}
 	
+	/**
+	 * Creates a new Object with the following parameters:
+	 * @param id is the identifyer in the database
+	 * @param idPalina is the id-code of the busstop
+	 * @param codCorsa is the id-code of the course
+	 * @param progressivo is the progressiv number which are course-related (1-2-3-4....etc)
+	 * @param orario is the time when the bus starts from this busstop
+	 */
 	public Passaggio(int id, int idPalina, int codCorsa, int progressivo, String orario)
 	{
 		super(id);
@@ -68,6 +87,10 @@ public class Passaggio extends DBObject {
 		this.setOrario(orario);
 	}
 	
+	/**
+	 * This constructor creates an object from the coursor on an object in the database
+	 * @param c is the cursor to an object of the database
+	 */
 	public Passaggio(Cursor c)
 	{
 		super(c.getInt(c.getColumnIndex("_id")));
@@ -76,10 +99,6 @@ public class Passaggio extends DBObject {
 		this.setProgressivo(c.getInt(c.getColumnIndex("progressivo")));
 		this.setOrario(c.getString(c.getColumnIndex("orario")));
 	}
-	
-	
-	
-	
 	
 	/**
 	 * @return the idPalina

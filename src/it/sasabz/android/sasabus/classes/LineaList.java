@@ -127,14 +127,20 @@ public class LineaList {
 	}
 	
 	/**
-	 * This method returns a vector of linee which are located in the bacino 
-	 * @param bacino is the bacino where we are searching the linee 
-	 * @return a vector of DBObjects with the linee located in the bacino
+	 * This method returns a vector of linee which are connecting the departure with the destination 
+	 * @param destinazione is the name of the destination busstop
+	 * @param partenza is the name of the departure busstop
+	 * @return a vector of DBObjects which are lines which connect the departure with the destination
 	 */
 	public static Vector <DBObject> getListDestPart(String destinazione, String partenza)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {destinazione, partenza};
+		/*
+		 * This is a special query to provide the cases which the departure is 
+		 * yesterday near midnight and the destination is now, for showing non-negativ
+		 * differences
+		 */
 		Cursor cursor = sqlite.rawQuery("select distinct l.id as id, l.num_lin as num_lin, l.abbrev as abbrev, " +
 				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de, " +
 				"case when " +
