@@ -22,7 +22,7 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
 
 import android.util.Log;
 import java.io.File;
@@ -35,6 +35,11 @@ public class Decompress {
 	private String zipFile;
 	private String location;
 
+	/**
+	 * this constructor creates a 
+	 * @param zipFile
+	 * @param location
+	 */
 	public Decompress(String zipFile, String location) {
 		this.zipFile = zipFile;
 		this.location = location;

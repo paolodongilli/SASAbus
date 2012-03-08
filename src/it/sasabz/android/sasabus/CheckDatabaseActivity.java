@@ -88,7 +88,7 @@ public class CheckDatabaseActivity extends ListActivity {
 		String dbZIPFileName = dbFileName + ".zip";
 		String md5FileName = dbFileName + ".md5";
 
-
+		//Check if the sd-card is mounted
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			throw new AndroidRuntimeException(getResources().getString(R.string.sd_card_not_mounted));
@@ -100,6 +100,7 @@ public class CheckDatabaseActivity extends ListActivity {
 			dbDir.mkdirs();
 		}
 
+		//creates all files (zip, md5 and db)
 		File dbFile = new File(dbDir, dbFileName);
 		File dbZIPFile = new File(dbDir, dbZIPFileName);
 		File md5File = new File(dbDir, md5FileName);
@@ -108,7 +109,11 @@ public class CheckDatabaseActivity extends ListActivity {
 		boolean download = false;
 		if (dbFile.exists() && md5File.exists())
 		{
-
+			/*
+			 * checks if the md5-sum are equal
+			 * if not, directly download is true, whe have to do an update
+			 * else we are checking other properties to download new database or not
+			 */
 			if (!MD5Utils.checksumOK(dbFile, md5File))
 			{
 				download = true;
@@ -161,15 +166,18 @@ public class CheckDatabaseActivity extends ListActivity {
 			{
 				if(config.getDbDownloadAttempts() < 2) 
 				{
+					//download the new Database and the new md5-file with the FileRetriver
 					new FileRetriever(this, dbZIPFile, dbFile, md5File).execute(dbZIPFileName, md5FileName);
 				}
 				else 
 				{
+					//if no db-update is available will be shown a message
 					showDialog(NO_DB_UPDATE_AVAILABLE);
 				}
 			} 
 			else 
 			{
+				//shows dialog for no network connection
 				showDialog(NO_NETWORK_CONNECTION);
 			}
 		}
@@ -178,10 +186,12 @@ public class CheckDatabaseActivity extends ListActivity {
 			// verify files
 			if (!MD5Utils.checksumOK(dbFile, md5File)) 
 			{
+				//shows dialog that occours a md5-error
 				showDialog(MD5_ERROR_DIALOG);
 			}
 			else 
 			{
+				//shows dialog that download success
 				showDialog(DOWNLOAD_SUCCESS_DIALOG);
 			}
 		}
@@ -213,6 +223,15 @@ public class CheckDatabaseActivity extends ListActivity {
 		return builder.create();
 	}
 
+	
+	/**
+	 * this method controlls if a db-update is available.
+	 * downloads the md5-file of the server and checks if the md5 is a 
+	 * new md5. when it is, then returns true, else false
+	 * @param md5FileName is the filename of the md5-file on the server
+	 * @param dbDir is the local dirname to put into the downloaded md5 
+	 * @return a boolean to determinate if an update is necessary or not
+	 */
 	private boolean dbUpdateAvailable(String md5FileName, File dbDir) {
 		boolean update = false;
 		File md5File = new File(dbDir, md5FileName);
@@ -226,15 +245,20 @@ public class CheckDatabaseActivity extends ListActivity {
 		// and update remains false
 		if (haveNetworkConnection()) 
 		{
-
 			try 
 			{
+				/*
+				 * istanziate an object of the SasabusFTP, which provides the most
+				 * important methods for connecting and getting files from an FTP 
+				 * server
+				 */
 				SasabusFTP ftp = new SasabusFTP();
 				
+				//connecting and login to the server
 				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
 				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 				
-
+				//
 				lastRemoteMod = ftp.getModificationTime(md5FileName);
 				ftp.disconnect();
 				SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -264,6 +288,11 @@ public class CheckDatabaseActivity extends ListActivity {
 		return update;
 	}
 
+	/**
+	 * this method is creating an allert message
+	 * @param msg is the message to be shown in the alert dialog
+	 * @return an Dialog to show
+	 */
 	private final Dialog createErrorAlertDialog(int msg) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setTitle(R.string.a_given_string);
@@ -280,11 +309,14 @@ public class CheckDatabaseActivity extends ListActivity {
 	}
 
 	
-	
+	/**
+	 * Called when all downloads were successful and we have to start the
+	 * first user activity called SelectModeActivity
+	 */
 	private void startActivity() {
 		finish();
-		Intent selBacino = new Intent(this, SelectModeActivity.class);
-		startActivity(selBacino);
+		Intent modeselect = new Intent(this, SelectModeActivity.class);
+		startActivity(modeselect);
 	}
 
 	@Override
@@ -305,6 +337,10 @@ public class CheckDatabaseActivity extends ListActivity {
 		}
 	}
 
+	/**
+	 * this method checks if a networkconnection is active or not
+	 * @return boolean if the network is reachable or not
+	 */
 	private boolean haveNetworkConnection() 
 	{
 		boolean haveConnectedWifi = false;
@@ -313,9 +349,11 @@ public class CheckDatabaseActivity extends ListActivity {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
 		for (NetworkInfo ni : netInfo) {
+			//testing WIFI connection
 			if (ni.getTypeName().equalsIgnoreCase("WIFI"))
 				if (ni.isConnected())
 					haveConnectedWifi = true;
+			//testing GPRS/EDGE/UMTS/HDSPA/HUSPA/LTE connection
 			if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
 				if (ni.isConnected())
 					haveConnectedMobile = true;

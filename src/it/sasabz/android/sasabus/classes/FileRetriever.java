@@ -27,7 +27,6 @@ package it.sasabz.android.sasabus.classes;
 
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
-import it.sasabz.android.sasabus.Decompress;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.string;
 
