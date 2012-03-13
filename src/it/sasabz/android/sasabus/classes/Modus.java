@@ -67,7 +67,7 @@ public class Modus extends DBObject {
 	@Override
 	public String toString()
 	{
-		if(Locale.getDefault().equals(Locale.GERMANY))
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
 			return this.getString_de();
 		}

@@ -194,7 +194,7 @@ public class Linea extends DBObject {
 		{
 			diff = " (" + this.differenza + " min.)";
 		}
-		if(Locale.getDefault().equals(Locale.GERMANY))
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
 			return this.getNum_lin() + diff;
 		}

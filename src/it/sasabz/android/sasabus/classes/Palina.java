@@ -166,7 +166,7 @@ public class Palina extends DBObject{
 	@Override
 	public String toString()
 	{
-		if(Locale.getDefault().equals(Locale.GERMANY))
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
 			return this.getName_de();
 		}
