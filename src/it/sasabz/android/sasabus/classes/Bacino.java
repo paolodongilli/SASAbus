@@ -101,7 +101,7 @@ public class Bacino extends DBObject {
 	}
 
 	/**
-	 * This method returns the string related to the locale settet on the smartphone 
+	 * This method returns the string related to the locale set on the smartphone 
 	 */
 	@Override
 	public String toString()

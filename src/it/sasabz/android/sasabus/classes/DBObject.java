@@ -43,14 +43,14 @@ public class DBObject {
 	}
 	
 	/**
-	 * this creates an dbobject with an identifyer, which is the id
+	 * this creates a dbobject with an identifier, which is the id
 	 * provided in the database 
-	 * @param identifyer is the identifyer from the database
+	 * @param identifier is the identifier from the database
 	 */
-	public DBObject(int identifyer)
+	public DBObject(int identifier)
 	{
 		super();
-		setId(identifyer);
+		setId(identifier);
 	}
 	
 	/**

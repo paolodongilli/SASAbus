@@ -5,9 +5,9 @@
 <string name="select_bacino">Scegli la città</string>
 <string name="select_linea">Scegli la linea</string>
 <string name="select_destination">Scegli la destinazione</string>
-<string name="select_palina">Scegli la fermata</string>
+<string name="select_palina">Scegli la fermata (salita)</string>
 <string name="show_orari">Visualizzazione orari</string>
-<string name="select_mode">Scegli il modo</string>
+<string name="select_mode">Scegli la modalità</string>
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
 <string name="db_ok">Il database %1$s è pronto.</string>
@@ -15,7 +15,7 @@
 <string name="menu_test">E\' una cosa beta</string>
 <string name="updates">... lista updates ...</string>
 <string name="license">SASAbus è software libero: puoi ridistribuirlo e/o modificarlo secondo i termini della licenza GNU General Public License, così come è pubblicata dalla Free Software Foundation nella versione 3 o superiore.</string>
-<string name="copyright">Copyright (C) %1$s Paolo Dongilli and SASAbus Team</string>
+<string name="copyright">Copyright (C) %1$s SASAbus Team</string>
 <string name="supp_email">Per Supporto, contatto, suggerimenti semplicemente mandare una mail a: android@sasabz.it</string>
 <string name="disclaimer">SASAbus è distribuito nella speranza che possa essere utile, ma viene fornito "così com'è", senza alcun tipo di garanzia, né esplicita, né implicita; ciò comprende, senza limitarsi a questo, la garanzia implicita di COMMERCIABILITÀ e UTILIZZABILITÀ PER UN PARTICOLARE SCOPO. Fare riferimento alla GNU General Public License per ulteriori dettagli. </string>
 <string name="gpl">Questo programma deve essere distribuito assieme ad una copia della GNU General Public License; in caso contrario, fare riferimento a &lt;http://www.gnu.org/licenses/&gt;.</string>
@@ -26,10 +26,10 @@
 <string name="unzipping_db">Sto decomprimendo il database SASAbus ...</string>
 <string name="no_db_update_available">Aggiornamento degli orari non disponibile. Si prega di riprovare più tardi.</string>
 <string name="gps_disabled_title">GPS disattivato</string>
-<string name="gps_disabled">Dati GPS non disponibile. Si prega di ativare il GPS o di riprovare più tardi.</string>
+<string name="gps_disabled">Dati GPS non disponibili. Si prega di attivare il GPS o di riprovare più tardi.</string>
 <string name="gps_modus">Modo GPS</string>
 <string name="normal_modus">Modo normale</string>
 <string name="error_title">Errore Download</string>
 <string name="error_text">Si e\' verificato un errore durante il download. Si prega di provare piu tardi o di contattare l\' autore dell\' applicazione</string>
-<string name="credits_text">A questa versione di SASAbus hanno partecipato\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
+<string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
 </resources>
