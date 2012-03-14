@@ -41,6 +41,7 @@ import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,20 +100,21 @@ public class SelectModeActivity extends ListActivity {
      */
     public void fillData()
     {
+    	
+    	Resources res = this.getResources();
+    	
     	list = new Vector<DBObject>();
     	
     	//GPS Mode
     	Modus mod = new Modus();
     	mod.setId(1);
-    	mod.setString_de("GPS Modus");
-    	mod.setString_it("Modo GPS");
+    	mod.setString(res.getString(R.string.mode_gps));
     	list.add(mod);
     	
     	//Normal Mode
     	mod = new Modus();
     	mod.setId(2);
-    	mod.setString_de("Normaler Modus");
-    	mod.setString_it("Modo normale");
+    	mod.setString(res.getString(R.string.mode_normal));
     	list.add(mod);
     	
     	//fill the modes into the list_view
