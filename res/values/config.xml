@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">SASAbus</string>
     <string name="copyright_first_year">2011</string>
-    <string name="version">v0.2.0</string>   <!-- Temporary solution to call version in splash.xml-->
+    <string name="version">v0.2.1</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>
     <!--
     <string name="repository_url">http://www.mowiso.com/</string>
