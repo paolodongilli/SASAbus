@@ -93,9 +93,9 @@ public class Passaggio extends DBObject {
 	 */
 	public Passaggio(Cursor c)
 	{
-		super(c.getInt(c.getColumnIndex("_id")));
-		this.setIdPalina(c.getInt(c.getColumnIndex("id_palina")));
-		this.setCodCorsa(c.getInt(c.getColumnIndex("codice_corsa")));
+		super(c.getInt(c.getColumnIndex("id")));
+		this.setIdPalina(c.getInt(c.getColumnIndex("palinaId")));
+		this.setCodCorsa(c.getInt(c.getColumnIndex("corsaId")));
 		this.setProgressivo(c.getInt(c.getColumnIndex("progressivo")));
 		this.setOrario(c.getString(c.getColumnIndex("orario")));
 	}
@@ -162,8 +162,29 @@ public class Passaggio extends DBObject {
 	public void setOrario(String orario) {
 		this.orario = new Time();
 		String [] split = orario.split(":");
-		this.orario.set(Integer.parseInt(split[2]), Integer.parseInt(split[1]), Integer.parseInt(split[0]), 0, 0, 0);
+		this.orario.setToNow();
+		this.orario.minute = Integer.parseInt(split[1]);
+		this.orario.hour = Integer.parseInt(split[0]);
 	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Passaggio)
+		{
+			return false;
+		}
+		Passaggio pas = (Passaggio)o;
+		if(pas.getIdPalina() != this.getIdPalina() || pas.getCodCorsa() != this.getCodCorsa() || pas.getOrario().equals(this.getOrario()))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public String toString()
+	{
+		return this.getOrario().format("%H:%M");
+	}
 	
 }

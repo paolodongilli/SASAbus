@@ -1,10 +1,10 @@
 /**
  *
- * ShowOrariActivity.java
+ * ShowWayActivity.java
  * 
- * Created: Jan 16, 2011 11:41:06 AM
+ * Created: Mar 15, 2012 22:40:06 PM
  * 
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
+ * Copyright (C) 2012 Paolo Dongilli and Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -37,6 +37,7 @@ import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
+import it.sasabz.android.sasabus.classes.MyWayListAdapter;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
@@ -56,23 +57,20 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-public class ShowOrariActivity extends ListActivity {
+public class ShowWayActivity extends ListActivity {
 
 
 	
 	//provides the linea for this object
-	private int linea;
+	private int orarioId;
 
 	//provides the destination for this object
 	private String destinazione;
-		
-	//provides the departure in this object
-	private String  partenza;
 	
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
 
-	public ShowOrariActivity() {
+	public ShowWayActivity() {
 	}
 
 	/** Called with the activity is first created. */
@@ -80,16 +78,14 @@ public class ShowOrariActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		linea = 0;
+		orarioId = 0;
 		destinazione = null;
-		partenza = null;
 		if (extras != null) {
-			linea = extras.getInt("linea");
+			orarioId = extras.getInt("orario");
 			destinazione = extras.getString("destinazione");
-			partenza = extras.getString("palina");
 		}
 
-		setContentView(R.layout.show_orari_layout);
+		setContentView(R.layout.way_layout);
 		fillData();
 		int pos = getNextTimePosition(list);
 		if (pos != -1) {
@@ -105,22 +101,14 @@ public class ShowOrariActivity extends ListActivity {
 		super.onResume();
 	}
 
-	 @Override
-	    protected void onListItemClick(ListView l, View v, int position, long id) {
-	        int orario = list.get(position).getId();
-	    	Intent showWay = new Intent(this, ShowWayActivity.class);
-	    	showWay.putExtra("orario", orario);
-	    	showWay.putExtra("destinazione", destinazione);
-	    	startActivity(showWay);
-	    }
-	
 	/**
 	 * fills the listview with the timetable
 	 * @return a cursor to the time table
 	 */
 	private void fillData() {
-		list = PassaggioList.getVector(linea, destinazione, partenza);
-        MyPassaggioListAdapter paline = new MyPassaggioListAdapter(this, R.id.palina, R.layout.paline_row, list);
+		list = PassaggioList.getVectorWay(orarioId, destinazione);
+		int[] wherelist = {R.id.palina, R.id.orario};
+        MyWayListAdapter paline = new MyWayListAdapter(this, wherelist, R.layout.way_row, list);
         setListAdapter(paline);
 	}
 
@@ -160,6 +148,7 @@ public class ShowOrariActivity extends ListActivity {
 					i++;
 				}
 			}
+			Log.v("HMMM", "POSITION" + i);
 			return i;
 		}
 	}

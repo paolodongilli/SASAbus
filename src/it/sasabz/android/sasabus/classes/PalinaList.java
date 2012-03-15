@@ -235,4 +235,29 @@ public class PalinaList {
 		return list;
 	}
 	
+	
+	/**
+	 * Returns a Palina identified by the given id
+	 * @param id is the id of the Palina in the database
+	 * @return the palina with the id id from the database, NULL if the query was empty
+	 */
+	public static Palina getById(int id)
+	{	
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(id)};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+				"from paline p " +
+				"where id = ? " +
+				"LIMIT 1";
+		Cursor cursor = sqlite.rawQuery(query, args);
+		Palina element = null;
+		if(cursor.moveToFirst())
+		{
+			element = new Palina(cursor);
+		}
+		cursor.close();
+		sqlite.close();
+		return element;
+	}
+	
 }

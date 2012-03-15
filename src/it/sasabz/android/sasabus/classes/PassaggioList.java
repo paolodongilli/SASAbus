@@ -172,23 +172,127 @@ public class PassaggioList {
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			Log.v("EXITSQL", "fehler bei rawQuery");
 			System.exit(-1);
 		}
 		return c;
 	}
 	
 	/**
-	 * This is a prorotype for the next version to add a function to see the way which the bus is driving
+	 * This method returns a list to see the way which the bus is driving
 	 * @param passaggio is the id of the selected departure time in the timetable
 	 * @param destinazione is the destination
 	 * @return a list of times which were ordered by the progressivo and rappresent the way from departure 
 	 * to destination
 	 */
-	public static Cursor getCursorPercorso(int passaggio, String destinazione)
+	public static Vector<Passaggio> getVectorWay(int passaggio, String destinazione)
 	{
-		return null;
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] selectionArgs = {Integer.toString(passaggio), destinazione};
+		Cursor c = null;
+		Vector<Passaggio> list = null;
+		String query = "select o1.id as id, strftime('%H:%M',o1.orario) as orario, o1.palinaId as palinaId, " +
+				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
+				"from "+
+				"(select progressivo, orario, corsaId, id, palinaId "+
+				"from orarii "+
+				"where id = ?" +
+				") as o2, " +
+				"orarii as o1, " +
+				"(select progressivo , corsaId "+
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +
+				")) as o3 " +
+				"where o1.corsaId = o2.corsaId " +
+				"and o2.corsaId = o3.corsaId " +
+				"and o1.progressivo >= o2.progressivo " +
+				"and o1.progressivo <= o3.progressivo " +
+				"order by o1.progressivo";
+		try
+		{
+			c = sqlite.rawQuery(query, selectionArgs);
+			if(c.moveToFirst())
+			{
+				list = new Vector<Passaggio>();
+				do {
+					Passaggio element = new Passaggio(c);
+					if(!list.contains(element))
+					{
+						list.add(element);
+					}
+				} while(c.moveToNext());
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			Log.v("EXITSQL", "fehler bei rawQuery");
+			System.exit(-1);
+		}
+		return list;
 	}
+	
+	
+	/**
+	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
+	 * linea in the city bacino from a departure to a destination
+	 * @param linea is the bus line
+	 * @param destinazione is the destination
+	 * @param partenza is the departure busstop
+	 * @return a cursor with all the times when the bus pass the bus stop
+	 */
+	public static Vector <Passaggio> getVector(int linea,String destinazione,String partenza)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione};
+		Cursor c = null;
+		Vector<Passaggio> list = null;
+		String query = "select o1.id as id,  strftime('%H:%M',o1.orario) as orario, o1.palinaId as palinaId, " +
+				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
+				"from "+
+				"(select id, lineaId " +
+				"from corse "+
+				"where "+
+				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' "+ 
+				"and lineaId = ?) as c, " +
+				"(select progressivo, orario, corsaId, id, palinaId "+
+				"from orarii "+
+				"where palinaId IN (" +
+				"select id from paline where nome_de = ? " +
+				")) as o1, " +
+				"(select progressivo , corsaId "+
+				"from orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +
+				")) as o2 " +
+				"where c.id = o1.corsaId " +
+				"and c.id = o2.corsaId " +
+				"and o1.progressivo < o2.progressivo " +
+				"order by o1.orario";
+		try
+		{
+			c = sqlite.rawQuery(query, selectionArgs);
+			if(c.moveToFirst())
+			{
+				list = new Vector<Passaggio>();
+				do {
+					Passaggio element = new Passaggio(c);
+					if(!list.contains(element))
+					{
+						list.add(element);
+					}
+				} while(c.moveToNext());
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			Log.v("EXITSQL", "fehler bei rawQuery");
+			System.exit(-1);
+		}
+		return list;
+	}
+	
 	
 	/**
 	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
