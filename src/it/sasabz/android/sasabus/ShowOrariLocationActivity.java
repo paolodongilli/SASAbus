@@ -35,6 +35,8 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
+import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 import it.sasabz.android.sasabus.classes.SharedMenu;
 
@@ -43,10 +45,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class ShowOrariLocationActivity extends ListActivity {
@@ -59,6 +64,8 @@ public class ShowOrariLocationActivity extends ListActivity {
 		
 		//provides the departure in this object
 		private String  partenza;
+		
+		private Vector<Passaggio> list;
 
 	public ShowOrariLocationActivity() {
 	}
@@ -76,15 +83,26 @@ public class ShowOrariLocationActivity extends ListActivity {
 			destinazione = extras.getString("destinazione");
 			partenza = extras.getString("partenza");
 		}
-
+		
 		setContentView(R.layout.show_orari_layout);
-		Cursor c = fillData();
-		int pos = getNextTimePosition(c);
+		fillData();
+		int pos = getNextTimePosition(list);
 		if (pos != -1) {
 			getListView().setSelection(pos);
 		}
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		int orario = list.get(position).getId();
+		Intent showWay = new Intent(this, ShowWayActivity.class);
+		showWay.putExtra("orario", orario);
+		showWay.putExtra("destinazione", destinazione);
+		startActivity(showWay);
+	}
+	
+	
+	
 	/**
 	 * Called when the activity is about to start interacting with the user.
 	 */
@@ -98,44 +116,10 @@ public class ShowOrariLocationActivity extends ListActivity {
 	 * this method fills a list_view with the timetable
 	 * @return a Cursor to the time table
 	 */
-	private Cursor fillData() {
-		// Get next 'orari' from the database and create the item list
-		Cursor c = PassaggioList.getCursor(linea, destinazione, partenza);
-		startManagingCursor(c);
-		String[] from = new String[] { "_id" };
-		int[] to = new int[] { R.id.orario };
-
-		// Now create an array adapter and set it to display using our row
-		SimpleCursorAdapter orari = new SimpleCursorAdapter(this,
-				R.layout.orari_row, c, from, to) {
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				final View row = super.getView(position, convertView, parent);
-				Cursor c = getCursor();
-				c.moveToPosition(position);
-				// get current time
-				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-				Calendar cal = Calendar.getInstance();
-				try {
-					Date currentTime = timeFormat.parse(timeFormat.format(cal
-							.getTime()));
-					Date sasaTime = timeFormat.parse(c.getString(0));
-					if (sasaTime.after(currentTime))
-						row.setBackgroundColor(Color.rgb(0, 70, 0));
-					else if (sasaTime.before(currentTime))
-						row.setBackgroundColor(Color.rgb(70, 0, 0));
-					else
-						row.setBackgroundColor(Color.rgb(255, 125, 33));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return row;
-			}
-		};
-
-		setListAdapter(orari);
-		return c;
+	private void fillData() {
+		list = PassaggioList.getVector(linea, destinazione, partenza);
+		MyPassaggioListAdapter pass = new MyPassaggioListAdapter(this, R.id.orario, R.layout.orari_row, list);
+		setListAdapter(pass);
 	}
 
 	/**
@@ -144,8 +128,8 @@ public class ShowOrariLocationActivity extends ListActivity {
 	 * @param c is the cursor to the list_view
 	 * @return the index of the next departure time
 	 */
-	private int getNextTimePosition(Cursor c) {
-		int count = c.getCount();
+	private int getNextTimePosition(Vector<Passaggio> list) {
+		int count = list.size();
 		if (count == 0) {
 			return -1;
 		} else if (count == 1) {
@@ -154,31 +138,24 @@ public class ShowOrariLocationActivity extends ListActivity {
 			int i = 0;
 			boolean found = false;
 			while (i <= count-2 && !found) {
-				c.moveToPosition(i);
-				SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-				Calendar cal = Calendar.getInstance();
+				Time currentTime = new Time();
+				Time sasaTime = new Time();
+				Time sasaTimeNext = new Time();
+				currentTime.setToNow();
+				sasaTime = list.get(i).getOrario();
+				sasaTimeNext = list.get(i + 1).getOrario();
 
-				Date currentTime;
-				Date sasaTime;
-				Date sasaTimeNext;
-				try {
-					currentTime = timeFormat.parse(timeFormat.format(cal
-							.getTime()));
-					sasaTime = timeFormat.parse(c.getString(0));
-					c.moveToPosition(i + 1);
-					sasaTimeNext = timeFormat.parse(c.getString(0));
-
-					if (sasaTime.after(currentTime)
-							|| sasaTime.equals(currentTime)
-							|| sasaTime.before(currentTime)
-							&& (sasaTimeNext.equals(currentTime) || sasaTimeNext
-									.after(currentTime)))
-						found = true;
-					else
-						i++;
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (sasaTime.after(currentTime)
+						|| sasaTime.equals(currentTime)
+						|| sasaTime.before(currentTime)
+						&& (sasaTimeNext.equals(currentTime) || sasaTimeNext
+								.after(currentTime)))
+				{
+					found = true;
+				}
+				else
+				{
+					i++;
 				}
 			}
 			return i;

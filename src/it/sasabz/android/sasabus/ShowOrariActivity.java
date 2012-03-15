@@ -105,15 +105,15 @@ public class ShowOrariActivity extends ListActivity {
 		super.onResume();
 	}
 
-	 @Override
-	    protected void onListItemClick(ListView l, View v, int position, long id) {
-	        int orario = list.get(position).getId();
-	    	Intent showWay = new Intent(this, ShowWayActivity.class);
-	    	showWay.putExtra("orario", orario);
-	    	showWay.putExtra("destinazione", destinazione);
-	    	startActivity(showWay);
-	    }
-	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		int orario = list.get(position).getId();
+		Intent showWay = new Intent(this, ShowWayActivity.class);
+		showWay.putExtra("orario", orario);
+		showWay.putExtra("destinazione", destinazione);
+		startActivity(showWay);
+	}
+
 	/**
 	 * fills the listview with the timetable
 	 * @return a cursor to the time table
