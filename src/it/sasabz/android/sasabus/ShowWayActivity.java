@@ -148,7 +148,6 @@ public class ShowWayActivity extends ListActivity {
 					i++;
 				}
 			}
-			Log.v("HMMM", "POSITION" + i);
 			return i;
 		}
 	}
