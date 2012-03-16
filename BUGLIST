@@ -1,1 +1,7 @@
--#1 some malfunctions in when time is going over 00:00 and way begins earlier (like 23:58)
+/*
+* This buglist helps to communicate the bugs. A bug is like a ticket, when someone begin to fix a bug, he has to write the name
+* at the end of the line. When the bug is finally fixed, then he can add the date after his name.
+* With this simple file we can add a certain, let me call it "bug management", to make easier the communication between the contributors
+*/
+
+#1 some malfunctions in when time is going over 00:00 and way begins earlier (like 23:58);markus
