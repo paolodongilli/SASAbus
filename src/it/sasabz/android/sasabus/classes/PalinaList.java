@@ -80,7 +80,8 @@ public class PalinaList {
 				"(select id from corse where lineaId = ?) as corse, " +
 				"orarii " +
 				"where orarii.corsaId = corse.id " +
-				"AND orarii.palinaId = paline.id", args);
+				"AND orarii.palinaId = paline.id " +
+				"order by paline.nome_de", args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
@@ -126,7 +127,7 @@ public class PalinaList {
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
 				"and o1.progressivo > o2.progressivo " +
-				"order by o2.progressivo";
+				"order by p.nome_de";
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
@@ -155,7 +156,7 @@ public class PalinaList {
 		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
-				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) DESC", args);
+				" order by (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?)", args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{

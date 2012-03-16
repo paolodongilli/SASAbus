@@ -55,6 +55,7 @@ public class MyPassaggioListAdapter extends BaseAdapter {
 	private final Vector<Passaggio> list;
 	private final int layoutId;
 	private final int whereId;
+	private final int actpos;
 
 	
 	/**
@@ -64,11 +65,12 @@ public class MyPassaggioListAdapter extends BaseAdapter {
 	 * @param layoutId is the layout id of the list_view
 	 * @param list is the list of dbobject's which are to putting in the list_view
 	 */
-	public MyPassaggioListAdapter(Context context, int whereId, int layoutId, Vector<Passaggio> list) {
+	public MyPassaggioListAdapter(Context context, int whereId, int layoutId, Vector<Passaggio> list, int actpos) {
 		this.context = context;
 		this.list = list;
 		this.layoutId = layoutId;
 		this.whereId = whereId;
+		this.actpos = actpos;
 	}
 
 	
@@ -89,20 +91,27 @@ public class MyPassaggioListAdapter extends BaseAdapter {
 			currentTime.setToNow();
 			Time sasaTime = list.get(position).getOrario();
 			textView.setText(list.get(position).getOrario().format("%H:%M"));
-			if (sasaTime.after(currentTime))
+			if (actpos < position)
 			{
 				textView.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
-			else if (sasaTime.before(currentTime))
+			else if (actpos > position)
 			{
 				textView.setBackgroundColor(Color.rgb(70, 0, 0));
+			}
+			else if(sasaTime.before(currentTime))
+			{
+				textView.setBackgroundColor(Color.rgb(70, 0, 0));
+			}
+			else if(sasaTime.after(currentTime))
+			{
+				textView.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
 			else
 			{
 				textView.setBackgroundColor(Color.rgb(255, 125, 33));
 			}
 		}
-		
 		return v;
 	}
 

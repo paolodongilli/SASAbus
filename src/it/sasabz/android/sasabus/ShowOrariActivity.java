@@ -71,6 +71,9 @@ public class ShowOrariActivity extends ListActivity {
 	
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
+	
+	//is the next departure time of the bus
+	private int pos;
 
 	public ShowOrariActivity() {
 	}
@@ -90,8 +93,8 @@ public class ShowOrariActivity extends ListActivity {
 		}
 
 		setContentView(R.layout.show_orari_layout);
+		
 		fillData();
-		int pos = getNextTimePosition(list);
 		if (pos != -1) {
 			getListView().setSelection(pos);
 		}
@@ -120,7 +123,8 @@ public class ShowOrariActivity extends ListActivity {
 	 */
 	private void fillData() {
 		list = PassaggioList.getVector(linea, destinazione, partenza);
-        MyPassaggioListAdapter paline = new MyPassaggioListAdapter(this, R.id.palina, R.layout.paline_row, list);
+		pos = getNextTimePosition(list);
+        MyPassaggioListAdapter paline = new MyPassaggioListAdapter(this, R.id.palina, R.layout.paline_row, list, pos);
         setListAdapter(paline);
 	}
 
