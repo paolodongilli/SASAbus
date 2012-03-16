@@ -55,6 +55,7 @@ public class MyWayListAdapter extends BaseAdapter {
 	private final Vector<Passaggio> list;
 	private final int layoutId;
 	private final int[] whereIdList;
+	private final int actpos;
 
 	
 	/**
@@ -64,11 +65,12 @@ public class MyWayListAdapter extends BaseAdapter {
 	 * @param layoutId is the layout id of the list_view
 	 * @param list is the list of dbobject's which are to putting in the list_view
 	 */
-	public MyWayListAdapter(Context context, int[] whereIdList, int layoutId, Vector<Passaggio> list) {
+	public MyWayListAdapter(Context context, int[] whereIdList, int layoutId, Vector<Passaggio> list, int actPos) {
 		this.context = context;
 		this.list = list;
 		this.layoutId = layoutId;
 		this.whereIdList = whereIdList;
+		this.actpos = actPos;
 	}
 
 	
@@ -91,13 +93,21 @@ public class MyWayListAdapter extends BaseAdapter {
 			Time sasaTime = list.get(position).getOrario();
 			textViewOrario.setText(list.get(position).getOrario().format("%H:%M"));
 			textViewPalina.setText(PalinaList.getById(list.get(position).getIdPalina()).toString());
-			if (sasaTime.after(currentTime))
+			if (actpos < position)
 			{
 				v.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
-			else if (sasaTime.before(currentTime))
+			else if (actpos > position)
 			{
 				v.setBackgroundColor(Color.rgb(70, 0, 0));
+			}
+			else if(sasaTime.before(currentTime))
+			{
+				v.setBackgroundColor(Color.rgb(70, 0, 0));
+			}
+			else if(sasaTime.after(currentTime))
+			{
+				v.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
 			else
 			{

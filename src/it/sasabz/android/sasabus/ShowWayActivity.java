@@ -69,6 +69,12 @@ public class ShowWayActivity extends ListActivity {
 	
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
+	
+	/*
+	 * is the position of the most actual bus-stop, where the bus at
+	 * the moment is when he is in time :)
+	 */
+	private int pos;
 
 	public ShowWayActivity() {
 	}
@@ -87,7 +93,6 @@ public class ShowWayActivity extends ListActivity {
 
 		setContentView(R.layout.way_layout);
 		fillData();
-		int pos = getNextTimePosition(list);
 		if (pos != -1) {
 			getListView().setSelection(pos);
 		}
@@ -107,8 +112,9 @@ public class ShowWayActivity extends ListActivity {
 	 */
 	private void fillData() {
 		list = PassaggioList.getVectorWay(orarioId, destinazione);
+		pos = getNextTimePosition(list);
 		int[] wherelist = {R.id.palina, R.id.orario};
-        MyWayListAdapter paline = new MyWayListAdapter(this, wherelist, R.layout.way_row, list);
+        MyWayListAdapter paline = new MyWayListAdapter(this, wherelist, R.layout.way_row, list, pos);
         setListAdapter(paline);
 	}
 

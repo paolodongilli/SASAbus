@@ -56,16 +56,22 @@ import android.widget.SimpleCursorAdapter;
 
 public class ShowOrariLocationActivity extends ListActivity {
 	
-	//provides the linea for this object
-		private int linea;
+	// provides the linea for this object
+	private int linea;
 
-		//provides the destination for this object
-		private String destinazione;
-		
-		//provides the departure in this object
-		private String  partenza;
-		
-		private Vector<Passaggio> list;
+	// provides the destination for this object
+	private String destinazione;
+
+	// provides the departure in this object
+	private String partenza;
+	/*
+	 * stores all possible parture times from partenza to destinazione with the
+	 * line linea
+	 */
+	private Vector<Passaggio> list;
+
+	// //is the next departure time of the bus
+	private int pos;
 
 	public ShowOrariLocationActivity() {
 	}
@@ -85,8 +91,9 @@ public class ShowOrariLocationActivity extends ListActivity {
 		}
 		
 		setContentView(R.layout.show_orari_layout);
+		
 		fillData();
-		int pos = getNextTimePosition(list);
+		
 		if (pos != -1) {
 			getListView().setSelection(pos);
 		}
@@ -118,7 +125,8 @@ public class ShowOrariLocationActivity extends ListActivity {
 	 */
 	private void fillData() {
 		list = PassaggioList.getVector(linea, destinazione, partenza);
-		MyPassaggioListAdapter pass = new MyPassaggioListAdapter(this, R.id.orario, R.layout.orari_row, list);
+		pos = getNextTimePosition(list);
+		MyPassaggioListAdapter pass = new MyPassaggioListAdapter(this, R.id.orario, R.layout.orari_row, list, pos);
 		setListAdapter(pass);
 	}
 
