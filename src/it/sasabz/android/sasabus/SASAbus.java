@@ -24,9 +24,11 @@
  */
 package it.sasabz.android.sasabus;
 
+import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 
 public class SASAbus extends Application {
     private int dbDownloadAttempts;
@@ -40,6 +42,8 @@ public class SASAbus extends Application {
         setDbDownloadAttempts(0);
         super.onCreate();
         context = this.getApplicationContext();
+        Resources res = context.getResources();
+        Conf.setFilename(res.getString(R.string.conf_file));
     }
 
     @Override

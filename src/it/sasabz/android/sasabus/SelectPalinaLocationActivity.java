@@ -164,7 +164,14 @@ public class SelectPalinaLocationActivity extends ListActivity{
      * @param loc is the location with the newest position
      */
     private void fillData(Location loc) {
-    	 list = PalinaList.getListGPS(loc);
+    	try 
+    	{
+    		list = PalinaList.getListGPS(loc);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
          MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
          mlocManager.removeUpdates(mlocListener);
          setListAdapter(paline);

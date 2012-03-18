@@ -145,14 +145,18 @@ public class PalinaList {
 	/**
 	 * 
 	 */
-	public static Vector<DBObject> getListGPS (Location loc)
+	public static Vector<DBObject> getListGPS (Location loc) throws Exception
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
-		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
-		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
-		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
+		String latitudemin = Double.toString(loc.getLatitude() - Integer.parseInt(Conf.getByName("delta").getValue()) 
+				+ Integer.parseInt(Conf.getByName("delta_lat").getValue()));
+		String longitudemin = Double.toString(loc.getLongitude() - Integer.parseInt(Conf.getByName("delta").getValue()) 
+				+ Integer.parseInt(Conf.getByName("delta_long").getValue()));
+		String latitudemax = Double.toString(loc.getLatitude() + Integer.parseInt(Conf.getByName("delta").getValue()) 
+				+ Integer.parseInt(Conf.getByName("delta_lat").getValue()));
+		String longitudemax = Double.toString(loc.getLongitude() + Integer.parseInt(Conf.getByName("delta").getValue()) 
+				+ Integer.parseInt(Conf.getByName("delta_long").getValue()));
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Conf.getByName("delta").getValue(), Conf.getByName("delta").getValue(), longitudemin, longitudemax, latitudemin, latitudemax};
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) DESC", args);
@@ -171,24 +175,6 @@ public class PalinaList {
 	}
 	
 	
-	
-	/**
-	 * This method returns a cursor to the list of busstops, which are located into the calculated radius
-	 * @param loc is the location where i am
-	 * @return a cursor to the list of the possible busstops near me
-	 */
-	public static Cursor getCursorGPS (Location loc)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
-		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
-		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
-		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
-		return sqlite.rawQuery("Select * from paline where " +
-				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
-				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) order by nome_de", args);
-	}
 
 	/**
 	 * This methode gives me all the busstops which are connected to the departure busstop called partenza

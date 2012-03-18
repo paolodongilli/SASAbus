@@ -32,6 +32,7 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
@@ -65,7 +66,42 @@ public class SelectModeActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_bacino_layout);
-        fillData();
+        Resources res = this.getResources();
+    	
+    	list = new Vector<DBObject>();
+    	
+    	//GPS Mode
+    	Modus mod = new Modus();
+    	mod.setId(1);
+    	mod.setString(res.getString(R.string.mode_gps));
+    	list.add(mod);
+    	
+    	//Normal Mode
+    	mod = new Modus();
+    	mod.setId(2);
+    	mod.setString(res.getString(R.string.mode_normal));
+    	list.add(mod);
+        
+        try
+        {
+        	int mode = Integer.parseInt(Conf.getByName("mode").getValue());
+        	if(mode == 1)
+            {
+            	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
+            	startActivity(selLinea);
+            }
+            if(mode == 2)
+            {
+            	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
+            	startActivity(selLinea);
+            }
+        	
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+        	fillData();
+        }
     }
 
     /**
@@ -100,22 +136,6 @@ public class SelectModeActivity extends ListActivity {
      */
     public void fillData()
     {
-    	
-    	Resources res = this.getResources();
-    	
-    	list = new Vector<DBObject>();
-    	
-    	//GPS Mode
-    	Modus mod = new Modus();
-    	mod.setId(1);
-    	mod.setString(res.getString(R.string.mode_gps));
-    	list.add(mod);
-    	
-    	//Normal Mode
-    	mod = new Modus();
-    	mod.setId(2);
-    	mod.setString(res.getString(R.string.mode_normal));
-    	list.add(mod);
     	
     	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
