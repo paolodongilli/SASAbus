@@ -66,42 +66,8 @@ public class SelectModeActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_bacino_layout);
-        Resources res = this.getResources();
-    	
-    	list = new Vector<DBObject>();
-    	
-    	//GPS Mode
-    	Modus mod = new Modus();
-    	mod.setId(1);
-    	mod.setString(res.getString(R.string.mode_gps));
-    	list.add(mod);
-    	
-    	//Normal Mode
-    	mod = new Modus();
-    	mod.setId(2);
-    	mod.setString(res.getString(R.string.mode_normal));
-    	list.add(mod);
         
-        try
-        {
-        	int mode = Integer.parseInt(Conf.getByName("mode").getValue());
-        	if(mode == 1)
-            {
-            	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-            	startActivity(selLinea);
-            }
-            if(mode == 2)
-            {
-            	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
-            	startActivity(selLinea);
-            }
-        	
-        }
-        catch (Exception e)
-        {
-        	e.printStackTrace();
-        	fillData();
-        }
+        fillData();
     }
 
     /**
@@ -136,7 +102,21 @@ public class SelectModeActivity extends ListActivity {
      */
     public void fillData()
     {
+    	Resources res = this.getResources();
     	
+    	list = new Vector<DBObject>();
+    	
+    	//GPS Mode
+    	Modus mod = new Modus();
+    	mod.setId(1);
+    	mod.setString(res.getString(R.string.mode_gps));
+    	list.add(mod);
+    	
+    	//Normal Mode
+    	mod = new Modus();
+    	mod.setId(2);
+    	mod.setString(res.getString(R.string.mode_normal));
+    	list.add(mod);
     	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
         setListAdapter(modi);
@@ -164,6 +144,12 @@ public class SelectModeActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
+			case SharedMenu.MENU_SETTINGS:
+			{
+				Intent settings = new Intent(this, SettingsActivity.class);
+				startActivity(settings);
+				return true;
+			}
 		}
 		return false;
 	}

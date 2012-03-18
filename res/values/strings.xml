@@ -34,5 +34,6 @@
 <string name="mode_normal">Normal Mode</string>
 <string name="show_way">Show Way</string>
 <string name="weiter">Go!</string>
+<string name="menu_settings">Settings</string>
 </resources>
 

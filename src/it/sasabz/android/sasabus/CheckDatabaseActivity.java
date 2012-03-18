@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.MD5Utils;
@@ -316,8 +317,26 @@ public class CheckDatabaseActivity extends ListActivity {
 	 */
 	private void startActivity() {
 		finish();
-		Intent modeselect = new Intent(this, SelectModeActivity.class);
-		startActivity(modeselect);
+		 try
+	        {
+	        	int mode = Integer.parseInt(Conf.getByName("mode").getValue());
+	        	if(mode == 1)
+	            {
+	            	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
+	            	startActivity(selLinea);
+	            }
+	            if(mode == 2)
+	            {
+	            	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
+	            	startActivity(selLinea);
+	            }
+	        	
+	        }
+		 catch (Exception e)
+		 {
+			 Intent modeselect = new Intent(this, SelectModeActivity.class);
+			 startActivity(modeselect);
+		 }
 	}
 
 	@Override

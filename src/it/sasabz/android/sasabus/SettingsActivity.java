@@ -1,10 +1,12 @@
 /**
+ * 
  *
- * SelectBacinoActivity.java
+ * Settings.java
  * 
- * Created: Jan 16, 2011 11:41:06 AM
+ * Created: 18.03.2012 15:47:29
  * 
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
+ * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
+ * 
  *
  * This file is part of SasaBus.
 
@@ -22,46 +24,53 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-
 package it.sasabz.android.sasabus;
 
-import java.util.Locale;
-import java.util.Vector;
-
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.SharedMenu;
 
+import java.util.Vector;
+
 import android.app.ListActivity;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
-public class SelectBacinoActivity extends ListActivity {
-
-    
-    private Vector<DBObject> list = null;
-    
-    public SelectBacinoActivity() {
-    }
-
-    /** Called with the activity is first created. */
+public class SettingsActivity extends ListActivity
+{
+	
+	private Vector<DBObject> list = null;
+	
+	/** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_bacino_layout);
+        Resources res = this.getResources();
+    	
+    	list = new Vector<DBObject>();
+    	
+    	//GPS Mode
+    	Modus mod = new Modus();
+    	mod.setId(1);
+    	mod.setString(res.getString(R.string.mode_gps));
+    	list.add(mod);
+    	
+    	//Normal Mode
+    	mod = new Modus();
+    	mod.setId(2);
+    	mod.setString(res.getString(R.string.mode_normal));
+    	list.add(mod);
+        
         fillData();
     }
 
@@ -75,25 +84,39 @@ public class SelectBacinoActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        int bacino = list.get(position).getId();
-    	Intent selLinea = new Intent(this, SelectLineaActivity.class);
-    	selLinea.putExtra("bacino", bacino);
-    	startActivity(selLinea);
+        int mode = list.get(position).getId();
+        /*
+         * If the mode select is the first one, then starts the gps-mode,
+         * otherwise with the mode 2 selected, starts the normal mode
+         */
+        if(mode == 1)
+        {
+        	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
+        	startActivity(selLinea);
+        }
+        if(mode == 2)
+        {
+        	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
+        	startActivity(selLinea);
+        }
     }
     
     /**
-     * this method gets the list from the bacinolist and then fills the list with the bacini
+     * fills the list_view with the modes which are offered to the user
      */
-    private void fillData() {
-        list = BacinoList.getList();
-        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.bacino, R.layout.bacini_row, list);
-        setListAdapter(bacini);
+    public void fillData()
+    {
+    	//fill the modes into the list_view
+    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+        setListAdapter(modi);
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        //menu.add(...);  // specific to this activity
         SharedMenu.onCreateOptionsMenu(menu);
+        menu.removeItem(SharedMenu.MENU_SETTINGS);
         return true;
     }
 
@@ -111,12 +134,6 @@ public class SelectBacinoActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
-			{
-				Intent settings = new Intent(this, SettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 		}
 		return false;
 	}

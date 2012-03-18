@@ -199,6 +199,12 @@ public class SelectPalinaLocationActivity extends ListActivity{
 				new Credits(this).show();
 				return true;
 			}	
+			case SharedMenu.MENU_SETTINGS:
+			{
+				Intent settings = new Intent(this, SettingsActivity.class);
+				startActivity(settings);
+				return true;
+			}
 		}
 		return false;
 	}
