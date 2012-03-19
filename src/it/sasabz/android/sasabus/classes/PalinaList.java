@@ -148,15 +148,18 @@ public class PalinaList {
 	public static Vector<DBObject> getListGPS (Location loc) throws Exception
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Integer.parseInt(Conf.getByName("delta").getValue()) 
-				+ Integer.parseInt(Conf.getByName("delta_lat").getValue()));
-		String longitudemin = Double.toString(loc.getLongitude() - Integer.parseInt(Conf.getByName("delta").getValue()) 
-				+ Integer.parseInt(Conf.getByName("delta_long").getValue()));
-		String latitudemax = Double.toString(loc.getLatitude() + Integer.parseInt(Conf.getByName("delta").getValue()) 
-				+ Integer.parseInt(Conf.getByName("delta_lat").getValue()));
-		String longitudemax = Double.toString(loc.getLongitude() + Integer.parseInt(Conf.getByName("delta").getValue()) 
-				+ Integer.parseInt(Conf.getByName("delta_long").getValue()));
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Conf.getByName("delta").getValue(), Conf.getByName("delta").getValue(), longitudemin, longitudemax, latitudemin, latitudemax};
+		/*
+		 * The following values are calculated with the formula 40045km : delta = 360deg : deltadeg
+		 * (40045 is an estimation of the ratio of Earth)
+		 */
+		double deltadegrees = Double.parseDouble(Conf.getByName("delta").getValue()) * 360.0 / 40045.0;
+		double deltalatdeg =  Double.parseDouble(Conf.getByName("delta_lat").getValue()) * 360.0 / 40045.0;
+		double deltalongdeg =  Double.parseDouble(Conf.getByName("delta_long").getValue()) * 360.0 / 40045.0;
+		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees + deltalatdeg);
+		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees + deltalongdeg);
+		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees + deltalatdeg);
+		String longitudemax = Double.toString(loc.getLongitude() + deltadegrees + deltalongdeg);
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(deltadegrees), Double.toString(deltadegrees), longitudemin, longitudemax, latitudemin, latitudemax};
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) DESC", args);

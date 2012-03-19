@@ -35,4 +35,9 @@
 <string name="show_way">Percorso</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
+
+<string name="delta_longitude">calibrazione longitudine</string>
+<string name="delta_latitude">calibratzione latitudine</string>
+<string name="mode">modalitá standard</string>
+<string name="delta">radius in modalitá GPS</string>
 </resources>

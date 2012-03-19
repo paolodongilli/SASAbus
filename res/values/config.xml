@@ -20,8 +20,8 @@
     
 	
 	<string name="conf_delta_name">delta</string>
-	<string name="conf_delta_value">0.002</string>
-	<string name="conf_delta_comment">This is the radius with, when working in GPS mode. 0.002 is ca 200m</string>
+	<string name="conf_delta_value">200</string>
+	<string name="conf_delta_comment">This is the radius when working in GPS mode in meters!</string>
     
     <!-- End of Standardconfigs in the config.xml -->
     <string name="app_name">SASAbus</string>

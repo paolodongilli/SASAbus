@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.security.acl.LastOwnerException;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -237,6 +238,18 @@ public class Conf {
 		liste.put(delta.getName(), delta);
 		
 		Conf.storeConf();
+	}
+	
+	public static Vector<Property> getList()
+	{
+		Enumeration<Property> enumer = Conf.liste.elements();
+		Vector<Property> ret = new Vector<Property>();
+		while(enumer.hasMoreElements())
+		{
+			Property prop = enumer.nextElement();
+			ret.add(prop);
+		}
+		return ret;
 	}
 	
 }

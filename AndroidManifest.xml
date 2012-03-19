@@ -99,6 +99,12 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
+		<activity android:name="SetSettingsActivity" android:label="@string/menu_settings">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
 	</application>
 	<activity android:name="SelectLineaActivity" android:label="@string/select_linea"></activity>
 </manifest>

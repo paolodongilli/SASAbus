@@ -32,8 +32,6 @@ import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.MyPropertyListAdapter;
-import it.sasabz.android.sasabus.classes.Property;
 import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import java.util.Vector;
@@ -47,16 +45,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-public class SettingsActivity extends ListActivity
+public class SetSettingsActivity extends ListActivity
 {
 	
-	private Vector<Property> list = null;
+	private Vector<DBObject> list = null;
 	
 	/** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.show_settings_layout);
+        setContentView(R.layout.select_bacino_layout);
+        Resources res = this.getResources();
+    	
+    	list = new Vector<DBObject>();
+    	
+    	//GPS Mode
+    	Modus mod = new Modus();
+    	mod.setId(1);
+    	mod.setString(res.getString(R.string.mode_gps));
+    	list.add(mod);
+    	
+    	//Normal Mode
+    	mod = new Modus();
+    	mod.setId(2);
+    	mod.setString(res.getString(R.string.mode_normal));
+    	list.add(mod);
         
         fillData();
     }
@@ -71,7 +84,21 @@ public class SettingsActivity extends ListActivity
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        
+        int mode = list.get(position).getId();
+        /*
+         * If the mode select is the first one, then starts the gps-mode,
+         * otherwise with the mode 2 selected, starts the normal mode
+         */
+        if(mode == 1)
+        {
+        	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
+        	startActivity(selLinea);
+        }
+        if(mode == 2)
+        {
+        	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
+        	startActivity(selLinea);
+        }
     }
     
     /**
@@ -80,10 +107,8 @@ public class SettingsActivity extends ListActivity
     public void fillData()
     {
     	//fill the modes into the list_view
-    	int[] where = {R.id.name, R.id.value};
-    	list = Conf.getList();
-    	MyPropertyListAdapter settings = new MyPropertyListAdapter(this, where, R.layout.settings_row, list);
-        setListAdapter(settings);
+    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+        setListAdapter(modi);
     }
     
     @Override
