@@ -162,6 +162,8 @@ public class PalinaList {
 		
 		double deltadegrees = Double.parseDouble(shared.getString("radius_gps", "0.0018"));
 		
+		Log.v("preferences", "delta: " + deltadegrees);
+		
 		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees);
 		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees);
 		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees);
