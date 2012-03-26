@@ -36,9 +36,13 @@
 <string name="menu_settings">Einstellungen</string>
 <string name="menu_test">Das ist ein Test</string>
 
-<string name="delta_longitude">Abweichung Longitude</string>
-<string name="delta_latitude">Abweichung Latitude</string>
-<string name="mode">Standard Modus</string>
-<string name="delta">Radius im GPS-Modus</string>
+<string name="gps_prefs">GPS Einstellungen</string>
+<string name="general_prefs">Allgemeine Einstellungen</string>
+
+<string name="rad_gps">Radius</string>
+<string name="gps_descr">Legt fest in welchem Umkreis die Haltestellen angezeigt werden</string>
+<string name="mode">Standardmodus</string>
+<string name="mode_descr">Standardmodus beim Start der Anwendung</string>
+
 </resources>
 

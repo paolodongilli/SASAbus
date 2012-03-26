@@ -180,10 +180,10 @@ public class SelectPalinaLocationActivity extends ListActivity{
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
+    	 super.onCreateOptionsMenu(menu);
+         //menu.add(...);  // specific to this activity
+         SharedMenu.onCreateOptionsMenu(menu);
+         return true;
     }
     
     @Override
@@ -201,7 +201,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
 			}	
 			case SharedMenu.MENU_SETTINGS:
 			{
-				Intent settings = new Intent(this, SettingsActivity.class);
+				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
 				return true;
 			}

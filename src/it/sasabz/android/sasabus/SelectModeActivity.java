@@ -32,7 +32,6 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
-import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
@@ -146,7 +145,7 @@ public class SelectModeActivity extends ListActivity {
 			}	
 			case SharedMenu.MENU_SETTINGS:
 			{
-				Intent settings = new Intent(this, SettingsActivity.class);
+				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
 				return true;
 			}

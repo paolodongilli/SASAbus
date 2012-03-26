@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+    
+    <string-array name="mode_names">
+        <item name="0">Chiedere all\' avviamento</item>
+        <item name="1">Modalitá GPS</item>
+        <item name="2">Modalitá normale</item>
+    </string-array>
+
+</resources>

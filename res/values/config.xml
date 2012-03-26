@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Standard conigs in the config.xml -->
-    <string name="conf_mode_name">mode</string>
-    <string name="conf_mode_value">2</string>
-    <string name="conf_mode_comment">This is the Standard mode for interacting with the user, there are the following possibilities\n
-        - 1: GPS Mode
-        - 2: Normal Mode
-        </string>
-    
-    <string name="conf_delta_lat_name">delta_latitude</string>
-    <string name="conf_delta_lat_value">0</string>
-    <string name="conf_delta_lat_comment">This is the delta for the positioning system. Its for testing the application in other
-        places then the bus stops are</string>
-        
-    <string name="conf_delta_long_name">delta_longitude</string>
-    <string name="conf_delta_long_value">0</string>
-    <string name="conf_delta_long_comment">This is the delta for the positioning system. Its for testing the application in other
-        places then the bus stops are</string>
-    
-	
-	<string name="conf_delta_name">delta</string>
-	<string name="conf_delta_value">200</string>
-	<string name="conf_delta_comment">This is the radius when working in GPS mode in meters!</string>
-    
-    <!-- End of Standardconfigs in the config.xml -->
+
     <string name="app_name">SASAbus</string>
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.2.1</string>   <!-- Temporary solution to call version in splash.xml-->

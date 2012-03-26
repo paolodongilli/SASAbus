@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.Conf;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.MD5Utils;
@@ -50,11 +49,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 
@@ -317,26 +318,32 @@ public class CheckDatabaseActivity extends ListActivity {
 	 */
 	private void startActivity() {
 		finish();
+		Intent startact = null;
 		 try
 	        {
-	        	int mode = Integer.parseInt(Conf.getByName("mode").getValue());
+			 	SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+	        	int mode = Integer.parseInt(shared.getString("mode", "0"));
+	        	Log.v("preferences", "mode: " + mode);
+	        	if(mode == 0)
+	            {
+	            	startact = new Intent(this, SelectModeActivity.class);
+	            }
 	        	if(mode == 1)
 	            {
-	            	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-	            	startActivity(selLinea);
+	            	startact = new Intent(this, SelectPalinaLocationActivity.class);
 	            }
 	            if(mode == 2)
 	            {
-	            	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
-	            	startActivity(selLinea);
+	            	startact = new Intent(this, SelectBacinoActivity.class);
 	            }
 	        	
 	        }
 		 catch (Exception e)
 		 {
-			 Intent modeselect = new Intent(this, SelectModeActivity.class);
-			 startActivity(modeselect);
+			 startact = new Intent(this, SelectModeActivity.class);
+			 
 		 }
+		 startActivity(startact);
 	}
 
 	@Override

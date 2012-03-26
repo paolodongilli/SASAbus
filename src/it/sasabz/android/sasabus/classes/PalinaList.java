@@ -31,8 +31,11 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
+import android.preference.PreferenceManager;
 
 import android.util.Log;
 
@@ -152,14 +155,20 @@ public class PalinaList {
 		 * The following values are calculated with the formula 40045km : delta = 360deg : deltadeg
 		 * (40045 is an estimation of the ratio of Earth)
 		 */
-		double deltadegrees = Double.parseDouble(Conf.getByName("delta").getValue()) * 360.0 / 40045.0;
-		double deltalatdeg =  Double.parseDouble(Conf.getByName("delta_lat").getValue()) * 360.0 / 40045.0;
-		double deltalongdeg =  Double.parseDouble(Conf.getByName("delta_long").getValue()) * 360.0 / 40045.0;
-		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees + deltalatdeg);
-		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees + deltalongdeg);
-		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees + deltalatdeg);
-		String longitudemax = Double.toString(loc.getLongitude() + deltadegrees + deltalongdeg);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(deltadegrees), Double.toString(deltadegrees), longitudemin, longitudemax, latitudemin, latitudemax};
+		
+		Context con = SASAbus.getContext();
+		
+		SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(con);
+		
+		double deltadegrees = Double.parseDouble(shared.getString("radius_gps", "0.0018"));
+		
+		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees);
+		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees);
+		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees);
+		String longitudemax = Double.toString(loc.getLongitude() + deltadegrees);
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, 
+				Double.toString(deltadegrees), Double.toString(deltadegrees), longitudemin, 
+				longitudemax, latitudemin, latitudemax};
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) DESC", args);

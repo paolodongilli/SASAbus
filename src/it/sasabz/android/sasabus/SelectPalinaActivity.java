@@ -124,7 +124,7 @@ public class SelectPalinaActivity extends ListActivity {
 			}	
 			case SharedMenu.MENU_SETTINGS:
 			{
-				Intent settings = new Intent(this, SettingsActivity.class);
+				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
 				return true;
 			}
