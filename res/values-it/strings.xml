@@ -33,4 +33,14 @@
 <string name="mode_gps">modalità GPS</string>
 <string name="mode_normal">modalità normale</string>
 <string name="show_way">Percorso</string>
+<string name="weiter">Avanti</string>
+<string name="menu_settings">Impostazioni</string>
+
+<string name="gps_prefs">Impostazioni GPS</string>
+<string name="general_prefs">Impostazioni generali</string>
+
+<string name="rad_gps">radius</string>
+<string name="gps_descr">Imposta il radius delle fermate presenti nella modalitá GPS</string>
+<string name="mode">Modalitá standard</string>
+<string name="mode_descr">Modalitá standard al avviamento dell\' applicazione</string>
 </resources>

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">SASAbus</string>
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.2.1</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>
+    <string name="conf_dir">Android/data/it.sasabz.android.sasabus/conf</string>
+    <string name="data_dir">Android/data/it.sasabz.android.sasabus/data</string>
+    <string name="conf_file">conf.xml</string>
     <!--
     <string name="repository_url">http://www.mowiso.com/</string>
     <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>

@@ -117,6 +117,12 @@ public class SelectLineaActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
+			case SharedMenu.MENU_SETTINGS:
+			{
+				Intent settings = new Intent(this, SetSettingsActivity.class);
+				startActivity(settings);
+				return true;
+			}
 		}
 		return false;
 	}

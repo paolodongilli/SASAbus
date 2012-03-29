@@ -31,8 +31,11 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
+import android.preference.PreferenceManager;
 
 import android.util.Log;
 
@@ -146,14 +149,29 @@ public class PalinaList {
 	/**
 	 * 
 	 */
-	public static Vector<DBObject> getListGPS (Location loc)
+	public static Vector<DBObject> getListGPS (Location loc) throws Exception
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
-		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
-		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
-		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
+		/*
+		 * The following values are calculated with the formula 40045km : delta = 360deg : deltadeg
+		 * (40045 is an estimation of the ratio of Earth)
+		 */
+		
+		Context con = SASAbus.getContext();
+		
+		SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(con);
+		
+		double deltadegrees = Double.parseDouble(shared.getString("radius_gps", "0.0018"));
+		
+		Log.v("preferences", "delta: " + deltadegrees);
+		
+		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees);
+		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees);
+		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees);
+		String longitudemax = Double.toString(loc.getLongitude() + deltadegrees);
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, 
+				Double.toString(deltadegrees), Double.toString(deltadegrees), longitudemin, 
+				longitudemax, latitudemin, latitudemax};
 		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
 				" order by (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?)", args);
@@ -172,24 +190,6 @@ public class PalinaList {
 	}
 	
 	
-	
-	/**
-	 * This method returns a cursor to the list of busstops, which are located into the calculated radius
-	 * @param loc is the location where i am
-	 * @return a cursor to the list of the possible busstops near me
-	 */
-	public static Cursor getCursorGPS (Location loc)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String latitudemin = Double.toString(loc.getLatitude() - Config.DELTA + Config.DELTALAT);
-		String longitudemin = Double.toString(loc.getLongitude() - Config.DELTA + Config.DELTALONG);
-		String latitudemax = Double.toString(loc.getLatitude() + Config.DELTA + Config.DELTALAT);
-		String longitudemax = Double.toString(loc.getLongitude() + Config.DELTA + Config.DELTALONG);
-		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, Double.toString(Config.DELTA), Double.toString(Config.DELTA), longitudemin, longitudemax, latitudemin, latitudemax};
-		return sqlite.rawQuery("Select * from paline where " +
-				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
-				" order by min(abs(longitudine - ?), abs(longitudine - ?)) + min(abs(latitudine - ?), abs(latitudine - ?)) order by nome_de", args);
-	}
 
 	/**
 	 * This methode gives me all the busstops which are connected to the departure busstop called partenza

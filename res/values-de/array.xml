@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+    
+    <string-array name="mode_names">
+        <item name="0">Beim Start nachfragen</item>
+        <item name="1">GPS Modus</item>
+        <item name="2">Normaler modus</item>
+    </string-array>
+
+</resources>

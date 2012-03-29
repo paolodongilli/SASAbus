@@ -12,7 +12,6 @@
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
 <string name="db_ok">Datenbank %1$s ist bereit.</string>
 <string name="menu_about">Über SASAbus</string>
-<string name="menu_test">Das ist ein Test</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
 <string name="copyright">Copyright (C) %1$s SASAbus Team</string>
@@ -32,6 +31,18 @@
 <string name="credits_text">SASAbus entstand aus der Hand der Mitglieder vom SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
 <string name="mode_gps">GPS Modus</string>
 <string name="mode_normal">Normaler Modus</string>
+<string name="weiter">Los!</string>
 <string name="show_way">Streckenführung</string>
+<string name="menu_settings">Einstellungen</string>
+<string name="menu_test">Das ist ein Test</string>
+
+<string name="gps_prefs">GPS Einstellungen</string>
+<string name="general_prefs">Allgemeine Einstellungen</string>
+
+<string name="rad_gps">Radius</string>
+<string name="gps_descr">Legt fest in welchem Umkreis die Haltestellen angezeigt werden</string>
+<string name="mode">Standardmodus</string>
+<string name="mode_descr">Standardmodus beim Start der Anwendung</string>
+
 </resources>
 

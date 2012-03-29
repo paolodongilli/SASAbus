@@ -164,7 +164,14 @@ public class SelectPalinaLocationActivity extends ListActivity{
      * @param loc is the location with the newest position
      */
     private void fillData(Location loc) {
-    	 list = PalinaList.getListGPS(loc);
+    	try 
+    	{
+    		list = PalinaList.getListGPS(loc);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
          MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
          mlocManager.removeUpdates(mlocListener);
          setListAdapter(paline);
@@ -173,10 +180,10 @@ public class SelectPalinaLocationActivity extends ListActivity{
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
+    	 super.onCreateOptionsMenu(menu);
+         //menu.add(...);  // specific to this activity
+         SharedMenu.onCreateOptionsMenu(menu);
+         return true;
     }
     
     @Override
@@ -192,6 +199,12 @@ public class SelectPalinaLocationActivity extends ListActivity{
 				new Credits(this).show();
 				return true;
 			}	
+			case SharedMenu.MENU_SETTINGS:
+			{
+				Intent settings = new Intent(this, SetSettingsActivity.class);
+				startActivity(settings);
+				return true;
+			}
 		}
 		return false;
 	}

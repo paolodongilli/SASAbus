@@ -33,5 +33,17 @@
 <string name="mode_gps">GPS Mode</string>
 <string name="mode_normal">Normal Mode</string>
 <string name="show_way">Show Way</string>
+<string name="weiter">Go!</string>
+<string name="menu_settings">Settings</string>
+<string name="menu_test">this is a test</string>
+
+<string name="gps_prefs">GPS Preferences</string>
+<string name="general_prefs">General preferences</string>
+
+<string name="rad_gps">Ratio</string>
+<string name="gps_descr">This is the ratio of the bus stops shown when in GPS-Mode</string>
+<string name="mode">Default mode</string>
+<string name="mode_descr">Default mode when starting the Application</string>
+
 </resources>
 
