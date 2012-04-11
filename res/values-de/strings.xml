@@ -44,5 +44,8 @@
 <string name="mode">Standardmodus</string>
 <string name="mode_descr">Standardmodus beim Start der Anwendung</string>
 
+<string name="sensor_off">Sensor ist ausgeschalten, bitte einschalten!</string>
+<string name="pointing">Anpeilen der Bushaltestelle</string>
+
 </resources>
 

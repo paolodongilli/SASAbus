@@ -153,7 +153,7 @@ public class PalinaList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		/*
-		 * The following values are calculated with the formula 40045km : delta = 360deg : deltadeg
+		 * The following values are calculated with the formula 40045km : deltakm = 360deg : deltadeg
 		 * (40045 is an estimation of the ratio of Earth)
 		 */
 		

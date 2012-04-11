@@ -43,4 +43,8 @@
 <string name="gps_descr">Imposta il radius delle fermate presenti nella modalitá GPS</string>
 <string name="mode">Modalitá standard</string>
 <string name="mode_descr">Modalitá standard al avviamento dell\' applicazione</string>
+
+<string name="sensor_off">Sensor disattivato</string>
+<string name="pointing">Puntare sulla fermata</string>
+
 </resources>
