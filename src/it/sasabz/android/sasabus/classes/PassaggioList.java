@@ -47,7 +47,7 @@ public class PassaggioList {
 	public static  Vector <DBObject>  getList()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select * from orari_passaggio", null);
+		Cursor cursor = sqlite.rawQuery("select * from orarii", null);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
@@ -62,6 +62,25 @@ public class PassaggioList {
 		return list;
 	}
 	
+	/**                                                                                                                                                                                                          
+	 * This function returns a Passaggio of the timetable for a given id                                                                                                                    
+	 * @return a vector of Passaggio                                                                                                                              
+	 */
+	public static  Passaggio getById(int id)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String params[] = {Integer.toString(id)};
+		Cursor cursor = sqlite.rawQuery("select * from orarii where id = ?", params);
+		Passaggio ret = null;
+		if(cursor.moveToFirst())
+		{
+			ret = new Passaggio(cursor);	
+		}
+		cursor.close();
+		sqlite.close();
+		return ret;
+	}
+	
 	
 	/**
 	 * This method returns a cursor over all the timetable with all the bus stops in every line on every course
@@ -70,7 +89,7 @@ public class PassaggioList {
 	public static Cursor getCursor()
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		return sqlite.rawQuery("select * from orari_passaggio", null); 
+		return sqlite.rawQuery("select * from orarii", null); 
 	}
 	
 	

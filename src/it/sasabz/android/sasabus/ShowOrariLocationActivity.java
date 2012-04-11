@@ -72,6 +72,7 @@ public class ShowOrariLocationActivity extends ListActivity {
 
 	// //is the next departure time of the bus
 	private int pos;
+	
 
 	public ShowOrariLocationActivity() {
 	}
@@ -173,7 +174,6 @@ public class ShowOrariLocationActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		// menu.add(...); // specific to this activity
 		SharedMenu.onCreateOptionsMenu(menu);
 		return true;
 	}

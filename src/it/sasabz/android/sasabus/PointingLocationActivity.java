@@ -155,8 +155,7 @@ public class PointingLocationActivity extends Activity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
-    	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
-    	startActivity(selBac);
+    	finish();
     }
     
     /**
@@ -178,7 +177,7 @@ public class PointingLocationActivity extends Activity{
 	    	ImageView image = (ImageView)findViewById(R.id.pointing_needle);
 	        image.setImageResource(R.drawable.pfeil);
 	        
-	        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.bus);
+	        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.pfeil);
 	        int bmpWidth = bitmap.getWidth();
 	        int bmpHeight = bitmap.getHeight();
 	        
@@ -199,9 +198,8 @@ public class PointingLocationActivity extends Activity{
     {
     	location = loc;
     	double distance = getDistance(loc);
-    	distance = 40045d * distance / 360d;
     	TextView text = (TextView)findViewById(R.id.description);
-        String dist = palina.toString() + ": " + (int)(distance * 1000) + "m";
+        String dist = palina.toString() + ": " + (int)(distance) + "m";
         text.setText(dist);
     }
     
@@ -226,7 +224,7 @@ public class PointingLocationActivity extends Activity{
     	
     	double angle_deg = angle_rad * 180d / Math.PI;
     	
-    	return angle_sensor + angle_deg;
+    	return angle_deg - angle_sensor;
     }
     
     private SensorEventListener mySensorEventListener = new SensorEventListener() {
@@ -262,10 +260,11 @@ public class PointingLocationActivity extends Activity{
 
 
     @Override
-    public void onDestroy()
+    protected void onDestroy()
     {
     	mlocManager.removeUpdates(mlocListener);
     	sensorService.unregisterListener(mySensorEventListener);
+    	super.onDestroy();
     }
     
     

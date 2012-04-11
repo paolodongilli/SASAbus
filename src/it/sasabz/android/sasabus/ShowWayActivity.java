@@ -75,6 +75,9 @@ public class ShowWayActivity extends ListActivity {
 	 * the moment is when he is in time :)
 	 */
 	private int pos;
+	
+	//testfinal
+	private final int POINTER = 10;
 
 	public ShowWayActivity() {
 	}
@@ -163,6 +166,7 @@ public class ShowWayActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		// menu.add(...); // specific to this activity
 		SharedMenu.onCreateOptionsMenu(menu);
+		menu.add(0, POINTER, 3, R.string.pointing);
 		return true;
 	}
 
@@ -183,6 +187,14 @@ public class ShowWayActivity extends ListActivity {
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
+				return true;
+			}
+			case POINTER:
+			{
+				Intent pointeract = new Intent(this, PointingLocationActivity.class);
+				Passaggio pas = PassaggioList.getById(orarioId);
+				pointeract.putExtra("palina", pas.getIdPalina());
+				startActivity(pointeract);
 				return true;
 			}
 		}
