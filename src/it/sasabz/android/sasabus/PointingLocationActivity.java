@@ -26,6 +26,8 @@
  */
 package it.sasabz.android.sasabus;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.classes.About;
@@ -36,8 +38,11 @@ import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.SharedMenu;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -59,6 +64,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +76,7 @@ public class PointingLocationActivity extends Activity{
 	private LocationListener mlocListener = null;
 	
 	private SensorManager sensorService = null;
+	private MySensorEventListener mySensorEventListener = null;
 	
 	private Palina palina = null;
 	
@@ -98,18 +105,62 @@ public class PointingLocationActivity extends Activity{
 		
 		sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		Sensor sensor = sensorService.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		List<Sensor> sensors = sensorService.getSensorList(Sensor.TYPE_ALL);
+		Iterator<Sensor> iter = sensors.iterator();
+		if(iter.hasNext())
+		{
+			while(iter.hasNext())
+			{
+				Sensor sen = iter.next();
+				Log.v("SENSOR", sen.getName());
+			}
+		}
+		
 		if (sensor != null) {
+			mySensorEventListener = new MySensorEventListener();
 			sensorService.registerListener(mySensorEventListener, sensor,
 					SensorManager.SENSOR_DELAY_NORMAL);
 			Log.i("Compass MainActivity", "Registerered for ORIENTATION Sensor");
 
 		} else {
 			Log.e("Compass MainActivity", "Registerered for ORIENTATION Sensor");
-			Toast.makeText(this, "ORIENTATION Sensor not found",
-					Toast.LENGTH_LONG).show();
-			finish();
+			/*
+			AlertDialog.Builder builder = new AlertDialog.Builder(this)
+			.setTitle(R.string.sensor_off).setMessage(R.string.sensor_off).setPositiveButton(
+					android.R.string.ok, new Dialog.OnClickListener() {
+
+						@Override
+						public void onClick(
+								DialogInterface dialogInterface, int i) {
+							dialogInterface.dismiss();
+							finish();
+						}
+					});
+			builder.create().show();
+			*/
+			Toast.makeText(this, R.string.sensor_off, Toast.LENGTH_LONG);
 		}
     }
+    
+    /**
+     * 
+     * @author Markus Windegger (markus@mowiso.com)
+     *
+     */
+    public class MySensorEventListener implements SensorEventListener
+    {
+		
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			draw_pointer(event.values[0]);
+		}
+		
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+			// TODO Auto-generated method stub
+		
+		}
+	}
     
     /**
      * this class provides simply simply the GPS-location update.
@@ -227,19 +278,7 @@ public class PointingLocationActivity extends Activity{
     	return angle_deg - angle_sensor;
     }
     
-    private SensorEventListener mySensorEventListener = new SensorEventListener() {
-		
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			draw_pointer(event.values[0]);
-		}
-		
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-			// TODO Auto-generated method stub
-		
-		}
-	};
+    
     /**
      * this method returns a pointer to the object itself. it is used
      * by the internal class MyLocationListener

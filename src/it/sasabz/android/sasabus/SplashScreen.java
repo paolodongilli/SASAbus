@@ -23,9 +23,8 @@
  * 
  */
 
-package it.sasabz.android.sasabus.classes;
+package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.layout;
 import android.app.Activity;
