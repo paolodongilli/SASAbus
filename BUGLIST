@@ -5,3 +5,4 @@
 */
 
 #1 some malfunctions in when time is going over 00:00 and way begins earlier (like 23:58);markus;20120316_1003
+#2 sometimes timetable the actual time is not yellow, sometimes it is;

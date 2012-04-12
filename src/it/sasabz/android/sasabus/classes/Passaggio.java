@@ -165,6 +165,7 @@ public class Passaggio extends DBObject {
 		this.orario.setToNow();
 		this.orario.minute = Integer.parseInt(split[1]);
 		this.orario.hour = Integer.parseInt(split[0]);
+		this.orario.second = 0;
 	}
 	
 	@Override

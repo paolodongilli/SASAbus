@@ -89,6 +89,7 @@ public class MyPassaggioListAdapter extends BaseAdapter {
 			TextView textView = (TextView) v.findViewById(whereId);
 			Time currentTime = new Time();
 			currentTime.setToNow();
+			currentTime.set(0, currentTime.minute, currentTime.hour, currentTime.monthDay, currentTime.month, currentTime.year);
 			Time sasaTime = list.get(position).getOrario();
 			textView.setText(list.get(position).getOrario().format("%H:%M"));
 			if (actpos < position)

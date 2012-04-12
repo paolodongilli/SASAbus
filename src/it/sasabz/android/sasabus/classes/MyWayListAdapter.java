@@ -90,6 +90,7 @@ public class MyWayListAdapter extends BaseAdapter {
 			TextView textViewOrario = (TextView) v.findViewById(whereIdList[1]);
 			Time currentTime = new Time();
 			currentTime.setToNow();
+			currentTime.set(0, currentTime.minute, currentTime.hour, currentTime.monthDay, currentTime.month, currentTime.year);
 			Time sasaTime = list.get(position).getOrario();
 			textViewOrario.setText(list.get(position).getOrario().format("%H:%M"));
 			textViewPalina.setText(PalinaList.getById(list.get(position).getIdPalina()).toString());
