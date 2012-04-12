@@ -124,20 +124,7 @@ public class PointingLocationActivity extends Activity{
 
 		} else {
 			Log.e("Compass MainActivity", "Registerered for ORIENTATION Sensor");
-			/*
-			AlertDialog.Builder builder = new AlertDialog.Builder(this)
-			.setTitle(R.string.sensor_off).setMessage(R.string.sensor_off).setPositiveButton(
-					android.R.string.ok, new Dialog.OnClickListener() {
-
-						@Override
-						public void onClick(
-								DialogInterface dialogInterface, int i) {
-							dialogInterface.dismiss();
-							finish();
-						}
-					});
-			builder.create().show();
-			*/
+			
 			Toast.makeText(this, R.string.sensor_off, Toast.LENGTH_LONG);
 		}
     }
@@ -234,9 +221,9 @@ public class PointingLocationActivity extends Activity{
 	        
 	    	Matrix matrix = new Matrix();
 	    	
-	    	float angle = (float)getAngle(angle_sensor);
+	    	float angle = (float)getAngle();
 	
-	        matrix.postRotate(angle);
+	        matrix.postRotate(angle - angle_sensor);
 	         
 	        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bmpWidth, bmpHeight, matrix, true);
 	        image.setImageBitmap(resizedBitmap);
@@ -250,7 +237,10 @@ public class PointingLocationActivity extends Activity{
     	location = loc;
     	double distance = getDistance(loc);
     	TextView text = (TextView)findViewById(R.id.description);
-        String dist = palina.toString() + ": " + (int)(distance) + "m";
+    	
+    	distance = distance * 40045d / 360d;
+    	
+        String dist = palina.toString() + ": " + (int)(distance * 1000) + "m";
         text.setText(dist);
     }
     
@@ -265,17 +255,35 @@ public class PointingLocationActivity extends Activity{
     }
     
     
-    public double getAngle(float angle_sensor)
+    public double getAngle()
     {
-    	double anka = palina.getLatitude() - location.getLatitude();
+    	double anka = Math.abs(location.getLatitude() - palina.getLatitude());
     	
     	double hypo = getDistance(location);
     	
-    	double angle_rad = Math.sin(anka / hypo);
+    	double angle_rad = Math.cos(anka / hypo);
     	
     	double angle_deg = angle_rad * 180d / Math.PI;
     	
-    	return angle_deg - angle_sensor;
+    	if(location.getLatitude() < palina.getLatitude())
+    	{
+    		if(location.getLongitude() > palina.getLongitude())
+    		{
+    			angle_deg = -angle_deg;
+    		}
+    	}
+    	else
+    	{
+    		if(location.getLongitude() > palina.getLongitude())
+    		{
+    			angle_deg += 180;
+    		}
+    		else
+    		{
+    			angle_deg = 180 - angle_deg;
+    		}
+    	}
+    	return angle_deg;
     }
     
     

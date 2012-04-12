@@ -246,7 +246,7 @@ public class PalinaList {
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String [] args = {Integer.toString(id)};
-		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it, p.latitudine as latitudine, p.longitudine as longitudine " +
 				"from paline p " +
 				"where id = ? " +
 				"LIMIT 1";
