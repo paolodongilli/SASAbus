@@ -120,6 +120,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	mlocManager.removeUpdates(mlocListener);
     	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
     	startActivity(selBac);
+    	finish();
     }
     
     /**
@@ -184,6 +185,13 @@ public class SelectPalinaLocationActivity extends ListActivity{
          //menu.add(...);  // specific to this activity
          SharedMenu.onCreateOptionsMenu(menu);
          return true;
+    }
+    
+    @Override
+    protected void onDestroy()
+    {
+     mlocManager.removeUpdates(mlocListener);
+     super.onDestroy();
     }
     
     @Override
