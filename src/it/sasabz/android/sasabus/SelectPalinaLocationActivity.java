@@ -190,8 +190,8 @@ public class SelectPalinaLocationActivity extends ListActivity{
     @Override
     protected void onDestroy()
     {
-     mlocManager.removeUpdates(mlocListener);
-     super.onDestroy();
+	     mlocManager.removeUpdates(mlocListener);
+	     super.onDestroy();
     }
     
     @Override
