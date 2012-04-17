@@ -28,11 +28,11 @@ package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class SetSettingsActivity extends PreferenceActivity {
@@ -46,26 +46,27 @@ public class SetSettingsActivity extends PreferenceActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	 super.onCreateOptionsMenu(menu);
-         SharedMenu.onCreateOptionsMenu(menu);
-         menu.removeItem(SharedMenu.MENU_SETTINGS);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
+    	 menu.removeItem(R.id.menu_settings);
          return true;
     }
-
+    
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-		case SharedMenu.MENU_ABOUT:
-		{
-			new About(this).show();
-			return true;
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_about:
+			{
+				new About(this).show();
+				return true;
+			}
+			case R.id.menu_credits:
+			{
+				new Credits(this).show();
+				return true;
+			}	
 		}
-		case SharedMenu.MENU_CREDITS:
-		{
-			new Credits(this).show();
-			return true;
-		}	
-    	}
-    	return false;
-    }
+		return false;
+	}
     
 }
