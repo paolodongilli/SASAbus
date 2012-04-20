@@ -31,18 +31,23 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Linea;
+import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SelectPalinaActivity extends ListActivity {
 
@@ -70,7 +75,22 @@ public class SelectPalinaActivity extends ListActivity {
 			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
 		}
-        setContentView(R.layout.select_palina_layout);
+		
+		Palina destination = PalinaList.getTranslation(destinazione, "de");
+		Linea line = LineaList.getById(linea);
+		if(destination == null || line == null)
+		{
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
+		}
+        setContentView(R.layout.standard_listview_layout);
+        
+        Resources res = getResources();
+        String titelstring = res.getString(R.string.select_palina) + ": " + line.toString() + "( " + destination.toString() + "-> ?)";
+        
+        TextView text = (TextView)findViewById(R.id.titel);
+        text.setText(R.string.select_palina);
+        
         fillData();
     }
 
@@ -97,7 +117,7 @@ public class SelectPalinaActivity extends ListActivity {
      */
     private void fillData() {
         list = PalinaList.getListDestinazione(destinazione, linea);
-        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
+        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(paline);
     }
     

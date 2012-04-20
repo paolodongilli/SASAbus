@@ -38,12 +38,14 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
 import it.sasabz.android.sasabus.classes.MyWayListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -56,6 +58,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowWayActivity extends ListActivity {
 
@@ -94,7 +98,21 @@ public class ShowWayActivity extends ListActivity {
 			destinazione = extras.getString("destinazione");
 		}
 
-		setContentView(R.layout.way_layout);
+		Passaggio pas = PassaggioList.getById(orarioId);
+		Palina part = PalinaList.getById(pas.getIdPalina());
+		Palina dest = PalinaList.getTranslation(destinazione, "de");
+		if (part == null || dest == null)
+		{
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
+		}
+		setContentView(R.layout.standard_listview_layout);
+		Resources res = getResources();
+		String titelstring = res.getString(R.string.show_way);
+		TextView titel = (TextView)findViewById(R.id.titel);
+		titel.setText(titelstring);
+		
+		
 		fillData();
 		if (pos != -1) {
 			getListView().setSelection(pos);

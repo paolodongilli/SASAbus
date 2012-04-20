@@ -15,7 +15,8 @@
             android:defaultValue="0" 
             android:entries="@array/mode_names"
             android:entryValues="@array/mode_values"
-        />    
+        />
+        
 
     </PreferenceCategory>
     

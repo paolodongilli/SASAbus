@@ -66,7 +66,9 @@ public class SelectLineaActivity extends ListActivity {
 		if (extras != null) {
 			bacino = extras.getInt("bacino");
 		}
-        setContentView(R.layout.select_linea_layout);
+        setContentView(R.layout.standard_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_linea);
         fillData(bacino);
     }
 
@@ -93,7 +95,7 @@ public class SelectLineaActivity extends ListActivity {
      */
     private void fillData(int bacino) {
     	list = LineaList.getList(bacino);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);
     }  
     

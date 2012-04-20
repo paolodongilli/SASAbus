@@ -36,8 +36,10 @@ import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
@@ -49,7 +51,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -62,12 +67,21 @@ public class SelectPalinaLocationActivity extends ListActivity{
 	//saves the list of busstops for this object
 	private Vector <DBObject> list = null;
 	
+	private ProgressDialog progress = null;
 
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.standard_listview_layout);
+        
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_palina);
+        
+        Resources res = getResources();
+        progress = new ProgressDialog(this, android.R.style.Theme_Dialog);
+        progress.setMessage(res.getString(R.string.gps_wait));
+        progress.show();
         //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mlocListener = new MyLocationListener();
@@ -118,6 +132,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
+    	progress.dismiss();
     	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
     	startActivity(selBac);
     	finish();
@@ -129,7 +144,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
      */
     public void onLocationRecieve(Location loc) {
     	mlocManager.removeUpdates(mlocListener);
-        setContentView(R.layout.select_palina_layout);
+    	progress.dismiss();
         fillData(loc);
     }
 
@@ -173,7 +188,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	{
     		e.printStackTrace();
     	}
-         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
+         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
          mlocManager.removeUpdates(mlocListener);
          setListAdapter(paline);
      }

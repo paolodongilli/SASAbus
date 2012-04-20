@@ -35,12 +35,17 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Linea;
+import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -53,6 +58,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowOrariLocationActivity extends ListActivity {
 	
@@ -91,7 +98,19 @@ public class ShowOrariLocationActivity extends ListActivity {
 			partenza = extras.getString("partenza");
 		}
 		
-		setContentView(R.layout.show_orari_layout);
+		setContentView(R.layout.standard_listview_layout);
+		TextView titel = (TextView)findViewById(R.id.titel);
+		Palina destination = PalinaList.getTranslation(destinazione, "de");
+		Palina departure = PalinaList.getTranslation(partenza, "de");
+		Linea line = LineaList.getById(linea);
+		if(destination == null || departure == null || line == null)
+		{
+			finish();
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+		}
+		Resources res = getResources();
+		String titelstring = res.getString(R.string.show_orari) + ": " + line.toString() + "(" + departure.toString() + "" + destination.toString() + ")";
+		titel.setText(titelstring);
 		
 		fillData();
 		
@@ -127,7 +146,7 @@ public class ShowOrariLocationActivity extends ListActivity {
 	private void fillData() {
 		list = PassaggioList.getVector(linea, destinazione, partenza);
 		pos = getNextTimePosition(list);
-		MyPassaggioListAdapter pass = new MyPassaggioListAdapter(this, R.id.orario, R.layout.orari_row, list, pos);
+		MyPassaggioListAdapter pass = new MyPassaggioListAdapter(this, R.id.text, R.layout.standard_row, list, pos);
 		setListAdapter(pass);
 	}
 

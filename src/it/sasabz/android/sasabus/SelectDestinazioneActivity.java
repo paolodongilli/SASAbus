@@ -32,9 +32,12 @@ import it.sasabz.android.sasabus.classes.*;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SelectDestinazioneActivity extends ListActivity {
 
@@ -55,8 +58,17 @@ public class SelectDestinazioneActivity extends ListActivity {
 		if (extras != null) {
 			linea = extras.getInt("linea");
 		}
-        
-        setContentView(R.layout.select_destinazione_layout);
+        Linea line = LineaList.getById(linea);
+        if(line == null)
+        {
+        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+        	finish();
+        }
+        setContentView(R.layout.standard_listview_layout);
+        Resources res = getResources();
+        String titelstring = res.getString(R.string.select_destination) + ": " + line.toString();
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(titelstring);
         fillData();
     }
 
@@ -83,7 +95,7 @@ public class SelectDestinazioneActivity extends ListActivity {
      */
     private void fillData() {
     	list = PalinaList.getListLinea(linea);
-    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(destinazioni);
     }
     

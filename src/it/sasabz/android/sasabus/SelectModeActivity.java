@@ -64,8 +64,11 @@ public class SelectModeActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_bacino_layout);
         
+        setContentView(R.layout.standard_listview_layout);
+        
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_mode);
         fillData();
     }
 
@@ -117,7 +120,7 @@ public class SelectModeActivity extends ListActivity {
     	mod.setString(res.getString(R.string.mode_normal));
     	list.add(mod);
     	//fill the modes into the list_view
-    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(modi);
     }
     

@@ -261,4 +261,36 @@ public class PalinaList {
 		return element;
 	}
 	
+	/**
+	 * Returns a Palina filled with all the information, excluded the coordinates, becaus one name can have 2 coordinates
+	 * @param name is the name of the palina to search
+	 * @param lang is the language of the name
+	 * @return the palina with the name name, otherwise NULL if the plaina was not found
+	 */
+	public static Palina getTranslation(String name, String lang)
+	{	
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {name};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+				"from paline p " +
+				"where nome_de = ? " +
+				"LIMIT 1";
+		if (lang.equals("it"))
+		{
+			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+					"from paline p " +
+					"where nome_it = ? " +
+					"LIMIT 1";
+		}
+		Cursor cursor = sqlite.rawQuery(query, args);
+		Palina element = null;
+		if(cursor.moveToFirst())
+		{
+			element = new Palina(cursor);
+		}
+		cursor.close();
+		sqlite.close();
+		return element;
+	}
+	
 }
