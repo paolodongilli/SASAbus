@@ -196,9 +196,9 @@ public class Linea extends DBObject {
 		}
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return this.getNum_lin() + diff;
+			return (this.getNum_lin() + diff).trim();
 		}
-		return this.getNum_lin()  + diff;
+		return (this.getNum_lin()  + diff).trim();
 	}
 	
 	

@@ -57,6 +57,6 @@ public class Modus extends DBObject {
 	@Override
 	public String toString()
 	{
-		return this.getString();
+		return this.getString().trim();
 	}
 }

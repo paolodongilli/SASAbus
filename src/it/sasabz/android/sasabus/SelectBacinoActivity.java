@@ -61,7 +61,19 @@ public class SelectBacinoActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_bacino_layout);
+        
+        setContentView(R.layout.standard_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_bacino);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText("");
+        to.setText("");
+        
         fillData();
     }
 
@@ -86,7 +98,7 @@ public class SelectBacinoActivity extends ListActivity {
      */
     private void fillData() {
         list = BacinoList.getList();
-        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.bacino, R.layout.bacini_row, list);
+        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(bacini);
     }
     

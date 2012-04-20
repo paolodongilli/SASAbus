@@ -2,12 +2,14 @@
 <resources>
 <string name="no_values">Nessun dato disponibile.</string>
 <string name="check_database">Verifica Database</string>
-<string name="select_bacino">Scegli la città</string>
-<string name="select_linea">Scegli la linea</string>
-<string name="select_destination">Scegli la destinazione</string>
-<string name="select_palina">Scegli la fermata (salita)</string>
-<string name="show_orari">Visualizzazione orari</string>
-<string name="select_mode">Scegli la modalità</string>
+
+<string name="select_bacino">Scegli la città:</string>
+<string name="select_linea">Scegli la linea:</string>
+<string name="select_destination">Scegli la destinazione:</string>
+<string name="select_palina">Scegli la fermata (salita):</string>
+<string name="show_orari">Visualizzazione orari:</string>
+<string name="select_mode">Scegli la modalità:</string>
+
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
 <string name="db_ok">Il database %1$s è pronto.</string>
@@ -27,8 +29,10 @@
 <string name="no_db_update_available">Aggiornamento degli orari non disponibile. Si prega di riprovare più tardi.</string>
 <string name="gps_disabled_title">GPS disattivato</string>
 <string name="gps_disabled">Dati GPS non disponibili. Si prega di attivare il GPS o di riprovare più tardi.</string>
+<string name="gps_wait">Aspettare durante la richiesta delle coordinate</string>
 <string name="error_title">Errore Download</string>
 <string name="error_text">Si e\' verificato un errore durante il download. Si prega di provare piu tardi o di contattare l\' autore dell\' applicazione</string>
+<string name="error_application">Si e\' verificato un errore durante l\'interrogazione della db. Si prega di provare piu tardi o di contattare l\'autore dell\' applicazione</string>
 <string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
 <string name="mode_gps">modalità GPS</string>
 <string name="mode_normal">modalità normale</string>
@@ -46,5 +50,9 @@
 
 <string name="sensor_off">Sensor disattivato</string>
 <string name="pointing">Puntare sulla fermata</string>
+
+<string name="line">Linea: </string>
+<string name="from">Da: </string>
+<string name="to">A: </string>
 
 </resources>
