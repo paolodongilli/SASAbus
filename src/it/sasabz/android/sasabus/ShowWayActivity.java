@@ -198,7 +198,7 @@ public class ShowWayActivity extends ListActivity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, POINTER, 3, R.string.pointing);
+    	 //menu.add(0, POINTER, 3, R.string.pointing);
          return true;
     }
     
