@@ -168,9 +168,9 @@ public class Palina extends DBObject{
 	{
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return this.getName_de();
+			return this.getName_de().trim();
 		}
-		return this.getName_it();
+		return this.getName_it().trim();
 	}
 	
 }

@@ -84,13 +84,22 @@ public class SelectLineaLocationActivity extends ListActivity {
 		if(departure == null || destination == null)
 		{
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
 		}
 		
         setContentView(R.layout.standard_listview_layout);
         Resources res = getResources();
-        String titelstring = res.getString(R.string.select_linea) + ": " + departure.toString() + " -> " + destination.toString();
         TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(titelstring);
+        titel.setText(R.string.select_linea);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText(res.getString(R.string.from) + " " + departure.toString());
+        to.setText(res.getString(R.string.to) + " " + destination.toString());
+        
         fillData();
     }
 

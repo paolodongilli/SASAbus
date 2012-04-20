@@ -32,17 +32,70 @@
         android:id="@+id/titel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/header_background"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/header_text"
-    	android:background="@color/header_background"
-    	/>
-	
-	<ListView android:id="@id/android:list"
+        android:textColor="@color/header_text" />
+
+    <TextView
+        android:id="@id/android:empty"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
-  	<TextView android:id="@id/android:empty"
+        android:layout_height="wrap_content"
+        android:text="@string/no_values" />
+
+    <ListView
+        android:id="@id/android:list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/no_values"/>
+        android:layout_height="0dip"
+        android:layout_weight="0.40" >
+    </ListView>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp" 
+        android:layout_marginBottom="3dp"
+        >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/line"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/from"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/to"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
 </LinearLayout>

@@ -35,6 +35,8 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Linea;
+import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
 import it.sasabz.android.sasabus.classes.MyWayListAdapter;
@@ -74,6 +76,9 @@ public class ShowWayActivity extends ListActivity {
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
 	
+	//privudes the lineaid for this object
+	private int linea = -1;
+	
 	/*
 	 * is the position of the most actual bus-stop, where the bus at
 	 * the moment is when he is in time :)
@@ -96,22 +101,31 @@ public class ShowWayActivity extends ListActivity {
 		if (extras != null) {
 			orarioId = extras.getInt("orario");
 			destinazione = extras.getString("destinazione");
+			linea = extras.getInt("linea");
 		}
 
 		Passaggio pas = PassaggioList.getById(orarioId);
 		Palina part = PalinaList.getById(pas.getIdPalina());
 		Palina dest = PalinaList.getTranslation(destinazione, "de");
-		if (part == null || dest == null)
+		Linea line = LineaList.getById(linea);
+		if (part == null || dest == null || line == null)
 		{
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
 			finish();
 		}
 		setContentView(R.layout.standard_listview_layout);
-		Resources res = getResources();
-		String titelstring = res.getString(R.string.show_way);
 		TextView titel = (TextView)findViewById(R.id.titel);
-		titel.setText(titelstring);
+		titel.setText(R.string.show_way);
 		
+		Resources res = getResources();
+		
+		TextView lineat = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        from.setText(res.getString(R.string.from) + " " + part.toString());
+        to.setText(res.getString(R.string.to) + " " + dest.toString());
 		
 		fillData();
 		if (pos != -1) {
@@ -207,6 +221,7 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(settings);
 				return true;
 			}
+			/*
 			case POINTER:
 			{
 				Intent pointeract = new Intent(this, PointingLocationActivity.class);
@@ -215,6 +230,7 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(pointeract);
 				return true;
 			}
+			*/
 		}
 		return false;
 	}

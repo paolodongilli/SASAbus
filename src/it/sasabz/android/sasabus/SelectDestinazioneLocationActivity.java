@@ -79,10 +79,20 @@ public class SelectDestinazioneLocationActivity extends ListActivity {
 			finish();
 		}
         setContentView(R.layout.standard_listview_layout);
-        Resources res = getResources();
-        String titelstring = res.getString(R.string.select_destination) + ": (" + part.toString() + " -> ?)";
+        
         TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(titelstring);
+        titel.setText(R.string.select_destination);
+        
+        Resources res = getResources();
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText(res.getString(R.string.from) + " " + part.toString());
+        to.setText("");
+        
         fillData();
     }
 

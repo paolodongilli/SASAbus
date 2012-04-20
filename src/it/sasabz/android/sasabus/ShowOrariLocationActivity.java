@@ -105,12 +105,20 @@ public class ShowOrariLocationActivity extends ListActivity {
 		Linea line = LineaList.getById(linea);
 		if(destination == null || departure == null || line == null)
 		{
-			finish();
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
 		}
+		titel.setText(R.string.show_orari);
+		
 		Resources res = getResources();
-		String titelstring = res.getString(R.string.show_orari) + ": " + line.toString() + "(" + departure.toString() + "" + destination.toString() + ")";
-		titel.setText(titelstring);
+		
+		TextView lineat = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        from.setText(res.getString(R.string.from) + " " + departure.toString());
+        to.setText(res.getString(R.string.to) + " " + destination.toString());
 		
 		fillData();
 		
@@ -125,6 +133,7 @@ public class ShowOrariLocationActivity extends ListActivity {
 		Intent showWay = new Intent(this, ShowWayActivity.class);
 		showWay.putExtra("orario", orario);
 		showWay.putExtra("destinazione", destinazione);
+		showWay.putExtra("linea", linea);
 		startActivity(showWay);
 	}
 	

@@ -2,12 +2,14 @@
 <resources>
 <string name="no_values">Nessun dato disponibile.</string>
 <string name="check_database">Verifica Database</string>
-<string name="select_bacino">Scegli la città</string>
-<string name="select_linea">Scegli la linea</string>
-<string name="select_destination">Scegli la destinazione</string>
-<string name="select_palina">Scegli la fermata (salita)</string>
-<string name="show_orari">Visualizzazione orari</string>
-<string name="select_mode">Scegli la modalità</string>
+
+<string name="select_bacino">Scegli la città:</string>
+<string name="select_linea">Scegli la linea:</string>
+<string name="select_destination">Scegli la destinazione:</string>
+<string name="select_palina">Scegli la fermata (salita):</string>
+<string name="show_orari">Visualizzazione orari:</string>
+<string name="select_mode">Scegli la modalità:</string>
+
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
 <string name="db_ok">Il database %1$s è pronto.</string>
@@ -48,5 +50,9 @@
 
 <string name="sensor_off">Sensor disattivato</string>
 <string name="pointing">Puntare sulla fermata</string>
+
+<string name="line">Linea: </string>
+<string name="from">Da: </string>
+<string name="to">A: </string>
 
 </resources>

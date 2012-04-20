@@ -69,6 +69,14 @@ public class SelectModeActivity extends ListActivity {
         
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.select_mode);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText("");
+        to.setText("");
         fillData();
     }
 

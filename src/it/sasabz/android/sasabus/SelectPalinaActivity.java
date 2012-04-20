@@ -85,11 +85,19 @@ public class SelectPalinaActivity extends ListActivity {
 		}
         setContentView(R.layout.standard_listview_layout);
         
-        Resources res = getResources();
-        String titelstring = res.getString(R.string.select_palina) + ": " + line.toString() + "( " + destination.toString() + "-> ?)";
         
         TextView text = (TextView)findViewById(R.id.titel);
         text.setText(R.string.select_palina);
+        
+        Resources res = getResources();
+        
+        TextView lineat = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        from.setText("");
+        to.setText(res.getString(R.string.to) + " " + destination.toString());
         
         fillData();
     }
