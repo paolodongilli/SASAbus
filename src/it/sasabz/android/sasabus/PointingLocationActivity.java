@@ -102,29 +102,19 @@ public class PointingLocationActivity extends Activity{
         //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mlocListener = new MyLocationListener();
-		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
 		
 		sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		Sensor sensor = sensorService.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		List<Sensor> sensors = sensorService.getSensorList(Sensor.TYPE_ALL);
-		Iterator<Sensor> iter = sensors.iterator();
-		if(iter.hasNext())
-		{
-			while(iter.hasNext())
-			{
-				Sensor sen = iter.next();
-				Log.v("SENSOR", sen.getName());
-			}
-		}
 		
 		if (sensor != null) {
 			mySensorEventListener = new MySensorEventListener();
 			sensorService.registerListener(mySensorEventListener, sensor,
 					SensorManager.SENSOR_DELAY_NORMAL);
-			Log.i("Compass MainActivity", "Registerered for ORIENTATION Sensor");
+			Log.v("Compass MainActivity", "Registerered for ORIENTATION Sensor");
 
 		} else {
-			Log.e("Compass MainActivity", "Registerered for ORIENTATION Sensor");
+			Log.v("Compass MainActivity", "Registerered for ORIENTATION Sensor");
 			
 			Toast.makeText(this, R.string.sensor_off, Toast.LENGTH_LONG);
 		}
@@ -241,8 +231,21 @@ public class PointingLocationActivity extends Activity{
     	
     	distance = distance * 40045d / 360d;
     	
-        String dist = palina.toString() + ": " + (int)(distance * 1000) + "m";
+    	double distance_m = distance * 1000;
+    	String dist = palina.toString() + ": ";
+    	if(distance_m >= 1000)
+    	{
+    		distance_m = Math.round(distance_m/100)/10d;
+    		dist += ((distance_m) + " km");
+    	}
+    	else
+    	{
+    		distance_m = (distance_m/10d) * 10;
+    		dist += ((int)distance_m) + " m";
+    	}
+    	
         text.setText(dist);
+        Toast.makeText(this, R.string.pointer_info, Toast.LENGTH_LONG);
     }
     
     public double getDistance(Location loc)
@@ -284,7 +287,7 @@ public class PointingLocationActivity extends Activity{
     			angle_deg = 180 - angle_deg;
     		}
     	}
-    	return (angle_deg + getWindowManager().getDefaultDisplay().getOrientation() * 90)%360;
+    	return (angle_deg - getWindowManager().getDefaultDisplay().getOrientation() * 90)%360;
     }
     
     
@@ -296,6 +299,25 @@ public class PointingLocationActivity extends Activity{
     public Activity getMe()
     {
     	return this;
+    }
+    
+    @Override
+    protected void onStop()
+    {
+    	mlocManager.removeUpdates(mlocListener);
+    	sensorService.unregisterListener(mySensorEventListener);
+    	super.onStop();
+    }
+    
+    /**
+     * Called when the activity is about to restart interacting with the user.
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+        sensorService.registerListener(mySensorEventListener, sensorService.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_NORMAL);
+        
     }
     
     /**

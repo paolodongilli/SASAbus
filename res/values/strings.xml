@@ -54,6 +54,7 @@
 
 <string name="sensor_off">Sensor disabled, please enable!</string>
 <string name="pointing">Pointing to Bus-Stop</string>
+<string name="pointer_info">Attention! For more accuracy when pointing to a bus stop, you have to holding the mobilephone still</string>
 
 <string name="line">Line: </string>
 <string name="from">From: </string>

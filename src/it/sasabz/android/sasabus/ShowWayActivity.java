@@ -50,6 +50,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -193,12 +194,14 @@ public class ShowWayActivity extends ListActivity {
 		}
 	}
 
+	
+	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
-    	 //menu.add(0, POINTER, 3, R.string.pointing);
+    	 menu.add(0, POINTER, 3, R.string.pointing);
          return true;
     }
     
@@ -221,7 +224,6 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(settings);
 				return true;
 			}
-			/*
 			case POINTER:
 			{
 				Intent pointeract = new Intent(this, PointingLocationActivity.class);
@@ -230,7 +232,6 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(pointeract);
 				return true;
 			}
-			*/
 		}
 		return false;
 	}

@@ -50,6 +50,7 @@
 
 <string name="sensor_off">Sensor ist ausgeschalten, bitte einschalten!</string>
 <string name="pointing">Anpeilen der Bushaltestelle</string>
+<string name="pointer_info">Achtung! Für genaues Anpeilen der Haltestelle Mobiltelefon möglichst still halten!</string>
 
 <string name="line">Linie: </string>
 <string name="from">Von: </string>
