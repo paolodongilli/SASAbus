@@ -284,7 +284,7 @@ public class PointingLocationActivity extends Activity{
     			angle_deg = 180 - angle_deg;
     		}
     	}
-    	return angle_deg;
+    	return (angle_deg + getWindowManager().getDefaultDisplay().getOrientation() * 90)%360;
     }
     
     
