@@ -108,10 +108,10 @@ public class Bacino extends DBObject {
 	{
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return this.getBacino_de();
+			return this.getBacino_de().trim();
 		}
 		
-		return this.getBacino_it();
+		return this.getBacino_it().trim();
 	}
 	
 }

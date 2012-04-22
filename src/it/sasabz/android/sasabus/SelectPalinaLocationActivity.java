@@ -26,6 +26,7 @@
  */
 package it.sasabz.android.sasabus;
 
+import java.security.PublicKey;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.classes.About;
@@ -34,22 +35,30 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -62,16 +71,53 @@ public class SelectPalinaLocationActivity extends ListActivity{
 	//saves the list of busstops for this object
 	private Vector <DBObject> list = null;
 	
+	private ProgressDialog prog = null;
+	
+	private boolean isUpdateing = false;
 
+	
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
+        setContentView(R.layout.standard_listview_layout);
+        
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_palina);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText("");
+        to.setText("");
+        
+        prog = new ProgressDialog(this, android.R.style.Theme_Dialog)
+        {
+        	
+        	public boolean dispatchKeyEvent(KeyEvent event)
+        	{
+        		Log.v("KeyCode", event.getKeyCode() + "");
+        		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
+        		{
+        			finish();
+        			this.dismiss();
+        			return true;
+        		}
+        		return false;
+        	}
+        }
+        ;
+        Resources res = getResources();
+        prog.setMessage(res.getString(R.string.gps_wait));
+        prog.show();
         //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mlocListener = new MyLocationListener();
-		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+		isUpdateing = true;
     }
     
     /**
@@ -118,8 +164,11 @@ public class SelectPalinaLocationActivity extends ListActivity{
     public void gpsDisabled()
     {
     	mlocManager.removeUpdates(mlocListener);
+    	isUpdateing = false;
+    	prog.dismiss();
     	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
     	startActivity(selBac);
+    	finish();
     }
     
     /**
@@ -128,7 +177,9 @@ public class SelectPalinaLocationActivity extends ListActivity{
      */
     public void onLocationRecieve(Location loc) {
     	mlocManager.removeUpdates(mlocListener);
-        setContentView(R.layout.select_palina_layout);
+    	isUpdateing = false;
+        prog.dismiss();
+        
         fillData(loc);
     }
 
@@ -142,12 +193,29 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	return this;
     }
     
+    @Override
+    protected void onStop()
+    {
+    	if(isUpdateing)
+    	{
+    		Log.v("GPS", "Listener disabled, go sleep");
+    		mlocManager.removeUpdates(mlocListener);
+    	}
+    	super.onStop();
+    }
+    
     /**
      * Called when the activity is about to start interacting with the user.
      */
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
+        if(isUpdateing)
+        {
+        	Log.v("GPS", "Listener enabled, wake up");
+        	mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+        }
+        
     }
 
     @Override
@@ -172,34 +240,42 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	{
     		e.printStackTrace();
     	}
-         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.palina, R.layout.paline_row, list);
+         MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
          mlocManager.removeUpdates(mlocListener);
          setListAdapter(paline);
      }
     
     
+    
+    @Override
+    protected void onDestroy()
+    {
+	     mlocManager.removeUpdates(mlocListener);
+	     super.onDestroy();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	 super.onCreateOptionsMenu(menu);
-         //menu.add(...);  // specific to this activity
-         SharedMenu.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
          return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);

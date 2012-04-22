@@ -35,19 +35,23 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.SharedMenu;
+import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SelectLineaLocationActivity extends ListActivity {
 
@@ -75,7 +79,27 @@ public class SelectLineaLocationActivity extends ListActivity {
 			partenza = extras.getString("partenza");
 			destinazione = extras.getString("destinazione");
 		}
-        setContentView(R.layout.select_linea_layout);
+		Palina departure = PalinaList.getTranslation(partenza, "de");
+		Palina destination = PalinaList.getTranslation(destinazione, "de");
+		if(departure == null || destination == null)
+		{
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
+		}
+		
+        setContentView(R.layout.standard_listview_layout);
+        Resources res = getResources();
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_linea);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText(res.getString(R.string.from) + " " + departure.toString());
+        to.setText(res.getString(R.string.to) + " " + destination.toString());
+        
         fillData();
     }
 
@@ -103,32 +127,32 @@ public class SelectLineaLocationActivity extends ListActivity {
      */
     private void fillData() {
     	list = LineaList.getListDestPart(destinazione, partenza);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);
     }  
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        //menu.add(...);  // specific to this activity
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
+    	 super.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
+         return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);

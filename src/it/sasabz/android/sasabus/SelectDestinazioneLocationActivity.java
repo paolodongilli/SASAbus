@@ -36,18 +36,20 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SelectDestinazioneLocationActivity extends ListActivity {
 
@@ -70,7 +72,27 @@ public class SelectDestinazioneLocationActivity extends ListActivity {
 			partenza = extras.getString("partenza");
 		}
         
-        setContentView(R.layout.select_destinazione_layout);
+		Palina part = PalinaList.getTranslation(partenza, "de");
+		if(part == null)
+		{
+			Toast.makeText(this, R.string.select_destination, Toast.LENGTH_LONG);
+			finish();
+		}
+        setContentView(R.layout.standard_listview_layout);
+        
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_destination);
+        
+        Resources res = getResources();
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText(res.getString(R.string.from) + " " + part.toString());
+        to.setText("");
+        
         fillData();
     }
 
@@ -97,31 +119,32 @@ public class SelectDestinazioneLocationActivity extends ListActivity {
      */
     private void fillData() {
     	list = PalinaList.getListPartenza(partenza);
-    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.destinazione, R.layout.destinazioni_row, list);
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(destinazioni);
     }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
+    	 super.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
+         return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);

@@ -5,5 +5,6 @@
 */
 
 #1 some malfunctions in when time is going over 00:00 and way begins earlier (like 23:58);markus;20120316_1003
-#2 sometimes timetable the actual time is not yellow, sometimes it is;markus;20120413_0000
-#3 displaying timetable is not correct when for example 23:58 is the actual time and the next time is 00:00, so all the times where showed as just pased (in red);
+#2 sometimes timetable the actual time is not yellow, sometimes it is;markus;20120420_2105
+#3 CRITICAL: GPS not disable when exit from SelectPalinaLocationActivity;markus;20120417_1801
+#4 gps and sensor remain active when calling onPause(), onStop();markus;20120420_2105

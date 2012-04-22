@@ -2,12 +2,14 @@
 <resources>
 <string name="no_values">Kein Wert verfügbar.</string>
 <string name="check_database">Prüfe Datenbank</string>
-<string name="select_bacino">Stadt wählen</string>
-<string name="select_linea">Buslinie wählen</string>
-<string name="select_destination">Ziel wählen</string>
-<string name="select_palina">Haltestelle wählen</string>
-<string name="select_mode">Modus wählen</string>
-<string name="show_orari">Fahrzeiten anzeigen</string>
+
+<string name="select_bacino">Gebiet wählen:</string>
+<string name="select_linea">Buslinie wählen:</string>
+<string name="select_destination">Ziel wählen:</string>
+<string name="select_palina">Abfahrtshaltestelle wählen:</string>
+<string name="select_mode">Modus wählen:</string>
+<string name="show_orari">Fahrzeiten anzeigen:</string>
+
 <string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
 <string name="db_ok">Datenbank %1$s ist bereit.</string>
@@ -26,8 +28,10 @@
 <string name="no_db_update_available">Keine aktualisierte Fahrzeiten vorhanden. Bitte versuchen Sie es später noch einmal.</string>
 <string name="gps_disabled_title">GPS deaktiviert</string>
 <string name="gps_disabled">Kein Empfang von GPS-Daten möglich. Bitte schalten Sie Ihr GPS ein oder versuchen Sie es später nocheinmal.</string>
+<string name="gps_wait">Bitte warten Sie, waehrend die Koordinaten empfangen werden</string>
 <string name="error_title">Download Fehler</string>
 <string name="error_text">Ein Fehler ist während des Herunterladens aufgetreten. Bitte versuchen Sie es später nocheinmal oder kontaktieren Sie den Veröffentlicher des Programms</string>
+<string name="error_application">Ein Fehler ist bei der Datenbankabfrage aufgetreten. Bitte versuchen sie es erneut oder Kontaktieren Sie den Veröffentlicher des Programms</string>
 <string name="credits_text">SASAbus entstand aus der Hand der Mitglieder vom SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
 <string name="mode_gps">GPS Modus</string>
 <string name="mode_normal">Normaler Modus</string>
@@ -46,6 +50,11 @@
 
 <string name="sensor_off">Sensor ist ausgeschalten, bitte einschalten!</string>
 <string name="pointing">Anpeilen der Bushaltestelle</string>
+<string name="pointer_info">Achtung! Für genaues Anpeilen der Haltestelle Mobiltelefon möglichst still halten!</string>
+
+<string name="line">Linie: </string>
+<string name="from">Von: </string>
+<string name="to">Bis: </string>
 
 </resources>
 

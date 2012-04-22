@@ -35,27 +35,34 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Linea;
+import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
 import it.sasabz.android.sasabus.classes.MyWayListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowWayActivity extends ListActivity {
 
@@ -69,6 +76,9 @@ public class ShowWayActivity extends ListActivity {
 	
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
+	
+	//privudes the lineaid for this object
+	private int linea = -1;
 	
 	/*
 	 * is the position of the most actual bus-stop, where the bus at
@@ -92,9 +102,32 @@ public class ShowWayActivity extends ListActivity {
 		if (extras != null) {
 			orarioId = extras.getInt("orario");
 			destinazione = extras.getString("destinazione");
+			linea = extras.getInt("linea");
 		}
 
-		setContentView(R.layout.way_layout);
+		Passaggio pas = PassaggioList.getById(orarioId);
+		Palina part = PalinaList.getById(pas.getIdPalina());
+		Palina dest = PalinaList.getTranslation(destinazione, "de");
+		Linea line = LineaList.getById(linea);
+		if (part == null || dest == null || line == null)
+		{
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			finish();
+		}
+		setContentView(R.layout.standard_listview_layout);
+		TextView titel = (TextView)findViewById(R.id.titel);
+		titel.setText(R.string.show_way);
+		
+		Resources res = getResources();
+		
+		TextView lineat = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        from.setText(res.getString(R.string.from) + " " + part.toString());
+        to.setText(res.getString(R.string.to) + " " + dest.toString());
+		
 		fillData();
 		if (pos != -1) {
 			getListView().setSelection(pos);
@@ -161,29 +194,31 @@ public class ShowWayActivity extends ListActivity {
 		}
 	}
 
+	
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		// menu.add(...); // specific to this activity
-		SharedMenu.onCreateOptionsMenu(menu);
-		menu.add(0, POINTER, 3, R.string.pointing);
-		return true;
-	}
-
-	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	 super.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
+    	 menu.add(0, POINTER, 3, R.string.pointing);
+         return true;
+    }
+    
+    @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
@@ -200,4 +235,6 @@ public class ShowWayActivity extends ListActivity {
 		}
 		return false;
 	}
+	
+	
 }

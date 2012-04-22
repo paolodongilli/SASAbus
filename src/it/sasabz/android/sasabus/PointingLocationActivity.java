@@ -36,7 +36,6 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -44,6 +43,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources.Theme;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,6 +59,7 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -101,29 +102,19 @@ public class PointingLocationActivity extends Activity{
         //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mlocListener = new MyLocationListener();
-		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
 		
 		sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		Sensor sensor = sensorService.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-		List<Sensor> sensors = sensorService.getSensorList(Sensor.TYPE_ALL);
-		Iterator<Sensor> iter = sensors.iterator();
-		if(iter.hasNext())
-		{
-			while(iter.hasNext())
-			{
-				Sensor sen = iter.next();
-				Log.v("SENSOR", sen.getName());
-			}
-		}
 		
 		if (sensor != null) {
 			mySensorEventListener = new MySensorEventListener();
 			sensorService.registerListener(mySensorEventListener, sensor,
 					SensorManager.SENSOR_DELAY_NORMAL);
-			Log.i("Compass MainActivity", "Registerered for ORIENTATION Sensor");
+			Log.v("Compass MainActivity", "Registerered for ORIENTATION Sensor");
 
 		} else {
-			Log.e("Compass MainActivity", "Registerered for ORIENTATION Sensor");
+			Log.v("Compass MainActivity", "Registerered for ORIENTATION Sensor");
 			
 			Toast.makeText(this, R.string.sensor_off, Toast.LENGTH_LONG);
 		}
@@ -240,8 +231,21 @@ public class PointingLocationActivity extends Activity{
     	
     	distance = distance * 40045d / 360d;
     	
-        String dist = palina.toString() + ": " + (int)(distance * 1000) + "m";
+    	double distance_m = distance * 1000;
+    	String dist = palina.toString() + ": ";
+    	if(distance_m >= 1000)
+    	{
+    		distance_m = Math.round(distance_m/100)/10d;
+    		dist += ((distance_m) + " km");
+    	}
+    	else
+    	{
+    		distance_m = (distance_m/10d) * 10;
+    		dist += ((int)distance_m) + " m";
+    	}
+    	
         text.setText(dist);
+        Toast.makeText(this, R.string.pointer_info, Toast.LENGTH_LONG);
     }
     
     public double getDistance(Location loc)
@@ -283,7 +287,7 @@ public class PointingLocationActivity extends Activity{
     			angle_deg = 180 - angle_deg;
     		}
     	}
-    	return angle_deg;
+    	return (angle_deg - getWindowManager().getDefaultDisplay().getOrientation() * 90)%360;
     }
     
     
@@ -295,6 +299,25 @@ public class PointingLocationActivity extends Activity{
     public Activity getMe()
     {
     	return this;
+    }
+    
+    @Override
+    protected void onStop()
+    {
+    	mlocManager.removeUpdates(mlocListener);
+    	sensorService.unregisterListener(mySensorEventListener);
+    	super.onStop();
+    }
+    
+    /**
+     * Called when the activity is about to restart interacting with the user.
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+        sensorService.registerListener(mySensorEventListener, sensorService.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_NORMAL);
+        
     }
     
     /**
@@ -318,24 +341,25 @@ public class PointingLocationActivity extends Activity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	 super.onCreateOptionsMenu(menu);
-         SharedMenu.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
          return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);

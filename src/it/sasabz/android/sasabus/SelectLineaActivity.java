@@ -35,7 +35,6 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.SharedMenu;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -43,6 +42,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -66,7 +66,19 @@ public class SelectLineaActivity extends ListActivity {
 		if (extras != null) {
 			bacino = extras.getInt("bacino");
 		}
-        setContentView(R.layout.select_linea_layout);
+        setContentView(R.layout.standard_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.titel);
+        titel.setText(R.string.select_linea);
+        
+        TextView line = (TextView)findViewById(R.id.line);
+        TextView from = (TextView)findViewById(R.id.from);
+        TextView to = (TextView)findViewById(R.id.to);
+        
+        line.setText("");
+        from.setText("");
+        to.setText("");
+        
+        
         fillData(bacino);
     }
 
@@ -93,31 +105,32 @@ public class SelectLineaActivity extends ListActivity {
      */
     private void fillData(int bacino) {
     	list = LineaList.getList(bacino);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.linea, R.layout.linee_row, list);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);
     }  
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        SharedMenu.onCreateOptionsMenu(menu);
-        return true;
+    	 super.onCreateOptionsMenu(menu);
+    	 MenuInflater inflater = getMenuInflater();
+    	 inflater.inflate(R.menu.optionmenu, menu);
+         return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case SharedMenu.MENU_ABOUT:
+			case R.id.menu_about:
 			{
 				new About(this).show();
 				return true;
 			}
-			case SharedMenu.MENU_CREDITS:
+			case R.id.menu_credits:
 			{
 				new Credits(this).show();
 				return true;
 			}	
-			case SharedMenu.MENU_SETTINGS:
+			case R.id.menu_settings:
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
