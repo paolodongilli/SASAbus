@@ -114,6 +114,9 @@ public class MD5Utils {
 	public static boolean checksumOK(File file, File md5File) {
 		String md5 = extractMD5(md5File);
 		String calculatedMD5 = calculateMD5(file);
-		return md5.equals(calculatedMD5);
+		if (md5 != null && calculatedMD5 != null)
+			return md5.equals(calculatedMD5);
+		else
+			return false;
 	}
 }
