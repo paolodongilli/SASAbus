@@ -68,6 +68,7 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
+	private final static int NO_SD_CARD = 5;
 
 	public CheckDatabaseActivity() {
 		
@@ -96,6 +97,7 @@ public class CheckDatabaseActivity extends ListActivity {
 		//Check if the sd-card is mounted
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
+			showDialog(NO_SD_CARD);
 			throw new AndroidRuntimeException(getResources().getString(R.string.sd_card_not_mounted));
 		}
 		File dbDir = new File(Environment.getExternalStorageDirectory(),
@@ -276,7 +278,6 @@ public class CheckDatabaseActivity extends ListActivity {
 			}
 			catch (MalformedURLException e) 
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (IOException e)
@@ -365,6 +366,8 @@ public class CheckDatabaseActivity extends ListActivity {
 			return createErrorAlertDialog(R.string.db_download_error);
 		case MD5_ERROR_DIALOG:
 			return createErrorAlertDialog(R.string.md5_error);
+		case NO_SD_CARD:
+			return createErrorAlertDialog(R.string.sd_card_not_mounted);
 		default:
 			return null;
 		}
