@@ -31,6 +31,7 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 import android.database.Cursor;
+import android.util.Log;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -179,6 +180,31 @@ public class LineaList {
 		}
 		cursor.close();
 		sqlite.close();
+		return list;
+	}
+	
+	public static Vector<DBObject> sort(Vector <DBObject> list)
+	{
+		int j, i;
+		try {
+			for (j=list.size(); j > 1;--j)
+			{
+				for(i=0;i < j-1;++i)
+				{
+					Linea current = (Linea)list.elementAt(i);
+					Linea next = (Linea)list.elementAt(i+1);
+					if(current.compareTo(next) > 0)
+					{
+						list.remove(i);
+						list.add(i+1, current);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return list;
 	}
 	

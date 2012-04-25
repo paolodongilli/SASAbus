@@ -105,6 +105,7 @@ public class SelectLineaActivity extends ListActivity {
      */
     private void fillData(int bacino) {
     	list = LineaList.getList(bacino);
+    	list = LineaList.sort(list);
     	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);
     }  

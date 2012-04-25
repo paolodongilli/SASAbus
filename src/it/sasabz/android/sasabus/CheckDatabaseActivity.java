@@ -36,6 +36,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.HttpConnection;
+
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.FileRetriever;

@@ -174,12 +174,63 @@ public class Linea extends DBObject {
 	@Override
 	public boolean equals(Object object)
 	{
+		if (object == null)
+			return false;
 		if(!(object instanceof Linea))
 			return false;
 		Linea linea = (Linea)object;
 		if(linea.getId() != this.getId())
 			return false;
 		return true;
+	}
+	
+	
+	/**
+	 * This function compares two Linea object and return their difference value
+	 * @param linea is the line to compare with
+	 * @return 0, if the two lines are equal, -1 if this line is less then, and 1 
+	 * if this line is greater then the line to compare with
+	 */
+	public int compareTo(Linea linea) throws NumberFormatException
+	{
+		int sortnum = 0;
+		boolean failure = false;
+		boolean failure_lin = false;
+		try {
+			sortnum = Integer.parseInt(this.getNum_lin());
+		}
+		catch (NumberFormatException e)
+		{
+			failure = true;
+		}
+		int linsortnum = 0;
+		try
+		{
+			linsortnum = Integer.parseInt(linea.getNum_lin());
+		}
+		catch (NumberFormatException e)
+		{
+			failure_lin = true;
+		}
+		if(failure && failure_lin)
+		{
+			return this.getNum_lin().compareTo(linea.getNum_lin());
+		}
+		else if(failure)
+		{
+			return 1;
+		}
+		else if(failure_lin)
+		{
+			return -1;
+		}
+		sortnum = sortnum % 100;
+		linsortnum = linsortnum % 100;
+		if(sortnum == linsortnum)
+			return 0;
+		if (sortnum > linsortnum)
+			return 1;
+		return -1;
 	}
 	
 	
