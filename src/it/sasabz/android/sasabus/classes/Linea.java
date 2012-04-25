@@ -26,6 +26,7 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import android.database.Cursor;
@@ -201,7 +202,15 @@ public class Linea extends DBObject {
 		}
 		catch (NumberFormatException e)
 		{
-			failure = true;
+			try
+			{
+				sortnum = Integer.parseInt(this.getNum_lin().substring(0, this.getNum_lin().length()-1));
+			}
+			catch(Exception ex)
+			{
+				failure = true;
+			}
+			
 		}
 		int linsortnum = 0;
 		try
@@ -210,7 +219,15 @@ public class Linea extends DBObject {
 		}
 		catch (NumberFormatException e)
 		{
-			failure_lin = true;
+			try
+			{
+				linsortnum = Integer.parseInt(linea.getNum_lin().substring(0, linea.getNum_lin().length()-1));
+			}
+			catch(Exception ex)
+			{
+				failure_lin = true;
+			}
+			
 		}
 		if(failure && failure_lin)
 		{
