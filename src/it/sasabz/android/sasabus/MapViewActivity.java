@@ -33,6 +33,7 @@ import org.apache.http.impl.conn.DefaultClientConnection;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
@@ -133,7 +134,23 @@ public class MapViewActivity extends MapActivity {
 	        to.setText(res.getString(R.string.to) + " " + destination.toString());
 	        
 	        mapOverlays.add(itemizedoverlay);
-	        //map.setBuiltInZoomControls(true);
+	        
+	        MapController controller = map.getController();
+	        
+	        double difflat = Math.abs(part.getLatitude() - destination.getLatitude());
+	        
+	        double difflong = Math.abs(part.getLongitude() - destination.getLongitude());
+	        
+	        double midlat = (part.getLatitude() + destination.getLatitude()) / 2d;
+	        
+	        double midlong = (part.getLongitude() + destination.getLongitude()) / 2d;
+	        
+	        GeoPoint center = new GeoPoint((int)(midlat * 1000000),(int)(midlong * 1000000));
+	        
+	        controller.setCenter(center);
+	        
+	        controller.zoomToSpan((int)(difflat * 1000000), (int)(difflong * 1000000));
+	        map.setBuiltInZoomControls(true);
 		}
     }
 
@@ -179,6 +196,6 @@ public class MapViewActivity extends MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		return false;
+		return true;
 	}
 }

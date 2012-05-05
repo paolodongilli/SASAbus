@@ -35,13 +35,6 @@
         android:background="@color/header_background"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/header_text" />
-
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_values" />
-
     
     <com.google.android.maps.MapView
         android:id="@+id/mapview"
