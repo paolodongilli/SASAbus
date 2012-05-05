@@ -86,8 +86,11 @@ public class ShowWayActivity extends ListActivity {
 	 */
 	private int pos;
 	
-	//testfinal
+	//test pointer activity
 	private final int POINTER = 10;
+	
+	//test map activity
+	private final int MAP = 11;
 
 	public ShowWayActivity() {
 	}
@@ -202,6 +205,7 @@ public class ShowWayActivity extends ListActivity {
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
     	 menu.add(0, POINTER, 3, R.string.pointing);
+    	 menu.add(0, MAP, 4, R.string.map);
          return true;
     }
     
@@ -230,6 +234,17 @@ public class ShowWayActivity extends ListActivity {
 				Passaggio pas = PassaggioList.getById(orarioId);
 				pointeract.putExtra("palina", pas.getIdPalina());
 				startActivity(pointeract);
+				return true;
+			}
+			case MAP:
+			{
+				Intent mapview = new Intent(this, MapViewActivity.class);
+				Passaggio part = PassaggioList.getById(orarioId);
+				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
+				mapview.putExtra("partenza", part.getIdPalina());
+				mapview.putExtra("destinazione", dest.getIdPalina());
+				mapview.putExtra("line", linea);
+				startActivity(mapview);
 				return true;
 			}
 		}
