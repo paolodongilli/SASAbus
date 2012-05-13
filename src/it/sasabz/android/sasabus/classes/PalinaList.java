@@ -28,6 +28,7 @@ package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.SASAbus;
 
+import java.util.Locale;
 import java.util.Vector;
 
 
@@ -78,13 +79,27 @@ public class PalinaList {
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String [] args = {Integer.toString(linea)};
-		Cursor cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+		Cursor cursor = null;
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+					"from paline, " +
+					"(select id from corse where lineaId = ?) as corse, " +
+					"orarii " +
+					"where orarii.corsaId = corse.id " +
+					"AND orarii.palinaId = paline.id " +
+					"order by paline.nome_de", args);
+		}
+		else
+		{
+				cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
 				"from paline, " +
 				"(select id from corse where lineaId = ?) as corse, " +
 				"orarii " +
 				"where orarii.corsaId = corse.id " +
 				"AND orarii.palinaId = paline.id " +
-				"order by paline.nome_de", args);
+				"order by paline.nome_it", args);
+		}
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
@@ -130,7 +145,31 @@ public class PalinaList {
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
 				"and o1.progressivo > o2.progressivo " +
-				"order by p.nome_de";
+				"order by p.nome_it";
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+					"from " +
+					"(select id, lineaId " +
+					"from corse " +
+					"where  " +
+					"lineaId = ? " +
+					"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+					") as c, " +
+					"(select progressivo, orario, corsaId " +
+					"from orarii " +
+					"where palinaId IN ( " +
+					"select id from paline where nome_de = ? " +		
+					")) as o1, " +
+					"orarii as o2, " +
+					"paline p " +
+					"where " +
+					"o1.corsaId = c.id " +
+					"and o2.corsaId = o1.corsaId " +
+					"and o2.palinaId = p.id " +
+					"and o1.progressivo > o2.progressivo " +
+					"order by p.nome_de";
+		}
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
@@ -220,7 +259,30 @@ public class PalinaList {
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
 				"and o1.progressivo < o2.progressivo " +
-				"order by p.nome_de";
+				"order by p.nome_it";
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+					"from " +
+					"(select id, lineaId " +
+					"from corse " +
+					"where  " +
+					"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+					") as c, " +
+					"(select progressivo, orario, corsaId " +
+					"from orarii " +
+					"where palinaId IN ( " +
+					"select id from paline where nome_de = ? " +		
+					")) as o1, " +
+					"orarii as o2, " +
+					"paline p " +
+					"where " +
+					"o1.corsaId = c.id " +
+					"and o2.corsaId = o1.corsaId " +
+					"and o2.palinaId = p.id " +
+					"and o1.progressivo < o2.progressivo " +
+					"order by p.nome_de";
+		}
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
