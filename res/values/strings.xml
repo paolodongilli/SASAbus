@@ -15,7 +15,7 @@
 <string name="db_ok">Database %1$s is ready.</string>
 <string name="menu_about">About</string>
 <string name="updates">... updates ...</string>
-<string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</string>
+<string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThe Google Maps Icons are relaesed under the cc contributed by Maps Icons Collection http://mapicons.nicolasmollet.com</string>
 <string name="copyright">Copyright (C) %1$s SASAbus Team</string>
 <string name="supp_email">For support and contact with the developers send a mail to: android@sasabz.it</string>
 <string name="disclaimer">SASAbus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
@@ -62,13 +62,14 @@
 
 <string name="map">Map</string>
 
-<!-- this is the debug maps api key -->
+<!-- this is my debug maps api key -->
 <string name="google_maps_api_key">03D1tZLvBvbSMh1iAGUOt9OFgqpYNvYCkT4hGRg</string>
     
 <!-- this is my keystore maps api key -->
-<!-- 
+<!--
 <string name="google_maps_api_key">03D1tZLvBvbQnng2XsYcm4H5j5QXUpXAI1O9ccQ</string>
- -->
+-->
+
 
 </resources>
 

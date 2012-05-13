@@ -117,7 +117,7 @@ public class MapViewActivity extends MapActivity {
 	        MapView map = (MapView)findViewById(R.id.mapview);
 	        
 	        List<Overlay> mapOverlays = map.getOverlays();
-	        Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
+	        Drawable drawable = res.getDrawable(R.drawable.busstop);
 	        MyItemizedOverlay itemizedoverlay = new MyItemizedOverlay(drawable,this);
 	    	
 	        GeoPoint point = new GeoPoint((int)(destination.getLatitude() * 1000000),(int)(destination.getLongitude() * 1000000));
@@ -196,6 +196,6 @@ public class MapViewActivity extends MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		return true;
+		return false;
 	}
 }
