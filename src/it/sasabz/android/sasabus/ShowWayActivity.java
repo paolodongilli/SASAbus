@@ -236,17 +236,17 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(pointeract);
 				return true;
 			}
-			case MAP:
-			{
-				Intent mapview = new Intent(this, MapViewActivity.class);
-				Passaggio part = PassaggioList.getById(orarioId);
-				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
-				mapview.putExtra("partenza", part.getIdPalina());
-				mapview.putExtra("destinazione", dest.getIdPalina());
-				mapview.putExtra("line", linea);
-				startActivity(mapview);
-				return true;
-			}
+//			case MAP:
+//			{
+//				Intent mapview = new Intent(this, MapViewActivity.class);
+//				Passaggio part = PassaggioList.getById(orarioId);
+//				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
+//				mapview.putExtra("partenza", part.getIdPalina());
+//				mapview.putExtra("destinazione", dest.getIdPalina());
+//				mapview.putExtra("line", linea);
+//				startActivity(mapview);
+//				return true;
+//			}
 		}
 		return false;
 	}

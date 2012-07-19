@@ -1,14 +1,16 @@
 package it.sasabz.android.sasabus.classes;
 
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.MapView.Projection;
+import org.osmdroid.views.overlay.Overlay;
+
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.Projection;
 
 public class MyMapRouteOverlay extends Overlay {
 
@@ -21,8 +23,9 @@ public class MyMapRouteOverlay extends Overlay {
 
 
 
-	  public MyMapRouteOverlay(GeoPoint gp1,GeoPoint gp2,int mode) // GeoPoint is a int. (6E)
+	  public MyMapRouteOverlay(GeoPoint gp1,GeoPoint gp2,int mode, Context context) // GeoPoint is a int. (6E)
 	  {
+		super(context);
 	    this.gp1 = gp1;
 	    this.gp2 = gp2;
 	    this.mode = mode;
@@ -30,12 +33,13 @@ public class MyMapRouteOverlay extends Overlay {
 
 	  }
 
-	  public MyMapRouteOverlay(GeoPoint gp1,GeoPoint gp2,int mode, int defaultColor)
+	  public MyMapRouteOverlay(GeoPoint gp1,GeoPoint gp2,int mode, int defaultColor, Context context)
 	  {
-	    this.gp1 = gp1;
-	    this.gp2 = gp2;
-	    this.mode = mode;
-	    this.defaultColor = defaultColor;
+		  	super(context);
+		  	this.gp1 = gp1;
+		  	this.gp2 = gp2;
+		  	this.mode = mode;
+		  	this.defaultColor = defaultColor;
 	  }
 
 	  public int getMode()
@@ -43,7 +47,7 @@ public class MyMapRouteOverlay extends Overlay {
 	    return mode;
 	  }
 
-	  public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when)
+	  public void draw(Canvas canvas, MapView mapView, boolean shadow, long when)
 	    {
 	      Projection projection = mapView.getProjection();
 	      if (shadow == false)
@@ -68,6 +72,32 @@ public class MyMapRouteOverlay extends Overlay {
 	        }
 
 	      }
-	      return super.draw(canvas, mapView, shadow, when);
 	    }
+
+	@Override
+	protected void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		 Projection projection = mapView.getProjection();
+	      if (shadow == false)
+	      {
+
+	        Paint paint = new Paint();
+	        paint.setAntiAlias(true);
+	        Point point = new Point();
+	        projection.toPixels(gp1, point);
+
+	        if(mode==2)
+	        {
+	          if(defaultColor==999)
+	            paint.setColor(Color.RED);
+	          else
+	            paint.setColor(defaultColor);
+	          Point point2 = new Point();
+	          projection.toPixels(gp2, point2);
+	          paint.setStrokeWidth(5);
+	          paint.setAlpha(120);
+	          canvas.drawLine(point.x, point.y, point2.x,point2.y, paint);
+	        }
+
+	      }
 	}
+}

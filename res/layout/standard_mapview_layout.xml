@@ -36,14 +36,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/header_text" />
     
-    <com.google.android.maps.MapView
-        android:id="@+id/mapview"
+    <!--
+    <org.osmdroid.views.MapView 
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="0.40"
-        android:clickable="true"
-        android:apiKey="@string/google_maps_api_key"
-    />
+		android:layout_height="fill_parent"
+		android:id="@+id/mapview" />
+	-->
 
     <TableLayout
         android:layout_width="match_parent"

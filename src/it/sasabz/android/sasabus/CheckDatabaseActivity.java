@@ -222,7 +222,6 @@ public class CheckDatabaseActivity extends ListActivity {
 		builder.setMessage(String.format(getString(msg),placeholder));
 		builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 
-			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				startActivity();
 			}
