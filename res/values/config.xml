@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">SASAbus</string>
+    <string name="app_name_osm">SASAbus_osm</string>
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.2.3</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>

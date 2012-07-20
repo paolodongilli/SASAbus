@@ -62,6 +62,12 @@
 
 <string name="intermediate">Intermediate Stop</string>
 
+<string name="no_map_update_available">OpenStreetMap data update is not available. Please try again later.</string>
+<string name="downloading_map">Downloading OpenStreetMap data update ...</string>
+<string name="map_download_error">Error while downloading the OpenStreetMap data.</string>
+<string name="check_osm">Checking OpenStreetMap data</string>
+<string name="unzipping_map">Unzipping OpenStreetMap data ...</string>
+
 <string name="map">Map</string>
 
 

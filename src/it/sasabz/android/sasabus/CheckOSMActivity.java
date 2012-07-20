@@ -61,16 +61,16 @@ import android.preference.PreferenceManager;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 
-public class CheckDatabaseActivity extends ListActivity {
+public class CheckOSMActivity extends ListActivity {
 
 	private final static int DOWNLOAD_SUCCESS_DIALOG = 0;
 	private final static int DOWNLOAD_ERROR_DIALOG = 1;
 	private final static int MD5_ERROR_DIALOG = 2;
 	private final static int NO_NETWORK_CONNECTION = 3;
-	private final static int NO_DB_UPDATE_AVAILABLE = 4;
+	private final static int NO_MAP_UPDATE_AVAILABLE = 4;
 	private final static int NO_SD_CARD = 5;
 
-	public CheckDatabaseActivity() {
+	public CheckOSMActivity() {
 		
 	}
 
@@ -87,10 +87,9 @@ public class CheckDatabaseActivity extends ListActivity {
 		SASAbus config = (SASAbus) getApplicationContext();
 		// Check if db exists
 		Resources res = getResources();
-		String appName = res.getString(R.string.app_name);
+		String appName = res.getString(R.string.app_name_osm);
 		String dbDirName = res.getString(R.string.db_dir);
-		String repositoryURL = res.getString(R.string.repository_url);
-		String dbFileName = appName + ".db";
+		String dbFileName = appName + ".map";
 		String dbZIPFileName = dbFileName + ".zip";
 		String md5FileName = dbFileName + ".md5";
 
@@ -174,12 +173,12 @@ public class CheckDatabaseActivity extends ListActivity {
 				if(config.getDbDownloadAttempts() < 2) 
 				{
 					//download the new Database and the new md5-file with the FileRetriver
-					new FileRetriever(this, dbZIPFile, dbFile, md5File, res.getString(R.string.downloading_db), res.getString(R.string.unzipping_db)).execute(dbZIPFileName, md5FileName);
+					new FileRetriever(this, dbZIPFile, dbFile, md5File, res.getString(R.string.downloading_map), res.getString(R.string.unzipping_map)).execute(dbZIPFileName, md5FileName);
 				}
 				else 
 				{
 					//if no db-update is available will be shown a message
-					showDialog(NO_DB_UPDATE_AVAILABLE);
+					showDialog(NO_MAP_UPDATE_AVAILABLE);
 				}
 			} 
 			else 
@@ -320,8 +319,36 @@ public class CheckDatabaseActivity extends ListActivity {
 	 */
 	private void startActivity() {
 		finish();
-		Intent startact = new Intent(this, CheckOSMActivity.class);
-		startActivity(startact);
+		Intent startact = null;
+		 try
+	        {
+			 	SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+	        	int mode = Integer.parseInt(shared.getString("mode", "0"));
+	        	Log.v("preferences", "mode: " + mode);
+	        	if(mode == 0)
+	            {
+	            	startact = new Intent(this, SelectModeActivity.class);
+	            }
+	        	if(mode == 1)
+	            {
+	            	startact = new Intent(this, SelectPalinaLocationActivity.class);
+	            }
+	            if(mode == 2)
+	            {
+	            	startact = new Intent(this, SelectBacinoActivity.class);
+	            }
+	        	
+	        }
+		 catch (Exception e)
+		 {
+			 startact = new Intent(this, SelectModeActivity.class);
+			 
+		 }
+		 if(startact == null)
+		 {
+			 startact = new Intent(this, SelectModeActivity.class);
+		 }
+		 startActivity(startact);
 	}
 
 	@Override
@@ -329,12 +356,12 @@ public class CheckDatabaseActivity extends ListActivity {
 		switch (id) {
 		case NO_NETWORK_CONNECTION:
 			return createErrorAlertDialog(R.string.no_network_connection);
-		case NO_DB_UPDATE_AVAILABLE:
-			return createErrorAlertDialog(R.string.no_db_update_available);
+		case NO_MAP_UPDATE_AVAILABLE:
+			return createErrorAlertDialog(R.string.no_map_update_available);
 		case DOWNLOAD_SUCCESS_DIALOG:
-			return createAlertDialog(R.string.db_ok, getString(R.string.app_name) + ".db");
+			return createAlertDialog(R.string.db_ok, getString(R.string.app_name) + ".map");
 		case DOWNLOAD_ERROR_DIALOG:
-			return createErrorAlertDialog(R.string.db_download_error);
+			return createErrorAlertDialog(R.string.map_download_error);
 		case MD5_ERROR_DIALOG:
 			return createErrorAlertDialog(R.string.md5_error);
 		case NO_SD_CARD:

@@ -76,6 +76,9 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 	private PowerManager.WakeLock wakeLock;
 	private Activity activity;
 	private transient int originalRequestedOrientation;
+	
+	private String download = null;
+	private String unzipping = null;
 
 	/**
 	 * This constructor takes an activity, a dbZipFile to store the 
@@ -94,6 +97,29 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 		this.md5File = md5File;
 		this.activity = activity;
 		this.res = activity.getResources();
+
+		//getting the power manager from the activity
+		PowerManager pm = (PowerManager) this.activity
+				.getSystemService(Context.POWER_SERVICE);
+		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
+				| PowerManager.ON_AFTER_RELEASE, TAG);
+		// Obtain a wakelock for SCREEN_DIM_WAKE_LOCK
+		originalRequestedOrientation = activity.getRequestedOrientation();
+		activity
+		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		wakeLock.acquire();
+	}
+	
+	public FileRetriever(Activity activity, File dbZIPFile, File dbFile,
+			File md5File, String download, String unzipping) {
+		super();
+		this.dbZIPFile = dbZIPFile;
+		this.dbFile = dbFile;
+		this.md5File = md5File;
+		this.activity = activity;
+		this.res = activity.getResources();
+		this.download = download;
+		this.unzipping = unzipping;
 
 		//getting the power manager from the activity
 		PowerManager pm = (PowerManager) this.activity
@@ -144,7 +170,10 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 			
 			progressDialog = new ProgressDialog(this.activity);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			progressDialog.setMessage(res.getString(R.string.downloading_db));
+			if(download == null)
+				progressDialog.setMessage(res.getString(R.string.downloading_db));
+			else
+				progressDialog.setMessage(download);
 			progressDialog.setCancelable(false);
 			
 			//creating a new ftp connection
@@ -186,7 +215,10 @@ public class FileRetriever  extends AsyncTask<String, String, String>{
 			// unzip dbZIPFile
 			progressDialog = new ProgressDialog(this.activity);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setMessage(res.getString(R.string.unzipping_db));
+			if(unzipping == null)
+				progressDialog.setMessage(res.getString(R.string.unzipping_db));
+			else
+				progressDialog.setMessage(unzipping);
 			progressDialog.setCancelable(false);
 			progressDialog.setProgress(0);
 			Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),

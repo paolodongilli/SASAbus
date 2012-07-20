@@ -57,6 +57,12 @@
 <string name="to">Bis: </string>
 <string name="intermediate">Zwischenhalt</string>
 
+<string name="no_map_update_available">OpenStreetMap Daten update nicht verfügbar. Probieren Sie es später nocheinmal!</string>
+<string name="downloading_map">Downloading OpenStreetMap Daten update ...</string>
+<string name="map_download_error">Fehler während des Downloads des OpenStreetMap daten update.</string>
+<string name="check_osm">Prüfen der OpenStreetMap daten</string>
+<string name="unzipping_map">Entpacken der OpenStreetMap Daten ...</string>
+
 <string name="map">Karte</string>
 
 </resources>
