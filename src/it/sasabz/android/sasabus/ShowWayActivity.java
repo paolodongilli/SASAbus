@@ -245,6 +245,7 @@ public class ShowWayActivity extends ListActivity {
 				mapview.putExtra("partenza", part.getIdPalina());
 				mapview.putExtra("destinazione", dest.getIdPalina());
 				mapview.putExtra("line", linea);
+				mapview.putExtra("orarioId", orarioId);
 				startActivity(mapview);
 				return true;
 			}
