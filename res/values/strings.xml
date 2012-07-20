@@ -62,14 +62,6 @@
 
 <string name="map">Map</string>
 
-<!-- this is my debug maps api key -->
-<string name="google_maps_api_key">03D1tZLvBvbSMh1iAGUOt9OFgqpYNvYCkT4hGRg</string>
-    
-<!-- this is my keystore maps api key -->
-<!--
-<string name="google_maps_api_key">03D1tZLvBvbQnng2XsYcm4H5j5QXUpXAI1O9ccQ</string>
--->
-
 
 </resources>
 

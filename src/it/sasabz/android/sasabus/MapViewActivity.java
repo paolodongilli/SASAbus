@@ -27,9 +27,13 @@ package it.sasabz.android.sasabus;
 
 import java.util.Date;
 import java.util.Vector;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import org.mapsforge.android.maps.MapActivity;
+import org.mapsforge.android.maps.MapView;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
@@ -52,6 +56,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -64,35 +69,21 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ShowWayActivity extends ListActivity {
+public class MapViewActivity extends MapActivity {
 
 
 	
 	//provides the linea for this object
-	private int orarioId;
+	private int partenza;
 
 	//provides the destination for this object
-	private String destinazione;
+	private int destinazione;
 	
-	//provides the list for this object of all passages during the actual day
-	private Vector<Passaggio> list = null;
-	
-	//provides the lineaid for this object
+	//privudes the lineaid for this object
 	private int linea = -1;
 	
-	/*
-	 * is the position of the most actual bus-stop, where the bus at
-	 * the moment is when he is in time :)
-	 */
-	private int pos;
-	
-	//test pointer activity
-	private final int POINTER = 10;
-	
-	//test map activity
-	private final int MAP = 11;
 
-	public ShowWayActivity() {
+	public MapViewActivity() {
 	}
 
 	/** Called with the activity is first created. */
@@ -100,42 +91,54 @@ public class ShowWayActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		orarioId = 0;
-		destinazione = null;
+		partenza = 0;
+		destinazione = 0;
 		if (extras != null) {
-			orarioId = extras.getInt("orario");
-			destinazione = extras.getString("destinazione");
-			linea = extras.getInt("linea");
+			partenza = extras.getInt("partenza");
+			destinazione = extras.getInt("destinazione");
+			linea = extras.getInt("line");
 		}
 
-		Passaggio pas = PassaggioList.getById(orarioId);
-		Palina part = PalinaList.getById(pas.getIdPalina());
-		Palina dest = PalinaList.getTranslation(destinazione, "de");
+		Palina part = PalinaList.getById(partenza);
+		Palina dest = PalinaList.getById(destinazione);
 		Linea line = LineaList.getById(linea);
+		
+		Resources res = getResources();
+		
 		if (part == null || dest == null || line == null)
 		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, res.getString(R.string.error_application), Toast.LENGTH_LONG).show();
 			finish();
 			return;
 		}
-		setContentView(R.layout.standard_listview_layout);
+		setContentView(R.layout.standard_mapview_layout);
 		TextView titel = (TextView)findViewById(R.id.titel);
-		titel.setText(R.string.show_way);
+		titel.setText(R.string.map);
 		
-		Resources res = getResources();
 		
 		TextView lineat = (TextView)findViewById(R.id.line);
         TextView from = (TextView)findViewById(R.id.from);
         TextView to = (TextView)findViewById(R.id.to);
         
+        if(lineat == null || from == null || to == null)
+        {
+        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
+        	finish();
+        	return;
+        }
+        
         lineat.setText(res.getString(R.string.line) + " " + line.toString());
         from.setText(res.getString(R.string.from) + " " + part.toString());
         to.setText(res.getString(R.string.to) + " " + dest.toString());
+
+        
+        MapView mapView = (MapView)findViewById(R.id.mapView);
+        mapView.setClickable(true);
+        mapView.setBuiltInZoomControls(true);
+        mapView.setMapFile(new File(Environment.getExternalStorageDirectory() 
+        		+ "/" + res.getString(R.string.db_dir) + "/southtyrol.map"));
+
 		
-		fillData();
-		if (pos != -1) {
-			getListView().setSelection(pos);
-		}
 	}
 
 	/**
@@ -146,57 +149,6 @@ public class ShowWayActivity extends ListActivity {
 		super.onResume();
 	}
 
-	/**
-	 * fills the listview with the timetable
-	 * @return a cursor to the time table
-	 */
-	private void fillData() {
-		list = PassaggioList.getVectorWay(orarioId, destinazione);
-		pos = getNextTimePosition(list);
-		int[] wherelist = {R.id.palina, R.id.orario};
-        MyWayListAdapter paline = new MyWayListAdapter(this, wherelist, R.layout.way_row, list, pos);
-        setListAdapter(paline);
-	}
-
-	/**
-	 * This method gets the next departure time and returns the
-	 * index of this element
-	 * @param c is the cursor to the list_view
-	 * @return the index of the next departure time
-	 */
-	private int getNextTimePosition(Vector<Passaggio> list) {
-		int count = list.size();
-		if (count == 0) {
-			return -1;
-		} else if (count == 1) {
-			return 0;
-		} else {
-			int i = 0;
-			boolean found = false;
-			while (i <= count-2 && !found) {
-				Time currentTime = new Time();
-				Time sasaTime = new Time();
-				Time sasaTimeNext = new Time();
-				currentTime.setToNow();
-				sasaTime = list.get(i).getOrario();
-				sasaTimeNext = list.get(i + 1).getOrario();
-
-				if (sasaTime.after(currentTime)
-						|| sasaTime.equals(currentTime)
-						|| sasaTime.before(currentTime)
-						&& (sasaTimeNext.equals(currentTime) || sasaTimeNext
-								.after(currentTime)))
-				{
-					found = true;
-				}
-				else
-				{
-					i++;
-				}
-			}
-			return i;
-		}
-	}
 
 	
 	
@@ -205,8 +157,6 @@ public class ShowWayActivity extends ListActivity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, POINTER, 3, R.string.pointing);
-    	 menu.add(0, MAP, 4, R.string.map);
          return true;
     }
     
@@ -227,25 +177,6 @@ public class ShowWayActivity extends ListActivity {
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
-				return true;
-			}
-			case POINTER:
-			{
-				Intent pointeract = new Intent(this, PointingLocationActivity.class);
-				Passaggio pas = PassaggioList.getById(orarioId);
-				pointeract.putExtra("palina", pas.getIdPalina());
-				startActivity(pointeract);
-				return true;
-			}
-			case MAP:
-			{
-				Intent mapview = new Intent(this, MapViewActivity.class);
-				Passaggio part = PassaggioList.getById(orarioId);
-				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
-				mapview.putExtra("partenza", part.getIdPalina());
-				mapview.putExtra("destinazione", dest.getIdPalina());
-				mapview.putExtra("line", linea);
-				startActivity(mapview);
 				return true;
 			}
 		}

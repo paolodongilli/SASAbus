@@ -36,12 +36,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/header_text" />
     
-    <!--
-    <org.osmdroid.views.MapView 
+    <org.mapsforge.android.maps.MapView 
         android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:id="@+id/mapview" />
-	-->
+		android:id="@+id/mapView" />
 
     <TableLayout
         android:layout_width="match_parent"
