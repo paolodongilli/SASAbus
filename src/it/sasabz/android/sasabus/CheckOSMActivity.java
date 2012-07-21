@@ -44,6 +44,7 @@ import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.MD5Utils;
 import it.sasabz.android.sasabus.classes.SasabusFTP;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -61,7 +62,7 @@ import android.preference.PreferenceManager;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 
-public class CheckOSMActivity extends ListActivity {
+public class CheckOSMActivity extends Activity {
 
 	private final static int DOWNLOAD_SUCCESS_DIALOG = 0;
 	private final static int DOWNLOAD_ERROR_DIALOG = 1;
@@ -78,10 +79,11 @@ public class CheckOSMActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.splash);
 		check();
 	}
-
+	
+	
 	private void check()
 	{
 		SASAbus config = (SASAbus) getApplicationContext();

@@ -44,6 +44,7 @@ import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.MD5Utils;
 import it.sasabz.android.sasabus.classes.SasabusFTP;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -61,7 +62,7 @@ import android.preference.PreferenceManager;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 
-public class CheckDatabaseActivity extends ListActivity {
+public class CheckDatabaseActivity extends Activity {
 
 	private final static int DOWNLOAD_SUCCESS_DIALOG = 0;
 	private final static int DOWNLOAD_ERROR_DIALOG = 1;
@@ -70,18 +71,17 @@ public class CheckDatabaseActivity extends ListActivity {
 	private final static int NO_DB_UPDATE_AVAILABLE = 4;
 	private final static int NO_SD_CARD = 5;
 
-	public CheckDatabaseActivity() {
-		
-	}
+	
 
 	/** Called with the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.splash);
 		check();
 	}
 
+	
 	private void check()
 	{
 		SASAbus config = (SASAbus) getApplicationContext();
