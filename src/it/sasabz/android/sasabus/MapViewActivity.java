@@ -148,8 +148,7 @@ public class MapViewActivity extends MapActivity {
         MapView mapView = (MapView)findViewById(R.id.mapView);
         mapView.setClickable(true);
         mapView.setBuiltInZoomControls(true);
-        mapView.setMapFile(new File(Environment.getExternalStorageDirectory() 
-        		+ "/" + res.getString(R.string.db_dir) + "/southtyrol.map"));
+        mapView.setMapFile(new File(Environment.getExternalStorageDirectory() , res.getString(R.string.db_dir) + "/" + res.getString(R.string.app_name_osm) + ".map"));
 
 		GeoPoint partPoint = new GeoPoint(part.getLatitude(), part.getLongitude());
 		GeoPoint destPoint = new GeoPoint(dest.getLatitude(), dest.getLongitude());
