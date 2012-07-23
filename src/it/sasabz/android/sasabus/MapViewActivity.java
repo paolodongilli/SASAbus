@@ -39,9 +39,11 @@ import org.mapsforge.core.GeoPoint;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
+import it.sasabz.android.sasabus.classes.MyOverlayItem;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
@@ -140,10 +142,10 @@ public class MapViewActivity extends MapActivity {
 		
 		Drawable bus = getResources().getDrawable(R.drawable.busstop);
 		
-		OverlayItem partOverlay = new OverlayItem(partPoint,res.getString(R.string.from), part.toString(), bus);
-		OverlayItem destOverlay = new OverlayItem(destPoint,res.getString(R.string.to), dest.toString(), bus);
+		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), bus);
+		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), bus);
 		
-		ArrayItemizedOverlay arr = new ArrayItemizedOverlay(bus);
+		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(bus);
 		
 		arr.addItem(partOverlay);
 		arr.addItem(destOverlay);
@@ -156,7 +158,7 @@ public class MapViewActivity extends MapActivity {
 		Iterator<Passaggio> iter = paslist.iterator();
 		
 		Drawable inter = getResources().getDrawable(R.drawable.intermediate_stop);
-		ArrayItemizedOverlay intermediate = new ArrayItemizedOverlay(inter);
+		MyArrayItemizedOverlay intermediate = new MyArrayItemizedOverlay(inter);
 		
 		
 		while(iter.hasNext())
@@ -167,7 +169,7 @@ public class MapViewActivity extends MapActivity {
 			if(pal.getId() != dest.getId() && pal.getId() != part.getId())
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
-				OverlayItem overlay = new OverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
+				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
 				intermediate.addItem(overlay);
 			}
 		}
