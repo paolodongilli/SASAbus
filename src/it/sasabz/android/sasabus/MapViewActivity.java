@@ -56,6 +56,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,10 +75,7 @@ public class MapViewActivity extends MapActivity {
 	
 	//provides the orarioId for this object
 	private int orarioId = -1;
-
-	public MapViewActivity() {
-	}
-
+	
 	/** Called with the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -138,23 +136,28 @@ public class MapViewActivity extends MapActivity {
 		GeoPoint partPoint = new GeoPoint(part.getLatitude(), part.getLongitude());
 		GeoPoint destPoint = new GeoPoint(dest.getLatitude(), dest.getLongitude());
 		
+		
+		
 		Drawable bus = getResources().getDrawable(R.drawable.busstop);
 		
 		OverlayItem partOverlay = new OverlayItem(partPoint,res.getString(R.string.from), part.toString(), bus);
 		OverlayItem destOverlay = new OverlayItem(destPoint,res.getString(R.string.to), dest.toString(), bus);
 		
+		ArrayItemizedOverlay arr = new ArrayItemizedOverlay(bus);
 		
-		ArrayItemizedOverlay partdest = new ArrayItemizedOverlay(bus);
+		arr.addItem(partOverlay);
+		arr.addItem(destOverlay);
 		
-		partdest.addItem(partOverlay);
-		partdest.addItem(destOverlay);
+		mapView.getOverlays().add(arr);
+		
 
 		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId, dest.getName_de());
 		
 		Iterator<Passaggio> iter = paslist.iterator();
 		
 		Drawable inter = getResources().getDrawable(R.drawable.intermediate_stop);
-		ArrayItemizedOverlay intermedio = new ArrayItemizedOverlay(inter);
+		ArrayItemizedOverlay intermediate = new ArrayItemizedOverlay(inter);
+		
 		
 		while(iter.hasNext())
 		{
@@ -165,23 +168,17 @@ public class MapViewActivity extends MapActivity {
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
 				OverlayItem overlay = new OverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
-				intermedio.addItem(overlay);
+				intermediate.addItem(overlay);
 			}
 		}
 		
-		mapView.getOverlays().add(partdest);
-		mapView.getOverlays().add(intermedio);
+		mapView.getOverlays().add(intermediate);
 
+		mapView.setCenter(partPoint);
 		
-
-		double midlat = (part.getLatitude() + dest.getLatitude()) / 2d;
-
-		double midlong = (part.getLongitude() + dest.getLongitude()) / 2d;
-
-		GeoPoint center = new GeoPoint((int)(midlat * 1000000),(int)(midlong * 1000000));
-
-		mapView.setCenter(center);
-		
+		mapView.getController().setZoom(15);
+	
+	
 		
 	}
 
