@@ -229,6 +229,12 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(settings);
 				return true;
 			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
+				return true;
+			}
 			case POINTER:
 			{
 				Intent pointeract = new Intent(this, PointingLocationActivity.class);

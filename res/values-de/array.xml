@@ -8,5 +8,12 @@
         <item name="1">GPS Modus</item>
         <item name="2">Normaler modus</item>
     </string-array>
+    
+    <string-array name="info_names">
+        <item name="0">Beide</item>
+        <item name="1">Meran</item>
+        <item name="2">Bozen</item>
+    </string-array>
+    
 
 </resources>

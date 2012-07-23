@@ -40,6 +40,7 @@
 <string name="weiter">Go!</string>
 <string name="menu_settings">Settings</string>
 <string name="menu_test">this is a test</string>
+<string name="menu_infos">News</string>
 
 <string name="gps_prefs">GPS Preferences</string>
 <string name="general_prefs">General preferences</string>
@@ -48,6 +49,8 @@
 <string name="gps_descr">This is the search radius for the nearest bus stops when in GPS-Mode</string>
 <string name="mode">Default mode</string>
 <string name="mode_descr">Default mode when starting the Application</string>
+<string name="line_infos">City</string>
+<string name="line_infos_descr">This sets the city for displaying the news of lines</string>
 
 <string name="theme">Theme</string>
 <string name="theme_descr">Select your preferred theme</string>

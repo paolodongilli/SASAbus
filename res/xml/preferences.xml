@@ -17,6 +17,15 @@
             android:entryValues="@array/mode_values"
         />
         
+        <ListPreference 
+            android:key="line_infos"
+            android:title="@string/line_infos"
+            android:summary="@string/line_infos_descr"
+            android:defaultValue="0" 
+            android:entries="@array/info_names"
+            android:entryValues="@array/info_values"
+        />
+        
 
     </PreferenceCategory>
     

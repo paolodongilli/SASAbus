@@ -39,6 +39,7 @@
 <string name="show_way">Percorso</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
+<string name="menu_infos">Novità</string>
 
 <string name="gps_prefs">Impostazioni GPS</string>
 <string name="general_prefs">Impostazioni generali</string>
@@ -47,6 +48,8 @@
 <string name="gps_descr">Imposta il raggio entro il quale cercare fermate in modalità GPS</string>
 <string name="mode">Modalità standard</string>
 <string name="mode_descr">Modalità standard all\'avviamento dell\'applicazione</string>
+<string name="line_infos">Città</string>
+<string name="line_infos_descr">Imposta la città per la quale vengono visualizzate le novità</string>
 
 <string name="sensor_off">Sensore disattivato</string>
 <string name="pointing">Puntare sulla fermata</string>

@@ -137,6 +137,12 @@ public class SelectLineaActivity extends ListActivity {
 				startActivity(settings);
 				return true;
 			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
+				return true;
+			}
 		}
 		return false;
 	}

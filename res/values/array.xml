@@ -33,7 +33,18 @@
         <item name="1">1</item>
         <item name="2">2</item>
     </string-array>
-
+    
+    <string-array name="info_names">
+        <item name="0">Both</item>
+        <item name="1">Merano</item>
+        <item name="2">Bolzano</item>
+    </string-array>
+    
+     <string-array name="info_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+    </string-array>
     
 
 </resources>
