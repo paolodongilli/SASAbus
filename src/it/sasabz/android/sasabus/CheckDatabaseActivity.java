@@ -94,7 +94,8 @@ public class CheckDatabaseActivity extends Activity {
 	
 	public void showDialog(int id, int res)
 	{
-		onCreateDialog(id, res).show();
+		Dialog dia = onCreateDialog(id, res);
+		dia.show();
 	}
 
 	public final Dialog createAlertDialog(int msg, String placeholder, final int res) 
