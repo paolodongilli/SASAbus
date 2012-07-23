@@ -40,37 +40,22 @@ import org.mapsforge.core.GeoPoint;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.MyPassaggioListAdapter;
-import it.sasabz.android.sasabus.classes.MyWayListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
-import android.app.ListActivity;
+
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.format.Time;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 

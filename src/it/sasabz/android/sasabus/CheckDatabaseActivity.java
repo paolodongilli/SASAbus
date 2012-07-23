@@ -40,6 +40,7 @@ import org.apache.http.HttpConnection;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Config;
+import it.sasabz.android.sasabus.classes.DownloadThread;
 import it.sasabz.android.sasabus.classes.FileRetriever;
 import it.sasabz.android.sasabus.classes.MD5Utils;
 import it.sasabz.android.sasabus.classes.SasabusFTP;
@@ -64,12 +65,12 @@ import android.util.Log;
 
 public class CheckDatabaseActivity extends Activity {
 
-	private final static int DOWNLOAD_SUCCESS_DIALOG = 0;
-	private final static int DOWNLOAD_ERROR_DIALOG = 1;
-	private final static int MD5_ERROR_DIALOG = 2;
-	private final static int NO_NETWORK_CONNECTION = 3;
-	private final static int NO_DB_UPDATE_AVAILABLE = 4;
-	private final static int NO_SD_CARD = 5;
+	public final static int DOWNLOAD_SUCCESS_DIALOG = 0;
+	public final static int DOWNLOAD_ERROR_DIALOG = 1;
+	public final static int MD5_ERROR_DIALOG = 2;
+	public final static int NO_NETWORK_CONNECTION = 3;
+	public final static int NO_DB_UPDATE_AVAILABLE = 4;
+	public final static int NO_SD_CARD = 5;
 
 	
 
@@ -77,143 +78,30 @@ public class CheckDatabaseActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.splash);
-		check();
+
+		check_files();
 	}
 
-	
-	private void check()
+	private void check_files()
 	{
-		SASAbus config = (SASAbus) getApplicationContext();
-		// Check if db exists
-		Resources res = getResources();
-		String appName = res.getString(R.string.app_name);
-		String dbDirName = res.getString(R.string.db_dir);
-		String repositoryURL = res.getString(R.string.repository_url);
-		String dbFileName = appName + ".db";
-		String dbZIPFileName = dbFileName + ".zip";
-		String md5FileName = dbFileName + ".md5";
-
-		//Check if the sd-card is mounted
-		if (!Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
-			showDialog(NO_SD_CARD);
-			throw new AndroidRuntimeException(getResources().getString(R.string.sd_card_not_mounted));
+		Resources res = this.getResources();
+		String db_filename = res.getString(R.string.app_name) + ".db";
+		String osm_filename = res.getString(R.string.app_name_osm) + ".osm";
+		try {
+			Thread db_thread = new Thread(new DownloadThread(this, db_filename));
+			db_thread.start();
+			Thread osm_thread = new Thread(new DownloadThread(this, osm_filename));
+			osm_thread.start();
 		}
-		File dbDir = new File(Environment.getExternalStorageDirectory(),
-				dbDirName);
-		// check if dbDir exists; if not create it
-		if (!dbDir.exists()) {
-			dbDir.mkdirs();
-		}
-
-		//creates all files (zip, md5 and db)
-		File dbFile = new File(dbDir, dbFileName);
-		File dbZIPFile = new File(dbDir, dbZIPFileName);
-		File md5File = new File(dbDir, md5FileName);
-
-		
-		boolean download = false;
-		if (dbFile.exists() && md5File.exists())
+		catch(Exception e)
 		{
-			/*
-			 * checks if the md5-sum are equal
-			 * if not, directly download is true, whe have to do an update
-			 * else we are checking other properties to download new database or not
-			 */
-			if (!MD5Utils.checksumOK(dbFile, md5File))
-			{
-				download = true;
-			}
-			else 
-			{
-				String end = null;
-				try
-				{
-					end = Config.getEndDate();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-				SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
-				Calendar cal = Calendar.getInstance();
-				try 
-				{
-					Date endDate = timeFormat.parse(end);
-					Date currentDate = timeFormat.parse(timeFormat.format(cal
-							.getTime()));
-					Log.v("CheckDatabaseActivity", "endDate: " + endDate.toString() + "; currentDate: " + currentDate.toString());
-					if (currentDate.after(endDate)) 
-					{
-						download = true;
-						config.setDbDownloadAttempts(config.getDbDownloadAttempts() + 1);
-					}
-				} 
-				catch (ParseException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (!download && dbUpdateAvailable(md5FileName, dbDir)) 
-				{
-					download = true;
-				}
-			}
-		} 
-		else 
-		{
-			download = true;
-		}
-
-		if (download) 
-		{
-			// verify we have a network connection
-			if (haveNetworkConnection()) 
-			{
-				if(config.getDbDownloadAttempts() < 2) 
-				{
-					//download the new Database and the new md5-file with the FileRetriver
-					new FileRetriever(this, dbZIPFile, dbFile, md5File, res.getString(R.string.downloading_db), res.getString(R.string.unzipping_db)).execute(dbZIPFileName, md5FileName);
-				}
-				else 
-				{
-					//if no db-update is available will be shown a message
-					showDialog(NO_DB_UPDATE_AVAILABLE);
-				}
-			} 
-			else 
-			{
-				//shows dialog for no network connection
-				showDialog(NO_NETWORK_CONNECTION);
-			}
-		}
-		else 
-		{
-			// verify files
-			if (!MD5Utils.checksumOK(dbFile, md5File)) 
-			{
-				//shows dialog that occours a md5-error
-				showDialog(MD5_ERROR_DIALOG);
-			}
-			else 
-			{
-				//shows dialog that download success
-				showDialog(DOWNLOAD_SUCCESS_DIALOG);
-			}
+			e.printStackTrace();
 		}
 	}
 	
-	
-	/**
-	 * Called when the activity is about to start interacting with the user.
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
 
-	private final Dialog createAlertDialog(int msg, String placeholder) 
+
+	public final Dialog createAlertDialog(int msg, String placeholder) 
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		// builder.setTitle(R.string.a_given_string);
@@ -230,68 +118,7 @@ public class CheckDatabaseActivity extends Activity {
 	}
 
 	
-	/**
-	 * this method controlls if a db-update is available.
-	 * downloads the md5-file of the server and checks if the md5 is a 
-	 * new md5. when it is, then returns true, else false
-	 * @param md5FileName is the filename of the md5-file on the server
-	 * @param dbDir is the local dirname to put into the downloaded md5 
-	 * @return a boolean to determinate if an update is necessary or not
-	 */
-	private boolean dbUpdateAvailable(String md5FileName, File dbDir) {
-		boolean update = false;
-		File md5File = new File(dbDir, md5FileName);
-		long lastLocalMod = md5File.lastModified();
-		Date lastLocalModDate = new Date(lastLocalMod);
-		String lastRemoteMod;
-		Date lastRemoteModDate;
-		Resources res = this.getResources();
-
-		// verify we have a network connection, otherwise act as no update is available
-		// and update remains false
-		if (haveNetworkConnection()) 
-		{
-			try 
-			{
-				/*
-				 * istanziate an object of the SasabusFTP, which provides the most
-				 * important methods for connecting and getting files from an FTP 
-				 * server
-				 */
-				SasabusFTP ftp = new SasabusFTP();
-				
-				//connecting and login to the server
-				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-				
-				//
-				lastRemoteMod = ftp.getModificationTime(md5FileName);
-				ftp.disconnect();
-				SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
-				lastRemoteModDate = simple.parse(lastRemoteMod);
-				// check if date of remote file is after date of local file
-				update = lastRemoteModDate.after(lastLocalModDate);
-
-				Log.v("CheckDatabaseActivity", "Date of local md5: " + lastLocalModDate.toString());
-				Log.v("CheckDatabaseActivity", "Date of remote md5: " + lastRemoteModDate.toString());
-			}
-			catch (MalformedURLException e) 
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (ParseException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return update;
-	}
+	
 
 	/**
 	 * this method is creating an allert message
@@ -320,12 +147,39 @@ public class CheckDatabaseActivity extends Activity {
 	 */
 	private void startActivity() {
 		finish();
-		Intent startact = new Intent(this, CheckOSMActivity.class);
-		startActivity(startact);
+		Intent startact = null;
+		 try
+	        {
+			 	SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+	        	int mode = Integer.parseInt(shared.getString("mode", "0"));
+	        	Log.v("preferences", "mode: " + mode);
+	        	if(mode == 0)
+	            {
+	            	startact = new Intent(this, SelectModeActivity.class);
+	            }
+	        	if(mode == 1)
+	            {
+	            	startact = new Intent(this, SelectPalinaLocationActivity.class);
+	            }
+	            if(mode == 2)
+	            {
+	            	startact = new Intent(this, SelectBacinoActivity.class);
+	            }
+	        	
+	        }
+		 catch (Exception e)
+		 {
+			 startact = new Intent(this, SelectModeActivity.class);
+			 
+		 }
+		 if(startact == null)
+		 {
+			 startact = new Intent(this, SelectModeActivity.class);
+		 }
+		 startActivity(startact);
 	}
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
+	public synchronized Dialog onCreateDialog(int id) {
 		switch (id) {
 		case NO_NETWORK_CONNECTION:
 			return createErrorAlertDialog(R.string.no_network_connection);
@@ -344,29 +198,7 @@ public class CheckDatabaseActivity extends Activity {
 		}
 	}
 
-	/**
-	 * this method checks if a networkconnection is active or not
-	 * @return boolean if the network is reachable or not
-	 */
-	private boolean haveNetworkConnection() 
-	{
-		boolean haveConnectedWifi = false;
-		boolean haveConnectedMobile = false;
-
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-		for (NetworkInfo ni : netInfo) {
-			//testing WIFI connection
-			if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-				if (ni.isConnected())
-					haveConnectedWifi = true;
-			//testing GPRS/EDGE/UMTS/HDSPA/HUSPA/LTE connection
-			if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-				if (ni.isConnected())
-					haveConnectedMobile = true;
-		}
-		return haveConnectedWifi || haveConnectedMobile;
-	}
+	
 
 	
 }
