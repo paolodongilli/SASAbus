@@ -176,7 +176,7 @@ public class MapViewActivity extends MapActivity {
 
 		mapView.setCenter(partPoint);
 		
-		mapView.getController().setZoom(15);
+		mapView.getController().setZoom(14);
 	
 	
 		
