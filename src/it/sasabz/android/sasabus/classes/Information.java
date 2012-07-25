@@ -1,6 +1,12 @@
 package it.sasabz.android.sasabus.classes;
 
-public class Information {
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+
+
+public class Information extends DBObject{
+	
+	
 	private String titel_de;
 	
 	private String titel_it;
@@ -9,27 +15,29 @@ public class Information {
 	
 	private String nachricht_it;
 	
-	private String bacino;
+	private int stadt;
 	
 	
-	public String getBacino() {
-		return bacino;
+	public int getStadt() {
+		return stadt;
 	}
 
 
-	public void setBacino(String bacino) {
-		this.bacino = bacino;
+	public void setBacino(int stadt) {
+		this.stadt = stadt;
 	}
 
 
-	public Information(String titel_de, String titel_it, String nachricht_de, String nachricht_it)
+	public Information(int id, String titel_de, String titel_it, String nachricht_de, String nachricht_it, int stadt)
 	{
+		super(id);
 		this.titel_de = titel_de;
 		this.titel_it = titel_it;
 		this.nachricht_de = nachricht_de;
 		this.nachricht_it = nachricht_it;
+		this.stadt = stadt;
 	}
-
+	
 
 	public String getTitel_de() {
 		return titel_de;
@@ -70,16 +78,32 @@ public class Information {
 		this.nachricht_it = nachricht_it;
 	}
 	
-	public void getNachricht()
+	public String getNachricht()
 	{
-		
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			return this.getNachricht_de().trim();
+		}
+		return this.getNachricht_it().trim();
 	}
 	
-	public void getTitel()
+	public String getTitel()
 	{
-		
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			return this.getTitel_de().trim();
+		}
+		return this.getTitel_it().trim();
 	}
 	
-	
+	public String toString()
+	{
+		try {
+			return (new String(this.getTitel().getBytes(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }

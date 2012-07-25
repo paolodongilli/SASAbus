@@ -193,6 +193,11 @@ public class CheckDatabaseActivity extends Activity {
 			if(res == FR_OSM)
 				filename = getString(R.string.app_name_osm)+ ".map";
 			return createAlertDialog(R.string.db_ok,  filename, res);
+		case DB_OK:
+			String filename_ok = getString(R.string.app_name)+ ".db";
+			if(res == FR_OSM)
+				filename_ok = getString(R.string.app_name_osm)+ ".map";
+			return createAlertDialog(R.string.db_ok,  filename_ok, res);
 		case DOWNLOAD_ERROR_DIALOG:
 			return createErrorAlertDialog(R.string.db_download_error);
 		case MD5_ERROR_DIALOG:

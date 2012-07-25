@@ -18,7 +18,7 @@
         />
         
         <ListPreference 
-            android:key="line_infos"
+            android:key="infos"
             android:title="@string/line_infos"
             android:summary="@string/line_infos_descr"
             android:defaultValue="0" 

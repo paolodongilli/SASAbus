@@ -38,6 +38,12 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+		<activity android:name="InfoActivity" android:label="@string/menu_infos">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
 		<activity android:name="SelectBacinoActivity" android:label="@string/select_bacino">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
