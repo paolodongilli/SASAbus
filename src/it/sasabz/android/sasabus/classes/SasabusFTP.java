@@ -161,6 +161,8 @@ public class SasabusFTP {
     public synchronized void disconnect() throws IOException {
         try {
             sendLine("QUIT");
+            String response = readLine();
+            Log.v("SimpleFTP", "RESPONSE: " + response);
         }
         finally {
             socket = null;

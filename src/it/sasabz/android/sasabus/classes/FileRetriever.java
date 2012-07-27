@@ -251,7 +251,23 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				if(config.getDbDownloadAttempts() < 2) 
 				{
 					//download the new Database and the new md5-file with the FileRetriver
-					download(dbZIPFileName, md5FileName);
+					String result = download(dbZIPFileName, md5FileName); 
+					if(result.equals("ko-download"))
+					{
+						return Long.valueOf(CheckDatabaseActivity.DOWNLOAD_ERROR_DIALOG);
+					}
+					else if (result.equals("ko-md5"))
+					{
+						return Long.valueOf(CheckDatabaseActivity.MD5_ERROR_DIALOG);
+					}
+					else if (result.equals("ko"))
+					{
+						return Long.valueOf(CheckDatabaseActivity.NO_NETWORK_CONNECTION);
+					}
+					else
+					{
+						return Long.valueOf(CheckDatabaseActivity.DB_OK);
+					}
 				}
 				else 
 				{
@@ -279,7 +295,6 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				return Long.valueOf(CheckDatabaseActivity.DOWNLOAD_SUCCESS_DIALOG);
 			}
 		}
-		return Long.valueOf(CheckDatabaseActivity.DB_OK);
 	}
 		
 		
@@ -450,8 +465,10 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setMessage(res.getString(R.string.downloading_md5));
 			progressDialog.setCancelable(false);
-
+			
+			
 			ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+
 			ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 
 			output = new FileOutputStream(this.md5File);
@@ -459,6 +476,11 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 			try {
 				ftp.bin();
 				ftp.get(output, md5FileName, this);
+				File dbFile = new File(dbZIPFile.getParentFile().getAbsolutePath(), this.filename);
+				if(!MD5Utils.checksumOK(dbFile, md5File))
+				{
+					return "ko";
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 				return "ko";
