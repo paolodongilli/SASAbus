@@ -105,6 +105,11 @@ public class SelectModeActivity extends ListActivity {
         	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
         	startActivity(selLinea);
         }
+        if(mode == 3)
+        {
+        	Intent selLinea = new Intent(this, ScanCodeActivity.class);
+        	startActivity(selLinea);
+        }
     }
     
     /**
@@ -126,6 +131,12 @@ public class SelectModeActivity extends ListActivity {
     	mod = new Modus();
     	mod.setId(2);
     	mod.setString(res.getString(R.string.mode_normal));
+    	list.add(mod);
+    	
+    	//QR Code Mode
+    	mod = new Modus();
+    	mod.setId(3);
+    	mod.setString(res.getString(R.string.mode_qr_code));
     	list.add(mod);
     	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);

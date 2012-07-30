@@ -7,6 +7,7 @@
         <item name="0">Chiedere all\'avvio</item>
         <item name="1">Modalità GPS</item>
         <item name="2">Modalità normale</item>
+        <item name="3">Modalità QR Code</item>
     </string-array>
     
     <string-array name="info_names">

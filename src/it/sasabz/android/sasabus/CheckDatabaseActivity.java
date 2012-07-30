@@ -34,6 +34,7 @@ import it.sasabz.android.sasabus.classes.FileRetriever;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,6 +52,7 @@ public class CheckDatabaseActivity extends Activity {
 	public final static int NO_DB_UPDATE_AVAILABLE = 4;
 	public final static int NO_SD_CARD = 5;
 	public final static int DB_OK = 6;
+	public final static int DOWNLOAD_RETRY = 7;
 	
 	public final static int FR_OSM = 0;
 	public final static int FR_DB = 1;
@@ -142,7 +144,42 @@ public class CheckDatabaseActivity extends Activity {
 		});
 		return builder.create();
 	}
+	
+	/**
+	 * this method is creating an allert message
+	 * @param msg is the message to be shown in the alert dialog
+	 * @return an Dialog to show
+	 */
+	private final Dialog createRetryDialog(int msg) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// builder.setTitle(R.string.a_given_string);
+		builder.setIcon(R.drawable.icon);
+		builder.setMessage(msg);
+		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				finish();
+				Intent intent = new Intent(getContext(), CheckDatabaseActivity.class);
+				startActivity(intent);
+			}
+		});
+		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				finish();
+				System.exit(-1);
+			}
+		});
+		return builder.create();
+	}
+
+	
+	private Context getContext()
+	{
+		return super.getApplicationContext();
+	}
+	
 	
 	/**
 	 * Called when all downloads were successful and we have to start the
@@ -204,6 +241,9 @@ public class CheckDatabaseActivity extends Activity {
 			return createErrorAlertDialog(R.string.md5_error);
 		case NO_SD_CARD:
 			return createErrorAlertDialog(R.string.sd_card_not_mounted);
+		case DOWNLOAD_RETRY:
+			Log.v("CheckDatabaseActivity", "Habe retry Dialog erstellt!");
+			return createRetryDialog(R.string.retry_download);
 		default:
 			return null;
 		}

@@ -10,6 +10,10 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> 
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 	
 	<supports-screens 
 	    android:smallScreens="true"
@@ -26,7 +30,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="CheckDatabaseActivity" android:label="@string/check_database" 
-		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -124,6 +128,12 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="MapViewActivity" android:label="@string/map">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+		<activity android:name="ScanCodeActivity" android:label="@string/scan">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>

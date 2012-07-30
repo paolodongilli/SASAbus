@@ -14,6 +14,7 @@
     <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>
     -->
     <string name="repository_url">cms.sasabz.it</string>
+    <string name="http_repository_url">http://cms.sasabz.it/fileadmin/android/</string>
     <string name="repository_port">21</string>
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>

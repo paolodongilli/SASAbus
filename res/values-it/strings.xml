@@ -34,8 +34,11 @@
 <string name="error_text">Si è verificato un errore durante il download. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="error_application">Si è verificato un errore durante l\'interrogazione della database. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
+
 <string name="mode_gps">modalità GPS</string>
 <string name="mode_normal">modalità normale</string>
+<string name="mode_qr_code">modalità QR Code</string>
+
 <string name="show_way">Percorso</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
@@ -65,6 +68,10 @@
 <string name="map_download_error">Si e\' verificato un\' errore durante il download dell OpenStreetMap data update.</string>
 <string name="check_osm">Verifica OpenStreetMap data</string>
 <string name="unzipping_map">Sto decomprimendo l\' OpenStreetMap data ...</string>
+<string name="retry_download">Impossibile a conettersi al server. Riprovare?</string>
+
+<string name="yes">Si</string>
+<string name="no">No</string>
 
 <string name="map">Carta</string>
 
