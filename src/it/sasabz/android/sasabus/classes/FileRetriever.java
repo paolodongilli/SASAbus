@@ -33,6 +33,7 @@ import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.R;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -74,6 +75,9 @@ import android.widget.SlidingDrawer;
  *
  */
 public class FileRetriever  extends AsyncTask<Void, String, Long>{
+	
+	private static final int MAX_DOWNLOAD = 5;
+	
 	private static final String TAG = "FileRetriever";
 	
 	private ProgressDialog progressDialog;
@@ -89,6 +93,8 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 	
 	private String download = null;
 	private String unzipping = null;
+	
+	private int downloadcounter = 0;
 
 	/**
 	 * This constructor takes an activity, a dbZipFile to store the 
@@ -369,185 +375,185 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 	}
 		
 		
+	private int downloadFile(SasabusFTP ftp, String dbZIPFileName, String md5FileName) throws FileNotFoundException
+	{
+		progressDialog = new ProgressDialog(this.activity);
+		
+		progressDialog = new ProgressDialog(this.activity);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		if(download == null)
+			progressDialog.setMessage(res.getString(R.string.downloading_db));
+		else
+			progressDialog.setMessage(download);
+		progressDialog.setCancelable(false);
+		
+		// download the file
+		FileOutputStream output = new FileOutputStream(dbZIPFile);
+		
+		try 
+		{
+			ftp.bin();
+			ftp.get(output, dbZIPFileName, this);
+//			http.get(output, dbZIPFileName, this);
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			progressDialog.dismiss();
+			try
+			{
+				ftp.disconnect();
+				output.flush();
+				output.close();
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			
+			return CheckDatabaseActivity.DOWNLOAD_RETRY;
+		}
+		try
+		{
+			output.flush();
+			output.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		progressDialog.dismiss();
+		return CheckDatabaseActivity.DB_OK;
+	}
+		
+	
+	private int downloadMD5File(SasabusFTP ftp, String dbZIPFileName, String md5FileName) throws FileNotFoundException
+	{
+		progressDialog = new ProgressDialog(this.activity);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setMessage(res.getString(R.string.downloading_md5));
+		progressDialog.setCancelable(false);
+		
+		FileOutputStream output = new FileOutputStream(this.md5File);
 		
 		
+		try {
+			ftp.bin();
+			ftp.get(output, md5FileName, this);
+//			http.get(output, md5FileName, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			progressDialog.dismiss();
+			try
+			{
+				ftp.disconnect();
+				output.flush();
+				output.close();
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			return CheckDatabaseActivity.DOWNLOAD_RETRY;
+		}
+		try
+		{
+			output.flush();
+			output.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		progressDialog.dismiss();
+		return CheckDatabaseActivity.DB_OK;
+	}
+	
+	private int unzip()
+	{
+		progressDialog = new ProgressDialog(this.activity);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		if(unzipping == null)
+			progressDialog.setMessage(res.getString(R.string.unzipping_db));
+		else
+			progressDialog.setMessage(unzipping);
+		progressDialog.setCancelable(false);
+		progressDialog.setProgress(0);
+		Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),
+				dbZIPFile.getParent());
+		d.unzip();
+		dbZIPFile.delete();
+		
+		File dbFile = new File(dbZIPFile.getParentFile().getAbsolutePath(), this.filename);
+		if(!MD5Utils.checksumOK(dbFile, md5File))
+		{
+			progressDialog.dismiss();
+			return CheckDatabaseActivity.MD5_ERROR_DIALOG;
+		}
+		
+		progressDialog.dismiss();
+		return CheckDatabaseActivity.DB_OK;
+	}
+	
 	private int download(String dbZIPFileName, String md5FileName)
 	{
-		SasabusFTP ftp = null;
+		//creating a new ftp connection
+//		SasabusHTTP http = new SasabusHTTP(activity.getResources().getString(R.string.http_repository_url));
+		SasabusFTP ftp = new SasabusFTP();
+		
+		Looper.prepare();
 //		SasabusHTTP http = null;
 		try {
-			// download dbZIPFile
-			
-			Looper.prepare();	
-			
-			progressDialog = new ProgressDialog(this.activity);
-			
-			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			if(download == null)
-				progressDialog.setMessage(res.getString(R.string.downloading_db));
-			else
-				progressDialog.setMessage(download);
-			progressDialog.setCancelable(false);
 			try
 			{
-				Thread.sleep(2000);
-			}
-			catch(InterruptedException exe)
-			{
-				
-			}
-			//creating a new ftp connection
-			ftp = new SasabusFTP();
-//			http = new SasabusHTTP(activity.getResources().getString(R.string.http_repository_url));
-			
-			try
-			{
-				try
-				{
-					ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-					ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					return CheckDatabaseActivity.DOWNLOAD_RETRY;
-				}
-			
-				// download the file
-				FileOutputStream output = new FileOutputStream(dbZIPFile);
-				
-				try 
-				{
-					ftp.bin();
-					ftp.get(output, dbZIPFileName, this);
-//					http.get(output, dbZIPFileName, this);
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-					progressDialog.dismiss();
-					try
-					{
-						ftp.disconnect();
-						output.flush();
-						output.close();
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
-					e.printStackTrace();
-					return CheckDatabaseActivity.DOWNLOAD_RETRY;
-				}
-				try
-				{
-					output.flush();
-					output.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-	
-				progressDialog.dismiss();
-	
-				// download md5sum
-	
-				progressDialog = new ProgressDialog(this.activity);
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-				progressDialog.setMessage(res.getString(R.string.downloading_md5));
-				progressDialog.setCancelable(false);
-				
-				output = new FileOutputStream(this.md5File);
-				
-				try
-				{
-					Thread.sleep(2000);
-				}
-				catch(InterruptedException exe)
-				{
-					
-				}
-				
-				try {
-					ftp.bin();
-					ftp.get(output, md5FileName, this);
-//					http.get(output, md5FileName, this);
-				} catch (Exception e) {
-					e.printStackTrace();
-					progressDialog.dismiss();
-					try
-					{
-						ftp.disconnect();
-						output.flush();
-						output.close();
-					}
-					catch(Exception ex)
-					{
-						ex.printStackTrace();
-					}
-					return CheckDatabaseActivity.DOWNLOAD_RETRY;
-				}
-				try
-				{
-					output.flush();
-					output.close();
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-		
-				progressDialog.dismiss();
-				try
-				{
-					ftp.disconnect();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
+				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 			}
 			catch (Exception e)
 			{
 				e.printStackTrace();
-				try
-				{
-					ftp.disconnect();
-				}
-				catch(Exception ex)
-				{
-					ex.printStackTrace();
-				}
-				return CheckDatabaseActivity.NO_NETWORK_CONNECTION;
+				return CheckDatabaseActivity.DOWNLOAD_RETRY;
+			}
+			
+			// download dbZIPFile
+			while(downloadFile(ftp, dbZIPFileName, md5FileName) != CheckDatabaseActivity.DB_OK 
+					&& downloadcounter < MAX_DOWNLOAD)
+			{
+				++downloadcounter;
+			}
+			
+			
+	
+			// download md5sum
+			while(downloadMD5File(ftp, dbZIPFileName, md5FileName) != CheckDatabaseActivity.DB_OK 
+					&& downloadcounter < MAX_DOWNLOAD)
+			{
+				++downloadcounter;
+			}
+			try
+			{
+				ftp.disconnect();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			if(downloadcounter >= MAX_DOWNLOAD)
+			{
+				return CheckDatabaseActivity.DOWNLOAD_RETRY;
 			}
 			
 			// unzip dbZIPFile
-			progressDialog = new ProgressDialog(this.activity);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			if(unzipping == null)
-				progressDialog.setMessage(res.getString(R.string.unzipping_db));
-			else
-				progressDialog.setMessage(unzipping);
-			progressDialog.setCancelable(false);
-			progressDialog.setProgress(0);
-			Decompress d = new Decompress(dbZIPFile.getAbsolutePath(),
-					dbZIPFile.getParent());
-			d.unzip();
-			dbZIPFile.delete();
-			
-			File dbFile = new File(dbZIPFile.getParentFile().getAbsolutePath(), this.filename);
-			if(!MD5Utils.checksumOK(dbFile, md5File))
-			{
-				progressDialog.dismiss();
-				return CheckDatabaseActivity.MD5_ERROR_DIALOG;
-			}
-			
-			progressDialog.dismiss();
+			unzip();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(downloadcounter < MAX_DOWNLOAD)
+			{
+				++downloadcounter;
+				return download(dbZIPFileName, md5FileName);
+			}
 			return CheckDatabaseActivity.DOWNLOAD_ERROR_DIALOG;
 		}
 		return CheckDatabaseActivity.DB_OK;

@@ -50,13 +50,12 @@ public class ScanCodeActivity extends Activity
     private CameraPreview mPreview;
     private Handler autoFocusHandler;
 
-    TextView scanText;
-    Button scanButton;
 
     ImageScanner scanner;
 
-    private boolean barcodeScanned = false;
     private boolean previewing = true;
+    
+    private boolean barcodeScanned = false;
 
     static {
         System.loadLibrary("iconv");
@@ -81,18 +80,6 @@ public class ScanCodeActivity extends Activity
         FrameLayout preview = (FrameLayout)findViewById(R.id.cameraPreview);
         preview.addView(mPreview);
 
-        scanButton.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    if (barcodeScanned) {
-                        barcodeScanned = false;
-                        scanText.setText("Scanning...");
-                        mCamera.setPreviewCallback(previewCb);
-                        mCamera.startPreview();
-                        previewing = true;
-                        mCamera.autoFocus(autoFocusCB);
-                    }
-                }
-            });
     }
 
     public void onPause() {
@@ -178,14 +165,26 @@ public class ScanCodeActivity extends Activity
                     	builder.create().show();
                     	
                     }
-                    else if(last_data.indexOf("busstop") != -1)
+                    else if(last_data.indexOf("busstop") != -1 || last_data.indexOf("BUSSTOP") != -1)
                     {
                     	String busstopnr = last_data.substring(8);
                     	Palina partenza = PalinaList.getById(Integer.parseInt(busstopnr));
-                    	Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
-                    	selDest.putExtra("partenza", partenza.getName_de());
-                    	startActivity(selDest);
+                    	if(partenza != null)
+                    	{
+                    		finish();
+                    		Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
+                    		selDest.putExtra("partenza", partenza.getName_de());
+                    		startActivity(selDest);
+                    	}
+                    	else
+                    	{
+                    		previewing = true;
+	                        mCamera.setPreviewCallback(previewCb);
+	                        mCamera.startPreview();
+	                        barcodeScanned = false;
+                    	}
                     }
+                   
                 }
             }
         };
