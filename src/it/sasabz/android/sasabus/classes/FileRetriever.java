@@ -314,20 +314,20 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				 * important methods for connecting and getting files from an FTP 
 				 * server
 				 */
-				//SasabusFTP ftp = new SasabusFTP();
-				SasabusHTTP http = new SasabusHTTP(res.getString(R.string.http_repository_url));
+				SasabusFTP ftp = new SasabusFTP();
+				//SasabusHTTP http = new SasabusHTTP(res.getString(R.string.http_repository_url));
 				
 				
 				//connecting and login to the server
-//				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-//				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+				ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+				ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
 				
 				//
-				//lastRemoteMod = ftp.getModificationTime(md5FileName);
-				//ftp.disconnect();
-				//SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
-				//lastRemoteModDate = simple.parse(lastRemoteMod);
-				lastRemoteModDate = http.getModificationTime(md5FileName);
+				lastRemoteMod = ftp.getModificationTime(md5FileName);
+				ftp.disconnect();
+				SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
+				lastRemoteModDate = simple.parse(lastRemoteMod);
+//				lastRemoteModDate = http.getModificationTime(md5FileName);
 				// check if date of remote file is after date of local file
 				update = lastRemoteModDate.after(lastLocalModDate);
 
@@ -373,8 +373,8 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 		
 	private int download(String dbZIPFileName, String md5FileName)
 	{
-		//SasabusFTP ftp = null;
-		SasabusHTTP http = null;
+		SasabusFTP ftp = null;
+//		SasabusHTTP http = null;
 		try {
 			// download dbZIPFile
 			
@@ -398,30 +398,30 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				
 			}
 			//creating a new ftp connection
-			//ftp = new SasabusFTP();
-			http = new SasabusHTTP(activity.getResources().getString(R.string.http_repository_url));
+			ftp = new SasabusFTP();
+//			http = new SasabusHTTP(activity.getResources().getString(R.string.http_repository_url));
 			
 			try
 			{
-//				try
-//				{
-//					ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
-//					ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
-//				}
-//				catch (Exception e)
-//				{
-//					e.printStackTrace();
-//					return CheckDatabaseActivity.DOWNLOAD_RETRY;
-//				}
+				try
+				{
+					ftp.connect(res.getString(R.string.repository_url), Integer.parseInt(res.getString(R.string.repository_port)));
+					ftp.login(res.getString(R.string.ftp_user), res.getString(R.string.ftp_passwd));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+					return CheckDatabaseActivity.DOWNLOAD_RETRY;
+				}
 			
 				// download the file
 				FileOutputStream output = new FileOutputStream(dbZIPFile);
 				
 				try 
 				{
-					//ftp.bin();
-					//ftp.get(output, dbZIPFileName, this);
-					http.get(output, dbZIPFileName, this);
+					ftp.bin();
+					ftp.get(output, dbZIPFileName, this);
+//					http.get(output, dbZIPFileName, this);
 				} 
 				catch (Exception e) 
 				{
@@ -429,7 +429,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 					progressDialog.dismiss();
 					try
 					{
-						//ftp.disconnect();
+						ftp.disconnect();
 						output.flush();
 						output.close();
 					}
@@ -471,15 +471,15 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				}
 				
 				try {
-					//ftp.bin();
-					//ftp.get(output, md5FileName, this);
-					http.get(output, md5FileName, this);
+					ftp.bin();
+					ftp.get(output, md5FileName, this);
+//					http.get(output, md5FileName, this);
 				} catch (Exception e) {
 					e.printStackTrace();
 					progressDialog.dismiss();
 					try
 					{
-						//ftp.disconnect();
+						ftp.disconnect();
 						output.flush();
 						output.close();
 					}
@@ -502,7 +502,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				progressDialog.dismiss();
 				try
 				{
-					//ftp.disconnect();
+					ftp.disconnect();
 				}
 				catch(Exception e)
 				{
@@ -514,7 +514,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				e.printStackTrace();
 				try
 				{
-					//ftp.disconnect();
+					ftp.disconnect();
 				}
 				catch(Exception ex)
 				{
