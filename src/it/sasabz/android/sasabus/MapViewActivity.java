@@ -35,6 +35,7 @@ import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.overlay.ArrayItemizedOverlay;
 import org.mapsforge.android.maps.overlay.OverlayItem;
+import org.mapsforge.android.maps.rendertheme.InternalRenderTheme;
 import org.mapsforge.core.GeoPoint;
 
 import it.sasabz.android.sasabus.R;
@@ -133,7 +134,9 @@ public class MapViewActivity extends MapActivity {
         MapView mapView = (MapView)findViewById(R.id.mapView);
         mapView.setClickable(true);
         mapView.setBuiltInZoomControls(true);
-        mapView.setMapFile(new File(Environment.getExternalStorageDirectory() , res.getString(R.string.db_dir) + "/" + res.getString(R.string.app_name_osm) + ".map"));
+        mapView.setMapFile(new File(Environment.getExternalStorageDirectory() , 
+        		res.getString(R.string.db_dir) + "/" + res.getString(R.string.app_name_osm) + ".map"));
+        mapView.setRenderTheme(InternalRenderTheme.OSMARENDER);
 
 		GeoPoint partPoint = new GeoPoint(part.getLatitude(), part.getLongitude());
 		GeoPoint destPoint = new GeoPoint(dest.getLatitude(), dest.getLongitude());
