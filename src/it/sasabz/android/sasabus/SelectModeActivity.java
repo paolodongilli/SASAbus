@@ -40,6 +40,7 @@ import it.sasabz.android.sasabus.classes.MyListAdapter;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -105,7 +106,8 @@ public class SelectModeActivity extends ListActivity {
         	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
         	startActivity(selLinea);
         }
-        if(mode == 3)
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
         {
         	Intent selLinea = new Intent(this, ScanCodeActivity.class);
         	startActivity(selLinea);
@@ -133,11 +135,15 @@ public class SelectModeActivity extends ListActivity {
     	mod.setString(res.getString(R.string.mode_normal));
     	list.add(mod);
     	
-    	//QR Code Mode
-    	mod = new Modus();
-    	mod.setId(3);
-    	mod.setString(res.getString(R.string.mode_qr_code));
-    	list.add(mod);
+    	PackageManager pm = this.getApplicationContext().getPackageManager();
+        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
+        {
+        	//QR Code Mode
+        	mod = new Modus();
+        	mod.setId(3);
+        	mod.setString(res.getString(R.string.mode_qr_code));
+        	list.add(mod);
+        }
     	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(modi);

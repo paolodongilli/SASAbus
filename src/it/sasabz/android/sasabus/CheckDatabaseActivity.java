@@ -38,6 +38,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -204,6 +205,15 @@ public class CheckDatabaseActivity extends Activity {
 	            if(mode == 2)
 	            {
 	            	startact = new Intent(this, SelectBacinoActivity.class);
+	            }
+	            PackageManager pm = this.getApplicationContext().getPackageManager();
+	            if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
+	            {
+	            	startact = new Intent(this, SelectBacinoActivity.class);
+	            }
+	            else
+	            {
+	            	startact = new Intent(this, SelectModeActivity.class);
 	            }
 	        	
 	        }
