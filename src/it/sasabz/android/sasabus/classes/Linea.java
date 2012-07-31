@@ -257,16 +257,11 @@ public class Linea extends DBObject {
 	@Override
 	public String toString()
 	{
-		String diff = "";
-		if(this.differenza != -1)
-		{
-			diff = " (" + this.differenza + " min.)";
-		}
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return (this.getNum_lin() + diff).trim();
+			return (this.getNum_lin()).trim();
 		}
-		return (this.getNum_lin()  + diff).trim();
+		return (this.getNum_lin()).trim();
 	}
 	
 	

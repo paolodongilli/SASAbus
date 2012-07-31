@@ -144,14 +144,7 @@ public class LineaList {
 		 */
 		Cursor cursor = sqlite.rawQuery("select distinct l.id as id, l.num_lin as num_lin, l.abbrev as abbrev, " +
 				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de, " +
-				"case when " +
-				"o1.orario > o2.orario " +
-				"then " +
-				"round(strftime('%s', o1.orario) - strftime('%s', o2.orario))/60 " +
-				"else " +
-				"round(strftime('%s', o1.orario) - strftime('%s', o2.orario))/60 + 1440 " +
-				"end " +
-				"as differenza from linee l, " +
+				" from linee l, " +
 				"(select * from orarii where palinaId IN (" +
 				"select id from paline where nome_de = ?" +
 				")) as o1, " +
@@ -167,7 +160,7 @@ public class LineaList {
 				"and o1.corsaId = o2.corsaId " +
 				"and o2.corsaId = c.id " +
 				"and o2.progressivo < o1.progressivo " +
-				"order by differenza", args);
+				"order by l.abbrev", args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
