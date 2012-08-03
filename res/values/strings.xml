@@ -78,6 +78,8 @@
 <string name="yes">Yes</string>
 <string name="no">No</string>
 
+<string name="error_scan_text">An error occurred during scanning a code: Its not a valid QR-Code for SASAbus</string>
+
 <string name="scan">Scanning</string>
 
 <string name="map">Map</string>

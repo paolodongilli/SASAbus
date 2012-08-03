@@ -74,6 +74,8 @@
 <string name="yes">Ja</string>
 <string name="no">Nein</string>
 
+<string name="error_scan_text">Ein Fehler enstand während des Scannens: Kein gültiger SASAbus QR-Code</string>
+
 <string name="map">Karte</string>
 
 </resources>

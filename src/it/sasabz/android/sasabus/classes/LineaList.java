@@ -143,7 +143,7 @@ public class LineaList {
 		 * differences
 		 */
 		Cursor cursor = sqlite.rawQuery("select distinct l.id as id, l.num_lin as num_lin, l.abbrev as abbrev, " +
-				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de, " +
+				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de " +
 				" from linee l, " +
 				"(select * from orarii where palinaId IN (" +
 				"select id from paline where nome_de = ?" +

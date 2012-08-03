@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.Button;
+import android.widget.Toast;
 
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
@@ -147,22 +148,11 @@ public class ScanCodeActivity extends Activity
                     }
                     if(last_data.equals(""))
                     {
-                    	AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    	builder.setTitle(R.string.error_title);
-                    	builder.setMessage(R.string.error_text);
-                    	builder.setNeutralButton("Ok", new android.content.DialogInterface.OnClickListener(){
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								previewing = true;
-		                        mCamera.setPreviewCallback(previewCb);
-		                        mCamera.startPreview();
-		                        barcodeScanned = false;
-							}
-                    		
-                    	});
-                    	builder.create().show();
+                    	Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
+                    	previewing = true;
+                        mCamera.setPreviewCallback(previewCb);
+                        mCamera.startPreview();
+                        barcodeScanned = false;
                     	
                     }
                     else if(last_data.indexOf("busstop") != -1 || last_data.indexOf("BUSSTOP") != -1)
@@ -183,6 +173,14 @@ public class ScanCodeActivity extends Activity
 	                        mCamera.startPreview();
 	                        barcodeScanned = false;
                     	}
+                    }
+                    else
+                    {
+                    	Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
+                    	previewing = true;
+                        mCamera.setPreviewCallback(previewCb);
+                        mCamera.startPreview();
+                        barcodeScanned = false;
                     }
                    
                 }
