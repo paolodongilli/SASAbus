@@ -43,6 +43,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 
@@ -332,6 +333,8 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 				lastRemoteMod = ftp.getModificationTime(md5FileName);
 				ftp.disconnect();
 				SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmss");
+				TimeZone utcZone = TimeZone.getTimeZone("UTC");
+				simple.setTimeZone(utcZone);
 				lastRemoteModDate = simple.parse(lastRemoteMod);
 //				lastRemoteModDate = http.getModificationTime(md5FileName);
 				// check if date of remote file is after date of local file
