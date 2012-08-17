@@ -224,6 +224,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	Intent selDest = new Intent(this, SelectDestinazioneLocationActivity.class);
     	selDest.putExtra("partenza", partenza.getName_de());
     	startActivity(selDest);
+    	finish();
     }
 
     /**

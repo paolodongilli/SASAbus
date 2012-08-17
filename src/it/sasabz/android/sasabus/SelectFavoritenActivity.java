@@ -34,8 +34,11 @@ import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Favorit;
+import it.sasabz.android.sasabus.classes.FavoritenList;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
+import it.sasabz.android.sasabus.classes.MyFavoritenListAdapter;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 
 import android.app.ListActivity;
@@ -53,12 +56,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SelectModeActivity extends ListActivity {
+public class SelectFavoritenActivity extends ListActivity {
 
     
-    private Vector<DBObject> list = null;
+    private Vector<Favorit> list = null;
     
-    public SelectModeActivity() {
+    public SelectFavoritenActivity() {
     }
 
     /** Called with the activity is first created. */
@@ -69,7 +72,7 @@ public class SelectModeActivity extends ListActivity {
         setContentView(R.layout.standard_listview_layout);
         
         TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.select_mode);
+        titel.setText(R.string.mode_favoriten);
         
         TextView line = (TextView)findViewById(R.id.line);
         TextView from = (TextView)findViewById(R.id.from);
@@ -91,32 +94,12 @@ public class SelectModeActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        int mode = list.get(position).getId();
-        /*
-         * If the mode select is the first one, then starts the gps-mode,
-         * otherwise with the mode 2 selected, starts the normal mode
-         */
-        if(mode == 1)
-        {
-        	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 2)
-        {
-        	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
-        	startActivity(selLinea);
-        }
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	Intent selLinea = new Intent(this, ScanCodeActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 4)
-        {
-        	Intent selLinea = new Intent(this, SelectFavoritenActivity.class);
-        	startActivity(selLinea);
-        }
+        Favorit fav = list.get(position);
+    	Intent showOrari = new Intent(this, ShowOrariActivity.class);
+    	showOrari.putExtra("linea", fav.getLinea());
+    	showOrari.putExtra("palina", fav.getPartenza_de());
+    	showOrari.putExtra("destinazione", fav.getDestinazione_de());
+    	startActivity(showOrari);
     }
     
     /**
@@ -124,40 +107,9 @@ public class SelectModeActivity extends ListActivity {
      */
     public void fillData()
     {
-    	Resources res = this.getResources();
-    	
-    	list = new Vector<DBObject>();
-    	
-    	//GPS Mode
-    	Modus mod = new Modus();
-    	mod.setId(1);
-    	mod.setString(res.getString(R.string.mode_gps));
-    	list.add(mod);
-    	
-    	//Normal Mode
-    	mod = new Modus();
-    	mod.setId(2);
-    	mod.setString(res.getString(R.string.mode_normal));
-    	list.add(mod);
-    	
-    	PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	//QR Code Mode
-        	mod = new Modus();
-        	mod.setId(3);
-        	mod.setString(res.getString(R.string.mode_qr_code));
-        	list.add(mod);
-        }
-        
-        //Favoriten Mode
-    	mod = new Modus();
-    	mod.setId(4);
-    	mod.setString(res.getString(R.string.mode_favoriten));
-    	list.add(mod);
-    	//fill the modes into the list_view
-    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
-        setListAdapter(modi);
+    	 list = FavoritenList.getList();
+    	 MyFavoritenListAdapter favoriten = new MyFavoritenListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+         setListAdapter(favoriten); 
     }
     
     @Override

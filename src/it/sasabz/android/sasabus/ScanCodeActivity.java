@@ -144,8 +144,8 @@ public class ScanCodeActivity extends Activity
                     	barcodeScanned = true;
                     	Symbol item = symbol.next();
                     	last_data = item.getData();
-                    	Log.v("QRCODE", "DATA READ: " + last_data);
                     }
+                    Log.v("QRCODE", "DATA READ: " + last_data);
                     if(last_data.equals(""))
                     {
                     	Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
@@ -157,7 +157,12 @@ public class ScanCodeActivity extends Activity
                     }
                     else if(last_data.indexOf("busstop") != -1 || last_data.indexOf("BUSSTOP") != -1)
                     {
-                    	String busstopnr = last_data.substring(8);
+                    	int start = last_data.indexOf("busstop");
+                    	if(start == -1)
+                    		start = last_data.indexOf("BUSSTOP"); 
+                    	String busstopnr = last_data.substring(start + 8);
+                    	int stop = busstopnr.indexOf("&");
+                    	busstopnr = busstopnr.substring(0, stop);
                     	Palina partenza = PalinaList.getById(Integer.parseInt(busstopnr));
                     	if(partenza != null)
                     	{
@@ -168,6 +173,44 @@ public class ScanCodeActivity extends Activity
                     	}
                     	else
                     	{
+                    		Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
+                    		previewing = true;
+	                        mCamera.setPreviewCallback(previewCb);
+	                        mCamera.startPreview();
+	                        barcodeScanned = false;
+                    	}
+                    }
+                    else if(last_data.indexOf("#") != -1)
+                    {
+                    	String data_id = last_data.substring(last_data.indexOf("#")+1);
+                    	String daten[] = data_id.split("&");
+                    	if(daten.length >= 2)
+                    	{
+                    		int index_stop = -1;
+                    		int index_next = -1;
+                    		for(int i = 0; i < daten.length; ++i)
+                    		{
+                    			if(daten[i].indexOf("stop=") != -1)
+                    			{
+                    				index_stop = i;
+                    				daten[i] = daten[i].substring(5);
+                    			}
+                    			else if(daten[i].indexOf("next=") != -1)
+                    			{
+                    				index_next = i;
+                    				daten[i] = daten[i].substring(5);
+                    			}
+                    		}
+                    		Log.v("QRCODEREADER", "stop=" + daten[index_stop] + " | next=" + daten[index_next]);
+                    		Toast.makeText(getContext(), R.string.scan_text_not_implemented, Toast.LENGTH_LONG).show();
+                    		previewing = true;
+	                        mCamera.setPreviewCallback(previewCb);
+	                        mCamera.startPreview();
+	                        barcodeScanned = false;
+                    	}
+                    	else
+                    	{
+                    		Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
                     		previewing = true;
 	                        mCamera.setPreviewCallback(previewCb);
 	                        mCamera.startPreview();

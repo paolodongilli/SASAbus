@@ -21,5 +21,7 @@
     
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     
+    <string name="favoriten_db_name">favoriten_db</string>
+    
     
 </resources>

@@ -74,7 +74,10 @@
 <string name="no">No</string>
 
 <string name="error_scan_text">Errore durante la scansione del codice QR: Codice non valido per SASAbus</string>
+<string name="scan_text_not_implemented">Questa opzione sarà disponibila tra poco!</string>
 
 <string name="map">Carta</string>
+<string name="favorit">Aggiungi ai preferiti</string>
+<string name="mode_favoriten">Preferiti</string>
 
 </resources>

@@ -79,10 +79,14 @@
 <string name="no">No</string>
 
 <string name="error_scan_text">An error occurred during scanning a code: Its not a valid QR-Code for SASAbus</string>
+<string name="scan_text_not_implemented">This feature is coming soon!</string>
 
 <string name="scan">Scanning</string>
 
 <string name="map">Map</string>
+<string name="favorit">Add to favourites</string>
+
+<string name="mode_favoriten">Favourites</string>
 
 
 </resources>

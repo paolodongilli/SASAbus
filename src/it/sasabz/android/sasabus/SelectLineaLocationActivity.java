@@ -114,9 +114,9 @@ public class SelectLineaLocationActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int linea = list.get(position).getId();
-    	Intent selDest = new Intent(this, ShowOrariLocationActivity.class);;
+    	Intent selDest = new Intent(this, ShowOrariActivity.class);;
     	selDest.putExtra("linea", linea);
-    	selDest.putExtra("partenza", partenza);
+    	selDest.putExtra("palina", partenza);
     	selDest.putExtra("destinazione", destinazione);
     	startActivity(selDest);
     }
