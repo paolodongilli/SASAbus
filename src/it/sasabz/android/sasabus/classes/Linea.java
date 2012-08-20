@@ -241,8 +241,6 @@ public class Linea extends DBObject {
 		{
 			return -1;
 		}
-		sortnum = sortnum % 100;
-		linsortnum = linsortnum % 100;
 		if(sortnum == linsortnum)
 			return 0;
 		if (sortnum > linsortnum)
