@@ -202,11 +202,31 @@ public class ScanCodeActivity extends Activity
                     			}
                     		}
                     		Log.v("QRCODEREADER", "stop=" + daten[index_stop] + " | next=" + daten[index_next]);
+                    		String name_de = daten[index_stop].substring(daten[index_stop].indexOf("-") + 1);
+                    		Log.v("QRCODEREADER", "Gelesener name_de: " + name_de);
+                    		Palina partenza = PalinaList.getTranslation(name_de, "de");
+                        	if(partenza != null)
+                        	{
+                        		finish();
+                        		Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
+                        		selDest.putExtra("partenza", partenza.getName_de());
+                        		startActivity(selDest);
+                        	}
+                        	else
+                        	{
+                        		Toast.makeText(getContext(), R.string.error_scan_text, Toast.LENGTH_LONG).show();
+                        		previewing = true;
+    	                        mCamera.setPreviewCallback(previewCb);
+    	                        mCamera.startPreview();
+    	                        barcodeScanned = false;
+                        	}
+                        	/*
                     		Toast.makeText(getContext(), R.string.scan_text_not_implemented, Toast.LENGTH_LONG).show();
                     		previewing = true;
 	                        mCamera.setPreviewCallback(previewCb);
 	                        mCamera.startPreview();
 	                        barcodeScanned = false;
+	                        */
                     	}
                     	else
                     	{

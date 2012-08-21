@@ -157,17 +157,6 @@ public class ShowOrariActivity extends ListActivity {
 	 */
 	private void fillData() {
 		list = PassaggioList.getVector(linea, destinazione, partenza);
-		
-		Iterator<Passaggio> iter = list.iterator();
-		
-		while(iter.hasNext())
-		{
-			Passaggio item = iter.next();
-			Log.v("ORARIO","id: " + item.getId() + " | orario: " + item.getOrario().format2445() + 
-					" | palina: " + item.getIdPalina());
-		}
-		
-		
 		pos = getNextTimePosition(list);
         MyPassaggioListAdapter paline = new MyPassaggioListAdapter(this, R.id.text, R.layout.standard_row, list, pos);
         setListAdapter(paline);

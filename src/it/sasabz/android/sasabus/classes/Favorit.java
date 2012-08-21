@@ -1,7 +1,9 @@
 package it.sasabz.android.sasabus.classes;
 
+import it.sasabz.android.sasabus.SASAbus;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 public class Favorit {
 	
@@ -91,7 +93,7 @@ public class Favorit {
 			return false;
 		if(db == null || !db.isOpen() || db.isReadOnly())
 			return false;
-		String query_select = "Select from " + FavoritenDB.FAVORITEN_TABLE_NAME + " where linea=\"" + linea + "\" and " +
+		String query_select = "Select * from " + FavoritenDB.FAVORITEN_TABLE_NAME + " where linea=\"" + linea + "\" and " +
 				"partenza_de=\"" + partenza_de + "\" and destinazione_de=\"" + destinazione_de + "\";";
 		Cursor cursor = db.rawQuery(query_select,null);
 		if(cursor.getCount() != 0)
