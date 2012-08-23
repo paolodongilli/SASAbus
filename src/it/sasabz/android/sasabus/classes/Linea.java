@@ -49,6 +49,10 @@ public class Linea extends DBObject {
 	private int bacinoId = 0;
 	
 	private int differenza = -1;
+	
+	private boolean showBacino = false;
+
+	
 
 	/**
 	 * This is the standardconstructor, which make an empty object
@@ -78,6 +82,19 @@ public class Linea extends DBObject {
 	}
 
 	
+	/**
+	 * @return the showBacino
+	 */
+	public boolean isShowBacino() {
+		return showBacino;
+	}
+
+	/**
+	 * @param showBacino the showBacino to set
+	 */
+	public void setShowBacino(boolean showBacino) {
+		this.showBacino = showBacino;
+	}
 	
 	/**
 	 * @return the descr_it
@@ -255,11 +272,17 @@ public class Linea extends DBObject {
 	@Override
 	public String toString()
 	{
+		String bacinostring = "";
+		if(showBacino)
+		{
+			Bacino bacino = BacinoList.getById(this.bacinoId);
+			bacinostring = " (" + bacino.toString() + ")";
+		}
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return (this.getNum_lin()).trim();
+			return (this.getNum_lin()).trim() + bacinostring;
 		}
-		return (this.getNum_lin()).trim();
+		return (this.getNum_lin()).trim() + bacinostring;
 	}
 	
 	

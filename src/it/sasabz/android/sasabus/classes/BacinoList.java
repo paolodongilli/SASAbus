@@ -59,6 +59,22 @@ public class BacinoList {
 		return list;
 	}
 	
+	
+	public static  Bacino  getById(int id)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String args[] = {Integer.toString(id)};
+		Cursor cursor = sqlite.rawQuery("select * from  bacini where id = ?", args);
+		Bacino bacino = null;
+		if(cursor.moveToFirst())
+		{
+			bacino = new Bacino(cursor);
+		}
+		cursor.close();
+		sqlite.close();
+		return bacino;
+	}
+	
 	/**
 	 * This method returns a Cursor of all bacinos present in the database
 	 * @return a cursor to the bacinos present in the database

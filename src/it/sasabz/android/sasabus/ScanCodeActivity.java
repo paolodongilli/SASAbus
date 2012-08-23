@@ -188,6 +188,7 @@ public class ScanCodeActivity extends Activity
                     	{
                     		int index_stop = -1;
                     		int index_next = -1;
+                    		int index_city = -1;
                     		for(int i = 0; i < daten.length; ++i)
                     		{
                     			if(daten[i].indexOf("stop=") != -1)
@@ -200,11 +201,24 @@ public class ScanCodeActivity extends Activity
                     				index_next = i;
                     				daten[i] = daten[i].substring(5);
                     			}
+                    			else if(daten[i].indexOf("city=") != -1)
+                    			{
+                    				index_city = i;
+                    				daten[i] = daten[i].substring(5);
+                    			}
                     		}
                     		Log.v("QRCODEREADER", "stop=" + daten[index_stop] + " | next=" + daten[index_next]);
                     		String name_de = daten[index_stop].substring(daten[index_stop].indexOf("-") + 1);
                     		Log.v("QRCODEREADER", "Gelesener name_de: " + name_de);
-                    		Palina partenza = PalinaList.getTranslation(name_de, "de");
+                    		Palina partenza = null;
+                    		if (index_city == -1)
+                    		{
+                    			partenza = PalinaList.getTranslation(name_de, "de");
+                    		}
+                    		else
+                    		{
+                    			partenza = PalinaList.getTranslation(name_de, "de", daten[index_city]);
+                    		}
                         	if(partenza != null)
                         	{
                         		finish();

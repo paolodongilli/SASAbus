@@ -167,6 +167,7 @@ public class LineaList {
 			list = new Vector<DBObject>();
 			do {
 				Linea element = new Linea(cursor);
+				element.setShowBacino(true);
 				if(!list.contains(element))
 					list.add(element);
 			} while(cursor.moveToNext());
