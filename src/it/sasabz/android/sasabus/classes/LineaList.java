@@ -31,6 +31,7 @@ import it.sasabz.android.sasabus.SASAbus;
 import java.util.Vector;
 
 import android.database.Cursor;
+import android.util.Log;
 
 /**
  * @author Markus Windegger (markus@mowiso.com)
@@ -142,15 +143,8 @@ public class LineaList {
 		 * differences
 		 */
 		Cursor cursor = sqlite.rawQuery("select distinct l.id as id, l.num_lin as num_lin, l.abbrev as abbrev, " +
-				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de, " +
-				"case when " +
-				"o1.orario > o2.orario " +
-				"then " +
-				"round(strftime('%s', o1.orario) - strftime('%s', o2.orario))/60 " +
-				"else " +
-				"round(strftime('%s', o1.orario) - strftime('%s', o2.orario))/60 + 1440 " +
-				"end " +
-				"as differenza from linee l, " +
+				"l.bacinoId as bacinoId, l.descr_it as descr_it, l.descr_de as descr_de " +
+				" from linee l, " +
 				"(select * from orarii where palinaId IN (" +
 				"select id from paline where nome_de = ?" +
 				")) as o1, " +
@@ -166,19 +160,45 @@ public class LineaList {
 				"and o1.corsaId = o2.corsaId " +
 				"and o2.corsaId = c.id " +
 				"and o2.progressivo < o1.progressivo " +
-				"order by differenza", args);
+				"order by l.abbrev", args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
 			list = new Vector<DBObject>();
 			do {
 				Linea element = new Linea(cursor);
+				element.setShowBacino(true);
 				if(!list.contains(element))
 					list.add(element);
 			} while(cursor.moveToNext());
 		}
 		cursor.close();
 		sqlite.close();
+		return list;
+	}
+	
+	public static Vector<DBObject> sort(Vector <DBObject> list)
+	{
+		int j, i;
+		try {
+			for (j=list.size(); j > 1;--j)
+			{
+				for(i=0;i < j-1;++i)
+				{
+					Linea current = (Linea)list.elementAt(i);
+					Linea next = (Linea)list.elementAt(i+1);
+					if(current.compareTo(next) > 0)
+					{
+						list.remove(i);
+						list.add(i+1, current);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return list;
 	}
 	

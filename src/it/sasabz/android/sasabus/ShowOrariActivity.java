@@ -26,6 +26,7 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Vector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,8 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Favorit;
+import it.sasabz.android.sasabus.classes.FavoritenDB;
 import it.sasabz.android.sasabus.classes.Linea;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
@@ -48,6 +51,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -80,6 +84,9 @@ public class ShowOrariActivity extends ListActivity {
 	
 	//is the next departure time of the bus
 	private int pos;
+	
+	//is the id for the menuentry favorit
+	private final static int FAVORITEN = 1234;
 
 	public ShowOrariActivity() {
 	}
@@ -200,6 +207,7 @@ public class ShowOrariActivity extends ListActivity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
+    	 menu.add(0, FAVORITEN, 4, R.string.favorit);
          return true;
     }
     
@@ -220,6 +228,20 @@ public class ShowOrariActivity extends ListActivity {
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
+				return true;
+			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
+				return true;
+			}
+			case FAVORITEN:
+			{
+				SQLiteDatabase db = new FavoritenDB(this).getWritableDatabase();
+				Favorit favorit = new Favorit(linea, partenza, destinazione);
+				favorit.insert(db);
+				db.close();
 				return true;
 			}
 		}

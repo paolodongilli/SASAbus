@@ -224,6 +224,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	Intent selDest = new Intent(this, SelectDestinazioneLocationActivity.class);
     	selDest.putExtra("partenza", partenza.getName_de());
     	startActivity(selDest);
+    	finish();
     }
 
     /**
@@ -279,6 +280,12 @@ public class SelectPalinaLocationActivity extends ListActivity{
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
+				return true;
+			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
 				return true;
 			}
 		}

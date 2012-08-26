@@ -33,12 +33,16 @@
 <string name="error_text">Ein Fehler ist während des Herunterladens aufgetreten. Bitte versuchen Sie es später nocheinmal oder kontaktieren Sie den Veröffentlicher des Programms</string>
 <string name="error_application">Ein Fehler ist bei der Datenbankabfrage aufgetreten. Bitte versuchen sie es erneut oder Kontaktieren Sie den Veröffentlicher des Programms</string>
 <string name="credits_text">SASAbus entstand aus der Hand der Mitglieder vom SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
+
 <string name="mode_gps">GPS Modus</string>
 <string name="mode_normal">Normaler Modus</string>
+<string name="mode_qr_code">QR Code Modus</string>
+
 <string name="weiter">Los!</string>
 <string name="show_way">Streckenführung</string>
 <string name="menu_settings">Einstellungen</string>
 <string name="menu_test">Das ist ein Test</string>
+<string name="menu_infos">News</string>
 
 <string name="gps_prefs">GPS Einstellungen</string>
 <string name="general_prefs">Allgemeine Einstellungen</string>
@@ -47,14 +51,36 @@
 <string name="gps_descr">Legt fest in welchem Umkreis die Haltestellen angezeigt werden</string>
 <string name="mode">Standardmodus</string>
 <string name="mode_descr">Standardmodus beim Start der Anwendung</string>
+<string name="line_infos">Stadt</string>
+<string name="line_infos_descr">Legt fest, für welche Stadt die News angezeigt werden</string>
+
 
 <string name="sensor_off">Sensor ist ausgeschalten, bitte einschalten!</string>
-<string name="pointing">Anpeilen der Bushaltestelle</string>
+<string name="pointing">Anpeilen\nder Bushaltestelle</string>
 <string name="pointer_info">Achtung! Für genaues Anpeilen der Haltestelle Mobiltelefon möglichst still halten!</string>
 
 <string name="line">Linie: </string>
 <string name="from">Von: </string>
 <string name="to">Bis: </string>
+<string name="intermediate">Zwischenhalt</string>
+
+<string name="no_map_update_available">OpenStreetMap Daten update nicht verfügbar. Probieren Sie es später nocheinmal!</string>
+<string name="downloading_map">Downloading OpenStreetMap Daten update ...</string>
+<string name="map_download_error">Fehler während des Downloads des OpenStreetMap daten update.</string>
+<string name="check_osm">Prüfen der OpenStreetMap daten</string>
+<string name="unzipping_map">Entpacken der OpenStreetMap Daten ...</string>
+<string name="retry_download">Verbindung mit dem Downloadserver nicht möglich. Erneut versuchen?</string>
+
+<string name="yes">Ja</string>
+<string name="no">Nein</string>
+
+<string name="error_scan_text">Ein Fehler enstand während des Scannens: Kein gültiger SASAbus QR-Code</string>
+<string name="scan_text_not_implemented">Dieses Feature ist in kürze Verfügbar!</string>
+
+<string name="map">Karte</string>
+<string name="favorit">Gebe zu Favoriten</string>
+
+<string name="mode_favoriten">Favoriten</string>
 
 </resources>
 

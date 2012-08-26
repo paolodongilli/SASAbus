@@ -77,7 +77,7 @@ public class ShowWayActivity extends ListActivity {
 	//provides the list for this object of all passages during the actual day
 	private Vector<Passaggio> list = null;
 	
-	//privudes the lineaid for this object
+	//provides the lineaid for this object
 	private int linea = -1;
 	
 	/*
@@ -86,8 +86,11 @@ public class ShowWayActivity extends ListActivity {
 	 */
 	private int pos;
 	
-	//testfinal
+	//test pointer activity
 	private final int POINTER = 10;
+	
+	//test map activity
+	private final int MAP = 11;
 
 	public ShowWayActivity() {
 	}
@@ -111,8 +114,9 @@ public class ShowWayActivity extends ListActivity {
 		Linea line = LineaList.getById(linea);
 		if (part == null || dest == null || line == null)
 		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
 			finish();
+			return;
 		}
 		setContentView(R.layout.standard_listview_layout);
 		TextView titel = (TextView)findViewById(R.id.titel);
@@ -202,6 +206,7 @@ public class ShowWayActivity extends ListActivity {
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
     	 menu.add(0, POINTER, 3, R.string.pointing);
+    	 menu.add(0, MAP, 4, R.string.map);
          return true;
     }
     
@@ -224,12 +229,30 @@ public class ShowWayActivity extends ListActivity {
 				startActivity(settings);
 				return true;
 			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
+				return true;
+			}
 			case POINTER:
 			{
 				Intent pointeract = new Intent(this, PointingLocationActivity.class);
 				Passaggio pas = PassaggioList.getById(orarioId);
 				pointeract.putExtra("palina", pas.getIdPalina());
 				startActivity(pointeract);
+				return true;
+			}
+			case MAP:
+			{
+				Intent mapview = new Intent(this, MapViewActivity.class);
+				Passaggio part = PassaggioList.getById(orarioId);
+				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
+				mapview.putExtra("partenza", part.getIdPalina());
+				mapview.putExtra("destinazione", dest.getIdPalina());
+				mapview.putExtra("line", linea);
+				mapview.putExtra("orarioId", orarioId);
+				startActivity(mapview);
 				return true;
 			}
 		}

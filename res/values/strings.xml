@@ -12,10 +12,10 @@
 
 <string name="md5_error">Calculated MD5 of database file is different from downloaded MD5.</string>
 <string name="db_download_error">Error while downloading the SASAbus database.</string>
-<string name="db_ok">Database %1$s is ready.</string>
+<string name="db_ok">File %1$s is ready.</string>
 <string name="menu_about">About</string>
 <string name="updates">... updates ...</string>
-<string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</string>
+<string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThe Google Maps Icons are relaesed under the cc contributed by Maps Icons Collection http://mapicons.nicolasmollet.com</string>
 <string name="copyright">Copyright (C) %1$s SASAbus Team</string>
 <string name="supp_email">For support and contact with the developers send a mail to: android@sasabz.it</string>
 <string name="disclaimer">SASAbus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
@@ -34,12 +34,16 @@
 <string name="error_application">An error occurred while fetching objects from the database ... please try again or contact the maintainer of the application</string>
 <string name="menu_credits">Credits</string>
 <string name="credits_text">SASAbus was brought to you by the members of the SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
+
 <string name="mode_gps">GPS Mode</string>
 <string name="mode_normal">Normal Mode</string>
+<string name="mode_qr_code">QR Code Mode</string>
+
 <string name="show_way">Show Route</string>
 <string name="weiter">Go!</string>
 <string name="menu_settings">Settings</string>
 <string name="menu_test">this is a test</string>
+<string name="menu_infos">News</string>
 
 <string name="gps_prefs">GPS Preferences</string>
 <string name="general_prefs">General preferences</string>
@@ -48,6 +52,8 @@
 <string name="gps_descr">This is the search radius for the nearest bus stops when in GPS-Mode</string>
 <string name="mode">Default mode</string>
 <string name="mode_descr">Default mode when starting the Application</string>
+<string name="line_infos">City</string>
+<string name="line_infos_descr">This sets the city for displaying the news of lines</string>
 
 <string name="theme">Theme</string>
 <string name="theme_descr">Select your preferred theme</string>
@@ -59,6 +65,28 @@
 <string name="line">Line: </string>
 <string name="from">From: </string>
 <string name="to">To: </string>
+
+<string name="intermediate">Intermediate Stop</string>
+
+<string name="no_map_update_available">OpenStreetMap data update is not available. Please try again later.</string>
+<string name="downloading_map">Downloading OpenStreetMap data update ...</string>
+<string name="map_download_error">Error while downloading the OpenStreetMap data.</string>
+<string name="check_osm">Checking OpenStreetMap data</string>
+<string name="unzipping_map">Unzipping OpenStreetMap data ...</string>
+<string name="retry_download">Canno connect to the downloadserver.\nRetry Download?</string>
+
+<string name="yes">Yes</string>
+<string name="no">No</string>
+
+<string name="error_scan_text">An error occurred during scanning a code: Its not a valid QR-Code for SASAbus</string>
+<string name="scan_text_not_implemented">This feature is coming soon!</string>
+
+<string name="scan">Scanning</string>
+
+<string name="map">Map</string>
+<string name="favorit">Add to favourites</string>
+
+<string name="mode_favoriten">Favourites</string>
 
 
 </resources>

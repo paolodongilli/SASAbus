@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">SASAbus</string>
+    <string name="app_name_osm">SASAbus_osm</string>
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.2.3</string>   <!-- Temporary solution to call version in splash.xml-->
     <string name="db_dir">Android/data/it.sasabz.android.sasabus/db</string>
@@ -13,8 +14,20 @@
     <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>
     -->
     <string name="repository_url">cms.sasabz.it</string>
+    <string name="http_repository_url">http://cms.sasabz.it/fileadmin/android/</string>
     <string name="repository_port">21</string>
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>
+    
+    <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
+    
+    <string name="favoriten_db_name">favoriten_db</string>
+    
+    <string name="me_lat">46.6729861111111</string>
+    <string name="me_long">11.1498430555556</string>
+    
+    <string name="bz_lat">46.4960386111111</string>
+    <string name="bz_long">11.3563072222222</string>
+    
     
 </resources>

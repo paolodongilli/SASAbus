@@ -43,6 +43,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.StringTokenizer;
 
 import android.util.Log;
@@ -51,6 +52,8 @@ import android.util.Log;
 
 
 public class SasabusFTP {
+	
+	private static int TIMEOUT_FILETRANSFER_MS = 5000;
     
 	 private Socket socket = null;
 	 private BufferedReader reader = null;
@@ -367,9 +370,9 @@ public class SasabusFTP {
      * @param outputStream is the fileoutputstream to store the file from the server locally
      * @param filename is the filename of the remote file
      * @return true if the file transfer was successful
-     * @throws IOException if something goes wrong
+     * @throws Exception 
      */
-    public synchronized boolean get(FileOutputStream outputStream, String filename, FileRetriever fileret) throws IOException
+    public synchronized boolean get(FileOutputStream outputStream, String filename, FileRetriever fileret) throws Exception
     {
     	if(!connected)
     	{
@@ -415,15 +418,26 @@ public class SasabusFTP {
         if (!response.startsWith("150 ")) {
             throw new IOException("SimpleFTP was not allowed to retrieve the file: " + response);
         }
-        
+        dataSocket.setSoTimeout(TIMEOUT_FILETRANSFER_MS);
         BufferedInputStream input = new BufferedInputStream(dataSocket.getInputStream());
         byte[] buffer = new byte[4096];
         int bytesRead = 0;
         long total = 0;
-        while ((bytesRead = input.read(buffer)) != -1) {
-            output.write(buffer, 0, bytesRead);
-            total += bytesRead;
-            fileret.publishProgress("" + (int) (total * 100 / lenghtOfFile));
+        try
+        {	
+	        while ((bytesRead = input.read(buffer)) != -1) {
+	            output.write(buffer, 0, bytesRead);
+	            total += bytesRead;
+	            fileret.publishProgress("" + (int) (total * 100 / lenghtOfFile));
+	        }
+        }
+        catch(Exception e)
+        {
+        	input.close();
+        	dataSocket.close();
+        	output.flush();
+        	output.close();
+        	throw e;
         }
         output.flush();
         output.close();

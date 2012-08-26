@@ -114,9 +114,9 @@ public class SelectLineaLocationActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int linea = list.get(position).getId();
-    	Intent selDest = new Intent(this, ShowOrariLocationActivity.class);;
+    	Intent selDest = new Intent(this, ShowOrariActivity.class);;
     	selDest.putExtra("linea", linea);
-    	selDest.putExtra("partenza", partenza);
+    	selDest.putExtra("palina", partenza);
     	selDest.putExtra("destinazione", destinazione);
     	startActivity(selDest);
     }
@@ -127,6 +127,7 @@ public class SelectLineaLocationActivity extends ListActivity {
      */
     private void fillData() {
     	list = LineaList.getListDestPart(destinazione, partenza);
+    	list = LineaList.sort(list);
     	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);
     }  
@@ -156,6 +157,12 @@ public class SelectLineaLocationActivity extends ListActivity {
 			{
 				Intent settings = new Intent(this, SetSettingsActivity.class);
 				startActivity(settings);
+				return true;
+			}
+			case R.id.menu_infos:
+			{
+				Intent infos = new Intent(this, InfoActivity.class);
+				startActivity(infos);
 				return true;
 			}
 		}

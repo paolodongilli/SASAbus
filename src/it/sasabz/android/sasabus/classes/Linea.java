@@ -26,6 +26,7 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import android.database.Cursor;
@@ -48,6 +49,10 @@ public class Linea extends DBObject {
 	private int bacinoId = 0;
 	
 	private int differenza = -1;
+	
+	private boolean showBacino = false;
+
+	
 
 	/**
 	 * This is the standardconstructor, which make an empty object
@@ -77,6 +82,19 @@ public class Linea extends DBObject {
 	}
 
 	
+	/**
+	 * @return the showBacino
+	 */
+	public boolean isShowBacino() {
+		return showBacino;
+	}
+
+	/**
+	 * @param showBacino the showBacino to set
+	 */
+	public void setShowBacino(boolean showBacino) {
+		this.showBacino = showBacino;
+	}
 	
 	/**
 	 * @return the descr_it
@@ -174,6 +192,8 @@ public class Linea extends DBObject {
 	@Override
 	public boolean equals(Object object)
 	{
+		if (object == null)
+			return false;
 		if(!(object instanceof Linea))
 			return false;
 		Linea linea = (Linea)object;
@@ -184,21 +204,85 @@ public class Linea extends DBObject {
 	
 	
 	/**
+	 * This function compares two Linea object and return their difference value
+	 * @param linea is the line to compare with
+	 * @return 0, if the two lines are equal, -1 if this line is less then, and 1 
+	 * if this line is greater then the line to compare with
+	 */
+	public int compareTo(Linea linea) throws NumberFormatException
+	{
+		int sortnum = 0;
+		boolean failure = false;
+		boolean failure_lin = false;
+		try {
+			sortnum = Integer.parseInt(this.getNum_lin());
+		}
+		catch (NumberFormatException e)
+		{
+			try
+			{
+				sortnum = Integer.parseInt(this.getNum_lin().substring(0, this.getNum_lin().length()-1));
+			}
+			catch(Exception ex)
+			{
+				failure = true;
+			}
+			
+		}
+		int linsortnum = 0;
+		try
+		{
+			linsortnum = Integer.parseInt(linea.getNum_lin());
+		}
+		catch (NumberFormatException e)
+		{
+			try
+			{
+				linsortnum = Integer.parseInt(linea.getNum_lin().substring(0, linea.getNum_lin().length()-1));
+			}
+			catch(Exception ex)
+			{
+				failure_lin = true;
+			}
+			
+		}
+		if(failure && failure_lin)
+		{
+			return this.getNum_lin().compareTo(linea.getNum_lin());
+		}
+		else if(failure)
+		{
+			return 1;
+		}
+		else if(failure_lin)
+		{
+			return -1;
+		}
+		if(sortnum == linsortnum)
+			return 0;
+		if (sortnum > linsortnum)
+			return 1;
+		return -1;
+	}
+	
+	
+	/**
 	 * This toString takes control of the localized output
 	 */
 	@Override
 	public String toString()
 	{
-		String diff = "";
-		if(this.differenza != -1)
+		String bacinostring = "";
+		if(showBacino)
 		{
-			diff = " (" + this.differenza + " min.)";
+			Bacino bacino = BacinoList.getById(this.bacinoId);
+			bacinostring = " (" + bacino.toString() + ")";
 		}
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return (this.getNum_lin() + diff).trim();
+			return (this.getNum_lin()).trim() + bacinostring;
 		}
-		return (this.getNum_lin()  + diff).trim();
+		return (this.getNum_lin()).trim() + bacinostring;
 	}
 	
 	
