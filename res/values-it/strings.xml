@@ -13,12 +13,12 @@
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
 <string name="db_ok">Il database %1$s è pronto.</string>
-<string name="menu_about">About</string>
-<string name="menu_test">E\' una cosa beta</string>
-<string name="updates">... lista updates ...</string>
+<string name="menu_about">Info</string>
+<string name="menu_test">E\' una funzione beta</string>
+<string name="updates">... lista aggiornamenti ...</string>
 <string name="license">SASAbus è software libero: puoi ridistribuirlo e/o modificarlo secondo i termini della licenza GNU General Public License, così come è pubblicata dalla Free Software Foundation nella versione 3 o superiore.</string>
 <string name="copyright">Copyright (C) %1$s SASAbus Team</string>
-<string name="supp_email">Per Supporto, contatto, suggerimenti semplicemente mandare una mail a: android@sasabz.it</string>
+<string name="supp_email">Per supporto, contatti o suggerimenti invia una mail a: android@sasabz.it</string>
 <string name="disclaimer">SASAbus è distribuito nella speranza che possa essere utile, ma viene fornito "così com'è", senza alcun tipo di garanzia, né esplicita, né implicita; ciò comprende, senza limitarsi a questo, la garanzia implicita di COMMERCIABILITÀ e UTILIZZABILITÀ PER UN PARTICOLARE SCOPO. Fare riferimento alla GNU General Public License per ulteriori dettagli. </string>
 <string name="gpl">Questo programma deve essere distribuito assieme ad una copia della GNU General Public License; in caso contrario, fare riferimento a &lt;http://www.gnu.org/licenses/&gt;.</string>
 <string name="sd_card_not_mounted">Memoria esterna (SD-Card) non accessibile.</string>
@@ -32,7 +32,7 @@
 <string name="gps_wait">Attendere la richiesta delle coordinate</string>
 <string name="error_title">Errore di download</string>
 <string name="error_text">Si è verificato un errore durante il download. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
-<string name="error_application">Si è verificato un errore durante l\'interrogazione della database. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
+<string name="error_application">Si è verificato un errore durante l\'interrogazione del database. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
 
 <string name="mode_gps">modalità GPS</string>
@@ -42,7 +42,7 @@
 <string name="show_way">Percorso</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
-<string name="menu_infos">Novità</string>
+<string name="menu_infos">Avvisi</string>
 
 <string name="gps_prefs">Impostazioni GPS</string>
 <string name="general_prefs">Impostazioni generali</string>
@@ -50,33 +50,33 @@
 <string name="rad_gps">Raggio di ricerca</string>
 <string name="gps_descr">Imposta il raggio entro il quale cercare fermate in modalità GPS</string>
 <string name="mode">Modalità standard</string>
-<string name="mode_descr">Modalità standard all\'avviamento dell\'applicazione</string>
+<string name="mode_descr">Modalità standard all\'avvio dell\'applicazione</string>
 <string name="line_infos">Città</string>
-<string name="line_infos_descr">Imposta la città per la quale vengono visualizzate le novità</string>
+<string name="line_infos_descr">Imposta la città per la quale visualizzare gli avvisi</string>
 
 <string name="sensor_off">Sensore disattivato</string>
 <string name="pointing">Puntare sulla fermata</string>
-<string name="pointer_info">Attenzione! Per un puntamento sufficientemente corretto si prega di tenere il cellulare piu\' fermo possibile!</string>
+<string name="pointer_info">Attenzione! Per un puntamento sufficientemente corretto si consiglia di non muovere il cellulare!</string>
 
 <string name="line">Linea: </string>
 <string name="from">Da: </string>
 <string name="to">A: </string>
 <string name="intermediate">Fermata intermedia</string>
 
-<string name="no_map_update_available">OpenStreetMap data update non disponibile. Si prega di riprovare più tardi.</string>
-<string name="downloading_map">Downloading OpenStreetMap data update ...</string>
-<string name="map_download_error">Si e\' verificato un\' errore durante il download dell OpenStreetMap data update.</string>
-<string name="check_osm">Verifica OpenStreetMap data</string>
-<string name="unzipping_map">Sto decomprimendo l\' OpenStreetMap data ...</string>
-<string name="retry_download">Impossibile a conettersi al server. Riprovare?</string>
+<string name="no_map_update_available">Aggiornamento OpenStreetMap non disponibile. Si prega di riprovare più tardi.</string>
+<string name="downloading_map">Sto scaricando l\'aggiornamento di OpenStreetMap ...</string>
+<string name="map_download_error">Si e\' verificato un errore durante il download dell\'aggiornamento di OpenStreetMap.</string>
+<string name="check_osm">Verifica dei dati OpenStreetMap</string>
+<string name="unzipping_map">Sto decomprimendo i dati di OpenStreetMap ...</string>
+<string name="retry_download">Impossibile connettersi al server. Riprovare?</string>
 
 <string name="yes">Si</string>
 <string name="no">No</string>
 
-<string name="error_scan_text">Errore durante la scansione del codice QR: Codice non valido per SASAbus</string>
-<string name="scan_text_not_implemented">Questa opzione sarà disponibila tra poco!</string>
+<string name="error_scan_text">Errore durante la scansione del codice QR: codice non valido per SASAbus</string>
+<string name="scan_text_not_implemented">Questa opzione sarà disponibile a breve.</string>
 
-<string name="map">Carta</string>
+<string name="map">Mappa</string>
 <string name="favorit">Aggiungi ai preferiti</string>
 <string name="mode_favoriten">Preferiti</string>
 
