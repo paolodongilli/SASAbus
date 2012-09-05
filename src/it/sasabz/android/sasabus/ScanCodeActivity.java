@@ -157,12 +157,16 @@ public class ScanCodeActivity extends Activity
                     }
                     else if(last_data.indexOf("busstop") != -1 || last_data.indexOf("BUSSTOP") != -1)
                     {
+                    	Log.v("QRCODE", "IN BUSSTOP");
                     	int start = last_data.indexOf("busstop");
                     	if(start == -1)
                     		start = last_data.indexOf("BUSSTOP"); 
                     	String busstopnr = last_data.substring(start + 8);
                     	int stop = busstopnr.indexOf("&");
-                    	busstopnr = busstopnr.substring(0, stop);
+                    	if(stop != -1)
+                    		busstopnr = busstopnr.substring(0, stop);
+                    	else
+                    		busstopnr = busstopnr.substring(0);
                     	Palina partenza = PalinaList.getById(Integer.parseInt(busstopnr));
                     	if(partenza != null)
                     	{
