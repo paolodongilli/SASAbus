@@ -13,12 +13,22 @@
     <string name="repository_url">http://www.mowiso.com/</string>
     <string name="repository_url">http://www.sasabz.it/fileadmin/user_upload/KML/</string>
     -->
+    
+    <!-- development FTP 
+    <string name="repository_url">windegger.org</string>
+    <string name="repository_port">21</string>
+    <string name="ftp_user">getMOVSASdata</string>
+    <string name="ftp_passwd">plapla</string>
+    -->
+   
+    <!-- official FTP  -->
     <string name="repository_url">cms.sasabz.it</string>
     <string name="http_repository_url">http://cms.sasabz.it/fileadmin/android/</string>
     <string name="repository_port">21</string>
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>
     
+     
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     
     <string name="favoriten_db_name">favoriten_db</string>

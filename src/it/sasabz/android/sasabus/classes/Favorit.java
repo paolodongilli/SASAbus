@@ -3,6 +3,7 @@ package it.sasabz.android.sasabus.classes;
 import it.sasabz.android.sasabus.SASAbus;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 public class Favorit {
@@ -14,6 +15,11 @@ public class Favorit {
 	private String partenza_de = null;
 	
 	private String destinazione_de = null;
+	
+	public Favorit()
+	{
+		
+	}
 	
 	public Favorit(int linea, String partenza_de, String destinazione_de)
 	{
@@ -98,9 +104,24 @@ public class Favorit {
 		Cursor cursor = db.rawQuery(query_select,null);
 		if(cursor.getCount() != 0)
 			return false;
-		String query = "Insert into " + FavoritenDB.FAVORITEN_TABLE_NAME + " VALUES (NULL, \"" + linea + "\", \"" 
+		String query = "Insert into " + FavoritenDB.FAVORITEN_TABLE_NAME + 
+				" VALUES ((select count(*) from " + FavoritenDB.FAVORITEN_TABLE_NAME + "), " +
+						"\"" + linea + "\", \"" 
 			+ partenza_de + "\", \"" + destinazione_de + "\");";
 		db.execSQL(query);
+		return true;
+	}
+	
+	public boolean delete(SQLiteDatabase db)
+	{
+		if(db == null || !db.isOpen() || db.isReadOnly())
+		{
+			Log.v("FAVORITENLOESCHEN", "DB");
+			return false;	
+		}
+		String query_select = "delete from " + FavoritenDB.FAVORITEN_TABLE_NAME + " where id=" + this.id + ";";
+		Log.v("SQL_QUERY", query_select);
+		db.execSQL(query_select);
 		return true;
 	}
 

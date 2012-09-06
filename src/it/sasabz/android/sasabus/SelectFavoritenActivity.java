@@ -35,6 +35,7 @@ import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Favorit;
+import it.sasabz.android.sasabus.classes.FavoritenDB;
 import it.sasabz.android.sasabus.classes.FavoritenList;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
@@ -46,12 +47,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -102,6 +107,38 @@ public class SelectFavoritenActivity extends ListActivity {
     	startActivity(showOrari);
     }
     
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+        ContextMenuInfo menuInfo) {
+      if (v.getId() == android.R.id.list) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        menu.setHeaderTitle(list.get(info.position).toString());
+        menu.add(Menu.NONE, 0, 0, R.string.delete);		
+      }
+    }
+    
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+      int menuItemIndex = item.getItemId();
+      if(menuItemIndex == 0)
+      {
+    	  Favorit fav = list.get(info.position);
+    	  SQLiteDatabase db = new FavoritenDB(this).getWritableDatabase();
+    	  if(fav.delete(db))
+    		  Log.v("FAVORITENLOESCHEN", "OK");
+    	  else 
+    		  Log.v("FAVORITENLOESCHEN", "FEHLER");
+    	  db.close();
+    	  list.remove(info.position);
+    	  MyFavoritenListAdapter favoriten = new MyFavoritenListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+    	  setListAdapter(favoriten);
+      }
+      return false;
+    }
+    
+    
     /**
      * fills the list_view with the modes which are offered to the user
      */
@@ -109,7 +146,9 @@ public class SelectFavoritenActivity extends ListActivity {
     {
     	 list = FavoritenList.getList();
     	 MyFavoritenListAdapter favoriten = new MyFavoritenListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+    	 ListView liste = (ListView)findViewById(android.R.id.list);
          setListAdapter(favoriten); 
+         registerForContextMenu(liste);
     }
     
     @Override

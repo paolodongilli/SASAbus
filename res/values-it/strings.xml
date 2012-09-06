@@ -73,6 +73,8 @@
 <string name="yes">Si</string>
 <string name="no">No</string>
 
+<string name="delete">Rimuovi</string>
+
 <string name="error_scan_text">Errore durante la scansione del codice QR: codice non valido per SASAbus</string>
 <string name="scan_text_not_implemented">Questa opzione sarà disponibile a breve.</string>
 
