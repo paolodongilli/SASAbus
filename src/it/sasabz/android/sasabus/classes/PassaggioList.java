@@ -109,7 +109,7 @@ public class PassaggioList {
     	Cursor cursor = null;
     	try
     	{
-    		cursor = sqlite.rawQuery("select strftime('%H:%M',o1.orario) as _id " +
+    		cursor = sqlite.rawQuery("select distinct strftime('%H:%M',o1.orario) as _id " +
     				"from "+
     				"(select id, lineaId " +
     				"from corse "+
