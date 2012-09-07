@@ -109,7 +109,7 @@ public class PassaggioList {
     	Cursor cursor = null;
     	try
     	{
-    		cursor = sqlite.rawQuery("select strftime('%H:%M',o1.orario) as _id " +
+    		cursor = sqlite.rawQuery("select distinct strftime('%H:%M',o1.orario) as _id " +
     				"from "+
     				"(select id, lineaId " +
     				"from corse "+
@@ -141,6 +141,7 @@ public class PassaggioList {
     	Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
+			Log.v("PASSAGIOLIST","Hier bin ich drinnen!!!!!!!");
 			list = new Vector<DBObject>();
 			do {
 				Passaggio element = new Passaggio();
@@ -193,6 +194,7 @@ public class PassaggioList {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		Log.v("PASSAGIOLIST","Hier bin ich drinnen!!!!!!!");
 		return c;
 	}
 	
@@ -336,6 +338,7 @@ public class PassaggioList {
 				"where c.id = o1.corsaId " +
 				"and c.id = o2.corsaId " +
 				"and o1.progressivo < o2.progressivo " +
+				"group by orario " +
 				"order by o1.orario";
 		try
 		{
