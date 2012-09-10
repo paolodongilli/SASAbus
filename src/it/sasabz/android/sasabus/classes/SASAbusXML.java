@@ -18,8 +18,6 @@ import android.util.Log;
 
 public class SASAbusXML {
 
-	
-	
 	public Document getDomElement(String xml)
 	{
         Document doc = null;

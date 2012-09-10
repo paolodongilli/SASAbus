@@ -27,6 +27,7 @@
         <item name="1">GPS Mode</item>
         <item name="2">Normal Mode</item>
         <item name="3">QR Code Scan Mode</item>
+        <item name="4">Online Mode</item>
     </string-array>
     
      <string-array name="mode_values">
@@ -34,6 +35,7 @@
         <item name="1">1</item>
         <item name="2">2</item>
         <item name="3">3</item>
+        <item name="3">4</item>
     </string-array>
     
     <string-array name="info_names">

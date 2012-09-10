@@ -1,0 +1,125 @@
+package it.sasabz.android.sasabus.hafas;
+
+public class XMLStation {
+	
+	private String name = null;
+	
+	private String externalId = "";
+	
+	private int externalStationNr = 0;
+	
+	private String type = "";
+	
+	private int xE6 = 0;
+	
+	private int yE6 = 0;
+	
+	
+	public XMLStation()
+	{
+		
+	}
+	
+	public XMLStation(String name, String externalId, int externalStationNr, String type, int xE6, int yE6)
+	{
+		this.name = name;
+		this.externalId = externalId;
+		this.externalStationNr = externalStationNr;
+		this.type = type;
+		this.xE6 = xE6;
+		this.yE6 = yE6;
+	}
+	
+	public void setProperty(String name, String value)
+	{
+		if(name.equals("name"))
+		{
+			this.name = value;
+		}
+		else if (name.equals("externalId"))
+		{
+			this.externalId = value;
+		}
+		else if(name.equals("externalStationNr"))
+		{
+			this.externalStationNr = Integer.parseInt(value);
+		}
+		else if(name.equals("type"))
+		{
+			this.type = value;
+		}
+		else if(name.equals("y"))
+		{
+			this.yE6 = Integer.parseInt(value);
+		}
+		else if (name.equals("x"))
+		{
+			this.xE6 = Integer.parseInt(value);
+		}
+	}
+	
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+
+
+	/**
+	 * @return the externalId
+	 */
+	public String getExternalId() {
+		return externalId;
+	}
+
+
+
+	/**
+	 * @return the externalStationNr
+	 */
+	public int getExternalStationNr() {
+		return externalStationNr;
+	}
+
+
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+
+
+	/**
+	 * @return the xE6
+	 */
+	public int getxE6() {
+		return xE6;
+	}
+
+
+
+	/**
+	 * @return the yE6
+	 */
+	public int getyE6() {
+		return yE6;
+	}
+
+
+	public String toString()
+	{
+		return this.name;
+	}
+
+	public String toXMLString()
+	{
+		return "<Station name=\"" + this.name + "\" externalId=\"" + this.externalId + 
+				"\" externalStationNr=\"" + this.externalStationNr + "\" type=\"" + this.type + 
+				"\" x=\"" + this.xE6 + "\" y=\"" + this.yE6 + "\" />";
+	}
+}

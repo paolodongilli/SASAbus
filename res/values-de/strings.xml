@@ -62,6 +62,9 @@
 <string name="line">Linie: </string>
 <string name="from">Von: </string>
 <string name="to">Bis: </string>
+<string name="from_txt">Von</string>
+<string name="to_txt">Bis</string>
+
 <string name="intermediate">Zwischenhalt</string>
 
 <string name="no_map_update_available">OpenStreetMap Daten update nicht verfügbar. Probieren Sie es später nocheinmal!</string>
@@ -83,6 +86,9 @@
 <string name="favorit">Gebe zu Favoriten</string>
 
 <string name="mode_favoriten">Favoriten</string>
+<string name="mode_online">Online Modus</string>
+<string name="search_connection">Suche Verbindung</string>
+<string name="select_stop">Bitte Haltestelle aussuchen</string>
 
 </resources>
 

@@ -61,6 +61,9 @@
 <string name="line">Linea: </string>
 <string name="from">Da: </string>
 <string name="to">A: </string>
+<string name="from_txt">Da</string>
+<string name="to_txt">A</string>
+
 <string name="intermediate">Fermata intermedia</string>
 
 <string name="no_map_update_available">Aggiornamento OpenStreetMap non disponibile. Si prega di riprovare più tardi.</string>
@@ -81,5 +84,9 @@
 <string name="map">Mappa</string>
 <string name="favorit">Aggiungi ai preferiti</string>
 <string name="mode_favoriten">Preferiti</string>
+
+<string name="mode_online">Modo Online</string>
+<string name="search_connection">Cercare collegamento</string>
+<string name="select_stop">Scegliere la fermata</string>
 
 </resources>

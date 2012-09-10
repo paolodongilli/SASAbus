@@ -8,6 +8,7 @@
         <item name="1">GPS Modus</item>
         <item name="2">Normaler Modus</item>
         <item name="3">QR Code Modus</item>
+        <item name="4">Online Modus</item>
     </string-array>
     
     <string-array name="info_names">

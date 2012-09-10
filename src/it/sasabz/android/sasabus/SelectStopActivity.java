@@ -38,52 +38,87 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.XMLStationList;
 
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class SelectModeActivity extends ListActivity {
+public class SelectStopActivity extends Activity {
 
     
-    private Vector<DBObject> list = null;
+    private String from = "";
+    private String to = "";
     
-    public SelectModeActivity() {
+    public SelectStopActivity() {
     }
 
+    private Context getContext()
+    {
+    	return this;
+    }
+    
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.standard_listview_layout);
+        setContentView(R.layout.online_select_layout);
         
         TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.select_mode);
+        titel.setText(R.string.mode_online);
         
-        TextView line = (TextView)findViewById(R.id.line);
-        TextView from = (TextView)findViewById(R.id.from);
-        TextView to = (TextView)findViewById(R.id.to);
+        Button search = (Button)findViewById(R.id.search);
         
-        line.setText("");
-        from.setText("");
-        to.setText("");
-        fillData();
+        Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			from = extras.getString("from");
+			to = extras.getString("to");
+		}
+        if(from == "" || to == "")
+        {
+        	Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
+        	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
+        	finish();
+        }
+        Vector<XMLStation> list = XMLStationList.getList(from);
+        
+        
+        
+        
+        
+        Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        MyXMLStationListAdapter adapter = new MyXMLStationListAdapter(this, list);
+        
+        // Apply the adapter to the spinner
+        from_spinner.setAdapter(adapter);
     }
+
 
     /**
      * Called when the activity is about to start interacting with the user.
@@ -93,89 +128,7 @@ public class SelectModeActivity extends ListActivity {
         super.onResume();
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        int mode = list.get(position).getId();
-        /*
-         * If the mode select is the first one, then starts the gps-mode,
-         * otherwise with the mode 2 selected, starts the normal mode
-         */
-        if(mode == 1)
-        {
-        	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 2)
-        {
-        	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
-        	startActivity(selLinea);
-        }
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	Intent selLinea = new Intent(this, ScanCodeActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 4)
-        {
-        	Intent selLinea = new Intent(this, OnlineModeActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 5)
-        {
-        	Intent selLinea = new Intent(this, SelectFavoritenActivity.class);
-        	startActivity(selLinea);
-        }
-    }
     
-    /**
-     * fills the list_view with the modes which are offered to the user
-     */
-    public void fillData()
-    {    	
-    	Resources res = this.getResources();
-    	
-    	list = new Vector<DBObject>();
-    	
-    	//GPS Mode
-    	Modus mod = new Modus();
-    	mod.setId(1);
-    	mod.setString(res.getString(R.string.mode_gps));
-    	list.add(mod);
-    	
-    	//Normal Mode
-    	mod = new Modus();
-    	mod.setId(2);
-    	mod.setString(res.getString(R.string.mode_normal));
-    	list.add(mod);
-    	
-    	PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	//QR Code Mode
-        	mod = new Modus();
-        	mod.setId(3);
-        	mod.setString(res.getString(R.string.mode_qr_code));
-        	list.add(mod);
-        }
-        
-        //Online Mode
-    	mod = new Modus();
-    	mod.setId(4);
-    	mod.setString(res.getString(R.string.mode_online));
-    	list.add(mod);
-        
-        //Favoriten Mode
-    	mod = new Modus();
-    	mod.setId(5);
-    	mod.setString(res.getString(R.string.mode_favoriten));
-    	list.add(mod);
-    	
-    	
-    	//fill the modes into the list_view
-    	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
-        setListAdapter(modi);
-    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

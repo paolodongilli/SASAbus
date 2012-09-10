@@ -65,6 +65,9 @@
 <string name="line">Line: </string>
 <string name="from">From: </string>
 <string name="to">To: </string>
+<string name="from_txt">From</string>
+<string name="to_txt">To</string>
+
 
 <string name="intermediate">Intermediate Stop</string>
 
@@ -89,6 +92,10 @@
 <string name="favorit">Add to favourites</string>
 
 <string name="mode_favoriten">Favourites</string>
+<string name="mode_online">Online Mode</string>
+<string name="select_stop">Select busstop</string>
+
+<string name="search_connection">Search connection</string>
 
 
 </resources>

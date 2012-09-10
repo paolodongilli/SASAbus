@@ -28,6 +28,8 @@
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>
     
+    <!-- unofficial xml-server -->
+    <string name="xml_server">http://travelplaner.sasabz.it/bin/extxml.bin</string>
      
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     
