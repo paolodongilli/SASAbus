@@ -86,13 +86,16 @@ public class SelectStopActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        if(!XMLRequest.haveNetworkConnection())
+        {
+        	Toast.makeText(getContext(), R.string.no_network_connection, Toast.LENGTH_LONG).show();
+        	finish();
+        	return;
+        }
         setContentView(R.layout.online_select_layout);
         
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.mode_online);
-        
-        Button search = (Button)findViewById(R.id.search);
         
         Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -105,18 +108,43 @@ public class SelectStopActivity extends Activity {
         	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
         	finish();
         }
-        Vector<XMLStation> list = XMLStationList.getList(from);
-        
-        
-        
-        
+        Vector<XMLStation> from_list = XMLStationList.getList(from);
+        Vector<XMLStation> to_list = XMLStationList.getList(to);
+        if(from_list == null || to_list == null)
+        {
+        	Toast.makeText(getContext(), R.string.online_connection_error, Toast.LENGTH_LONG).show();
+        	finish();
+        	return;
+        }
+        if(from_list.size() == 1 && to_list.size() == 1)
+        {
+        	Log.v("XML-LOGGER", "ERGEBNIS DIREKT ANZEIGEN!");
+        }
         
         Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
+        Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
+        
         // Create an ArrayAdapter using the string array and a default spinner layout
-        MyXMLStationListAdapter adapter = new MyXMLStationListAdapter(this, list);
+        MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(this, from_list);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        MyXMLStationListAdapter to_adapter = new MyXMLStationListAdapter(this, to_list);
+        
         
         // Apply the adapter to the spinner
-        from_spinner.setAdapter(adapter);
+        from_spinner.setAdapter(from_adapter);
+        // Apply the adapter to the spinner
+        to_spinner.setAdapter(to_adapter);
+        
+        Button search = (Button)findViewById(R.id.search);
+        
+        search.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getContext(), "This MEthod is not yet implemented here in this app", Toast.LENGTH_LONG).show();
+			}
+		});
+        		
     }
 
 

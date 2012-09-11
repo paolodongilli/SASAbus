@@ -85,6 +85,7 @@
 <string name="favorit">Aggiungi ai preferiti</string>
 <string name="mode_favoriten">Preferiti</string>
 
+<string name="online_connection_error">La fermata non e\' stata trovata.</string>
 <string name="mode_online">Modo Online</string>
 <string name="search_connection">Cercare collegamento</string>
 <string name="select_stop">Scegliere la fermata</string>

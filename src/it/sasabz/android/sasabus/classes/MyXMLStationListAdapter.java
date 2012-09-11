@@ -63,26 +63,26 @@ public class MyXMLStationListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;  
 		if (v == null) {
               LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(R.layout.spinner_view, null);
+              v = vi.inflate(R.layout.spinner_dropdown_view, null);
           }
-		TextView textView = (TextView) v.findViewById(R.id.text);
+		TextView text = (TextView) v.findViewById(R.id.text);
 		if (list != null)
 		{
 			XMLStation listItem = list.get(position);
 			if(listItem != null)
 			{
-				textView.setText(listItem.toString());
+				text.setText(listItem.getHaltestelle());
 			}
 		}
 		return v;
 	}
 	
 	@Override
-	public View getDropDownView(int position, View convertView, ViewGroup paren)
+	public View getView(int position, View convertView, ViewGroup paren)
 	{
 		View v = convertView;  
 		if (v == null) {
@@ -95,7 +95,7 @@ public class MyXMLStationListAdapter extends BaseAdapter {
 			XMLStation listItem = list.get(position);
 			if(listItem != null)
 			{
-				textView.setText(listItem.toString());
+				textView.setText(listItem.getHaltestelle());
 			}
 		}
 		return v;

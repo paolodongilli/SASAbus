@@ -1,5 +1,9 @@
 package it.sasabz.android.sasabus.hafas;
 
+import java.util.Locale;
+
+import android.util.Log;
+
 public class XMLStation {
 	
 	private String name = null;
@@ -56,6 +60,22 @@ public class XMLStation {
 		{
 			this.xE6 = Integer.parseInt(value);
 		}
+	}
+	
+	public String getHaltestelle()
+	{
+		String ret = "";
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			String geteilt = this.name.substring(this.name.indexOf("-") + 1).trim();
+			ret =  geteilt.substring(1, geteilt.indexOf(")"))+ " - " +geteilt.substring(geteilt.indexOf(")") + 1).trim();
+		}
+		else
+		{
+			String geteilt = this.name.substring(0, this.name.indexOf("-")).trim();
+			ret = geteilt.substring(1, geteilt.indexOf(")"))+ " - " + geteilt.substring(geteilt.indexOf(")") + 1).trim();
+		}
+		return ret;
 	}
 	
 	/**

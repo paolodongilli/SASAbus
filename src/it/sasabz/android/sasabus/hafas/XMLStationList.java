@@ -20,6 +20,7 @@ public class XMLStationList {
 		if(xml == "" || XMLRequest.containsError(xml))
 		{
 			Log.e("XML-ERROR", xml);
+			return list;
 		}
 		SASAbusXML parser = new SASAbusXML();
 		

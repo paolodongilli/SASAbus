@@ -95,6 +95,7 @@
 <string name="mode_online">Online Mode</string>
 <string name="select_stop">Select busstop</string>
 
+<string name="online_connection_error">The entered pattern matches no busstop</string>
 <string name="search_connection">Search connection</string>
 
 

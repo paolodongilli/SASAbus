@@ -85,6 +85,7 @@
 <string name="map">Karte</string>
 <string name="favorit">Gebe zu Favoriten</string>
 
+<string name="online_connection_error">Die gesuchte Haltestelle wurde nicht gefunden.</string>
 <string name="mode_favoriten">Favoriten</string>
 <string name="mode_online">Online Modus</string>
 <string name="search_connection">Suche Verbindung</string>
