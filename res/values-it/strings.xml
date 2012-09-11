@@ -90,4 +90,7 @@
 <string name="search_connection">Cercare collegamento</string>
 <string name="select_stop">Scegliere la fermata</string>
 
+<string name="time">Data e ora:</string>
+<string name="time_txt">gg/mm/yyyy</string>
+
 </resources>

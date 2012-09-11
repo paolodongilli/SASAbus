@@ -25,45 +25,33 @@
 
 package it.sasabz.android.sasabus;
 
-import java.util.Iterator;
-import java.util.Locale;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.LineaList;
-import it.sasabz.android.sasabus.classes.Modus;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
-import it.sasabz.android.sasabus.hafas.XMLRequest;
-import it.sasabz.android.sasabus.hafas.XMLStation;
-import it.sasabz.android.sasabus.hafas.XMLStationList;
+import it.sasabz.android.sasabus.classes.DateTimePicker;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class OnlineModeActivity extends Activity {
 
@@ -85,6 +73,13 @@ public class OnlineModeActivity extends Activity {
         
         setContentView(R.layout.online_search_layout);
         
+        Date datum = new Date();
+        
+        TextView datetime = (TextView)findViewById(R.id.time);
+        
+        datetime.setText(datum.getDay() + "." + datum.getMonth() + "." + (datum.getYear() + 1900) 
+        		+ " " + datum.getHours() + ":" + datum.getMinutes());
+        
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.mode_online);
         
@@ -98,7 +93,7 @@ public class OnlineModeActivity extends Activity {
 				
 				if(!from.getText().toString().trim().equals("") && !to.getText().toString().trim().equals(""))
 				{
-					Intent getSelect = new Intent(getContext(), SelectStopActivity.class);
+					Intent getSelect = new Intent(getContext(), OnlineSelectStopActivity.class);
 					getSelect.putExtra("from", from.getText().toString());
 					getSelect.putExtra("to", to.getText().toString());
 					startActivity(getSelect);
@@ -106,7 +101,98 @@ public class OnlineModeActivity extends Activity {
 			}
 		});
         
-    }
+        ImageButton datepicker = (ImageButton)findViewById(R.id.datepicker);
+        
+        datepicker.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getContext(),
+						"This method is not implemened yet", Toast.LENGTH_LONG)
+						.show();
+				// Create the dialog
+				final Dialog mDateTimeDialog = new Dialog(getContext());
+				// Inflate the root layout
+				final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater()
+						.inflate(R.layout.date_time_dialog, null);
+				// Grab widget instance
+				final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
+						.findViewById(R.id.DateTimePicker);
+				// Check is system is set to use 24h time (this doesn't seem to
+				// work as expected though)
+				final String timeS = android.provider.Settings.System
+						.getString(getContentResolver(),
+								android.provider.Settings.System.TIME_12_24);
+				final boolean is24h = !(timeS == null || timeS.equals("12"));
+
+				// Update demo TextViews when the "OK" button is clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+							mDateTimePicker.clearFocus();
+							String datetimestring = "";
+							datetimestring += mDateTimePicker
+									.get(Calendar.DAY_OF_MONTH)
+									+ "."
+									+ (mDateTimePicker.get(Calendar.MONTH) + 1)
+									+ "."
+									+ mDateTimePicker
+											.get(Calendar.YEAR) + " ";
+							if (mDateTimePicker.is24HourView()) {
+								datetimestring += mDateTimePicker
+										.get(Calendar.HOUR_OF_DAY)
+										+ ":"
+										+ mDateTimePicker
+												.get(Calendar.MINUTE);
+							} else {
+								datetimestring += mDateTimePicker
+										.get(Calendar.HOUR)
+										+ ":"
+										+ mDateTimePicker
+												.get(Calendar.MINUTE)
+										+ " "
+										+ (mDateTimePicker
+												.get(Calendar.AM_PM) == Calendar.AM ? "AM"
+												: "PM");
+							}
+							TextView time = (TextView)findViewById(R.id.time);
+							time.setText(datetimestring);
+							mDateTimeDialog.dismiss();
+						}
+					});
+				// Cancel the dialog when the "Cancel" button is clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.CancelDialog))
+						.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								mDateTimeDialog.cancel();
+							}
+						});
+
+				// Reset Date and Time pickers when the "Reset" button is
+				// clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.ResetDateTime))
+						.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								mDateTimePicker.reset();
+							}
+						});
+
+				// Setup TimePicker
+				mDateTimePicker.setIs24HourView(is24h);
+				// No title on the dialog window
+				mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				// Set the dialog content view
+				mDateTimeDialog.setContentView(mDateTimeDialogView);
+				// Display the dialog
+				mDateTimeDialog.show();
+			}
+
+		});
+
+	}
 
 
     /**

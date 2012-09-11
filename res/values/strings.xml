@@ -98,6 +98,8 @@
 <string name="online_connection_error">The entered pattern matches no busstop</string>
 <string name="search_connection">Search connection</string>
 
+<string name="time">Date and time:</string>
+<string name="time_txt">dd/mm/yyyy</string>
 
 </resources>
 

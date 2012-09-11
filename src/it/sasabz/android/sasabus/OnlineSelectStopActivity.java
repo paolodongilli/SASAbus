@@ -68,13 +68,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectStopActivity extends Activity {
+public class OnlineSelectStopActivity extends Activity {
 
     
     private String from = "";
     private String to = "";
     
-    public SelectStopActivity() {
+    public OnlineSelectStopActivity() {
     }
 
     private Context getContext()
@@ -141,7 +141,8 @@ public class SelectStopActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "This MEthod is not yet implemented here in this app", Toast.LENGTH_LONG).show();
+				Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
+				
 			}
 		});
         		

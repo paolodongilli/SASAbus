@@ -21,12 +21,11 @@
     You should have received a copy of the GNU General Public License
     along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<LinearLayout android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:paddingLeft="4dp"
-    android:paddingRight="4dp" >
+    android:paddingRight="4dp" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:id="@+id/titel"
@@ -47,9 +46,8 @@
         android:id="@+id/from_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:hint="@string/from_txt"
-        >
+        android:ems="10"
+        android:hint="@string/from_txt" >
 
         <requestFocus />
     </EditText>
@@ -65,14 +63,45 @@
         android:id="@+id/to_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" 
-        android:hint="@string/to_txt"
-        />
+        android:ems="10"
+        android:hint="@string/to_txt" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp" >
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="@string/time_txt"
+            android:paddingRight="-50dip"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+        <ImageButton
+            android:id="@+id/datepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/calendar_icon" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_connection" />
-    
+
 </LinearLayout>

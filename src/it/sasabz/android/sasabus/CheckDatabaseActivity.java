@@ -226,10 +226,6 @@ public class CheckDatabaseActivity extends Activity {
 			 startact = new Intent(this, SelectModeActivity.class);
 			 
 		 }
-		 if(startact == null)
-		 {
-			 startact = new Intent(this, SelectModeActivity.class);
-		 }
 		 startActivity(startact);
 	}
 
