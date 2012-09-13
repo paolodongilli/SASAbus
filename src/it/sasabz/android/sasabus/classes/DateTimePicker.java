@@ -3,6 +3,7 @@ package it.sasabz.android.sasabus.classes;
 import it.sasabz.android.sasabus.R;
 
 import java.util.Calendar;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -19,13 +20,13 @@ import android.widget.TimePicker.OnTimeChangedListener;
 
 public class DateTimePicker extends RelativeLayout implements View.OnClickListener, OnDateChangedListener, OnTimeChangedListener{
     // DatePicker reference
-    private DatePicker              datePicker;
+    private DatePicker datePicker;
     // TimePicker reference
-    private TimePicker              timePicker;
+    private TimePicker timePicker;
     // ViewSwitcher reference
-    private ViewSwitcher    viewSwitcher;
+    private ViewSwitcher viewSwitcher;
     // Calendar reference
-    private Calendar                mCalendar;
+    private Calendar mCalendar;
 
     // Constructor start
     public DateTimePicker(Context context) {
@@ -57,9 +58,11 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
             datePicker = (DatePicker) datePickerView.findViewById(R.id.DatePicker);
             datePicker.init(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), this);
 
+            
             // Init time picker
             timePicker = (TimePicker) timePickerView.findViewById(R.id.TimePicker);
             timePicker.setOnTimeChangedListener(this);
+            timePicker.setIs24HourView(true);
 
             // Handle button clicks
             ((Button) findViewById(R.id.SwitchToTime)).setOnClickListener(this); // shows the time picker
@@ -102,7 +105,7 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
 
     // Convenience wrapper for internal Calendar instance
     public int get(final int field) {
-            return mCalendar.get(field);
+        return mCalendar.get(field);
     }
 
     // Reset DatePicker, TimePicker and internal Calendar instance

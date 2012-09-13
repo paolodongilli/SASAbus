@@ -94,5 +94,10 @@
 <string name="time">Datum und Uhrzeit:</string>
 <string name="time_txt">dd.mm.yyyy</string>
 
+<string name="reset">Reset</string>
+
+<string name="set_date">Datum</string>
+<string name="set_time">Uhrzeit</string>
+
 </resources>
 

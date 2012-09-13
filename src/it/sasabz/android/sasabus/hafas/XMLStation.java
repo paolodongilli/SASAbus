@@ -1,6 +1,14 @@
 package it.sasabz.android.sasabus.hafas;
 
+import it.sasabz.android.sasabus.classes.SASAbusXML;
+
 import java.util.Locale;
+import java.util.Vector;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import android.util.Log;
 
@@ -136,6 +144,25 @@ public class XMLStation {
 		return this.name;
 	}
 
+	public void fromXMLString(String xml)
+	{
+		SASAbusXML parser = new SASAbusXML();
+		
+		Document doc = parser.getDomElement(xml);
+		
+		NodeList nl = doc.getElementsByTagName("Station");
+		
+		Node node = nl.item(0);
+		if(node != null && node.hasAttributes())
+		{
+			NamedNodeMap attributelist = node.getAttributes();
+			for(int j = 0; j < attributelist.getLength(); ++ j)
+			{
+				setProperty(attributelist.item(j).getNodeName(), attributelist.item(j).getNodeValue());
+			}
+		}
+	}
+	
 	public String toXMLString()
 	{
 		return "<Station name=\"" + this.name + "\" externalId=\"" + this.externalId + 

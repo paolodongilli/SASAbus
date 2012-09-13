@@ -101,5 +101,10 @@
 <string name="time">Date and time:</string>
 <string name="time_txt">dd/mm/yyyy</string>
 
+<string name="reset">Reset</string>
+
+<string name="set_date">Date</string>
+<string name="set_time">Time</string>
+
 </resources>
 

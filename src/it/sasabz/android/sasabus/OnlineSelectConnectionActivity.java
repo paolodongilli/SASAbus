@@ -25,54 +25,38 @@
 
 package it.sasabz.android.sasabus;
 
-import java.util.Iterator;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.LineaList;
-import it.sasabz.android.sasabus.classes.Modus;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
+import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestListAdapter;
+import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
+import it.sasabz.android.sasabus.hafas.XMLConnectionRequestList;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
-import it.sasabz.android.sasabus.hafas.XMLStationList;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.InputFilter.LengthFilter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineSelectConnectionActivity extends Activity {
+public class OnlineSelectConnectionActivity extends ListActivity {
 
     
-    private String from = "";
-    private String to = "";
+    private XMLStation from = null;
+    private XMLStation to = null;
+    private Date datetime = null;
     
     public OnlineSelectConnectionActivity() {
     }
@@ -92,19 +76,64 @@ public class OnlineSelectConnectionActivity extends Activity {
         	finish();
         	return;
         }
-        setContentView(R.layout.online_select_layout);
+        setContentView(R.layout.connection_listview_layout);
         
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.mode_online);
         
         Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			from = extras.getString("from");
-			to = extras.getString("to");
-		}		
+			from = new XMLStation();
+			from.fromXMLString(extras.getString("from"));
+			to = new XMLStation();
+			to.fromXMLString(extras.getString("to"));
+			SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+			try
+			{
+				datetime = simple.parse(extras.getString("datetime"));
+			}
+			catch(Exception e)
+			{
+				Log.v("Datumsfehler", "Das Datum hat eine falsche Formatierung angenommen!!!");
+				Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
+				finish();
+				return;
+			}
+		}	
+		
+				
+		XMLConnectionRequest conreq	= XMLConnectionRequestList.getRequest(from, to, datetime);
+		if(conreq != null)
+		{
+			SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+			Log.v("XML-LOGGER", "conreq-context: " + conreq.getContext());
+			Log.v("XML-LOGGER", "transfers: " + conreq.getTransfers());
+			Log.v("XML-LOGGER", "duration: " + simple.format(conreq.getDuration()));
+			Log.v("XML-LOGGER", "Departure: " + conreq.getDeparture().getStation().getName());
+			Log.v("XML-LOGGER", "Departure Time: " + simple.format(conreq.getDeparture().getArrtime()));
+		}
+		
+		fillData();
     }
 
 
+    private void fillData()
+    {
+    	XMLConnectionRequest conreq	= XMLConnectionRequestList.getRequest(from, to, datetime);
+    	Vector<XMLConnectionRequest> list = null;
+		if(conreq != null)
+		{
+			SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+			list = new Vector<XMLConnectionRequest>();
+			list.add(conreq);
+		}
+		
+		MyXMLConnectionRequestListAdapter adapter = new MyXMLConnectionRequestListAdapter(list);
+		
+		setListAdapter(adapter);
+    }
+    
+    
     /**
      * Called when the activity is about to start interacting with the user.
      */

@@ -25,6 +25,8 @@
 
 package it.sasabz.android.sasabus;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
@@ -44,7 +46,9 @@ import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.XMLStationList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -73,6 +77,9 @@ public class OnlineSelectStopActivity extends Activity {
     
     private String from = "";
     private String to = "";
+    private Date datum = null;
+    private Spinner from_spinner = null;
+    private Spinner to_spinner = null;
     
     public OnlineSelectStopActivity() {
     }
@@ -101,13 +108,38 @@ public class OnlineSelectStopActivity extends Activity {
 		if (extras != null) {
 			from = extras.getString("from");
 			to = extras.getString("to");
+			SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+			try
+			{
+				datum = simple.parse(extras.getString("datetime"));
+			}
+			catch(Exception e)
+			{
+				Log.v("Datumsfehler", "Das Datum hat eine falsche Formatierung angenommen!!!");
+				Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
+				finish();
+				return;
+			}
 		}
         if(from == "" || to == "")
         {
         	Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
         	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
         	finish();
+        	return;
         }
+        
+        TextView datetime = (TextView)findViewById(R.id.time);
+        String datetimestring = "";
+        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        datetimestring = simple.format(datum);
+        
+        datetime.setText(datetimestring);
+        
+        ProgressDialog progress = new ProgressDialog(getContext());
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.show();
+        
         Vector<XMLStation> from_list = XMLStationList.getList(from);
         Vector<XMLStation> to_list = XMLStationList.getList(to);
         if(from_list == null || to_list == null)
@@ -121,8 +153,8 @@ public class OnlineSelectStopActivity extends Activity {
         	Log.v("XML-LOGGER", "ERGEBNIS DIREKT ANZEIGEN!");
         }
         
-        Spinner from_spinner = (Spinner) findViewById(R.id.from_spinner);
-        Spinner to_spinner = (Spinner) findViewById(R.id.to_spinner);
+        from_spinner = (Spinner) findViewById(R.id.from_spinner);
+        to_spinner = (Spinner) findViewById(R.id.to_spinner);
         
         // Create an ArrayAdapter using the string array and a default spinner layout
         MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(this, from_list);
@@ -141,11 +173,17 @@ public class OnlineSelectStopActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				XMLStation from = (XMLStation)from_spinner.getSelectedItem();
+				XMLStation to = (XMLStation)to_spinner.getSelectedItem();
+				TextView datetime = (TextView)findViewById(R.id.time);
 				Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
-				
+				showConnection.putExtra("from", from.toXMLString());
+				showConnection.putExtra("to", to.toXMLString());
+				showConnection.putExtra("datetime", datetime.getText().toString());
+				startActivity(showConnection);
 			}
 		});
-        		
+        progress.dismiss();
     }
 
 

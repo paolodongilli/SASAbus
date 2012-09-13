@@ -26,6 +26,7 @@
 package it.sasabz.android.sasabus;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
@@ -56,8 +57,6 @@ import android.widget.Toast;
 public class OnlineModeActivity extends Activity {
 
     
-    private Vector<DBObject> list = null;
-    
     public OnlineModeActivity() {
     }
 
@@ -74,11 +73,15 @@ public class OnlineModeActivity extends Activity {
         setContentView(R.layout.online_search_layout);
         
         Date datum = new Date();
+        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
         
         TextView datetime = (TextView)findViewById(R.id.time);
+        String datetimestring = "";
         
-        datetime.setText(datum.getDay() + "." + datum.getMonth() + "." + (datum.getYear() + 1900) 
-        		+ " " + datum.getHours() + ":" + datum.getMinutes());
+        datetimestring = simple.format(datum);
+        
+        datetime.setText(datetimestring);
         
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.mode_online);
@@ -90,12 +93,14 @@ public class OnlineModeActivity extends Activity {
 			public void onClick(View v) {
 				EditText from = (EditText)findViewById(R.id.from_text);
 				EditText to = (EditText)findViewById(R.id.to_text);
+				TextView datetime = (TextView)findViewById(R.id.time);
 				
 				if(!from.getText().toString().trim().equals("") && !to.getText().toString().trim().equals(""))
 				{
 					Intent getSelect = new Intent(getContext(), OnlineSelectStopActivity.class);
 					getSelect.putExtra("from", from.getText().toString());
 					getSelect.putExtra("to", to.getText().toString());
+					getSelect.putExtra("datetime", datetime.getText().toString());
 					startActivity(getSelect);
 				}
 			}
@@ -107,9 +112,7 @@ public class OnlineModeActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(),
-						"This method is not implemened yet", Toast.LENGTH_LONG)
-						.show();
+				
 				// Create the dialog
 				final Dialog mDateTimeDialog = new Dialog(getContext());
 				// Inflate the root layout
@@ -118,6 +121,20 @@ public class OnlineModeActivity extends Activity {
 				// Grab widget instance
 				final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
 						.findViewById(R.id.DateTimePicker);
+				TextView dt = (TextView)findViewById(R.id.time);
+				String datetimestring = dt.getText().toString();
+				SimpleDateFormat datetimeformat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+				Date datetime = null;
+				try
+				{
+					datetime = datetimeformat.parse(datetimestring);
+				}
+				catch(Exception e)
+				{
+					;
+				}
+				mDateTimePicker.updateTime(datetime.getHours(), datetime.getMinutes());
+				mDateTimePicker.updateDate(datetime.getYear() + 1900, datetime.getMonth(), datetime.getDate());
 				// Check is system is set to use 24h time (this doesn't seem to
 				// work as expected though)
 				final String timeS = android.provider.Settings.System
@@ -130,30 +147,58 @@ public class OnlineModeActivity extends Activity {
 					public void onClick(View v) {
 							mDateTimePicker.clearFocus();
 							String datetimestring = "";
-							datetimestring += mDateTimePicker
-									.get(Calendar.DAY_OF_MONTH)
-									+ "."
-									+ (mDateTimePicker.get(Calendar.MONTH) + 1)
-									+ "."
-									+ mDateTimePicker
-											.get(Calendar.YEAR) + " ";
+							int day = mDateTimePicker.get(Calendar.DAY_OF_MONTH);
+							int month = mDateTimePicker.get(Calendar.MONTH) + 1;
+							int year = mDateTimePicker.get(Calendar.YEAR);
+							int hour = 0;
+							int min = 0;
+							int append = 0;
 							if (mDateTimePicker.is24HourView()) {
-								datetimestring += mDateTimePicker
-										.get(Calendar.HOUR_OF_DAY)
-										+ ":"
-										+ mDateTimePicker
-												.get(Calendar.MINUTE);
+								hour = mDateTimePicker.get(Calendar.HOUR_OF_DAY);
+								min = mDateTimePicker.get(Calendar.MINUTE);
 							} else {
-								datetimestring += mDateTimePicker
-										.get(Calendar.HOUR)
-										+ ":"
-										+ mDateTimePicker
-												.get(Calendar.MINUTE)
-										+ " "
-										+ (mDateTimePicker
-												.get(Calendar.AM_PM) == Calendar.AM ? "AM"
-												: "PM");
+								hour = mDateTimePicker.get(Calendar.HOUR);
+								min = mDateTimePicker.get(Calendar.MINUTE);
+								if(mDateTimePicker.get(Calendar.AM_PM) == Calendar.AM)
+								{
+									append = 1;
+								}
+								else
+								{
+									append = 2;
+								}
 							}
+							if (day < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (day + ".");
+							if(month < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (month + "." + year + " ");
+							if(hour < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (hour + ":");
+							if(min < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += min;
+							
+							switch(append)
+							{
+							case 1:
+								datetimestring += " AM";
+								break;
+							case 2:
+								datetimestring += " AM";
+								break;
+							}
+							
 							TextView time = (TextView)findViewById(R.id.time);
 							time.setText(datetimestring);
 							mDateTimeDialog.dismiss();

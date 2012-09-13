@@ -93,4 +93,8 @@
 <string name="time">Data e ora:</string>
 <string name="time_txt">gg/mm/yyyy</string>
 
+<string name="reset">Reset</string>
+<string name="set_date">Data</string>
+<string name="set_time">Ora</string>
+
 </resources>

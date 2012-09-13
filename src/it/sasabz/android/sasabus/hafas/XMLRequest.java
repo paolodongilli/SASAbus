@@ -2,8 +2,8 @@ package it.sasabz.android.sasabus.hafas;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
@@ -11,14 +11,11 @@ import it.sasabz.android.sasabus.classes.SASAbusXML;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
@@ -38,18 +35,35 @@ public class XMLRequest {
 	 */
 	public static String locValRequest(String bahnhof)
 	{
-		String filecontent = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
+		String xmlrequest = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
 					"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
 					"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
 					"accessId=\"openSASA\">\n<LocValReq id=\"toInput\" >\n" +
 					"<ReqLoc match=\"" + bahnhof + "\" type=\"ST\"/>\n" +
 					"</LocValReq>\n" +
 					"</ReqC>";
-		return execute(filecontent);
+		return execute(xmlrequest);
 	}
 	
+	public static String conRequest(XMLStation from, XMLStation to, Date datetime)
+	{
+		SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+		String xmlrequest = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
+					"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
+					"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
+					"accessId=\"openSASA\">\n<ConReq><Start>" + from.toXMLString() + "<Prod bike=\"0\" couchette=\"0\" " +
+					"direct=\"0\" sleeper=\"0\"/>" +
+					"</Start><Dest>" + to.toXMLString() + "</Dest><ReqT a=\"0\" date=\"" + date.format(datetime) + "\" " +
+					"time=\"" + time.format(datetime) + "\"/>\n" +
+					"<RFlags b=\"0\" chExtension=\"0\" f=\"1\" sMode=\"N\"/>\n" +
+					"</ConReq>\n</ReqC>";
+		return execute(xmlrequest);
+	}
+	
+	
 	/**
-	 * this method checks if a networkconnection is active or not
+	 * this method checks if a network-connection is active or not
 	 * @return boolean if the network is reachable or not
 	 */
 	public static boolean haveNetworkConnection() 
