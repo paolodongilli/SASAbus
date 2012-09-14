@@ -35,11 +35,7 @@
     
     <string name="favoriten_db_name">favoriten_db</string>
     
-    <string name="me_lat">46.6729861111111</string>
-    <string name="me_long">11.1498430555556</string>
-    
-    <string name="bz_lat">46.4960386111111</string>
-    <string name="bz_long">11.3563072222222</string>
+    <string name="accessId">openSASA</string>
     
     
 </resources>

@@ -38,7 +38,7 @@ public class XMLRequest {
 		String xmlrequest = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
 					"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
 					"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
-					"accessId=\"openSASA\">\n<LocValReq id=\"toInput\" >\n" +
+					"accessId=\"" + SASAbus.getContext().getResources().getString(R.string.accessId) + "\">\n<LocValReq id=\"toInput\" >\n" +
 					"<ReqLoc match=\"" + bahnhof + "\" type=\"ST\"/>\n" +
 					"</LocValReq>\n" +
 					"</ReqC>";
@@ -52,7 +52,7 @@ public class XMLRequest {
 		String xmlrequest = "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
 					"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
 					"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
-					"accessId=\"openSASA\">\n<ConReq><Start>" + from.toXMLString() + "<Prod bike=\"0\" couchette=\"0\" " +
+					"accessId=\"" + SASAbus.getContext().getResources().getString(R.string.accessId) + "\">\n<ConReq><Start>" + from.toXMLString() + "<Prod bike=\"0\" couchette=\"0\" " +
 					"direct=\"0\" sleeper=\"0\"/>" +
 					"</Start><Dest>" + to.toXMLString() + "</Dest><ReqT a=\"0\" date=\"" + date.format(datetime) + "\" " +
 					"time=\"" + time.format(datetime) + "\"/>\n" +
@@ -61,6 +61,24 @@ public class XMLRequest {
 		return execute(xmlrequest);
 	}
 	
+	public static String conScrollRequest(String context, boolean forward)
+	{
+		String xmlrequest= "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
+						"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
+						"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
+						"accessId=\"" + SASAbus.getContext().getResources().getString(R.string.accessId) + "\">\n" +
+						"<ConScrReq scrDir=\"";
+		if (forward)
+		{
+			xmlrequest += "F";
+		}
+		else
+		{
+			xmlrequest += "B";
+		}
+		xmlrequest += "\"><ConResCtxt>" + context + "</ConResCtxt>\n</ConScrReq>\n</ReqC";
+		return execute(xmlrequest);
+	}
 	
 	/**
 	 * this method checks if a network-connection is active or not

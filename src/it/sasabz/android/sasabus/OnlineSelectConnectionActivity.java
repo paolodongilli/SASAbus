@@ -27,12 +27,14 @@ package it.sasabz.android.sasabus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestListAdapter;
+import it.sasabz.android.sasabus.hafas.XMLConnection;
 import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
 import it.sasabz.android.sasabus.hafas.XMLConnectionRequestList;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
@@ -111,6 +113,15 @@ public class OnlineSelectConnectionActivity extends ListActivity {
 			Log.v("XML-LOGGER", "duration: " + simple.format(conreq.getDuration()));
 			Log.v("XML-LOGGER", "Departure: " + conreq.getDeparture().getStation().getName());
 			Log.v("XML-LOGGER", "Departure Time: " + simple.format(conreq.getDeparture().getArrtime()));
+			Vector<XMLConnection> conlist = conreq.getConnectionlist();
+			Iterator<XMLConnection> iter = conlist.iterator();
+			while(iter.hasNext())
+			{
+				XMLConnection con = iter.next();
+				Log.v("XML-LOGGER", "CONNECTION VON: " + con.getDeparture().getStation().getHaltestelle() + " | UHRZEIT: " + simple.format(con.getDeparture().getArrtime()));
+				Log.v("XML-LOGGER", "CONNECTION BIS: " + con.getArrival().getStation().getHaltestelle() + " | UHRZEIT: " + simple.format(con.getArrival().getArrtime()));
+				Log.v("XML-LOGGER", "CONNECTION DAUER: " + simple.format(con.getDuration()));
+			}
 		}
 		
 		fillData();
@@ -123,9 +134,12 @@ public class OnlineSelectConnectionActivity extends ListActivity {
     	Vector<XMLConnectionRequest> list = null;
 		if(conreq != null)
 		{
-			SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+			XMLConnectionRequest conreqb = XMLConnectionRequestList.scrollBackward(conreq);
+			XMLConnectionRequest conreqf = XMLConnectionRequestList.scrollBackward(conreqb);
 			list = new Vector<XMLConnectionRequest>();
 			list.add(conreq);
+			list.add(0, conreqb);
+			list.add(0,conreqf);
 		}
 		
 		MyXMLConnectionRequestListAdapter adapter = new MyXMLConnectionRequestListAdapter(list);
