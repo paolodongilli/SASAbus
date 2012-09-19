@@ -245,6 +245,26 @@ public class XMLConnectionRequestList {
 						else if(node.getNodeName().equals("Journey"))
 						{
 							con = new XMLJourney();
+							NodeList journey = node.getChildNodes();
+							for(int s = 0; s < journey.getLength(); ++ s)
+							{
+								Node journeyitem = journey.item(s);
+								if(journeyitem.getNodeName().equals("JourneyAttributeList"))
+								{
+									Vector<XMLAttributVariante> attrlist = new Vector<XMLAttributVariante>();
+									NodeList journeyattrlist = journeyitem.getChildNodes();
+									for(int g = 0; g < journeyattrlist.getLength(); ++ g)
+									{
+										XMLAttributVariante variante = new XMLAttributVariante();
+										Node attr = journeyattrlist.item(g);
+										NamedNodeMap attribute = attr.getChildNodes().item(0).getAttributes();
+										variante.setType(attribute.getNamedItem("type").getNodeValue());
+										variante.setText(attr.getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getNodeValue());
+										attrlist.add(variante);
+									}
+									((XMLJourney)con).setAttributlist(attrlist);
+								}
+							}
 						}
 						else if (node.getNodeName().equals("Walk"))
 						{
@@ -277,7 +297,7 @@ public class XMLConnectionRequestList {
 					con.setArrival(arrivalstop);
 					if(con instanceof XMLJourney)
 					{
-						Date duration = new Date(arrivalstop.getArrtime().getTime() - departurestop.getArrtime().getTime());
+						Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
 						con.setDuration(duration);
 					}
 					convect.add(con);

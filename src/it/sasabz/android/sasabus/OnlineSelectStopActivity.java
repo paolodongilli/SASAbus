@@ -150,7 +150,13 @@ public class OnlineSelectStopActivity extends Activity {
         }
         if(from_list.size() == 1 && to_list.size() == 1)
         {
-        	Log.v("XML-LOGGER", "ERGEBNIS DIREKT ANZEIGEN!");
+        	XMLStation from = (XMLStation)from_spinner.getSelectedItem();
+			XMLStation to = (XMLStation)to_spinner.getSelectedItem();
+			Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
+			showConnection.putExtra("from", from.toXMLString());
+			showConnection.putExtra("to", to.toXMLString());
+			showConnection.putExtra("datetime", datetime.getText().toString());
+			startActivity(showConnection);
         }
         
         from_spinner = (Spinner) findViewById(R.id.from_spinner);
