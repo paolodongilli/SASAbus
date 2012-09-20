@@ -130,6 +130,8 @@ public class Favorit {
 		Palina partenza = PalinaList.getTranslation(partenza_de, "de");
 		Palina destinazione = PalinaList.getTranslation(destinazione_de, "de");
 		Linea linea = LineaList.getById(this.linea);
-		return linea.toString() + " - " + partenza.toString() + " - " + destinazione.toString();
+		if(linea != null && destinazione != null && partenza != null)
+			return linea.toString() + " - " + partenza.toString() + " - " + destinazione.toString();
+		return "";
 	}
 }

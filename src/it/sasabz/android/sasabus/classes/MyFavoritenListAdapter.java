@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import android.R;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,23 @@ public class MyFavoritenListAdapter extends BaseAdapter {
 			Favorit listItem = list.get(position);
 			if(listItem != null)
 			{
-				textView.setText(list.get(position).toString());
+				String favtext = list.get(position).toString();
+				if(!favtext.equals(""))
+					textView.setText(favtext);
+				else
+				{
+					textView.setText("");	
+					try
+					{
+						SQLiteDatabase db = new FavoritenDB(context).getWritableDatabase();
+						listItem.delete(db);
+						db.close();
+					}
+					catch(Exception e)
+					{
+						
+					}
+				}
 			}
 		}
 		return v;
