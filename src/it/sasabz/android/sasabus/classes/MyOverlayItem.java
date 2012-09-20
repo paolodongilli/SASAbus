@@ -18,7 +18,7 @@ public class MyOverlayItem extends OverlayItem{
 
 	public void onTap(Context context)
 	{
-		new AlertDialog.Builder(context).setTitle(this.getTitle()).setMessage(this.getSnippet()).setNeutralButton("Ok", null).create().show();
+		new AlertDialog.Builder(context).setTitle(this.getTitle()).setMessage(this.getSnippet()).setNeutralButton(android.R.string.ok, null).create().show();
 	}
 	
 }

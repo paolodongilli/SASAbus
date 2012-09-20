@@ -258,9 +258,12 @@ public class XMLConnectionRequestList {
 										XMLAttributVariante variante = new XMLAttributVariante();
 										Node attr = journeyattrlist.item(g);
 										NamedNodeMap attribute = attr.getChildNodes().item(0).getAttributes();
-										variante.setType(attribute.getNamedItem("type").getNodeValue());
-										variante.setText(attr.getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getNodeValue());
-										attrlist.add(variante);
+										if(attribute != null && attribute.getNamedItem("type") != null)
+										{
+											variante.setType(attribute.getNamedItem("type").getNodeValue());
+											variante.setText(attr.getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getNodeValue());
+											attrlist.add(variante);
+										}
 									}
 									((XMLJourney)con).setAttributlist(attrlist);
 								}
@@ -435,6 +438,169 @@ public class XMLConnectionRequestList {
 					}
 				}
 			}
+			nl = doc.getElementsByTagName("ConSectionList");
+			
+			if(nl.item(0) != null && nl.getLength() >= 1)
+			{
+				NodeList conlist = nl.item(0).getChildNodes();
+				Vector<XMLConnection> convect = new Vector<XMLConnection>();
+				for(int i = 0; i < conlist.getLength(); ++ i)
+				{
+					Node conlistitem = conlist.item(i);
+					if(conlistitem.getNodeName().equals("ConSection"))
+					{
+						XMLBasicStop departurestop = null;
+						XMLBasicStop arrivalstop = null;
+						XMLConnection con = null;
+						NodeList consection = conlistitem.getChildNodes();
+						for(int k = 0; k < consection.getLength(); ++ k)
+						{
+							Node node = consection.item(k);
+							if(node.getNodeName().equals("Departure"))
+							{
+								departurestop = new XMLBasicStop();
+								NodeList departure = node.getChildNodes().item(0).getChildNodes();
+								for(int j = 0; j < departure.getLength(); ++ j)
+								{
+									Node depnode = departure.item(j);
+									if(depnode.getNodeName().equals("Station"))
+									{
+										XMLStation depstat = new XMLStation();
+										NamedNodeMap attributelist = depnode.getAttributes();
+										for(int n = 0; n < attributelist.getLength(); ++n)
+										{
+											depstat.setProperty(attributelist.item(n).getNodeName(), attributelist.item(n).getNodeValue());
+										}
+										departurestop.setStation(depstat);
+									}
+									else if(depnode.getNodeName().equals("Dep"))
+									{
+										NodeList dep = depnode.getChildNodes();
+										for(int n = 0; n < dep.getLength(); ++ n)
+										{
+											Node depnode2 = dep.item(n);
+											if(depnode2.getNodeName().equals("Time"))
+											{
+												SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+												try
+												{
+													departurestop.setArrtime(simple.parse((depnode2.getChildNodes().item(0).getNodeValue()).substring(3)));
+												}
+												catch(Exception e)
+												{
+													Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+												}
+											}
+										}
+									}
+								}
+							}
+							else if (node.getNodeName().equals("Arrival"))
+							{
+								arrivalstop = new XMLBasicStop();
+								NodeList arrival = node.getChildNodes().item(0).getChildNodes();
+								for(int j = 0; j < arrival.getLength(); ++ j)
+								{
+									Node arrnode = arrival.item(j);
+									if(arrnode.getNodeName().equals("Station"))
+									{
+										XMLStation arrstat = new XMLStation();
+										NamedNodeMap attributelist = arrnode.getAttributes();
+										for(int n = 0; n < attributelist.getLength(); ++n)
+										{
+											arrstat.setProperty(attributelist.item(n).getNodeName(), attributelist.item(n).getNodeValue());
+										}
+										arrivalstop.setStation(arrstat);
+									}
+									else if(arrnode.getNodeName().equals("Arr"))
+									{
+										NodeList dep = arrnode.getChildNodes();
+										for(int n = 0; n < dep.getLength(); ++ n)
+										{
+											Node arrnode2 = dep.item(n);
+											if(arrnode2.getNodeName().equals("Time"))
+											{
+												SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+												try
+												{
+													arrivalstop.setArrtime(simple.parse((arrnode2.getChildNodes().item(0).getNodeValue()).substring(3)));
+												}
+												catch(Exception e)
+												{
+													Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+												}
+											}
+										}
+									}
+									req.setArrival(arrivalstop);
+								}
+							}
+							else if(node.getNodeName().equals("Journey"))
+							{
+								con = new XMLJourney();
+								NodeList journey = node.getChildNodes();
+								for(int s = 0; s < journey.getLength(); ++ s)
+								{
+									Node journeyitem = journey.item(s);
+									if(journeyitem.getNodeName().equals("JourneyAttributeList"))
+									{
+										Vector<XMLAttributVariante> attrlist = new Vector<XMLAttributVariante>();
+										NodeList journeyattrlist = journeyitem.getChildNodes();
+										for(int g = 0; g < journeyattrlist.getLength(); ++ g)
+										{
+											XMLAttributVariante variante = new XMLAttributVariante();
+											Node attr = journeyattrlist.item(g);
+											NamedNodeMap attribute = attr.getChildNodes().item(0).getAttributes();
+											if(attribute != null && attribute.getNamedItem("type") != null)
+											{
+												variante.setType(attribute.getNamedItem("type").getNodeValue());
+												variante.setText(attr.getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getNodeValue());
+												attrlist.add(variante);
+											}
+										}
+										((XMLJourney)con).setAttributlist(attrlist);
+									}
+								}
+							}
+							else if (node.getNodeName().equals("Walk"))
+							{
+								con = new XMLWalk();
+								NodeList walklist = node.getChildNodes();
+								for(int m = 0; m < walklist.getLength(); ++ m)
+								{
+									Node walklistitem = walklist.item(m);
+									if(walklistitem.getNodeName().equals("Duration"))
+									{
+										SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+										try
+										{
+											con.setDuration(simple.parse((walklistitem.getChildNodes().item(0).getChildNodes().item(0).getNodeValue()).substring(3)));
+										}
+										catch(Exception e)
+										{
+											Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+										}
+									}
+								}
+							}
+						}
+						if(con == null)
+						{
+							Log.v("XML-LOGGER", "No connection type detected!");
+							System.exit(-3);
+						}
+						con.setDeparture(departurestop);
+						con.setArrival(arrivalstop);
+						if(con instanceof XMLJourney)
+						{
+							Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
+							con.setDuration(duration);
+						}
+						convect.add(con);
+					}
+					req.setConnectionlist(convect);
+				}
+			}
 			
 		}
 		return req;
@@ -567,7 +733,169 @@ public class XMLConnectionRequestList {
 					}
 				}
 			}
+			nl = doc.getElementsByTagName("ConSectionList");
 			
+			if(nl.item(0) != null && nl.getLength() >= 1)
+			{
+				NodeList conlist = nl.item(0).getChildNodes();
+				Vector<XMLConnection> convect = new Vector<XMLConnection>();
+				for(int i = 0; i < conlist.getLength(); ++ i)
+				{
+					Node conlistitem = conlist.item(i);
+					if(conlistitem.getNodeName().equals("ConSection"))
+					{
+						XMLBasicStop departurestop = null;
+						XMLBasicStop arrivalstop = null;
+						XMLConnection con = null;
+						NodeList consection = conlistitem.getChildNodes();
+						for(int k = 0; k < consection.getLength(); ++ k)
+						{
+							Node node = consection.item(k);
+							if(node.getNodeName().equals("Departure"))
+							{
+								departurestop = new XMLBasicStop();
+								NodeList departure = node.getChildNodes().item(0).getChildNodes();
+								for(int j = 0; j < departure.getLength(); ++ j)
+								{
+									Node depnode = departure.item(j);
+									if(depnode.getNodeName().equals("Station"))
+									{
+										XMLStation depstat = new XMLStation();
+										NamedNodeMap attributelist = depnode.getAttributes();
+										for(int n = 0; n < attributelist.getLength(); ++n)
+										{
+											depstat.setProperty(attributelist.item(n).getNodeName(), attributelist.item(n).getNodeValue());
+										}
+										departurestop.setStation(depstat);
+									}
+									else if(depnode.getNodeName().equals("Dep"))
+									{
+										NodeList dep = depnode.getChildNodes();
+										for(int n = 0; n < dep.getLength(); ++ n)
+										{
+											Node depnode2 = dep.item(n);
+											if(depnode2.getNodeName().equals("Time"))
+											{
+												SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+												try
+												{
+													departurestop.setArrtime(simple.parse((depnode2.getChildNodes().item(0).getNodeValue()).substring(3)));
+												}
+												catch(Exception e)
+												{
+													Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+												}
+											}
+										}
+									}
+								}
+							}
+							else if (node.getNodeName().equals("Arrival"))
+							{
+								arrivalstop = new XMLBasicStop();
+								NodeList arrival = node.getChildNodes().item(0).getChildNodes();
+								for(int j = 0; j < arrival.getLength(); ++ j)
+								{
+									Node arrnode = arrival.item(j);
+									if(arrnode.getNodeName().equals("Station"))
+									{
+										XMLStation arrstat = new XMLStation();
+										NamedNodeMap attributelist = arrnode.getAttributes();
+										for(int n = 0; n < attributelist.getLength(); ++n)
+										{
+											arrstat.setProperty(attributelist.item(n).getNodeName(), attributelist.item(n).getNodeValue());
+										}
+										arrivalstop.setStation(arrstat);
+									}
+									else if(arrnode.getNodeName().equals("Arr"))
+									{
+										NodeList dep = arrnode.getChildNodes();
+										for(int n = 0; n < dep.getLength(); ++ n)
+										{
+											Node arrnode2 = dep.item(n);
+											if(arrnode2.getNodeName().equals("Time"))
+											{
+												SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+												try
+												{
+													arrivalstop.setArrtime(simple.parse((arrnode2.getChildNodes().item(0).getNodeValue()).substring(3)));
+												}
+												catch(Exception e)
+												{
+													Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+												}
+											}
+										}
+									}
+									req.setArrival(arrivalstop);
+								}
+							}
+							else if(node.getNodeName().equals("Journey"))
+							{
+								con = new XMLJourney();
+								NodeList journey = node.getChildNodes();
+								for(int s = 0; s < journey.getLength(); ++ s)
+								{
+									Node journeyitem = journey.item(s);
+									if(journeyitem.getNodeName().equals("JourneyAttributeList"))
+									{
+										Vector<XMLAttributVariante> attrlist = new Vector<XMLAttributVariante>();
+										NodeList journeyattrlist = journeyitem.getChildNodes();
+										for(int g = 0; g < journeyattrlist.getLength(); ++ g)
+										{
+											XMLAttributVariante variante = new XMLAttributVariante();
+											Node attr = journeyattrlist.item(g);
+											NamedNodeMap attribute = attr.getChildNodes().item(0).getAttributes();
+											if(attribute != null && attribute.getNamedItem("type") != null)
+											{
+												variante.setType(attribute.getNamedItem("type").getNodeValue());
+												variante.setText(attr.getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getChildNodes().item(0).getNodeValue());
+												attrlist.add(variante);
+											}
+										}
+										((XMLJourney)con).setAttributlist(attrlist);
+									}
+								}
+							}
+							else if (node.getNodeName().equals("Walk"))
+							{
+								con = new XMLWalk();
+								NodeList walklist = node.getChildNodes();
+								for(int m = 0; m < walklist.getLength(); ++ m)
+								{
+									Node walklistitem = walklist.item(m);
+									if(walklistitem.getNodeName().equals("Duration"))
+									{
+										SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
+										try
+										{
+											con.setDuration(simple.parse((walklistitem.getChildNodes().item(0).getChildNodes().item(0).getNodeValue()).substring(3)));
+										}
+										catch(Exception e)
+										{
+											Log.e("XML-LOGGER", "Datumkonvertierungsfehler", e);
+										}
+									}
+								}
+							}
+						}
+						if(con == null)
+						{
+							Log.v("XML-LOGGER", "No connection type detected!");
+							System.exit(-3);
+						}
+						con.setDeparture(departurestop);
+						con.setArrival(arrivalstop);
+						if(con instanceof XMLJourney)
+						{
+							Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
+							con.setDuration(duration);
+						}
+						convect.add(con);
+					}
+					req.setConnectionlist(convect);
+				}
+			}
 		}
 		return req;
 	}

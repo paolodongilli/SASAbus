@@ -51,7 +51,7 @@ import android.widget.TextView;
  * @author Markus Windegger (markus@mowiso.com)
  *
  */
-public class MyXMLConnectionRequestListAdapter extends BaseAdapter {
+public class MyXMLConnectionRequestAdapter extends BaseAdapter {
 	private final Vector<XMLConnectionRequest> list;
 
 	
@@ -62,7 +62,7 @@ public class MyXMLConnectionRequestListAdapter extends BaseAdapter {
 	 * @param layoutId is the layout id of the list_view
 	 * @param list is the list of dbobject's which are to putting in the list_view
 	 */
-	public MyXMLConnectionRequestListAdapter(Vector<XMLConnectionRequest> list) {
+	public MyXMLConnectionRequestAdapter(Vector<XMLConnectionRequest> list) {
 		this.list = list;
 	}
 

@@ -33,7 +33,7 @@
 <string name="error_title">Errore di download</string>
 <string name="error_text">Si è verificato un errore durante il download. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="error_application">Si è verificato un errore durante l\'interrogazione del database. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
-<string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;</string>
+<string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;\n\nLe icone sono presi dal sito www.glyphicons.com e rilasciati sotto la licenza cc-3.0-sha-nc!</string>
 
 <string name="mode_gps">modalità GPS</string>
 <string name="mode_normal">modalità normale</string>
@@ -96,5 +96,7 @@
 <string name="reset">Reset</string>
 <string name="set_date">Data</string>
 <string name="set_time">Ora</string>
+
+<string name="connection_details">Dettaglio conessione</string>
 
 </resources>

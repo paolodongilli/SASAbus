@@ -143,12 +143,16 @@ public class MapViewActivity extends MapActivity {
 		
 		
 		
-		Drawable bus = getResources().getDrawable(R.drawable.busstop);
+		Drawable start = getResources().getDrawable(R.drawable.glyphicons_347_hand_up);
+		Drawable stop = getResources().getDrawable(R.drawable.glyphicons_348_hand_down);
 		
-		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), bus);
-		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), bus);
 		
-		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(bus);
+		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);
+		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), stop);
+		
+		Drawable inter = getResources().getDrawable(R.drawable.glyphicons_238_pin);
+		
+		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(inter);
 		
 		arr.addItem(partOverlay);
 		arr.addItem(destOverlay);
@@ -160,7 +164,7 @@ public class MapViewActivity extends MapActivity {
 		
 		Iterator<Passaggio> iter = paslist.iterator();
 		
-		Drawable inter = getResources().getDrawable(R.drawable.intermediate_stop);
+		
 		MyArrayItemizedOverlay intermediate = new MyArrayItemizedOverlay(inter);
 		
 		
@@ -172,7 +176,7 @@ public class MapViewActivity extends MapActivity {
 			if(pal.getId() != dest.getId() && pal.getId() != part.getId())
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
-				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
+				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.drawable.glyphicons_238_pin), pal.toString(), inter);
 				intermediate.addItem(overlay);
 			}
 		}

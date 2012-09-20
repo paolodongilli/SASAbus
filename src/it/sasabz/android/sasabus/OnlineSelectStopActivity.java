@@ -41,6 +41,7 @@ import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.XMLStationList;
@@ -148,16 +149,6 @@ public class OnlineSelectStopActivity extends Activity {
         	finish();
         	return;
         }
-        if(from_list.size() == 1 && to_list.size() == 1)
-        {
-        	XMLStation from = (XMLStation)from_spinner.getSelectedItem();
-			XMLStation to = (XMLStation)to_spinner.getSelectedItem();
-			Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
-			showConnection.putExtra("from", from.toXMLString());
-			showConnection.putExtra("to", to.toXMLString());
-			showConnection.putExtra("datetime", datetime.getText().toString());
-			startActivity(showConnection);
-        }
         
         from_spinner = (Spinner) findViewById(R.id.from_spinner);
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
@@ -172,6 +163,17 @@ public class OnlineSelectStopActivity extends Activity {
         from_spinner.setAdapter(from_adapter);
         // Apply the adapter to the spinner
         to_spinner.setAdapter(to_adapter);
+        
+        if(from_list.size() == 1 && to_list.size() == 1)
+        {
+        	XMLStation from = (XMLStation)from_spinner.getSelectedItem();
+			XMLStation to = (XMLStation)to_spinner.getSelectedItem();
+			Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
+			showConnection.putExtra("from", from.toXMLString());
+			showConnection.putExtra("to", to.toXMLString());
+			showConnection.putExtra("datetime", datetime.getText().toString());
+			startActivity(showConnection);
+        }
         
         Button search = (Button)findViewById(R.id.search);
         
@@ -201,7 +203,6 @@ public class OnlineSelectStopActivity extends Activity {
         super.onResume();
     }
 
-    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

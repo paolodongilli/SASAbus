@@ -33,8 +33,10 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.ConnectionDialog;
 import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestListAdapter;
+import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestAdapter;
+import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.hafas.XMLAttributVariante;
 import it.sasabz.android.sasabus.hafas.XMLConnection;
 import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
@@ -45,6 +47,8 @@ import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.XMLWalk;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +57,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +68,8 @@ public class OnlineSelectConnectionActivity extends ListActivity {
     private XMLStation from = null;
     private XMLStation to = null;
     private Date datetime = null;
+    
+    private Vector<XMLConnectionRequest> list = null;
     
     public OnlineSelectConnectionActivity() {
     }
@@ -104,50 +112,26 @@ public class OnlineSelectConnectionActivity extends ListActivity {
 				finish();
 				return;
 			}
-		}	
-		
-				
-		XMLConnectionRequest conreq	= XMLConnectionRequestList.getRequest(from, to, datetime);
-		if(conreq != null)
-		{
-			SimpleDateFormat simple = new SimpleDateFormat("HH:mm:ss");
-			Log.v("XML-LOGGER", "conreq-context: " + conreq.getContext());
-			Log.v("XML-LOGGER", "transfers: " + conreq.getTransfers());
-			Log.v("XML-LOGGER", "duration: " + simple.format(conreq.getDuration()));
-			Log.v("XML-LOGGER", "Departure: " + conreq.getDeparture().getStation().getName());
-			Log.v("XML-LOGGER", "Departure Time: " + simple.format(conreq.getDeparture().getArrtime()));
-			Vector<XMLConnection> conlist = conreq.getConnectionlist();
-			Iterator<XMLConnection> iter = conlist.iterator();
-			while(iter.hasNext())
-			{
-				XMLConnection con = iter.next();
-				Log.v("XML-LOGGER", "CONNECTION VON: " + con.getDeparture().getStation().getHaltestelle() + " | UHRZEIT: " + simple.format(con.getDeparture().getArrtime()));
-				Log.v("XML-LOGGER", "CONNECTION BIS: " + con.getArrival().getStation().getHaltestelle() + " | UHRZEIT: " + simple.format(con.getArrival().getArrtime()));
-				Log.v("XML-LOGGER", "CONNECTION DAUER: " + simple.format(con.getDuration()));
-				if(con instanceof XMLJourney)
-				{
-					Iterator<XMLAttributVariante> attiter = ((XMLJourney)con).getAttributlist().iterator();
-					while(attiter.hasNext())
-					{
-						XMLAttributVariante atrvar = attiter.next();
-						Log.v("XML-LOGGER", "CONNECTION Attr: TYPE " + atrvar.getType() + " | VALUE: " + atrvar.getText());
-					}
-				}
-				else if(con instanceof XMLWalk)
-				{
-					Log.v("XML-LOGGER", "IS A WALK");
-				}
-			}
 		}
 		
 		fillData();
     }
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+    	XMLConnectionRequest conreq = list.get(position);
+    	if(conreq.getConnectionlist() == null)
+    	{
+    		Log.v("XML-LOGGER", "Die Liste der Verbindungsdetails  ist null!!!!");
+    	}
+    	ConnectionDialog dial = new ConnectionDialog(this, conreq.getConnectionlist());
+    	dial.show();
+    }
+    
 
     private void fillData()
     {
     	XMLConnectionRequest conreq	= XMLConnectionRequestList.getRequest(from, to, datetime);
-    	Vector<XMLConnectionRequest> list = null;
 		if(conreq != null)
 		{
 			XMLConnectionRequest conreqb = XMLConnectionRequestList.scrollBackward(conreq);
@@ -158,7 +142,7 @@ public class OnlineSelectConnectionActivity extends ListActivity {
 			list.add(0,conreqf);
 		}
 		
-		MyXMLConnectionRequestListAdapter adapter = new MyXMLConnectionRequestListAdapter(list);
+		MyXMLConnectionRequestAdapter adapter = new MyXMLConnectionRequestAdapter(list);
 		
 		setListAdapter(adapter);
     }
@@ -172,7 +156,6 @@ public class OnlineSelectConnectionActivity extends ListActivity {
         super.onResume();
     }
 
-    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

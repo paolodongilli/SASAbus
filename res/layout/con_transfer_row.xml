@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STARTHALTESTELLE"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+       
+
+             <TableRow
+                   android:id="@+id/tableRow6"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" >
+
+                   <ImageView
+                       android:id="@+id/image"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:background="#ffffff"
+                       android:src="@drawable/glyphicons_031_bus"
+                       android:layout_marginRight="10dip"
+                        />
+                   
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/deptime"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="23:21"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/transfers"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/arrtime"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="01:21"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+                    </TableRow>
+                </TableLayout>
+
+            </TableRow>
+
+
+        <TextView
+            android:id="@+id/arrival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STOPHALTESTELLE"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
