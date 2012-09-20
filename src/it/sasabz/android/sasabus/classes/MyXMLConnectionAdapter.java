@@ -114,12 +114,12 @@ public class MyXMLConnectionAdapter extends BaseAdapter {
 					
 					image.setImageResource(R.drawable.glyphicons_031_bus);
 					
-					transfertext = SASAbus.getContext().getResources().getString(R.id.line);
+					transfertext = " | " + SASAbus.getContext().getResources().getString(R.string.line);
 					transfertext += (" " + ((XMLJourney)conreq).getAttribut("NUMBER"));
 					
 					
 				}
-				transfers.setText(simple.format(conreq.getDuration()) + " | " + transfertext);
+				transfers.setText(simple.format(conreq.getDuration()) + transfertext);
 				arrival.setText(conreq.getArrival().getStation().getHaltestelle());
 				arrivaltime.setText(simple.format(conreq.getArrival().getArrtime()));
 				
