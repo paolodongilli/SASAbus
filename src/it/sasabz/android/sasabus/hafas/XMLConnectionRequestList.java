@@ -300,7 +300,7 @@ public class XMLConnectionRequestList {
 					con.setArrival(arrivalstop);
 					if(con instanceof XMLJourney)
 					{
-						Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
+						Date duration = new Date((arrivalstop.getArrtime().getTime() - departurestop.getArrtime().getTime()) - 3600000);
 						con.setDuration(duration);
 					}
 					convect.add(con);
@@ -593,7 +593,7 @@ public class XMLConnectionRequestList {
 						con.setArrival(arrivalstop);
 						if(con instanceof XMLJourney)
 						{
-							Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
+							Date duration = new Date((arrivalstop.getArrtime().getTime() - departurestop.getArrtime().getTime()) - 3600000);
 							con.setDuration(duration);
 						}
 						convect.add(con);
@@ -888,7 +888,7 @@ public class XMLConnectionRequestList {
 						con.setArrival(arrivalstop);
 						if(con instanceof XMLJourney)
 						{
-							Date duration = new Date(- (departurestop.getArrtime().getTime() - arrivalstop.getArrtime().getTime()));
+							Date duration = new Date((arrivalstop.getArrtime().getTime() - departurestop.getArrtime().getTime()) - 3600000);
 							con.setDuration(duration);
 						}
 						convect.add(con);

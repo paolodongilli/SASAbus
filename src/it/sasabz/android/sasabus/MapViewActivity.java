@@ -150,20 +150,21 @@ public class MapViewActivity extends MapActivity {
 		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);
 		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), stop);
 		
-		Drawable inter = getResources().getDrawable(R.drawable.glyphicons_238_pin);
-		
-		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(inter);
+		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(start);
+		MyArrayItemizedOverlay dest_arr = new MyArrayItemizedOverlay(stop);
 		
 		arr.addItem(partOverlay);
-		arr.addItem(destOverlay);
+		dest_arr.addItem(destOverlay);
 		
 		mapView.getOverlays().add(arr);
+		mapView.getOverlays().add(dest_arr);
 		
 
 		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId, dest.getName_de());
 		
 		Iterator<Passaggio> iter = paslist.iterator();
 		
+		Drawable inter = getResources().getDrawable(R.drawable.glyphicons_238_pin);
 		
 		MyArrayItemizedOverlay intermediate = new MyArrayItemizedOverlay(inter);
 		
