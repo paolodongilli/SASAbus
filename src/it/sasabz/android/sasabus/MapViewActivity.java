@@ -177,7 +177,7 @@ public class MapViewActivity extends MapActivity {
 			if(pal.getId() != dest.getId() && pal.getId() != part.getId())
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
-				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.drawable.glyphicons_238_pin), pal.toString(), inter);
+				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
 				intermediate.addItem(overlay);
 			}
 		}
