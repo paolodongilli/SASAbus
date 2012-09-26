@@ -135,11 +135,11 @@ public class OnlineSelectConnectionActivity extends ListActivity {
 		if(conreq != null)
 		{
 			XMLConnectionRequest conreqb = XMLConnectionRequestList.scrollBackward(conreq);
-			XMLConnectionRequest conreqf = XMLConnectionRequestList.scrollBackward(conreqb);
+			XMLConnectionRequest conreqf = XMLConnectionRequestList.scrollForward(conreqb);
 			list = new Vector<XMLConnectionRequest>();
 			list.add(conreq);
 			list.add(0, conreqb);
-			list.add(0,conreqf);
+			list.add(conreqf);
 		}
 		
 		MyXMLConnectionRequestAdapter adapter = new MyXMLConnectionRequestAdapter(list);

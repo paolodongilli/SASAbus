@@ -66,8 +66,8 @@ public class XMLRequest {
 		String xmlrequest= "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n"+
 						"<ReqC xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=" +
 						"\"http://hafassrv.hacon.de/xml/hafasXMLInterface.xsd\" prod=\"manuell\" ver=\"1.1\" lang=\"DE\" "+
-						" nrCons=\"1\" accessId=\"" + SASAbus.getContext().getResources().getString(R.string.accessId) + "\">\n" +
-						"<ConScrReq scrDir=\"";
+						" accessId=\"" + SASAbus.getContext().getResources().getString(R.string.accessId) + "\">\n" +
+						"<ConScrReq nrCons=\"1\" scrDir=\"";
 		if (forward)
 		{
 			xmlrequest += "F";
