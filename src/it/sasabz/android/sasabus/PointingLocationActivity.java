@@ -1,12 +1,9 @@
 /**
- * 
  *
- * SelectPalinaLocationActivity.java
+ * PointingLocationActivity.java
  * 
- * Created: 14.12.2011 19:04:53
  * 
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
- * 
+ * Copyright (C) 2012 Markus Windegger
  *
  * This file is part of SasaBus.
 

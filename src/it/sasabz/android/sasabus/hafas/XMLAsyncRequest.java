@@ -1,10 +1,9 @@
 /**
  *
- * FileRetriever.java
- *
- * Created: Feb 3, 2011 10:59:34 PM
- *
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
+ * XMLAsyncRequest.java
+ * 
+ * 
+ * Copyright (C) 2012 Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -15,12 +14,12 @@
  *
  * SasaBus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
- *
+ * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package it.sasabz.android.sasabus.hafas;

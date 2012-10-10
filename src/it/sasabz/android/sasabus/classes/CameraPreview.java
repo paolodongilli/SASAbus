@@ -1,3 +1,26 @@
+/**
+ *
+ * CameraPreview.java
+ * 
+ * 
+ * Copyright (C) 2012 Markus Windegger
+ *
+ * This file is part of SasaBus.
+
+ * SasaBus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SasaBus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package it.sasabz.android.sasabus.classes;
 /*
  * Barebones implementation of displaying camera preview.
@@ -8,6 +31,7 @@ package it.sasabz.android.sasabus.classes;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -77,7 +101,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // Camera preview released in activity
     }
 
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    @SuppressLint("NewApi")
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         /*
          * If your preview can change or rotate, take care of those events here.
          * Make sure to stop the preview before resizing or reformatting it.

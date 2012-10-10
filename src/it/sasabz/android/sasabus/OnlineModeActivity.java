@@ -1,6 +1,6 @@
 /**
  *
- * SelectModeActivity.java
+ * OnlineModeActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 

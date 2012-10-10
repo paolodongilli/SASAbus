@@ -1,10 +1,9 @@
 /**
  *
- * SelectModeActivity.java
+ * OnlineSelectConnectionActivity.java
  * 
- * Created: Jan 16, 2011 11:41:06 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
+ * Copyright (C) 2012 Markus Windegger
  *
  * This file is part of SasaBus.
 

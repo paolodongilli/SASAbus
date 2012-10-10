@@ -1,7 +1,7 @@
 /**
  * 
  *
- * QuickPrefsActivity.java
+ * SetSettingsActivity.java
  * 
  * Created: 25.03.2012 23:31:37
  * 

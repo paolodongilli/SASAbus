@@ -1,6 +1,6 @@
 /**
  *
- * ShowWayActivity.java
+ * MapViewActivity.java
  * 
  * Created: Mar 15, 2012 22:40:06 PM
  * 
