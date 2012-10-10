@@ -40,7 +40,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_test">E\' una funzione beta</string>
 <string name="updates">... lista aggiornamenti ...</string>
 <string name="license">SASAbus è software libero: puoi ridistribuirlo e/o modificarlo secondo i termini della licenza GNU General Public License, così come è pubblicata dalla Free Software Foundation nella versione 3 o superiore.</string>
-<string name="copyright">Copyright (C) %1$s SASAbus Team</string>
+<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\nDati: CC-SA-NC by http://open.sasabz.it</string>
 <string name="supp_email">Per supporto, contatti o suggerimenti invia una mail a: android@sasabz.it</string>
 <string name="disclaimer">SASAbus è distribuito nella speranza che possa essere utile, ma viene fornito "così com'è", senza alcun tipo di garanzia, né esplicita, né implicita; ciò comprende, senza limitarsi a questo, la garanzia implicita di COMMERCIABILITÀ e UTILIZZABILITÀ PER UN PARTICOLARE SCOPO. Fare riferimento alla GNU General Public License per ulteriori dettagli. </string>
 <string name="gpl">Questo programma deve essere distribuito assieme ad una copia della GNU General Public License; in caso contrario, fare riferimento a &lt;http://www.gnu.org/licenses/&gt;.</string>
