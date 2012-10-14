@@ -1,10 +1,9 @@
 /**
  *
- * About.java
+ * DownloadError.java
  * 
- * Created: Jun 21, 2011 12:56:09 AM
  * 
- * Copyright (C) 2011 Paolo Dongilli and Markus Windegger
+ * Copyright (C) 2012 Markus Windegger
  *
  * This file is part of SasaBus.
 
@@ -22,7 +21,10 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.classes;
+
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.string;
 
 import java.util.Calendar;
 

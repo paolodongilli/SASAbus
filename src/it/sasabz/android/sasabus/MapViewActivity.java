@@ -1,6 +1,6 @@
 /**
  *
- * ShowWayActivity.java
+ * MapViewActivity.java
  * 
  * Created: Mar 15, 2012 22:40:06 PM
  * 
@@ -143,24 +143,29 @@ public class MapViewActivity extends MapActivity {
 		
 		
 		
-		Drawable bus = getResources().getDrawable(R.drawable.busstop);
+		Drawable start = getResources().getDrawable(R.drawable.glyphicons_347_hand_up);
+		Drawable stop = getResources().getDrawable(R.drawable.glyphicons_348_hand_down);
 		
-		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), bus);
-		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), bus);
 		
-		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(bus);
+		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);
+		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), stop);
+		
+		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(start);
+		MyArrayItemizedOverlay dest_arr = new MyArrayItemizedOverlay(stop);
 		
 		arr.addItem(partOverlay);
-		arr.addItem(destOverlay);
+		dest_arr.addItem(destOverlay);
 		
 		mapView.getOverlays().add(arr);
+		mapView.getOverlays().add(dest_arr);
 		
 
 		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId, dest.getName_de());
 		
 		Iterator<Passaggio> iter = paslist.iterator();
 		
-		Drawable inter = getResources().getDrawable(R.drawable.intermediate_stop);
+		Drawable inter = getResources().getDrawable(R.drawable.glyphicons_238_pin);
+		
 		MyArrayItemizedOverlay intermediate = new MyArrayItemizedOverlay(inter);
 		
 		

@@ -25,6 +25,7 @@
 
 package it.sasabz.android.sasabus;
 
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -37,6 +38,9 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.hafas.XMLRequest;
+import it.sasabz.android.sasabus.hafas.XMLStation;
+import it.sasabz.android.sasabus.hafas.XMLStationList;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -114,6 +118,11 @@ public class SelectModeActivity extends ListActivity {
         }
         if(mode == 4)
         {
+        	Intent selLinea = new Intent(this, OnlineModeActivity.class);
+        	startActivity(selLinea);
+        }
+        if(mode == 5)
+        {
         	Intent selLinea = new Intent(this, SelectFavoritenActivity.class);
         	startActivity(selLinea);
         }
@@ -123,7 +132,7 @@ public class SelectModeActivity extends ListActivity {
      * fills the list_view with the modes which are offered to the user
      */
     public void fillData()
-    {
+    {    	
     	Resources res = this.getResources();
     	
     	list = new Vector<DBObject>();
@@ -150,11 +159,19 @@ public class SelectModeActivity extends ListActivity {
         	list.add(mod);
         }
         
-        //Favoriten Mode
+        //Online Mode
     	mod = new Modus();
     	mod.setId(4);
+    	mod.setString(res.getString(R.string.mode_online));
+    	list.add(mod);
+        
+        //Favoriten Mode
+    	mod = new Modus();
+    	mod.setId(5);
     	mod.setString(res.getString(R.string.mode_favoriten));
     	list.add(mod);
+    	
+    	
     	//fill the modes into the list_view
     	MyListAdapter modi = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(modi);

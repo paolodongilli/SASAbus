@@ -1,12 +1,9 @@
 /**
- * 
  *
- * MyListAdapter.java
+ * MyPassaggioListAdapter.java
  * 
- * Created: 17.12.2011 15:10:39
  * 
- * Copyright (C) 2011 Paolo Dongilli & Markus Windegger
- * 
+ * Copyright (C) 2012 Markus Windegger
  *
  * This file is part of SasaBus.
 

@@ -131,7 +131,7 @@ public class SasabusHTTP {
 	}
 
 	/**
-	 * Requesting data via get-request using the apache http-classes
+	 * Requesting data via post-request using the apache http-classes
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
 	 */
@@ -155,7 +155,7 @@ public class SasabusHTTP {
 	}
 	
 	/**
-	 * Requesting data via get-request using the apache http-classes
+	 * Requesting data via post-request using the apache http-classes
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
 	 */

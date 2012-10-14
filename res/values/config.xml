@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+
+config.xml
+ 
+ 
+Copyright (C) 2012 Markus Windegger
+
+This file is part of SasaBus.
+
+SasaBus is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SasaBus is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <resources>
 
     <string name="app_name">SASAbus</string>
@@ -28,16 +51,14 @@
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>
     
+    <!-- unofficial xml-server -->
+    <string name="xml_server">http://travelplaner.sasabz.it/bin/extxml.bin</string>
      
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     
     <string name="favoriten_db_name">favoriten_db</string>
     
-    <string name="me_lat">46.6729861111111</string>
-    <string name="me_long">11.1498430555556</string>
-    
-    <string name="bz_lat">46.4960386111111</string>
-    <string name="bz_long">11.3563072222222</string>
+    <string name="accessId">openSASA</string>
     
     
 </resources>

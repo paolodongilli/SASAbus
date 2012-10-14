@@ -1,7 +1,7 @@
 /**
  * 
  *
- * MyListAdapter.java
+ * MyWayListAdapter.java
  * 
  * Created: 17.12.2011 15:10:39
  * 

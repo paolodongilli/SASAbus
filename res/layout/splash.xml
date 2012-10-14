@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+
+splash.xml
+ 
+ 
+Copyright (C) 2012 Markus Windegger
+
+This file is part of SasaBus.
+
+SasaBus is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SasaBus is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="#ffffff">
-	<ImageView android:background="#ffffff" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:src="@drawable/bus"
-		android:scaleType="fitStart" android:layout_weight="3" android:paddingTop="5px"/>
-	<TextView android:background="#ffffff" android:textColor="#f1942d"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:text="@string/app_name" android:textSize="56sp"
-		android:textStyle="bold" android:gravity="right"
-		android:layout_weight="8" android:paddingRight="5px"/>
-	<TextView android:background="#ffffff" android:textColor="#f1942d"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:text="@string/version" android:textSize="20sp"
-		android:textStyle="bold" android:gravity="right"
-		android:layout_weight="8" android:paddingRight="5px" />
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="226dp"
+        android:layout_gravity="center"
+        android:layout_weight="8.33"
+        android:src="@drawable/androidlogo" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="30dip"
+        android:text="@string/app_name"
+        android:textColor="#f58220"
+        android:textSize="56dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="30dip"
+        android:text="@string/version"
+        android:textColor="#f58220"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="215dp"
+        android:layout_gravity="center"
+        android:src="@drawable/androidlogo_2" />
+
 </LinearLayout>
