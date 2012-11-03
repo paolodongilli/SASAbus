@@ -162,5 +162,6 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
+		<service android:enabled="true" android:name="UpdateService"></service>
 	</application>
 </manifest>
