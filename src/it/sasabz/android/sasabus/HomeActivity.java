@@ -68,15 +68,9 @@ import android.widget.Toast;
 public class HomeActivity extends Activity {
 
 	
-	public final static int DOWNLOAD_SUCCESS_DIALOG = 0;
-	public final static int DOWNLOAD_ERROR_DIALOG = 1;
-	public final static int MD5_ERROR_DIALOG = 2;
-	public final static int NO_NETWORK_CONNECTION = 3;
-	public final static int NO_DB_UPDATE_AVAILABLE = 4;
-	public final static int NO_SD_CARD = 5;
-	public final static int DB_OK = 6;
-	public final static int DOWNLOAD_RETRY = 7;
-	public final static int DOWNLOAD_AVAILABLE = 8;
+	public final static int DOWNLOAD_AVAILABLE = 0;
+	public final static int DOWNLOAD_FILES = 1;
+	public final static int DB_OK = 2;
 	
 	public final static int FR_OSM = 0;
 	public final static int FR_DB = 1;
@@ -354,6 +348,10 @@ public class HomeActivity extends Activity {
 		switch (id) {
 		case DOWNLOAD_AVAILABLE:
 			return createDownloadAlertDialog(R.string.download_available);
+		case DOWNLOAD_FILES:
+			Intent down = new Intent(this, CheckDatabaseActivity.class);
+			startActivity(down);
+			return null;
 		default:
 			return null;
 		}

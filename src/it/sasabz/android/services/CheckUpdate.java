@@ -50,6 +50,7 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 		// check if dbDir exists; if not create it
 		if (!dbDir.exists()) {
 			dbDir.mkdirs();
+			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
 		}
 
 		// creates all files (zip, md5 and db)
@@ -97,6 +98,7 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 			}
 		} else {
 			download = true;
+			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
 		}
 		if(download)
 			return Long.valueOf(HomeActivity.DOWNLOAD_AVAILABLE);
@@ -110,12 +112,6 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			return Long.valueOf(CheckDatabaseActivity.NO_SD_CARD);
-		}
-		dbDir = new File(Environment.getExternalStorageDirectory(),
-				dbDirName);
-		// check if dbDir exists; if not create it
-		if (!dbDir.exists()) {
-			dbDir.mkdirs();
 		}
 
 		// creates all files (zip, md5 and db)
@@ -163,6 +159,7 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 			}
 		} else {
 			download = true;
+			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
 		}
 		if(download)
 			return Long.valueOf(HomeActivity.DOWNLOAD_AVAILABLE);
