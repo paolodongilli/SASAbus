@@ -58,7 +58,7 @@ public class MySQLiteDBAdapter {
 		if(counteropen == 0)
 		{
 			Resources res = context.getResources();
-			String appName = res.getString(R.string.app_name);
+			String appName = res.getString(R.string.app_name_db);
 			String dbFileName = appName + ".db";
 	        helper = new DatabaseHelper(dbFileName,null);
 	        sqlite = helper.getReadableDatabase();

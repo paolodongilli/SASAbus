@@ -62,11 +62,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class SelectPalinaLocationActivity extends ListActivity{
+public class SelectPalinaLocationActivity extends ListActivity implements LocationListener{
 
     //this variabled are to manage the GPS-GPSListener
 	private LocationManager mlocManager = null;
-	private LocationListener mlocListener = null;
 	
 	//saves the list of busstops for this object
 	private Vector <DBObject> list = null;
@@ -115,21 +114,10 @@ public class SelectPalinaLocationActivity extends ListActivity{
         prog.show();
         //creating the listener for the GPS
         mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		mlocListener = new MyLocationListener();
-		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+		mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, this);
 		isUpdateing = true;
     }
     
-    /**
-     * this class provides simply simply the GPS-location update.
-     * when the GPS performs an update, this listener is being removed
-     * and the list_view where filled with the busstops which were into the 
-     * given radius
-     * @author Markus Windegger (markus@mowiso.com)
-     *
-     */
-    public class MyLocationListener implements LocationListener
-	{
 		@Override
 		public void onLocationChanged(Location loc)
 		{
@@ -155,7 +143,6 @@ public class SelectPalinaLocationActivity extends ListActivity{
 			
 		}
 
-	}
     
     /**
      * if the GPS is disabled, then this method starts a new activity automatically
@@ -163,7 +150,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
      */
     public void gpsDisabled()
     {
-    	mlocManager.removeUpdates(mlocListener);
+    	mlocManager.removeUpdates(this);
     	isUpdateing = false;
     	prog.dismiss();
     	Intent selBac = new Intent(SASAbus.getContext(), SelectBacinoActivity.class);
@@ -176,7 +163,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
      * @param loc is the location recieved with the GPS update
      */
     public void onLocationRecieve(Location loc) {
-    	mlocManager.removeUpdates(mlocListener);
+    	mlocManager.removeUpdates(this);
     	isUpdateing = false;
         prog.dismiss();
         
@@ -199,7 +186,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     	if(isUpdateing)
     	{
     		Log.v("GPS", "Listener disabled, go sleep");
-    		mlocManager.removeUpdates(mlocListener);
+    		mlocManager.removeUpdates(this);
     	}
     	super.onStop();
     }
@@ -213,7 +200,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
         if(isUpdateing)
         {
         	Log.v("GPS", "Listener enabled, wake up");
-        	mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, mlocListener);
+        	mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 60000, 0, this);
         }
         
     }
@@ -242,7 +229,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     		e.printStackTrace();
     	}
          MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
-         mlocManager.removeUpdates(mlocListener);
+         mlocManager.removeUpdates(this);
          setListAdapter(paline);
      }
     
@@ -251,7 +238,7 @@ public class SelectPalinaLocationActivity extends ListActivity{
     @Override
     protected void onDestroy()
     {
-	     mlocManager.removeUpdates(mlocListener);
+	     mlocManager.removeUpdates(this);
 	     super.onDestroy();
     }
     

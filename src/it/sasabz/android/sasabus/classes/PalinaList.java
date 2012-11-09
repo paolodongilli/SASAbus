@@ -75,6 +75,28 @@ public class PalinaList {
 	 * Returns a list of all bus-stops avaiable in the database
 	 * @return a vector of all bus-stops in the database
 	 */
+	public static Vector <DBObject> getNameList()
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline", null);
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
 	public static Vector <DBObject> getListLinea(int linea)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -186,7 +208,7 @@ public class PalinaList {
 	}
 	
 	/**
-	 * 
+	 * Gets a lists of palinas which are in a certain radius of a location fix
 	 */
 	public static Vector<DBObject> getListGPS (Location loc) throws Exception
 	{
@@ -228,7 +250,47 @@ public class PalinaList {
 		return list;
 	}
 	
-	
+	/**
+	 * Get the nearest palina of a locationfix
+	 * @param loc is the location of the last fix
+	 * @return a palina
+	 * @throws Exception
+	 */
+	public static Palina getPalinaGPS (Location loc) throws Exception
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		/*
+		 * The following values are calculated with the formula 40045km : deltakm = 360deg : deltadeg
+		 * (40045 is an estimation of the ratio of Earth)
+		 */
+		
+		Context con = SASAbus.getContext();
+		
+		SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(con);
+		
+		double deltadegrees = Double.parseDouble(shared.getString("radius_gps", "0.0018"));
+		
+		Log.v("preferences", "delta: " + deltadegrees);
+		
+		String latitudemin = Double.toString(loc.getLatitude() - deltadegrees);
+		String longitudemin = Double.toString(loc.getLongitude() - deltadegrees);
+		String latitudemax = Double.toString(loc.getLatitude() + deltadegrees);
+		String longitudemax = Double.toString(loc.getLongitude() + deltadegrees);
+		String [] args = {longitudemin, longitudemax, latitudemin, latitudemax, 
+				Double.toString(deltadegrees), Double.toString(deltadegrees), longitudemin, 
+				longitudemax, latitudemin, latitudemax};
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline where " +
+				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?) <= ? * ?" +
+				" order by (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?)", args);
+		Palina palina = null;
+		if(cursor.moveToFirst())
+		{
+			palina = new Palina(cursor);
+		}
+		cursor.close();
+		sqlite.close();
+		return palina;
+	}
 
 	/**
 	 * This methode gives me all the busstops which are connected to the departure busstop called partenza

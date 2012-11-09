@@ -43,7 +43,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/from"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/from_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:hint="@string/from_txt" >
 
         <requestFocus />
-    </EditText>
+    </AutoCompleteTextView>
 
     <TextView
         android:id="@+id/to_label"
@@ -60,7 +60,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/to"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/to_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

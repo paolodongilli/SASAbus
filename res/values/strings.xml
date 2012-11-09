@@ -91,6 +91,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="from_txt">From</string>
 <string name="to_txt">To</string>
 
+<string name="download_available">Schedule update available. Download?</string>
 
 <string name="intermediate">Intermediate Stop</string>
 
@@ -116,6 +117,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="mode_favoriten">Favourites</string>
 <string name="mode_online">Online Mode</string>
+<string name="mode_home">Home</string>
 <string name="select_stop">Select busstop</string>
 
 <string name="online_connection_error">The entered pattern matches no busstop</string>

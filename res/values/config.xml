@@ -24,7 +24,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
 
-    <string name="app_name">SASAbus_v2</string>
+    <string name="app_name">SASAbus</string>
+    <string name="app_name_db">SASAbus_v2</string>
     <string name="app_name_osm">SASAbus_osm</string>
     <string name="copyright_first_year">2011</string>
     <string name="version">v0.2.5</string>   <!-- Temporary solution to call version in splash.xml-->

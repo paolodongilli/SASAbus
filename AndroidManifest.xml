@@ -84,7 +84,7 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:label="@string/mode_online" android:name="OnlineModeActivity">
+		<activity android:label="@string/mode_online" android:name=".HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>

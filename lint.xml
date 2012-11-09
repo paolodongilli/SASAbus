@@ -3,4 +3,7 @@
     <issue id="NewApi">
         <ignore path="src\it\sasabz\android\sasabus\CheckDatabaseActivity.java" />
     </issue>
+    <issue id="ParserError">
+        <ignore path="src/it/sasabz/android/services/CheckUpdate.java" />
+    </issue>
 </lint>

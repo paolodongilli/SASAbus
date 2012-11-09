@@ -152,6 +152,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 
 	@Override
 	protected Long doInBackground(Void...params) {	
+		Log.v("FileRetriever", "Bin beim Download, " + this.filename + "!");
 		SASAbus config = (SASAbus) activity.getApplicationContext();
 		// Check if db exists
 		Resources res = activity.getResources();
@@ -173,8 +174,11 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 		}
 
 		//creates all files (zip, md5 and db)
+		Log.v("FR", "Open db file");
 		File dbFile = new File(dbDir, dbFileName);
+		Log.v("FR", "Open db file");
 		dbZIPFile = new File(dbDir, dbZIPFileName);
+		Log.v("FR", "Open db file");
 		md5File = new File(dbDir, md5FileName);
 
 		
@@ -563,7 +567,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 
 		Log.v("FileRetriever", "this result has been arrived in the onPostExecute-method: " + result);
 		
-		if(this.filename.equals(activity.getResources().getString(R.string.app_name) + ".db"))
+		if(this.filename.equals(activity.getResources().getString(R.string.app_name_db) + ".db"))
 		{
 			activity.showDialog(result.intValue(), CheckDatabaseActivity.FR_DB);
 		}

@@ -28,6 +28,7 @@ package it.sasabz.android.sasabus;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.layout;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -36,13 +37,17 @@ public class SplashScreen extends Activity {
     protected boolean active = true;
     protected int splashTime = 1000;
     
+    public Context getThis()
+    {
+    	return this;
+    }
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         
-        final SplashScreen sPlashScreen = this;
         
         // thread for displaying the SplashScreen
         Thread splashTread = new Thread() {
@@ -63,7 +68,7 @@ public class SplashScreen extends Activity {
                     finish();
 
                     // Run next activity
-                	Intent checkDatabase = new Intent(sPlashScreen, CheckDatabaseActivity.class);
+                	Intent checkDatabase = new Intent(getThis(), HomeActivity.class);
                 	startActivity(checkDatabase);
                 }
             }

@@ -118,7 +118,7 @@ public class SelectModeActivity extends ListActivity {
         }
         if(mode == 4)
         {
-        	Intent selLinea = new Intent(this, OnlineModeActivity.class);
+        	Intent selLinea = new Intent(this, HomeActivity.class);
         	startActivity(selLinea);
         }
         if(mode == 5)

@@ -88,6 +88,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="from_txt">Von</string>
 <string name="to_txt">Bis</string>
 
+<string name="download_available">Update des Fahrplans vorhanden. Herunterladen?</string>
+
 <string name="intermediate">Zwischenhalt</string>
 
 <string name="no_map_update_available">OpenStreetMap Daten update nicht verfügbar. Probieren Sie es später nocheinmal!</string>
@@ -111,6 +113,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="online_connection_error">Die gesuchte Haltestelle wurde nicht gefunden.</string>
 <string name="mode_favoriten">Favoriten</string>
 <string name="mode_online">Online Modus</string>
+<string name="mode_home">Home</string>
 <string name="search_connection">Suche Verbindung</string>
 <string name="select_stop">Bitte Haltestelle aussuchen</string>
 
