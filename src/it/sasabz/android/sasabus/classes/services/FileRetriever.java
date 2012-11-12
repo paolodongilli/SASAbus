@@ -23,7 +23,7 @@
  *
  */
 
-package it.sasabz.android.services;
+package it.sasabz.android.sasabus.classes.services;
 
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;

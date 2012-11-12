@@ -28,9 +28,9 @@ import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Information;
-import it.sasabz.android.sasabus.classes.InformationList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.services.InformationList;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -40,6 +40,7 @@ import org.apache.http.client.ClientProtocolException;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +56,7 @@ import android.widget.TextView;
 public class InfoActivity extends ListActivity {
 
 	private Vector<DBObject> list = null;
+	private ProgressDialog progdial = null;
 
 	public InfoActivity() {
 		// TODO Auto-generated constructor stub
@@ -105,22 +107,26 @@ public class InfoActivity extends ListActivity {
 		SharedPreferences shared = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		int infocity = Integer.parseInt(shared.getString("infos", "0"));
+		
+		progdial = new ProgressDialog(this);
+		
+		progdial.setMessage(getResources().getText(R.string.waiting));
+		progdial.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progdial.show();
+		
+		InformationList info = new InformationList(this);
+		info.execute(Integer.valueOf(infocity));
+	}
 
-		try {
-
-			list = InformationList.getByCity(infocity);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			list = null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			list = null;
-		}
+	public void fillList(Vector<DBObject> list)
+	{
+		this.list = list;
 		MyListAdapter infos = new MyListAdapter(SASAbus.getContext(),
 				R.id.text, R.layout.infos_row, list);
 		setListAdapter(infos);
+		progdial.dismiss();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);

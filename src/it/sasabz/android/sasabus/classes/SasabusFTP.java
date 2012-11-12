@@ -30,7 +30,7 @@ package it.sasabz.android.sasabus.classes;
 
 
 
-import it.sasabz.android.services.FileRetriever;
+import it.sasabz.android.sasabus.classes.services.FileRetriever;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

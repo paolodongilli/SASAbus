@@ -41,15 +41,17 @@ import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
-import it.sasabz.android.sasabus.hafas.XMLStationList;
+import it.sasabz.android.sasabus.hafas.services.XMLStationList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -74,12 +76,16 @@ import android.widget.Toast;
 
 public class OnlineSelectStopActivity extends Activity {
 
-    
+    private ProgressDialog progress = null;
     private String from = "";
     private String to = "";
+    private Palina fromPalina = null;
+    private Palina toPalina = null;
     private Date datum = null;
     private Spinner from_spinner = null;
     private Spinner to_spinner = null;
+    
+    public static final int XML_FAILURE = 0;
     
     public OnlineSelectStopActivity() {
     }
@@ -108,6 +114,11 @@ public class OnlineSelectStopActivity extends Activity {
 		if (extras != null) {
 			from = extras.getString("from");
 			to = extras.getString("to");
+			String lang = "it";
+			if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+				lang = "de";
+			fromPalina = PalinaList.getTranslation(from, lang);
+			toPalina = PalinaList.getTranslation(to, lang);
 			SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 			try
 			{
@@ -129,19 +140,48 @@ public class OnlineSelectStopActivity extends Activity {
         	return;
         }
         
-        TextView datetime = (TextView)findViewById(R.id.time);
+        
+        progress = new ProgressDialog(this);
+        progress.setMessage(getResources().getText(R.string.waiting));
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.show();
+        
+        XMLStationList statlist = new XMLStationList(this);
+        if(toPalina != null)
+        {
+        	to = toPalina.getName_it() + " - " + toPalina.getName_de();
+        	Log.v("ONLINE-SELECT-TO", to);
+        }
+        if(fromPalina != null)
+        {
+        	from = fromPalina.getName_it() + " - " + fromPalina.getName_de();
+        	Log.v("ONLINE-SELECT-FROM", from);
+        }
+        statlist.execute(from, to);
+    }
+
+
+    /**
+     * Called when the activity is about to start interacting with the user.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    
+    public void fillSpinner(Vector<XMLStation> from_list, Vector<XMLStation> to_list)
+    {
+    	TextView datetime = (TextView)findViewById(R.id.time);
         String datetimestring = "";
         SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         datetimestring = simple.format(datum);
         
         datetime.setText(datetimestring);
         
-        ProgressDialog progress = new ProgressDialog(getContext());
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.show();
+        progress.dismiss();
         
-        Vector<XMLStation> from_list = XMLStationList.getList(from);
-        Vector<XMLStation> to_list = XMLStationList.getList(to);
+        
         if(from_list == null || to_list == null)
         {
         	Toast.makeText(getContext(), R.string.online_connection_error, Toast.LENGTH_LONG).show();
@@ -172,6 +212,7 @@ public class OnlineSelectStopActivity extends Activity {
 			showConnection.putExtra("to", to.toXMLString());
 			showConnection.putExtra("datetime", datetime.getText().toString());
 			startActivity(showConnection);
+			finish();
         }
         
         Button search = (Button)findViewById(R.id.search);
@@ -188,20 +229,35 @@ public class OnlineSelectStopActivity extends Activity {
 				showConnection.putExtra("to", to.toXMLString());
 				showConnection.putExtra("datetime", datetime.getText().toString());
 				startActivity(showConnection);
+				finish();
 			}
 		});
-        progress.dismiss();
     }
-
-
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
+    
+    public void myShowDialog(int res)
+    {
+    	if(progress != null)
+    		progress.dismiss();
+    	switch(res)
+    	{
+    		case XML_FAILURE:
+    			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    			builder.setCancelable(false);
+    			builder.setMessage(R.string.error_station);
+    			builder.setTitle(R.string.error);
+    			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						finish();
+					}
+				});
+    			builder.create().show();
+    		break;
+    	}
     }
-
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

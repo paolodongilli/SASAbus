@@ -128,8 +128,14 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="reset">Reset</string>
 
+<string name="waiting">Please wait...</string>
+
 <string name="set_date">Date</string>
 <string name="set_time">Time</string>
+
+<string name="error_station">One of the referred Station was not found</string>
+<string name="error">Error</string>
+<string name="error_connection">Failure during Connectionquery, please try again or modify request!</string>
 
 <string name="connection_details">Connection details</string>
 

@@ -119,9 +119,15 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="time">Data e ora:</string>
 <string name="time_txt">gg/mm/yyyy</string>
 
+<string name="waiting">Attendere...</string>
+
 <string name="reset">Reset</string>
 <string name="set_date">Data</string>
 <string name="set_time">Ora</string>
+
+<string name="error_station">Una stazione non e\' stata trovata!</string>
+<string name="error">Errore</string>
+<string name="error_connection">Errore durante la richiesta della conessione. Riprovare o modificare la richiesta!</string>
 
 <string name="connection_details">Dettaglio conessione</string>
 

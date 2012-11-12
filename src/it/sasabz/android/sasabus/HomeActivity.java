@@ -39,8 +39,8 @@ import it.sasabz.android.sasabus.classes.DateTimePicker;
 import it.sasabz.android.sasabus.classes.MyAutocompleteAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
-import it.sasabz.android.services.CheckUpdate;
-import it.sasabz.android.services.FileRetriever;
+import it.sasabz.android.sasabus.classes.services.CheckUpdate;
+import it.sasabz.android.sasabus.classes.services.FileRetriever;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -114,10 +114,16 @@ public class HomeActivity extends Activity {
 				AutoCompleteTextView to = (AutoCompleteTextView)findViewById(R.id.to_text);
 				TextView datetime = (TextView)findViewById(R.id.time);
 				
-				if(!from.getText().toString().trim().equals("") && !to.getText().toString().trim().equals(""))
+				String from_txt = getThis().getResources().getString(R.string.from_txt);
+				
+				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
+					
 					Intent getSelect = new Intent(getThis(), OnlineSelectStopActivity.class);
-					getSelect.putExtra("from", from.getText().toString());
+					if(from.getText().toString().trim().equals(""))
+						getSelect.putExtra("from", from.getHint().toString());
+					else
+						getSelect.putExtra("from", from.getText().toString());
 					getSelect.putExtra("to", to.getText().toString());
 					getSelect.putExtra("datetime", datetime.getText().toString());
 					startActivity(getSelect);

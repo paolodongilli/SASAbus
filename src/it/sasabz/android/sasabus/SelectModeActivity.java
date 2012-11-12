@@ -40,7 +40,7 @@ import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
-import it.sasabz.android.sasabus.hafas.XMLStationList;
+import it.sasabz.android.sasabus.hafas.services.XMLStationList;
 
 import android.app.ListActivity;
 import android.content.Intent;

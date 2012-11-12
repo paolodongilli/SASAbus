@@ -120,10 +120,16 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="time">Datum und Uhrzeit:</string>
 <string name="time_txt">dd.mm.yyyy</string>
 
+<string name="waiting">Bitte warten...</string>
+
 <string name="reset">Reset</string>
 
 <string name="set_date">Datum</string>
 <string name="set_time">Uhrzeit</string>
+
+<string name="error_station">Eine der gesuchten Haltestellen konnte nicht gefunden werden!</string>
+<string name="error">Fehler</string>
+<string name="error_connection">Fehler beim Abfrage der Verbindung, bitte nochmals versuchen oder Abfrage ändern!</string>
 
 <string name="connection_details">Verbindungsdetails</string>
 

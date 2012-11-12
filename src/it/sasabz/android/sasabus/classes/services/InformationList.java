@@ -21,11 +21,17 @@
  * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package it.sasabz.android.sasabus.classes;
+package it.sasabz.android.sasabus.classes.services;
 
 
+import it.sasabz.android.sasabus.HomeActivity;
+import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
+import it.sasabz.android.sasabus.classes.DBObject;
+import it.sasabz.android.sasabus.classes.Information;
+import it.sasabz.android.sasabus.classes.SASAbusXML;
+import it.sasabz.android.sasabus.classes.SasabusHTTP;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +45,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import android.os.AsyncTask;
+import android.util.Log;
 
-public class InformationList {
+
+public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> {
+	
+	private final InfoActivity activity;
+	
 	
 	/**                                                                                                                                                                                                          
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
@@ -141,51 +153,68 @@ public class InformationList {
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
 	 */
-	public static Vector<DBObject> getByCity(int city) throws ClientProtocolException, IOException
+	public InformationList(InfoActivity activity)
 	{
+		super();
+		this.activity = activity;
+	}
+
+	@Override
+	protected Vector<DBObject> doInBackground(Integer... params) {
 		Vector <DBObject> list = null;
-		SASAbusXML parser = new SASAbusXML();
-		
-		String newsserver = SASAbus.getContext().getString(R.string.newsserver);
-		SasabusHTTP http = new SasabusHTTP(newsserver);
-		
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("city", Integer.toString(city)));
-		
-		String xml = http.postData(nameValuePairs);
-		if(xml == null)
+		try
 		{
-			throw new IOException("XML request string is NULL");
-		}
-		Document doc = parser.getDomElement(xml); // getting DOM element
-		
-		NodeList nl = doc.getElementsByTagName("meldung");
-		 
-		// looping through all item nodes <item>
-		for (int i = 0; i < nl.getLength(); i++) {
-			if(list == null)
+			SASAbusXML parser = new SASAbusXML();
+			
+			String newsserver = SASAbus.getContext().getString(R.string.newsserver);
+			SasabusHTTP http = new SasabusHTTP(newsserver);
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("city", Integer.toString(params[0])));
+			
+			String xml = http.postData(nameValuePairs);
+			if(xml == null)
 			{
-				list = new Vector<DBObject>();
+				throw new IOException("XML request string is NULL");
 			}
-			Element e = (Element) nl.item(i);
+			Document doc = parser.getDomElement(xml); // getting DOM element
 			
-			String id = parser.getValue(e, "id");
-			String titel_de = parser.getValue(e, "titel_de"); // name child value
-		    String titel_it = parser.getValue(e, "titel_it"); // cost child value
-		    String nachricht_de = parser.getValue(e, "nachricht_de"); // description child value
-		    String nachricht_it = parser.getValue(e, "nachricht_it");
-		    String stadt = parser.getValue(e, "gebiet");
-			
-			Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
-			
-			list.add(info);
+			NodeList nl = doc.getElementsByTagName("meldung");
+			 
+			// looping through all item nodes <item>
+			for (int i = 0; i < nl.getLength(); i++) {
+				if(list == null)
+				{
+					list = new Vector<DBObject>();
+				}
+				Element e = (Element) nl.item(i);
 				
+				String id = parser.getValue(e, "id");
+				String titel_de = parser.getValue(e, "titel_de"); // name child value
+			    String titel_it = parser.getValue(e, "titel_it"); // cost child value
+			    String nachricht_de = parser.getValue(e, "nachricht_de"); // description child value
+			    String nachricht_it = parser.getValue(e, "nachricht_it");
+			    String stadt = parser.getValue(e, "gebiet");
+				
+				Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
+				
+				list.add(info);
+					
+			}
 		}
-		
-		
+		catch(Exception e)
+		{
+			Log.v("INFORMATION LIST", "FAILURE", e);
+		}
 		return list;
 	}
 	
+	@Override
+	protected void onPostExecute(Vector<DBObject> result) {
+		super.onPostExecute(result);
+		activity.fillList(result);
+
+	}
 	
 	
 }

@@ -33,7 +33,7 @@ package it.sasabz.android.sasabus;
 
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.services.FileRetriever;
+import it.sasabz.android.sasabus.classes.services.FileRetriever;
 
 import android.app.Activity;
 import android.app.AlertDialog;

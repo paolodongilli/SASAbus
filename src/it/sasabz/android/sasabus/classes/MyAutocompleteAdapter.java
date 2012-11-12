@@ -115,21 +115,34 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	                if(constraint != null) {
 	                	datalist.clear();
 	                	Iterator<DBObject> iter = origlist.iterator();
+                		String[] constraints = constraint.toString().split(" ");
 	                	while(iter.hasNext())
 	                	{
 	                		DBObject object = iter.next();
 	                		String s = object.toString();
-	                		if(s.toLowerCase().contains(constraint.toString().toLowerCase()))
+	                		boolean match = false;
+	                		for(int i = 0; i < constraints.length && (match || i == 0); ++ i)
+	                		{
+	                			if(s.toLowerCase().contains(constraints[i].toString().toLowerCase()))
+	                			{
+	                				match = true;
+	                			}
+	                			else
+	                			{
+	                				match = false;
+	                			}
+	                		}
+	                		if(match)
 	                		{
 	                			datalist.add(object);
 	                		}
 	                	}
-	                	iter = datalist.iterator();
-	                	Log.v("AUTOCOMP-FILTER-CONSTRAINT", constraint.toString());
-	                	while(iter.hasNext())
+	                	Log.v("AUTOCOMP-FILTER-CONSTRAINTS: ", "CONSTRAINT-STRING: " + constraint.toString());
+	                	for(int i = 0; i < constraints.length; ++ i)
 	                	{
-	                		Log.v("AUTOCOMP-FILTER", iter.next().toString());
+	                		Log.v("AUTOCOMP-FILTER-CONSTRAINT", "CONSTRAINT-STRING-PARTS: " + constraints[i]);
 	                	}
+	                	Log.v("AUTOCOMP-FILTER", "Nr items: " + datalist.size());
 	                    filterResults.values = datalist;
 	                    filterResults.count = datalist.size();
 	                }
@@ -143,5 +156,4 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	        };
 	        return myFilter;
 	    }
-
 }

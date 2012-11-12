@@ -39,17 +39,19 @@ import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.hafas.XMLAttributVariante;
 import it.sasabz.android.sasabus.hafas.XMLConnection;
 import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
-import it.sasabz.android.sasabus.hafas.XMLConnectionRequestList;
 import it.sasabz.android.sasabus.hafas.XMLJourney;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.XMLWalk;
+import it.sasabz.android.sasabus.hafas.services.XMLConnectionRequestList;
 
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +69,11 @@ public class OnlineSelectConnectionActivity extends ListActivity {
     private XMLStation from = null;
     private XMLStation to = null;
     private Date datetime = null;
+    
+    public static final int NO_DATA = 0;
+    
+    private ProgressDialog progress;
+    
     
     private Vector<XMLConnectionRequest> list = null;
     
@@ -113,7 +120,13 @@ public class OnlineSelectConnectionActivity extends ListActivity {
 			}
 		}
 		
-		fillData();
+		progress = new ProgressDialog(this);
+		progress.setMessage(getResources().getString(R.string.waiting));
+		progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progress.show();
+		
+		XMLConnectionRequestList req = new XMLConnectionRequestList(from, to, datetime, this);
+		req.execute();
     }
 
     @Override
@@ -128,22 +141,15 @@ public class OnlineSelectConnectionActivity extends ListActivity {
     }
     
 
-    private void fillData()
+    public void fillData(Vector<XMLConnectionRequest> list)
     {
-    	XMLConnectionRequest conreq	= XMLConnectionRequestList.getRequest(from, to, datetime);
-		if(conreq != null)
-		{
-			XMLConnectionRequest conreqb = XMLConnectionRequestList.scrollBackward(conreq);
-			XMLConnectionRequest conreqf = XMLConnectionRequestList.scrollForward(conreqb);
-			list = new Vector<XMLConnectionRequest>();
-			list.add(conreq);
-			list.add(0, conreqb);
-			list.add(conreqf);
-		}
+		this.list = list;
 		
 		MyXMLConnectionRequestAdapter adapter = new MyXMLConnectionRequestAdapter(list);
 		
 		setListAdapter(adapter);
+		
+		progress.dismiss();
     }
     
     
@@ -155,6 +161,30 @@ public class OnlineSelectConnectionActivity extends ListActivity {
         super.onResume();
     }
 
+    public void myShowDialog(int res)
+    {
+    	if(progress != null)
+    		progress.dismiss();
+    	switch(res)
+    	{
+    	case NO_DATA:
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    		builder.setCancelable(false);
+			builder.setMessage(R.string.error_connection);
+			builder.setTitle(R.string.error);
+			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					dialog.dismiss();
+					finish();
+				}
+			});
+			builder.create().show();
+    		break;
+    	}
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
