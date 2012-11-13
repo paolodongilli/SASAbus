@@ -54,23 +54,13 @@ public class MySQLiteDBAdapter {
 	
 	public static boolean exists(Context context)
 	{
-		Resources res = context.getResources();
-		String appName = res.getString(R.string.app_name_db);
+		String appName = context.getResources().getString(R.string.app_name_db);
 		String dbFileName = appName + ".db";
-		String dbDirName = res.getString(R.string.db_dir);
-		if (!Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED)) {
-			return false;
+		if(helper == null)
+		{
+			helper = new DatabaseHelper(dbFileName, null);
 		}
-		File dbDir = new File(Environment.getExternalStorageDirectory(),
-				dbDirName);
-		// check if dbDir exists; if not create it
-		if (!dbDir.exists()) {
-			return false;
-		}
-		// creates all files (zip, md5 and db)
-		File dbFile = new File(dbDir, dbFileName);
-		if(!dbFile.exists())
+		if(!helper.databaseFileExists())
 			return false;
 		return true;
 	}
@@ -84,7 +74,17 @@ public class MySQLiteDBAdapter {
 	{
 		if(counteropen == 0)
 		{
-			
+			Resources res = context.getResources();
+			String appName = res.getString(R.string.app_name_db);
+			String dbFileName = appName + ".db";
+			if(helper == null)
+				helper = new DatabaseHelper(dbFileName,null);
+			sqlite = helper.getReadableDatabase();
+			if(sqlite == null)
+			{
+				System.err.println("Die Datenbank konnte nicht geoeffnet werden");
+				System.exit(-2);
+			}
 		}
 		++counteropen;
 		return new MySQLiteDBAdapter();
