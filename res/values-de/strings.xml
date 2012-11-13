@@ -89,6 +89,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="to">Bis: </string>
 <string name="from_txt">Von</string>
 <string name="to_txt">Bis</string>
+<string name="line_txt">Linie</string>
 
 <string name="download_available">Update des Fahrplans vorhanden. Herunterladen?</string>
 
@@ -135,6 +136,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="error">Fehler</string>
 <string name="error_connection">Fehler beim Abfrage der Verbindung, bitte nochmals versuchen oder Abfrage ändern!</string>
 
+<string name="connection">Verbindungen</string>
 <string name="connection_details">Verbindungsdetails</string>
 
 </resources>

@@ -51,6 +51,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -80,6 +81,8 @@ public class HomeActivity extends Activity {
 	public final static int DB_UP = 2;
 	
 	public final static int OFFLINE = 34;
+	
+	private CheckUpdate updatecheck = null;
     
     public HomeActivity() {
     }
@@ -109,9 +112,6 @@ public class HomeActivity extends Activity {
         
         datetime.setText(datetimestring);
         
-        TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.mode_home);
-        
         Button search = (Button)findViewById(R.id.search);
         
         search.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +125,10 @@ public class HomeActivity extends Activity {
 				
 				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
-					
+					if(updatecheck != null)
+					{
+						updatecheck.cancel(true);
+					}
 					Intent getSelect = new Intent(getThis(), OnlineSelectStopActivity.class);
 					if(from.getText().toString().trim().equals(""))
 						getSelect.putExtra("from", from.getHint().toString());
@@ -399,7 +402,8 @@ public class HomeActivity extends Activity {
 		});
         if(MySQLiteDBAdapter.exists(this))
         {
-	        new CheckUpdate(this).execute();
+	        updatecheck = new CheckUpdate(this);
+	        updatecheck.execute();
         }
         else
         {

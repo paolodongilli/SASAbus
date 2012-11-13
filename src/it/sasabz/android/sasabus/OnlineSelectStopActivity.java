@@ -226,11 +226,6 @@ public class OnlineSelectStopActivity extends Activity {
 	        	return;
 	        }
 	        
-	        TextView titel = (TextView)findViewById(R.id.titel);
-	        titel.setText(R.string.mode_online);
-	        
-	       
-	       
 	        
 	        from_spinner = (Spinner) findViewById(R.id.from_spinner);
 	        to_spinner = (Spinner) findViewById(R.id.to_spinner);

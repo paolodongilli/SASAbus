@@ -92,6 +92,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="to">To: </string>
 <string name="from_txt">From</string>
 <string name="to_txt">To</string>
+<string name="line_txt">Line</string>
 
 <string name="download_available">Schedule update available. Download?</string>
 
@@ -141,6 +142,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="error">Error</string>
 <string name="error_connection">Failure during Connectionquery, please try again or modify request!</string>
 
+<string name="connection">Connections</string>
 <string name="connection_details">Connection details</string>
 
 </resources>

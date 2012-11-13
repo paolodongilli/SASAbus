@@ -88,6 +88,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="to">A: </string>
 <string name="from_txt">Da</string>
 <string name="to_txt">A</string>
+<string name="line_txt">Linea</string>
 
 <string name="download_available">Aggiornamento orario disponibile. Scaricare?</string>
 
@@ -132,6 +133,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="error">Errore</string>
 <string name="error_connection">Errore durante la richiesta della conessione. Riprovare o modificare la richiesta!</string>
 
+<string name="connection">Conessioni</string>
 <string name="connection_details">Dettaglio conessione</string>
 
 </resources>

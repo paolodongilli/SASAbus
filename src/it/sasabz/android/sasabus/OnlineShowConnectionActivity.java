@@ -96,9 +96,6 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		}
 		setContentView(R.layout.connection_listview_layout);
 
-		TextView titel = (TextView) findViewById(R.id.titel);
-		titel.setText(R.string.mode_online);
-
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			from = new XMLStation();
