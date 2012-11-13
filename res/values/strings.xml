@@ -67,6 +67,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_settings">Settings</string>
 <string name="menu_test">this is a test</string>
 <string name="menu_infos">News</string>
+<string name="menu_old_mode">Offline</string>
+
 
 <string name="gps_prefs">GPS Preferences</string>
 <string name="general_prefs">General preferences</string>

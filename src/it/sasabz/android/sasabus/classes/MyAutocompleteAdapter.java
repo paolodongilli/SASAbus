@@ -151,7 +151,14 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	            @Override
 	            protected void publishResults(CharSequence contraint, FilterResults results) {
-	                notifyDataSetChanged();             
+	            	try
+	            	{
+	            		notifyDataSetChanged();
+	            	}
+	            	catch(Exception e)
+	            	{
+	            		Log.v("MyAutocompleteAdapter", "Error", e);
+	            	}
 	            }
 	        };
 	        return myFilter;

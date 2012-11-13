@@ -78,6 +78,8 @@ public class HomeActivity extends Activity {
 	public final static int FR_OSM = 0;
 	public final static int FR_DB = 1;
 	public final static int DB_UP = 2;
+	
+	public final static int OFFLINE = 34;
     
     public HomeActivity() {
     }
@@ -456,12 +458,19 @@ public class HomeActivity extends Activity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
+    	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
          return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case OFFLINE:
+			{
+				Intent oldmode = new Intent(this, SelectModeActivity.class);
+				startActivity(oldmode);
+				return true;
+			}
 			case R.id.menu_about:
 			{
 				new About(this).show();

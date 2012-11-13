@@ -74,6 +74,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="gps_descr">Legt fest in welchem Umkreis die Haltestellen angezeigt werden</string>
 <string name="mode">Standardmodus</string>
 <string name="mode_descr">Standardmodus beim Start der Anwendung</string>
+<string name="menu_old_mode">Offline</string>
+
 <string name="line_infos">Stadt</string>
 <string name="line_infos_descr">Legt fest, für welche Stadt die News angezeigt werden</string>
 

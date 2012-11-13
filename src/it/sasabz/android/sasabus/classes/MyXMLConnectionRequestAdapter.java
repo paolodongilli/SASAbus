@@ -35,6 +35,7 @@ import java.util.Vector;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,9 +84,9 @@ public class MyXMLConnectionRequestAdapter extends BaseAdapter {
 			if(conreq != null)
 			{
 				SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-				departure.setText(simple.format(conreq.getDeparture().getArrtime()) + " " + conreq.getDeparture().getStation().getHaltestelle());
-				infos.setText(simple.format(conreq.getDuration()) + " - " + SASAbus.getContext().getResources().getString(R.string.transfers)  + ": "+ conreq.getTransfers());
-				arrival.setText(simple.format(conreq.getArrival().getArrtime()) + " " + conreq.getArrival().getStation().getHaltestelle());
+				departure.setText(Html.fromHtml("<b>" + simple.format(conreq.getDeparture().getArrtime()) + " " + conreq.getDeparture().getStation().getHaltestelle() + "</b>"));
+				infos.setText(simple.format(conreq.getDuration()) + " -> " + SASAbus.getContext().getResources().getString(R.string.transfers)  + ": "+ conreq.getTransfers());
+				arrival.setText(Html.fromHtml("<b>" + simple.format(conreq.getArrival().getArrtime()) + " " + conreq.getArrival().getStation().getHaltestelle() + "</b>"));
 			}
 		}
 		

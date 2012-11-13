@@ -40,6 +40,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
  	<ListView
         android:id="@id/android:list"
         android:layout_width="fill_parent"
+        android:layout_marginTop="20dip"
         android:layout_height="0dip"
         android:layout_weight="0.40" 
         android:dividerHeight="1dip"

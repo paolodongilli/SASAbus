@@ -70,6 +70,9 @@ public class OnlineShowConnectionActivity extends ListActivity {
 	public static final int XML_FAILURE = 0;
 	public static final int NO_DATA = 1;
 	
+	public final static int OFFLINE = 34;
+
+	
 	private ProgressDialog progress = null;
 	
 	private Vector<XMLConnectionRequest> list = null;
@@ -199,12 +202,19 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.optionmenu, menu);
+   	 	menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case OFFLINE:
+		{
+			Intent oldmode = new Intent(this, SelectModeActivity.class);
+			startActivity(oldmode);
+			return true;
+		}
 		case R.id.menu_about: {
 			new About(this).show();
 			return true;

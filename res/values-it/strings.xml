@@ -61,6 +61,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="mode_gps">modalità GPS</string>
 <string name="mode_normal">modalità normale</string>
 <string name="mode_qr_code">modalità QR Code</string>
+<string name="menu_old_mode">Offline</string>
 
 <string name="show_way">Percorso</string>
 <string name="weiter">Avanti</string>

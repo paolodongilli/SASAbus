@@ -93,6 +93,9 @@ public class OnlineSelectStopActivity extends Activity {
     public static final int XML_FAILURE = 0;
     public static final int NO_DATA = 1;
     
+	public final static int OFFLINE = 34;
+
+    
     private Vector<XMLConnectionRequest> list = null;
     
     public OnlineSelectStopActivity() {
@@ -113,10 +116,6 @@ public class OnlineSelectStopActivity extends Activity {
         	finish();
         	return;
         }
-        setContentView(R.layout.online_select_layout);
-        
-        TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.mode_online);
         
         Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -140,16 +139,15 @@ public class OnlineSelectStopActivity extends Activity {
 				return;
 			}
 		}
-        if(from == "" || to == "")
-        {
-        	Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
-        	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
-        	finish();
-        	return;
-        }
-        
-        
-       
+		
+		 if(from == "" || to == "")
+	        {
+	        	Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
+	        	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
+	        	finish();
+	        	return;
+	        }
+		
         progress = new ProgressDialog(this);
         progress.setMessage(getResources().getText(R.string.waiting));
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -181,61 +179,93 @@ public class OnlineSelectStopActivity extends Activity {
     
     public void fillSpinner(Vector<XMLStation> from_list, Vector<XMLStation> to_list)
     {
-    	TextView datetime = (TextView)findViewById(R.id.time);
-        String datetimestring = "";
-        SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    	String datetimestring = "";
+    	SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         datetimestring = simple.format(datum);
         
-        datetime.setText(datetimestring);
-        
-        progress.dismiss();
-        
-        
-        if(from_list == null || to_list == null)
-        {
-        	Toast.makeText(getContext(), R.string.online_connection_error, Toast.LENGTH_LONG).show();
-        	finish();
-        	return;
-        }
-        
-        from_spinner = (Spinner) findViewById(R.id.from_spinner);
-        to_spinner = (Spinner) findViewById(R.id.to_spinner);
-        
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(this, from_list);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        MyXMLStationListAdapter to_adapter = new MyXMLStationListAdapter(this, to_list);
-        
-        
-        // Apply the adapter to the spinner
-        from_spinner.setAdapter(from_adapter);
-        // Apply the adapter to the spinner
-        to_spinner.setAdapter(to_adapter);
-        
-        if(from_list.size() == 1 && to_list.size() == 1)
-        {
-        	XMLStation from = (XMLStation)from_spinner.getSelectedItem();
-			XMLStation to = (XMLStation)to_spinner.getSelectedItem();
-			
-			getConnectionList(from, to, datetime.getText().toString());
-        }
-        
-        search = (Button)findViewById(R.id.search);
-        
-        search.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				XMLStation from = (XMLStation)from_spinner.getSelectedItem();
-				XMLStation to = (XMLStation)to_spinner.getSelectedItem();
-				TextView datetime = (TextView)findViewById(R.id.time);
-				getConnectionList(from, to, datetime.getText().toString());
-			}
-		});
+    	 if(from_list.size() == 1 && to_list.size() == 1)
+         {
+    		Log.v("Check", "Check");
+         	XMLStation from = from_list.firstElement();
+ 			XMLStation to = to_list.firstElement();
+ 			
+ 			getConnectionList(from, to, datetimestring);
+         }
+    	 else if(from_list.size() == 1 && to.contains(to_list.get(0).getName()))
+    	 {
+    		Log.v("Check", "Check");
+          	XMLStation from = from_list.firstElement();
+  			XMLStation to = to_list.firstElement();
+  			
+  			getConnectionList(from, to, datetimestring);
+    	 }
+    	 else if(to_list.size() == 1 && from.contains(from_list.get(0).getName()))
+    	 {
+    		Log.v("Check", "Check");
+          	XMLStation from = from_list.firstElement();
+  			XMLStation to = to_list.firstElement();
+  			
+  			getConnectionList(from, to, datetimestring);
+    	 }
+    	 else
+    	 {
+	    	
+	    	setContentView(R.layout.online_select_layout);
+	    	
+	    	TextView datetime = (TextView)findViewById(R.id.time);
+	        
+	        datetime.setText(datetimestring);
+	        
+	        progress.dismiss();
+	        
+	        
+	        if(from_list == null || to_list == null)
+	        {
+	        	Toast.makeText(getContext(), R.string.online_connection_error, Toast.LENGTH_LONG).show();
+	        	finish();
+	        	return;
+	        }
+	        
+	        TextView titel = (TextView)findViewById(R.id.titel);
+	        titel.setText(R.string.mode_online);
+	        
+	       
+	       
+	        
+	        from_spinner = (Spinner) findViewById(R.id.from_spinner);
+	        to_spinner = (Spinner) findViewById(R.id.to_spinner);
+	        
+	       
+	        
+	        // Create an ArrayAdapter using the string array and a default spinner layout
+	        MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(this, from_list);
+	        // Create an ArrayAdapter using the string array and a default spinner layout
+	        MyXMLStationListAdapter to_adapter = new MyXMLStationListAdapter(this, to_list);
+	        
+	        
+	        // Apply the adapter to the spinner
+	        from_spinner.setAdapter(from_adapter);
+	        // Apply the adapter to the spinner
+	        to_spinner.setAdapter(to_adapter);
+	        
+	        search = (Button)findViewById(R.id.search);
+	        
+	        search.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					XMLStation from = (XMLStation)from_spinner.getSelectedItem();
+					XMLStation to = (XMLStation)to_spinner.getSelectedItem();
+					TextView datetime = (TextView)findViewById(R.id.time);
+					getConnectionList(from, to, datetime.getText().toString());
+				}
+			});
+    	 }
     }
     
     public void getConnectionList(XMLStation from, XMLStation to, String datetime)
     {
+    	progress.dismiss();
     	Intent showConnection = new Intent(getContext(), OnlineShowConnectionActivity.class);
 		showConnection.putExtra("from", from.toXMLString());
 		showConnection.putExtra("to", to.toXMLString());
@@ -283,12 +313,20 @@ public class OnlineSelectStopActivity extends Activity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
+    	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
+
          return true;
     }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+			case OFFLINE:
+			{
+				Intent oldmode = new Intent(this, SelectModeActivity.class);
+				startActivity(oldmode);
+				return true;
+			}
 			case R.id.menu_about:
 			{
 				new About(this).show();

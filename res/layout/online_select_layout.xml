@@ -41,8 +41,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/from_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/from"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="@string/from_txt"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:layout_marginTop="20dip"
+        />
 
     <Spinner
         android:id="@+id/from_spinner"
@@ -55,7 +57,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/to_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/to"
+        android:text="@string/to_txt"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
