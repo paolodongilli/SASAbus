@@ -46,11 +46,7 @@ public class Linea extends DBObject {
 	
 	private String abbrev = null;
 	
-	private int bacinoId = 0;
-	
 	private int differenza = -1;
-	
-	private boolean showBacino = false;
 
 	
 
@@ -72,7 +68,6 @@ public class Linea extends DBObject {
 		super(c.getInt(c.getColumnIndex("id")));
 		this.setNum_lin(c.getString(c.getColumnIndex("num_lin")));
 		this.setAbbrev(c.getString(c.getColumnIndex("abbrev")));
-		this.setBacinoId(c.getInt(c.getColumnIndex("bacinoId")));
 		this.setDescr_de(c.getString(c.getColumnIndex("descr_de")));
 		this.setDescr_it(c.getString(c.getColumnIndex("descr_it")));
 		if(c.getColumnIndex("differenza") != -1)
@@ -82,19 +77,6 @@ public class Linea extends DBObject {
 	}
 
 	
-	/**
-	 * @return the showBacino
-	 */
-	public boolean isShowBacino() {
-		return showBacino;
-	}
-
-	/**
-	 * @param showBacino the showBacino to set
-	 */
-	public void setShowBacino(boolean showBacino) {
-		this.showBacino = showBacino;
-	}
 	
 	/**
 	 * @return the descr_it
@@ -141,22 +123,6 @@ public class Linea extends DBObject {
 	 */
 	public void setAbbrev(String abbrev) {
 		this.abbrev = abbrev;
-	}
-
-
-	/**
-	 * @return the bacinoId
-	 */
-	public int getBacinoId() {
-		return bacinoId;
-	}
-
-
-	/**
-	 * @param bacinoId the bacinoId to set
-	 */
-	public void setBacinoId(int bacinoId) {
-		this.bacinoId = bacinoId;
 	}
 
 
@@ -272,17 +238,11 @@ public class Linea extends DBObject {
 	@Override
 	public String toString()
 	{
-		String bacinostring = "";
-		if(showBacino)
-		{
-			Bacino bacino = BacinoList.getById(this.bacinoId);
-			bacinostring = " (" + bacino.toString() + ")";
-		}
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return (this.getNum_lin()).trim() + bacinostring;
+			return (this.getNum_lin()).trim();
 		}
-		return (this.getNum_lin()).trim() + bacinostring;
+		return (this.getNum_lin()).trim();
 	}
 	
 	

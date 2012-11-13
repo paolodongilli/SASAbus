@@ -30,6 +30,8 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Bacino;
+import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
@@ -54,6 +56,8 @@ public class SelectLineaActivity extends ListActivity {
 	//this vector provides the list of lines in the entire activity
     private Vector<DBObject> list = null;
     
+    private Bacino bacino = null;
+    
     public SelectLineaActivity() {
     }
 
@@ -62,10 +66,13 @@ public class SelectLineaActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
-		int bacino = 0;
+		int bacinonr = 0;
 		if (extras != null) {
-			bacino = extras.getInt("bacino");
+			bacinonr = extras.getInt("bacino");
 		}
+		
+		bacino = BacinoList.getById(bacinonr);
+		
         setContentView(R.layout.standard_listview_layout);
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.select_linea);
@@ -79,7 +86,7 @@ public class SelectLineaActivity extends ListActivity {
         to.setText("");
         
         
-        fillData(bacino);
+        fillData();
     }
 
     /**
@@ -96,6 +103,7 @@ public class SelectLineaActivity extends ListActivity {
         Log.v("LINEA ID", Integer.toString(linea));
     	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
     	selDest.putExtra("linea", linea);
+    	selDest.putExtra("bacino", bacino.getId());
     	startActivity(selDest);
     }
     
@@ -103,8 +111,8 @@ public class SelectLineaActivity extends ListActivity {
      * this method fills the list_view with the lines which are situated into the bacino bacino
      * @param bacino is the bacino chosen for getting the lines
      */
-    private void fillData(int bacino) {
-    	list = LineaList.getList(bacino);
+    private void fillData() {
+    	list = LineaList.getList(bacino.getTable_prefix());
     	list = LineaList.sort(list);
     	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(linee);

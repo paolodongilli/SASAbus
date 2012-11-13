@@ -125,10 +125,6 @@ public class HomeActivity extends Activity {
 				
 				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
-					if(updatecheck != null)
-					{
-						updatecheck.cancel(true);
-					}
 					Intent getSelect = new Intent(getThis(), OnlineSelectStopActivity.class);
 					if(from.getText().toString().trim().equals(""))
 						getSelect.putExtra("from", from.getHint().toString());
@@ -540,6 +536,17 @@ public class HomeActivity extends Activity {
    		
    		return builder.create();
    	}
+    
+    @Override
+    public void startActivity(Intent intent)
+    {
+    	if(updatecheck != null)
+		{
+			Log.v("HomeActivity", "AsynTask cancelled!");
+			updatecheck.cancel(true);
+		}
+    	super.startActivity(intent);
+    }
     
     public final Dialog createDownloadAlertDialog(int msg) 
 	{

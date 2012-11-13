@@ -147,14 +147,4 @@ public class Favorit {
 		db.execSQL(query_select);
 		return true;
 	}
-
-	public String toString()
-	{
-		Palina partenza = PalinaList.getTranslation(partenza_de, "de");
-		Palina destinazione = PalinaList.getTranslation(destinazione_de, "de");
-		Linea linea = LineaList.getById(this.linea);
-		if(linea != null && destinazione != null && partenza != null)
-			return linea.toString() + " - " + partenza.toString() + " - " + destinazione.toString();
-		return "";
-	}
 }

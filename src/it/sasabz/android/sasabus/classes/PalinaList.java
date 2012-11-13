@@ -137,6 +137,49 @@ public class PalinaList {
 	}
 	
 	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getListLinea(int linea, String table_prefix)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea)};
+		Cursor cursor = null;
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+					"from paline, " +
+					"(select id from " + table_prefix + "corse where lineaId = ?) as corse, " + table_prefix +
+					"orarii as orarii " +
+					"where orarii.corsaId = corse.id " +
+					"AND orarii.palinaId = paline.id " +
+					"order by paline.nome_de", args);
+		}
+		else
+		{
+				cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+				"from paline, " +
+				"(select id from " + table_prefix + "corse where lineaId = ?) as corse, " + table_prefix +
+				"orarii as orarii " +
+				"where orarii.corsaId = corse.id " +
+				"AND orarii.palinaId = paline.id " +
+				"order by paline.nome_it", args);
+		}
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	/**
 	 * Returns a list of all bus-stops avaiable in the database which were connected via linea to
 	 * the destination destinazione
 	 * @param destinazione is the name of the destination busstop
@@ -206,6 +249,78 @@ public class PalinaList {
 		sqlite.close();
 		return list;
 	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database which were connected via linea to
+	 * the destination destinazione
+	 * @param destinazione is the name of the destination busstop
+	 * @param linea is the number of the line tho connect 
+	 * @return a vector of all bus-stops in the database which were connected via linea to the destination
+	 */
+	public static Vector <DBObject> getListDestinazione(String destinazione, int linea, String table_prefix)
+	{	
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea),destinazione};
+		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+				"from " +
+				"(select id, lineaId " +
+				"from " + table_prefix + "corse as corse " +
+				"where  " +
+				"lineaId = ? " +
+				"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+				") as c, " +
+				"(select progressivo, orario, corsaId " +
+				"from " + table_prefix + "orarii " +
+				"where palinaId IN ( " +
+				"select id from paline where nome_de = ? " +		
+				")) as o1, " +
+				"" + table_prefix + "orarii as o2, " +
+				"paline p " +
+				"where " +
+				"o1.corsaId = c.id " +
+				"and o2.corsaId = o1.corsaId " +
+				"and o2.palinaId = p.id " +
+				"and o1.progressivo < o2.progressivo " +
+				"order by p.nome_it";
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
+					"from " +
+					"(select id, lineaId " +
+					"from " + table_prefix + "corse as corse " +
+					"where  " +
+					"lineaId = ? " +
+					"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
+					") as c, " +
+					"(select progressivo, orario, corsaId " +
+					"from " + table_prefix + "orarii " +
+					"where palinaId IN ( " +
+					"select id from paline where nome_de = ? " +		
+					")) as o1, " +
+					"" + table_prefix + "orarii as o2, " +
+					"paline p " +
+					"where " +
+					"o1.corsaId = c.id " +
+					"and o2.corsaId = o1.corsaId " +
+					"and o2.palinaId = p.id " +
+					"and o1.progressivo < o2.progressivo " +
+					"order by p.nome_de";
+		}
+		Cursor cursor = sqlite.rawQuery(query, args);
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
 	
 	/**
 	 * Gets a lists of palinas which are in a certain radius of a location fix

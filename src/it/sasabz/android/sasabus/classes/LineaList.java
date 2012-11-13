@@ -64,27 +64,15 @@ public class LineaList {
 	}
 	
 	/**
-	 * This method returns a cursor to the db-table content of linee
-	 * @return a cursor which point on the content of the linee-table in the database
-	 */
-	public static Cursor getCursor ()
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select * from linee", null);
-		
-		return cursor;
-	}
-	
-	/**
 	 * This method returns a vector of linee which are located in the bacino 
 	 * @param bacino is the bacino where we are searching the linee 
 	 * @return a vector of DBObjects with the linee located in the bacino
 	 */
-	public static Vector <DBObject> getList(int bacino)
+	public static Vector <DBObject> getList(String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] args = {Integer.toString(bacino)};
-		Cursor cursor = sqlite.rawQuery("select * from linee where bacinoId = ? order by num_lin", args);
+		String[] args = null;
+		Cursor cursor = sqlite.rawQuery("select * from " + table_prefix + "linee order by num_lin", args);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
@@ -97,34 +85,6 @@ public class LineaList {
 		cursor.close();
 		sqlite.close();
 		return list;
-	}
-	
-	
-	/**
-	 * This method returns a cursor to the lines present in the selected city bacino
-	 * @param bacino is the location where we search the linee
-	 * @return a cursor which contains the linee present in the database
-	 */
-	public static Cursor getCursor(int bacino)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] args = {Integer.toString(bacino)};
-		Cursor cursor = sqlite.rawQuery("select id as _id, num_lin from linee where bacinoId = ?", args);
-		return cursor;
-	}
-	
-	
-	/**
-	 * This method prepares the cursor for the list view, the lines are showed just 1 time, there are no duplicates
-	 * @param bacino location where we search the linee
-	 * @return a cursor to the linee which we can add to a listview
-	 */
-	public static Cursor getCursorBacinoView(int bacino)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] args = {Integer.toString(bacino)};
-		Cursor cursor = sqlite.rawQuery("select id as _id, num_lin from linee where bacinoId = ? order by num_lin", args);
-		return cursor;
 	}
 	
 	/**
@@ -167,7 +127,6 @@ public class LineaList {
 			list = new Vector<DBObject>();
 			do {
 				Linea element = new Linea(cursor);
-				element.setShowBacino(true);
 				if(!list.contains(element))
 					list.add(element);
 			} while(cursor.moveToNext());
@@ -176,6 +135,7 @@ public class LineaList {
 		sqlite.close();
 		return list;
 	}
+	
 	
 	public static Vector<DBObject> sort(Vector <DBObject> list)
 	{
@@ -207,11 +167,11 @@ public class LineaList {
 	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
 	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
 	 */
-	public static  Linea  getById(int lineaId)
+	public static  Linea  getById(int lineaId, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] args = {Integer.toString(lineaId)};
-		Cursor cursor = sqlite.rawQuery("select * from linee where id = ?", args);
+		Cursor cursor = sqlite.rawQuery("select * from " + table_prefix + "linee where id = ?", args);
 		Linea line = null;
 		if(cursor.moveToFirst())
 		{

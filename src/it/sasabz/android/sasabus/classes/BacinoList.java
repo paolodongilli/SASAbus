@@ -74,16 +74,5 @@ public class BacinoList {
 		sqlite.close();
 		return bacino;
 	}
-	
-	/**
-	 * This method returns a Cursor of all bacinos present in the database
-	 * @return a cursor to the bacinos present in the database
-	 */
-	public static Cursor getCursor ()
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select id as _id, nome_de, nome_it from bacini", null);
-		return cursor;
-	}
 
 }

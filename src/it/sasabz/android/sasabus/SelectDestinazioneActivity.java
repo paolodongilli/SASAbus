@@ -46,6 +46,8 @@ public class SelectDestinazioneActivity extends ListActivity {
     
     private int linea;
     
+    private Bacino bacino = null;
+    
     public SelectDestinazioneActivity() {
     }
 
@@ -55,18 +57,21 @@ public class SelectDestinazioneActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         linea = 0;
+        int bacinonr = 0;
 		if (extras != null) {
 			linea = extras.getInt("linea");
+			bacinonr = extras.getInt("bacino");
 		}
-        Linea line = LineaList.getById(linea);
+		bacino = BacinoList.getById(bacinonr);
+        Linea line = LineaList.getById(linea, bacino.getTable_prefix());
         if(line == null)
         {
-        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
         	finish();
         }
         setContentView(R.layout.standard_listview_layout);
         TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.select_destination);
+        titel.setText(R.string.select_palina);
         
         Resources res = getResources();
         
@@ -91,9 +96,10 @@ public class SelectDestinazioneActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Palina destinazione = (Palina)list.get(position);
+    	Palina arrival = (Palina)list.get(position);
     	Intent selDest = new Intent(this, SelectPalinaActivity.class);
-    	selDest.putExtra("destinazione", destinazione.getName_de());
+    	selDest.putExtra("arrival", arrival.getName_de());
+    	selDest.putExtra("bacino", bacino.getId());
     	selDest.putExtra("linea", linea);
     	startActivity(selDest);
     	
@@ -103,7 +109,7 @@ public class SelectDestinazioneActivity extends ListActivity {
      * this method gets a list of palinas and fills the list_view with the palinas
      */
     private void fillData() {
-    	list = PalinaList.getListLinea(linea);
+    	list = PalinaList.getListLinea(linea, bacino.getTable_prefix());
     	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
         setListAdapter(destinazioni);
     }

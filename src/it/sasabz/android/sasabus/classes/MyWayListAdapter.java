@@ -53,8 +53,6 @@ import android.widget.TextView;
 public class MyWayListAdapter extends BaseAdapter {
 	private final Context context;
 	private final Vector<Passaggio> list;
-	private final int layoutId;
-	private final int[] whereIdList;
 	private final int actpos;
 
 	
@@ -65,11 +63,9 @@ public class MyWayListAdapter extends BaseAdapter {
 	 * @param layoutId is the layout id of the list_view
 	 * @param list is the list of dbobject's which are to putting in the list_view
 	 */
-	public MyWayListAdapter(Context context, int[] whereIdList, int layoutId, Vector<Passaggio> list, int actPos) {
+	public MyWayListAdapter(Context context, Vector<Passaggio> list, int actPos) {
 		this.context = context;
 		this.list = list;
-		this.layoutId = layoutId;
-		this.whereIdList = whereIdList;
 		this.actpos = actPos;
 	}
 

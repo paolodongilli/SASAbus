@@ -44,10 +44,10 @@ public class PassaggioList {
 	 * This function returns a vector of the entire timetable                                                                                                                     
 	 * @return a vector of Passaggio                                                                                                                              
 	 */
-	public static  Vector <DBObject>  getList()
+	public static  Vector <DBObject>  getList(String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		Cursor cursor = sqlite.rawQuery("select * from orarii", null);
+		Cursor cursor = sqlite.rawQuery("select * from " + table_prefix + "orarii", null);
 		Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
@@ -66,11 +66,11 @@ public class PassaggioList {
 	 * This function returns a Passaggio of the timetable for a given id                                                                                                                    
 	 * @return a vector of Passaggio                                                                                                                              
 	 */
-	public static  Passaggio getById(int id)
+	public static  Passaggio getById(int id, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String params[] = {Integer.toString(id)};
-		Cursor cursor = sqlite.rawQuery("select * from orarii where id = ?", params);
+		Cursor cursor = sqlite.rawQuery("select * from " + table_prefix + "orarii where id = ?", params);
 		Passaggio ret = null;
 		if(cursor.moveToFirst())
 		{
@@ -82,16 +82,6 @@ public class PassaggioList {
 	}
 	
 	
-	/**
-	 * This method returns a cursor over all the timetable with all the bus stops in every line on every course
-	 * @return a cursor over all the timtable
-	 */
-	public static Cursor getCursor()
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		return sqlite.rawQuery("select * from orarii", null); 
-	}
-	
 	
 	/**
 	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
@@ -102,7 +92,7 @@ public class PassaggioList {
 	 * @param partenza is the departure busstop
 	 * @return a vector with all the times when the bus pass the bus stop
 	 */
-	public static Vector <DBObject> getList(String bacino, String linea,String destinazione,String partenza)
+	public static Vector <DBObject> getList(String bacino, String linea,String destinazione,String partenza, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {bacino, linea, destinazione, partenza};
@@ -112,17 +102,17 @@ public class PassaggioList {
     		cursor = sqlite.rawQuery("select distinct strftime('%H:%M',o1.orario) as _id " +
     				"from "+
     				"(select id, lineaId " +
-    				"from corse "+
+    				"from " + table_prefix + "corse as corse "+
     				"where "+
     				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', " + Config.getStartDate() + ")) + 1,1)='1' "+ 
     				"and lineaId = ? ) as c, " +
     				"(select progressivo, orario, corsaId "+
-    				"from orarii "+
+    				"from " + table_prefix + "orarii "+
     				"where palinaId IN (" +
     				"select id from paline where nome_de = ?" +
     				")) as o1, " +
     				"(select progressivo , corsaId "+
-    				"from orarii " +
+    				"from " + table_prefix + "orarii " +
     				"where palinaId IN (" +
     				"select id from paline where nome_de = ?" +
     				")) as o2 " +
@@ -141,7 +131,6 @@ public class PassaggioList {
     	Vector <DBObject> list = null;
 		if(cursor.moveToFirst())
 		{
-			Log.v("PASSAGIOLIST","Hier bin ich drinnen!!!!!!!");
 			list = new Vector<DBObject>();
 			do {
 				Passaggio element = new Passaggio();
@@ -153,50 +142,6 @@ public class PassaggioList {
 		return list;
 	}
 	
-	/**
-	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
-	 * linea in the city bacino from a departure to a destination
-	 * @param linea is the bus line
-	 * @param destinazione is the destination
-	 * @param partenza is the departure busstop
-	 * @return a cursor with all the times when the bus pass the bus stop
-	 */
-	public static Cursor getCursor(int linea,String destinazione,int partenza)
-	{
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {Integer.toString(linea), Integer.toString(partenza), destinazione};
-		Cursor c = null;
-		String query = "select distinct strftime('%H:%M',o1.orario) as _id " +
-				"from "+
-				"(select id, lineaId " +
-				"from corse "+
-				"where "+
-				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' "+ 
-				"and lineaId = ?) as c, " +
-				"(select progressivo, orario, corsaId "+
-				"from orarii "+
-				"where palinaId = ? ) as o1, " +
-				"(select progressivo , corsaId "+
-				"from orarii " +
-				"where palinaId IN ( " +
-				"select id from paline where nome_de = ? " +
-				")) as o2 " +
-				"where c.id = o1.corsaId " +
-				"and c.id = o2.corsaId " +
-				"and o1.progressivo < o2.progressivo " +
-				"order by _id";
-		try
-		{
-			c = sqlite.rawQuery(query, selectionArgs);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		Log.v("PASSAGIOLIST","Hier bin ich drinnen!!!!!!!");
-		return c;
-	}
 	
 	/**
 	 * This method returns a list to see the way which the bus is driving
@@ -205,7 +150,7 @@ public class PassaggioList {
 	 * @return a list of times which were ordered by the progressivo and rappresent the way from departure 
 	 * to destination
 	 */
-	public static Vector<Passaggio> getVectorWay(int passaggio, String destinazione)
+	public static Vector<Passaggio> getVectorWay(int passaggio, String destinazione, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {Integer.toString(passaggio), destinazione};
@@ -215,12 +160,12 @@ public class PassaggioList {
 				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
 				"from "+
 				"(select progressivo, orario, corsaId, id, palinaId "+
-				"from orarii "+
+				"from " + table_prefix + "orarii "+
 				"where id = ?" +
 				") as o2, " +
-				"orarii as o1, " +
+				"" + table_prefix + "orarii as o1, " +
 				"(select progressivo , corsaId "+
-				"from orarii " +
+				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
 				"select id from paline where nome_de = ? " +
 				")) as o3 " +
@@ -260,7 +205,7 @@ public class PassaggioList {
 	 * @return a list of times which were ordered by the progressivo and rappresent the way from departure 
 	 * to destination
 	 */
-	public static Passaggio getWayEndpoint(int passaggio, String destinazione)
+	public static Passaggio getWayEndpoint(int passaggio, String destinazione, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {Integer.toString(passaggio), destinazione};
@@ -270,12 +215,12 @@ public class PassaggioList {
 				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
 				"from "+
 				"(select progressivo, orario, corsaId, id, palinaId "+
-				"from orarii "+
+				"from " + table_prefix + "orarii "+
 				"where id = ?" +
 				") as o2, " +
-				"orarii as o1, " +
+				"" + table_prefix + "orarii as o1, " +
 				"(select progressivo , corsaId "+
-				"from orarii " +
+				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
 				"select id from paline where nome_de = ? " +
 				")) as o3 " +
@@ -311,7 +256,7 @@ public class PassaggioList {
 	 * @param partenza is the departure busstop
 	 * @return a cursor with all the times when the bus pass the bus stop
 	 */
-	public static Vector <Passaggio> getVector(int linea,String destinazione,String partenza)
+	public static Vector <Passaggio> getVector(int linea,String destinazione,String partenza, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione};
@@ -321,17 +266,17 @@ public class PassaggioList {
 				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
 				"from "+
 				"(select id, lineaId " +
-				"from corse "+
+				"from " + table_prefix + "corse as corse "+
 				"where "+
 				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' "+ 
 				"and lineaId = ?) as c, " +
 				"(select progressivo, orario, corsaId, id, palinaId "+
-				"from orarii "+
+				"from " + table_prefix + "orarii "+
 				"where palinaId IN (" +
 				"select id from paline where nome_de = ? " +
 				")) as o1, " +
 				"(select progressivo , corsaId "+
-				"from orarii " +
+				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
 				"select id from paline where nome_de = ? " +
 				")) as o2 " +

@@ -33,6 +33,8 @@ import java.util.Calendar;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Bacino;
+import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
@@ -89,6 +91,8 @@ public class ShowWayActivity extends ListActivity {
 	//test pointer activity
 	private final int POINTER = 10;
 	
+	private Bacino bacino = null;
+	
 	//test map activity
 	private final int MAP = 11;
 
@@ -102,16 +106,18 @@ public class ShowWayActivity extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		orarioId = 0;
 		destinazione = null;
+		int bacinonr = 0;
 		if (extras != null) {
 			orarioId = extras.getInt("orario");
 			destinazione = extras.getString("destinazione");
 			linea = extras.getInt("linea");
+			bacinonr = extras.getInt("bacino");
 		}
-
-		Passaggio pas = PassaggioList.getById(orarioId);
+		bacino = BacinoList.getById(bacinonr);
+		Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
 		Palina part = PalinaList.getById(pas.getIdPalina());
 		Palina dest = PalinaList.getTranslation(destinazione, "de");
-		Linea line = LineaList.getById(linea);
+		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
 		if (part == null || dest == null || line == null)
 		{
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
@@ -151,10 +157,10 @@ public class ShowWayActivity extends ListActivity {
 	 * @return a cursor to the time table
 	 */
 	private void fillData() {
-		list = PassaggioList.getVectorWay(orarioId, destinazione);
+		list = PassaggioList.getVectorWay(orarioId, destinazione, bacino.getTable_prefix());
 		pos = getNextTimePosition(list);
 		int[] wherelist = {R.id.palina, R.id.orario};
-        MyWayListAdapter paline = new MyWayListAdapter(this, wherelist, R.layout.way_row, list, pos);
+        MyWayListAdapter paline = new MyWayListAdapter(this, list, pos);
         setListAdapter(paline);
 	}
 
@@ -238,7 +244,7 @@ public class ShowWayActivity extends ListActivity {
 			case POINTER:
 			{
 				Intent pointeract = new Intent(this, PointingLocationActivity.class);
-				Passaggio pas = PassaggioList.getById(orarioId);
+				Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
 				pointeract.putExtra("palina", pas.getIdPalina());
 				startActivity(pointeract);
 				return true;
@@ -246,12 +252,13 @@ public class ShowWayActivity extends ListActivity {
 			case MAP:
 			{
 				Intent mapview = new Intent(this, MapViewActivity.class);
-				Passaggio part = PassaggioList.getById(orarioId);
-				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione);
+				Passaggio part = PassaggioList.getById(orarioId, bacino.getTable_prefix());
+				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione, bacino.getTable_prefix());
 				mapview.putExtra("partenza", part.getIdPalina());
 				mapview.putExtra("destinazione", dest.getIdPalina());
 				mapview.putExtra("line", linea);
 				mapview.putExtra("orarioId", orarioId);
+				mapview.putExtra("bacino", bacino.getId());
 				startActivity(mapview);
 				return true;
 			}

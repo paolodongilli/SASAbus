@@ -100,11 +100,6 @@ public class SelectModeActivity extends ListActivity {
          * If the mode select is the first one, then starts the gps-mode,
          * otherwise with the mode 2 selected, starts the normal mode
          */
-        if(mode == 1)
-        {
-        	Intent selLinea = new Intent(this, SelectPalinaLocationActivity.class);
-        	startActivity(selLinea);
-        }
         if(mode == 2)
         {
         	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
@@ -114,16 +109,6 @@ public class SelectModeActivity extends ListActivity {
         if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
         {
         	Intent selLinea = new Intent(this, ScanCodeActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 4)
-        {
-        	Intent selLinea = new Intent(this, HomeActivity.class);
-        	startActivity(selLinea);
-        }
-        if(mode == 5)
-        {
-        	Intent selLinea = new Intent(this, SelectFavoritenActivity.class);
         	startActivity(selLinea);
         }
     }
@@ -137,14 +122,8 @@ public class SelectModeActivity extends ListActivity {
     	
     	list = new Vector<DBObject>();
     	
-    	//GPS Mode
-    	Modus mod = new Modus();
-    	mod.setId(1);
-    	mod.setString(res.getString(R.string.mode_gps));
-    	list.add(mod);
-    	
     	//Normal Mode
-    	mod = new Modus();
+    	Modus mod = new Modus();
     	mod.setId(2);
     	mod.setString(res.getString(R.string.mode_normal));
     	list.add(mod);
@@ -158,18 +137,6 @@ public class SelectModeActivity extends ListActivity {
         	mod.setString(res.getString(R.string.mode_qr_code));
         	list.add(mod);
         }
-        
-        //Online Mode
-    	mod = new Modus();
-    	mod.setId(4);
-    	mod.setString(res.getString(R.string.mode_online));
-    	list.add(mod);
-        
-        //Favoriten Mode
-    	mod = new Modus();
-    	mod.setId(5);
-    	mod.setString(res.getString(R.string.mode_favoriten));
-    	list.add(mod);
     	
     	
     	//fill the modes into the list_view

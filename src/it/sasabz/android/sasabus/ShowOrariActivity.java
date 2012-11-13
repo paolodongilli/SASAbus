@@ -34,6 +34,8 @@ import java.util.Calendar;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Bacino;
+import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Favorit;
@@ -85,8 +87,7 @@ public class ShowOrariActivity extends ListActivity {
 	//is the next departure time of the bus
 	private int pos;
 	
-	//is the id for the menuentry favorit
-	private final static int FAVORITEN = 1234;
+	private Bacino bacino = null;
 
 	public ShowOrariActivity() {
 	}
@@ -99,16 +100,19 @@ public class ShowOrariActivity extends ListActivity {
 		linea = 0;
 		destinazione = null;
 		partenza = null;
+		int bacinonr = 0;
 		if (extras != null) {
 			linea = extras.getInt("linea");
 			destinazione = extras.getString("destinazione");
 			partenza = extras.getString("palina");
+			bacinonr = extras.getInt("bacino");
 		}
 		setContentView(R.layout.standard_listview_layout);
 		TextView titel = (TextView)findViewById(R.id.titel);
 		Palina destination = PalinaList.getTranslation(destinazione, "de");
 		Palina departure = PalinaList.getTranslation(partenza, "de");
-		Linea line = LineaList.getById(linea);
+		bacino = BacinoList.getById(bacinonr);
+		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
 		if(destination == null || departure == null || line == null)
 		{
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
@@ -148,6 +152,7 @@ public class ShowOrariActivity extends ListActivity {
 		showWay.putExtra("orario", orario);
 		showWay.putExtra("destinazione", destinazione);
 		showWay.putExtra("linea", linea);
+		showWay.putExtra("bacino", bacino.getId());
 		startActivity(showWay);
 	}
 
@@ -156,7 +161,7 @@ public class ShowOrariActivity extends ListActivity {
 	 * @return a cursor to the time table
 	 */
 	private void fillData() {
-		list = PassaggioList.getVector(linea, destinazione, partenza);
+		list = PassaggioList.getVector(linea, destinazione, partenza, bacino.getTable_prefix());
 		pos = getNextTimePosition(list);
         MyPassaggioListAdapter paline = new MyPassaggioListAdapter(this, R.id.text, R.layout.standard_row, list, pos);
         setListAdapter(paline);
@@ -207,7 +212,6 @@ public class ShowOrariActivity extends ListActivity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, FAVORITEN, 4, R.string.favorit);
          return true;
     }
     
@@ -234,14 +238,6 @@ public class ShowOrariActivity extends ListActivity {
 			{
 				Intent infos = new Intent(this, InfoActivity.class);
 				startActivity(infos);
-				return true;
-			}
-			case FAVORITEN:
-			{
-				SQLiteDatabase db = new FavoritenDB(this).getWritableDatabase();
-				Favorit favorit = new Favorit(linea, partenza, destinazione);
-				favorit.insert(db);
-				db.close();
 				return true;
 			}
 		}

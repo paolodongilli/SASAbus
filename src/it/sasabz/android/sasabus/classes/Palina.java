@@ -166,11 +166,17 @@ public class Palina extends DBObject{
 	@Override
 	public String toString()
 	{
+		String ret = "";
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			return this.getName_de().trim();
+			ret = this.getName_de().trim();
 		}
-		return this.getName_it().trim();
+		else
+		{
+			ret = this.getName_it().trim();
+		}
+		ret = ret.substring(1, ret.indexOf(")")) + " -" + ret.substring(ret.indexOf(")") + 1);
+		return ret;
 	}
 	
 }
