@@ -26,4 +26,5 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     <color name="header_background">#CCCCCC</color>
     <color name="header_text">#000000</color>
     <color name="sasa_orange">#F58220</color>
+    <color name="divider_background">#666666</color>
 </resources>

@@ -129,6 +129,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="reset">Reset</string>
 
 <string name="waiting">Please wait...</string>
+<string name="transfers">Trasferimenti</string>
+
 
 <string name="set_date">Date</string>
 <string name="set_time">Time</string>

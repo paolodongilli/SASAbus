@@ -120,6 +120,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="time_txt">gg/mm/yyyy</string>
 
 <string name="waiting">Attendere...</string>
+<string name="transfers">Transfers</string>
 
 <string name="reset">Reset</string>
 <string name="set_date">Data</string>

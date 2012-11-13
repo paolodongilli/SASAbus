@@ -25,6 +25,8 @@ import android.util.Log;
 public class CheckUpdate extends AsyncTask<Void, String, Long> {
 
 	private final HomeActivity activity;
+	
+	private final String TAG = "CheckUpdate";
 
 	public CheckUpdate(HomeActivity activity) {
 		super();
@@ -34,17 +36,18 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 	@Override
 	protected Long doInBackground(Void... params) {
 		SASAbus config = (SASAbus) activity.getApplicationContext();
-
+		Log.v(TAG, "ZUIG 2");
 		Resources res = activity.getResources();
 		String dbDirName = res.getString(R.string.db_dir);
 		String dbFileName = res.getString(R.string.app_name_db) + ".db";
 		String md5dbFileName = dbFileName + ".md5";
-
+		Log.v(TAG, "ZUIG 2");
 		// Check if the sd-card is mounted
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			return Long.valueOf(CheckDatabaseActivity.NO_SD_CARD);
+			return Long.valueOf(HomeActivity.NO_SD_CARD);
 		}
+		Log.v(TAG, "ZUIG 3");
 		File dbDir = new File(Environment.getExternalStorageDirectory(),
 				dbDirName);
 		// check if dbDir exists; if not create it
@@ -52,13 +55,14 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 			dbDir.mkdirs();
 			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
 		}
-
+		Log.v(TAG, "ZUIG 4");
 		// creates all files (zip, md5 and db)
 		File dbFile = new File(dbDir, dbFileName);
 		File md5dbFile = new File(dbDir, md5dbFileName);
-
+		Log.v(TAG, "ZUIG 5");
 		boolean download = false;
 		if (dbFile.exists() && md5dbFile.exists()) {
+			Log.v(TAG, "ZUIG 6");
 			/*
 			 * checks if the md5-sum are equal if not, directly download is
 			 * true, whe have to do an update else we are checking other

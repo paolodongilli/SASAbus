@@ -66,23 +66,21 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time_txt"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        />
+
     <Button
         android:id="@+id/search"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_connection" />
+        android:text="@string/search_connection" 
+        android:textSize="18dip"
+        />
     
 </LinearLayout>

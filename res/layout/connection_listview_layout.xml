@@ -36,18 +36,15 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:background="@color/header_background"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/header_text" />
-
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_values" />
-
-    <ListView
+    
+ 	<ListView
         android:id="@id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="0.40" >
+        android:layout_weight="0.40" 
+        android:dividerHeight="1dip"
+        android:divider="@color/divider_background"
+        >
     </ListView>
     
 </LinearLayout>

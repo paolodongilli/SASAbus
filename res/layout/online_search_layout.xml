@@ -40,7 +40,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@+id/from_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/from"
+        android:text="@string/from_txt"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <AutoCompleteTextView
@@ -66,18 +66,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/to_txt" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/time"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="15dp" >
+        android:paddingBottom="15dip" 
+        android:paddingTop="15dip"
+        >
 
         <TextView
             android:id="@+id/time"
@@ -95,14 +90,16 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/calendar_icon" />
+            android:src="@drawable/calendar_icon_new" />
 
     </LinearLayout>
-
+
     <Button
         android:id="@+id/search"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_connection" />
+        android:text="@string/search_connection" 
+        android:textSize="18dip"
+        />
 
 </LinearLayout>

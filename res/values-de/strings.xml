@@ -121,6 +121,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="time_txt">dd.mm.yyyy</string>
 
 <string name="waiting">Bitte warten...</string>
+<string name="transfers">Umstiege</string>
+
 
 <string name="reset">Reset</string>
 

@@ -34,16 +34,20 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Bacino;
 import it.sasabz.android.sasabus.classes.BacinoList;
+import it.sasabz.android.sasabus.classes.ConnectionDialog;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestAdapter;
 import it.sasabz.android.sasabus.classes.MyXMLStationListAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
+import it.sasabz.android.sasabus.hafas.services.XMLConnectionRequestList;
 import it.sasabz.android.sasabus.hafas.services.XMLStationList;
 
 import android.app.Activity;
@@ -84,8 +88,12 @@ public class OnlineSelectStopActivity extends Activity {
     private Date datum = null;
     private Spinner from_spinner = null;
     private Spinner to_spinner = null;
+    private Button search;
     
     public static final int XML_FAILURE = 0;
+    public static final int NO_DATA = 1;
+    
+    private Vector<XMLConnectionRequest> list = null;
     
     public OnlineSelectStopActivity() {
     }
@@ -141,6 +149,7 @@ public class OnlineSelectStopActivity extends Activity {
         }
         
         
+       
         progress = new ProgressDialog(this);
         progress.setMessage(getResources().getText(R.string.waiting));
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -207,15 +216,11 @@ public class OnlineSelectStopActivity extends Activity {
         {
         	XMLStation from = (XMLStation)from_spinner.getSelectedItem();
 			XMLStation to = (XMLStation)to_spinner.getSelectedItem();
-			Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
-			showConnection.putExtra("from", from.toXMLString());
-			showConnection.putExtra("to", to.toXMLString());
-			showConnection.putExtra("datetime", datetime.getText().toString());
-			startActivity(showConnection);
-			finish();
+			
+			getConnectionList(from, to, datetime.getText().toString());
         }
         
-        Button search = (Button)findViewById(R.id.search);
+        search = (Button)findViewById(R.id.search);
         
         search.setOnClickListener(new View.OnClickListener() {
 			
@@ -224,14 +229,38 @@ public class OnlineSelectStopActivity extends Activity {
 				XMLStation from = (XMLStation)from_spinner.getSelectedItem();
 				XMLStation to = (XMLStation)to_spinner.getSelectedItem();
 				TextView datetime = (TextView)findViewById(R.id.time);
-				Intent showConnection = new Intent(getContext(), OnlineSelectConnectionActivity.class);
-				showConnection.putExtra("from", from.toXMLString());
-				showConnection.putExtra("to", to.toXMLString());
-				showConnection.putExtra("datetime", datetime.getText().toString());
-				startActivity(showConnection);
+				getConnectionList(from, to, datetime.getText().toString());
+			}
+		});
+    }
+    
+    public void getConnectionList(XMLStation from, XMLStation to, String datetime)
+    {
+    	Intent showConnection = new Intent(getContext(), OnlineShowConnectionActivity.class);
+		showConnection.putExtra("from", from.toXMLString());
+		showConnection.putExtra("to", to.toXMLString());
+		showConnection.putExtra("datetime", datetime);
+		finish();
+		startActivity(showConnection);
+    }
+    
+    
+    public AlertDialog getErrorDialog(String message)
+    {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setCancelable(false);
+		builder.setMessage(message);
+		builder.setTitle(R.string.error);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				dialog.dismiss();
 				finish();
 			}
 		});
+		return builder.create();
     }
     
     public void myShowDialog(int res)
@@ -241,20 +270,10 @@ public class OnlineSelectStopActivity extends Activity {
     	switch(res)
     	{
     		case XML_FAILURE:
-    			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    			builder.setCancelable(false);
-    			builder.setMessage(R.string.error_station);
-    			builder.setTitle(R.string.error);
-    			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						dialog.dismiss();
-						finish();
-					}
-				});
-    			builder.create().show();
+    			getErrorDialog(getResources().getString(R.string.error_station)).show();
+    		break;
+    		case NO_DATA:
+    			getErrorDialog(getResources().getString(R.string.error_connection)).show();
     		break;
     	}
     }

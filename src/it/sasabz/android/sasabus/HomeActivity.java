@@ -37,6 +37,7 @@ import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.DateTimePicker;
 import it.sasabz.android.sasabus.classes.MyAutocompleteAdapter;
+import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
 import it.sasabz.android.sasabus.classes.Palina;
 import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.services.CheckUpdate;
@@ -71,6 +72,8 @@ public class HomeActivity extends Activity {
 	public final static int DOWNLOAD_AVAILABLE = 0;
 	public final static int DOWNLOAD_FILES = 1;
 	public final static int DB_OK = 2;
+	public final static int NO_SD_CARD = 3;
+	
 	
 	public final static int FR_OSM = 0;
 	public final static int FR_DB = 1;
@@ -129,6 +132,135 @@ public class HomeActivity extends Activity {
 					startActivity(getSelect);
 				}
 			}
+		});
+        
+        datetime.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				// Create the dialog
+				final Dialog mDateTimeDialog = new Dialog(getThis());
+				// Inflate the root layout
+				final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater()
+						.inflate(R.layout.date_time_dialog, null);
+				// Grab widget instance
+				final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
+						.findViewById(R.id.DateTimePicker);
+				TextView dt = (TextView)findViewById(R.id.time);
+				String datetimestring = dt.getText().toString();
+				SimpleDateFormat datetimeformat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+				Date datetime = null;
+				try
+				{
+					datetime = datetimeformat.parse(datetimestring);
+				}
+				catch(Exception e)
+				{
+					;
+				}
+				mDateTimePicker.updateTime(datetime.getHours(), datetime.getMinutes());
+				mDateTimePicker.updateDate(datetime.getYear() + 1900, datetime.getMonth(), datetime.getDate());
+				// Check is system is set to use 24h time (this doesn't seem to
+				// work as expected though)
+				final String timeS = android.provider.Settings.System
+						.getString(getContentResolver(),
+								android.provider.Settings.System.TIME_12_24);
+				final boolean is24h = !(timeS == null || timeS.equals("12"));
+
+				// Update demo TextViews when the "OK" button is clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+							mDateTimePicker.clearFocus();
+							String datetimestring = "";
+							int day = mDateTimePicker.get(Calendar.DAY_OF_MONTH);
+							int month = mDateTimePicker.get(Calendar.MONTH) + 1;
+							int year = mDateTimePicker.get(Calendar.YEAR);
+							int hour = 0;
+							int min = 0;
+							int append = 0;
+							if (mDateTimePicker.is24HourView()) {
+								hour = mDateTimePicker.get(Calendar.HOUR_OF_DAY);
+								min = mDateTimePicker.get(Calendar.MINUTE);
+							} else {
+								hour = mDateTimePicker.get(Calendar.HOUR);
+								min = mDateTimePicker.get(Calendar.MINUTE);
+								if(mDateTimePicker.get(Calendar.AM_PM) == Calendar.AM)
+								{
+									append = 1;
+								}
+								else
+								{
+									append = 2;
+								}
+							}
+							if (day < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (day + ".");
+							if(month < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (month + "." + year + " ");
+							if(hour < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += (hour + ":");
+							if(min < 10)
+							{
+								datetimestring += "0";
+							}
+							datetimestring += min;
+							
+							switch(append)
+							{
+							case 1:
+								datetimestring += " AM";
+								break;
+							case 2:
+								datetimestring += " AM";
+								break;
+							}
+							
+							TextView time = (TextView)findViewById(R.id.time);
+							time.setText(datetimestring);
+							mDateTimeDialog.dismiss();
+						}
+					});
+				// Cancel the dialog when the "Cancel" button is clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.CancelDialog))
+						.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								mDateTimeDialog.cancel();
+							}
+						});
+
+				// Reset Date and Time pickers when the "Reset" button is
+				// clicked
+				((Button) mDateTimeDialogView.findViewById(R.id.ResetDateTime))
+						.setOnClickListener(new View.OnClickListener() {
+
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								mDateTimePicker.reset();
+							}
+						});
+
+				// Setup TimePicker
+				mDateTimePicker.setIs24HourView(is24h);
+				// No title on the dialog window
+				mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+				// Set the dialog content view
+				mDateTimeDialog.setContentView(mDateTimeDialogView);
+				// Display the dialog
+				mDateTimeDialog.show();
+			}
+
 		});
         
         ImageButton datepicker = (ImageButton)findViewById(R.id.datepicker);
@@ -265,34 +397,42 @@ public class HomeActivity extends Activity {
         AutoCompleteTextView to = (AutoCompleteTextView)findViewById(R.id.to_text);
         LocationManager locman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(lastloc == null)
+        if(MySQLiteDBAdapter.exists(this))
         {
-        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
-        if(lastloc != null)
-        {
-        	try
-        	{
-        		Palina palina = PalinaList.getPalinaGPS(lastloc);
-        		if(palina != null)
-        		{
-        			from.setHint(palina.toString());
-        		}
-        	}
-        	catch(Exception e)
-        	{
-        		Log.e("HomeActivity", "Fehler bei der Location", e);
-        	}
+	        if(lastloc == null)
+	        {
+	        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	        }
+	        if(lastloc != null)
+	        {
+	        	try
+	        	{
+	        		Palina palina = PalinaList.getPalinaGPS(lastloc);
+	        		if(palina != null)
+	        		{
+	        			from.setHint(palina.toString());
+	        		}
+	        	}
+	        	catch(Exception e)
+	        	{
+	        		Log.e("HomeActivity", "Fehler bei der Location", e);
+	        	}
+	        }
+	        else
+	        {
+	        	Log.v("HomeActivity", "No location found!!");
+	        }
+	        Vector<DBObject> palinalist = PalinaList.getNameList(); 
+	        MyAutocompleteAdapter adapter = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
+	        from.setAdapter(adapter);
+	        to.setAdapter(adapter);
+	        new CheckUpdate(this).execute();
         }
         else
         {
-        	Log.v("HomeActivity", "No location found!!");
+        	Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
+			startActivity(download);
         }
-        Vector<DBObject> palinalist = PalinaList.getNameList(); 
-        MyAutocompleteAdapter adapter = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
-        from.setAdapter(adapter);
-        to.setAdapter(adapter);
-        new CheckUpdate(this).execute();
 	}
 
 
@@ -354,6 +494,8 @@ public class HomeActivity extends Activity {
 		switch (id) {
 		case DOWNLOAD_AVAILABLE:
 			return createDownloadAlertDialog(R.string.download_available);
+		case NO_SD_CARD:
+			return createErrorDialog(R.string.sd_card_not_mounted);
 		case DOWNLOAD_FILES:
 			Intent down = new Intent(this, CheckDatabaseActivity.class);
 			startActivity(down);
@@ -362,6 +504,24 @@ public class HomeActivity extends Activity {
 			return null;
 		}
 	}
+    
+    public final Dialog createErrorDialog(int msg) 
+   	{
+   		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   		// builder.setTitle(R.string.a_given_string);
+   		builder.setIcon(R.drawable.icon);
+   		builder.setMessage(msg);
+   		builder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+   			@Override
+   			public void onClick(DialogInterface dialog, int id) {
+   				dialog.dismiss();
+   				System.exit(-3);
+   			}
+   		});
+   		
+   		return builder.create();
+   	}
     
     public final Dialog createDownloadAlertDialog(int msg) 
 	{

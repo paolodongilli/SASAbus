@@ -41,7 +41,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".OnlineSelectConnectionActivity" android:label="@string/select_stop">
+		<activity android:name=".OnlineShowConnectionActivity" android:label="@string/select_stop">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

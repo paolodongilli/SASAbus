@@ -34,6 +34,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 
 /**
@@ -48,6 +49,21 @@ public class MySQLiteDBAdapter {
 	private static int counteropen = 0;
 	private static int transactioncounter = 0;
 	
+	public static boolean exists(Context context)
+	{
+		Resources res = context.getResources();
+		String appName = res.getString(R.string.app_name_db);
+		String dbFileName = appName + ".db";
+        helper = new DatabaseHelper(dbFileName,null);
+        sqlite = helper.getReadableDatabase();
+        if(sqlite == null)
+        {
+        	return false;
+        }
+        sqlite.close();
+		return true;
+	}
+	
 	/**
 	 * This static method allows you tu getting an instance of the current database
 	 * @param context is the actual context
@@ -57,16 +73,7 @@ public class MySQLiteDBAdapter {
 	{
 		if(counteropen == 0)
 		{
-			Resources res = context.getResources();
-			String appName = res.getString(R.string.app_name_db);
-			String dbFileName = appName + ".db";
-	        helper = new DatabaseHelper(dbFileName,null);
-	        sqlite = helper.getReadableDatabase();
-	        if(sqlite == null)
-	        {
-	        	System.err.println("Die Datenbank konnte nicht geoeffnet werden");
-	        	System.exit(-2);
-	        }
+			
 		}
 		++counteropen;
 		return new MySQLiteDBAdapter();
