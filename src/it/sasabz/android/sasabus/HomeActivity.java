@@ -88,6 +88,7 @@ public class HomeActivity extends Activity {
     }
     
     
+    
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -394,6 +395,24 @@ public class HomeActivity extends Activity {
 			}
 
 		});
+        if(MySQLiteDBAdapter.exists(this))
+        {
+	        new CheckUpdate(this).execute();
+        }
+        else
+        {
+        	Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
+			startActivity(download);
+        }
+	}
+
+
+    /**
+     * Called when the activity is about to start interacting with the user.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
         AutoCompleteTextView from = (AutoCompleteTextView)findViewById(R.id.from_text);
         AutoCompleteTextView to = (AutoCompleteTextView)findViewById(R.id.to_text);
         LocationManager locman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -427,22 +446,7 @@ public class HomeActivity extends Activity {
 	        MyAutocompleteAdapter adapter = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
 	        from.setAdapter(adapter);
 	        to.setAdapter(adapter);
-	        new CheckUpdate(this).execute();
         }
-        else
-        {
-        	Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
-			startActivity(download);
-        }
-	}
-
-
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     
