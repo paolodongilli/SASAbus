@@ -67,6 +67,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_settings">Impostazioni</string>
 <string name="menu_infos">Avvisi</string>
 
+
 <string name="gps_prefs">Impostazioni GPS</string>
 <string name="general_prefs">Impostazioni generali</string>
 
@@ -120,7 +121,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="time_txt">gg/mm/yyyy</string>
 
 <string name="waiting">Attendere...</string>
-<string name="transfers">Transfers</string>
+<string name="transfers">Trasferimenti</string>
 
 <string name="reset">Reset</string>
 <string name="set_date">Data</string>

@@ -26,14 +26,17 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import it.sasabz.android.sasabus.HomeActivity;
 import it.sasabz.android.sasabus.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.util.Log;
 
 
@@ -54,13 +57,21 @@ public class MySQLiteDBAdapter {
 		Resources res = context.getResources();
 		String appName = res.getString(R.string.app_name_db);
 		String dbFileName = appName + ".db";
-        helper = new DatabaseHelper(dbFileName,null);
-        sqlite = helper.getReadableDatabase();
-        if(sqlite == null)
-        {
-        	return false;
-        }
-        sqlite.close();
+		String dbDirName = res.getString(R.string.db_dir);
+		if (!Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			return false;
+		}
+		File dbDir = new File(Environment.getExternalStorageDirectory(),
+				dbDirName);
+		// check if dbDir exists; if not create it
+		if (!dbDir.exists()) {
+			return false;
+		}
+		// creates all files (zip, md5 and db)
+		File dbFile = new File(dbDir, dbFileName);
+		if(!dbFile.exists())
+			return false;
 		return true;
 	}
 	
