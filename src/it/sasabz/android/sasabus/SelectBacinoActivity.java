@@ -66,14 +66,6 @@ public class SelectBacinoActivity extends ListActivity {
         TextView titel = (TextView)findViewById(R.id.untertitel);
         titel.setText(R.string.select_bacino);
         
-        TextView line = (TextView)findViewById(R.id.line);
-        TextView from = (TextView)findViewById(R.id.from);
-        TextView to = (TextView)findViewById(R.id.to);
-        
-        line.setText("");
-        from.setText("");
-        to.setText("");
-        
         fillData();
     }
 

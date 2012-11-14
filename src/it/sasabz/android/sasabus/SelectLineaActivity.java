@@ -77,14 +77,6 @@ public class SelectLineaActivity extends ListActivity {
         TextView titel = (TextView)findViewById(R.id.untertitel);
         titel.setText(R.string.select_linea);
         
-        TextView line = (TextView)findViewById(R.id.line);
-        TextView from = (TextView)findViewById(R.id.from);
-        TextView to = (TextView)findViewById(R.id.to);
-        
-        line.setText("");
-        from.setText("");
-        to.setText("");
-        
         
         fillData();
     }
@@ -100,7 +92,7 @@ public class SelectLineaActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int linea = list.get(position).getId(); 
-    	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
+    	Intent selDest = new Intent(this, SelectDepartureActivity.class);;
     	selDest.putExtra("linea", linea);
     	selDest.putExtra("bacino", bacino.getId());
     	startActivity(selDest);
@@ -113,7 +105,7 @@ public class SelectLineaActivity extends ListActivity {
     private void fillData() {
     	list = LineaList.getList(bacino.getTable_prefix());
     	list = LineaList.sort(list);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.linea_row, list);
         setListAdapter(linee);
     }  
     

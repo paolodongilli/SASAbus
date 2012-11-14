@@ -26,7 +26,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" 
-        android:layout_marginBottom="3dip"
+         android:layout_marginBottom="3dip"
         android:layout_marginTop="3dip"
         >
 
@@ -44,7 +44,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/auf_punkt" />
+                    android:src="@drawable/an_punkt" />
 
                 <TextView
                     android:id="@+id/text"

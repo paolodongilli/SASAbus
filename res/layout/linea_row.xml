@@ -25,10 +25,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" 
+        android:orientation="vertical"
         android:layout_marginBottom="3dip"
         android:layout_marginTop="3dip"
-        >
+         >
 
         <TableLayout
             android:layout_width="match_parent"
@@ -45,14 +45,23 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/auf_punkt" />
-
+				<TextView
+                    android:id="@+id/linientext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#ffffff"
+                    android:layout_marginLeft="10dip"
+                    android:textSize="20dip"
+                    android:text="@string/line_txt"
+                     />
                 <TextView
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="#ffffff"
-                    android:layout_marginLeft="15dip"
+                    android:layout_marginLeft="8dip"
                     android:textSize="20dip"
                      />
 

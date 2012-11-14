@@ -1,6 +1,6 @@
 /**
  *
- * SelectPalinaActivity.java
+ * SelectDestinazioneActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
@@ -28,44 +28,27 @@ package it.sasabz.android.sasabus;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.Linea;
-import it.sasabz.android.sasabus.classes.LineaList;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
-import it.sasabz.android.sasabus.classes.Palina;
-import it.sasabz.android.sasabus.classes.PalinaList;
+import it.sasabz.android.sasabus.classes.*;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectPalinaActivity extends ListActivity {
+public class SelectDepartureActivity extends ListActivity {
 
-	//saves the linea global for this object
+    
+    private Vector<DBObject> list = null;
+    
     private int linea;
     
-    //saves the arrival global for this object
-    private String arrivo;
-    
-    //saves the list of possible parture bus-stops for this object
-    private Vector<DBObject> list;
-
     private Bacino bacino = null;
-    private Palina arrival = null;
     
-    public SelectPalinaActivity() {
+    public SelectDepartureActivity() {
     }
 
     /** Called with the activity is first created. */
@@ -73,25 +56,22 @@ public class SelectPalinaActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-		linea = 0;
-		arrivo = null;
-		int bacinonr = 0;
+        linea = 0;
+        int bacinonr = 0;
 		if (extras != null) {
 			linea = extras.getInt("linea");
-			arrivo = extras.getString("arrival");
 			bacinonr = extras.getInt("bacino");
 		}
 		bacino = BacinoList.getById(bacinonr);
-		arrival = PalinaList.getTranslation(arrivo, "de");
-		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
-		if(arrival == null || line == null)
-		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
-			finish();
-		}
-		setContentView(R.layout.standard_listview_layout);
+        Linea line = LineaList.getById(linea, bacino.getTable_prefix());
+        if(line == null)
+        {
+        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
+        	finish();
+        }
+        setContentView(R.layout.palina_listview_layout);
         TextView titel = (TextView)findViewById(R.id.untertitel);
-        titel.setText(R.string.select_destination);
+        titel.setText(R.string.select_palina);
         
         Resources res = getResources();
         
@@ -101,7 +81,7 @@ public class SelectPalinaActivity extends ListActivity {
         
         lineat.setText(res.getString(R.string.line) + " " + line.toString());
         from.setText("");
-        to.setText(res.getString(R.string.from) + " " + arrival.toString());
+        to.setText("");
         
         fillData();
     }
@@ -116,22 +96,22 @@ public class SelectPalinaActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Intent showOrario = new Intent(this, ShowOrariActivity.class);
-    	showOrario.putExtra("linea", linea);
-    	showOrario.putExtra("palina", arrival.getName_de());
-    	Palina palina = (Palina)list.get(position);
-    	showOrario.putExtra("destinazione", palina.getName_de());
-    	showOrario.putExtra("bacino", bacino.getId());
-    	startActivity(showOrario);
+    	Palina arrival = (Palina)list.get(position);
+    	Intent selDest = new Intent(this, SelectArrivalActivity.class);
+    	selDest.putExtra("arrival", arrival.getName_de());
+    	selDest.putExtra("bacino", bacino.getId());
+    	selDest.putExtra("linea", linea);
+    	startActivity(selDest);
+    	
     }
 
     /**
-     * this method fills the possible parture busstops into the list_view
+     * this method gets a list of palinas and fills the list_view with the palinas
      */
     private void fillData() {
-        list = PalinaList.getListDestinazione(arrivo, linea, bacino.getTable_prefix());
-        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
-        setListAdapter(paline);
+    	list = PalinaList.getListLinea(linea, bacino.getTable_prefix());
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.departure_row, list);
+        setListAdapter(destinazioni);
     }
     
     @Override

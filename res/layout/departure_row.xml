@@ -44,7 +44,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/auf_punkt" />
+                    android:src="@drawable/ab_punkt" />
 
                 <TextView
                     android:id="@+id/text"

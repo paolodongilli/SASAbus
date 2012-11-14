@@ -107,7 +107,7 @@ public class ShowOrariActivity extends ListActivity {
 			partenza = extras.getString("palina");
 			bacinonr = extras.getInt("bacino");
 		}
-		setContentView(R.layout.standard_listview_layout);
+		setContentView(R.layout.orario_way_listview_layout);
         TextView titel = (TextView)findViewById(R.id.untertitel);
 		Palina destination = PalinaList.getTranslation(destinazione, "de");
 		Palina departure = PalinaList.getTranslation(partenza, "de");
@@ -115,7 +115,7 @@ public class ShowOrariActivity extends ListActivity {
 		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
 		if(destination == null || departure == null || line == null)
 		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
 			finish();
 		}
 		

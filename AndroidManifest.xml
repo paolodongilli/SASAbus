@@ -85,7 +85,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:label="@string/select_destination"
-			android:name="SelectDestinazioneActivity">
+			android:name=".SelectDepartureActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
@@ -97,7 +97,7 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:label="@string/select_palina" android:name="SelectPalinaActivity">
+		<activity android:label="@string/select_palina" android:name=".SelectArrivalActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>

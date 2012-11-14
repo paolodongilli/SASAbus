@@ -170,7 +170,7 @@ public class ShowWayActivity extends ListActivity {
 			finish();
 			return;
 		}
-		setContentView(R.layout.standard_listview_layout);
+		setContentView(R.layout.orario_way_listview_layout);
         TextView titel = (TextView)findViewById(R.id.untertitel);
 		titel.setText(R.string.show_way);
 		
