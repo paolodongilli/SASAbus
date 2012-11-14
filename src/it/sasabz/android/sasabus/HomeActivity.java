@@ -140,7 +140,7 @@ public class HomeActivity extends Activity {
 					getSelect.putExtra("from", fromtext);
 					getSelect.putExtra("to", totext);
 					getSelect.putExtra("datetime", datetime.getText().toString());
-					startActivity(getSelect);
+					myStartActivity(getSelect);
 				}
 			}
 		});
@@ -412,7 +412,7 @@ public class HomeActivity extends Activity {
         else
         {
         	Intent download = new Intent(this, CheckDatabaseActivity.class);
-			startActivity(download);
+			myStartActivity(download);
         }
 	}
 
@@ -492,7 +492,7 @@ public class HomeActivity extends Activity {
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);
-				startActivity(infos);
+				myStartActivity(infos);
 				return true;
 			}
 		}
@@ -514,7 +514,7 @@ public class HomeActivity extends Activity {
 			return createErrorDialog(R.string.sd_card_not_mounted);
 		case DOWNLOAD_FILES:
 			Intent down = new Intent(this, CheckDatabaseActivity.class);
-			startActivity(down);
+			myStartActivity(down);
 			return null;
 		default:
 			return null;
@@ -539,8 +539,8 @@ public class HomeActivity extends Activity {
    		return builder.create();
    	}
     
-    @Override
-    public void startActivity(Intent intent)
+    
+    public void myStartActivity(Intent intent)
     {
     	if(!haveNetworkConnection())
     	{
