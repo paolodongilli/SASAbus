@@ -412,7 +412,7 @@ public class HomeActivity extends Activity {
         else
         {
         	Intent download = new Intent(this, CheckDatabaseActivity.class);
-			myStartActivity(download);
+			startActivity(download);
         }
 	}
 
