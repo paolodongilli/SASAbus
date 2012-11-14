@@ -603,6 +603,7 @@ public class HomeActivity extends Activity {
 			}
 			
 		});
+		builder.create().show();
 		
 	}
 	

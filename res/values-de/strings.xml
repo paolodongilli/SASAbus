@@ -39,7 +39,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_about">Über SASAbus</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
-<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\nDaten: CC-SA-NC by http://open.sasabz.it</string>
+<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\n\nDaten: CC-SA-NC by http://open.sasabz.it</string>
 <string name="supp_email">Für Hilfe, Support, Anregungen etc. einfach eine Mail an: android@sasabz.it</string>
 <string name="disclaimer">Die Veröffentlichung von SASAbus erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.</string>
 <string name="gpl">Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe &lt;http://www.gnu.org/licenses/&gt;.</string>
@@ -138,6 +138,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="connection">Verbindungen</string>
 <string name="connection_details">Verbindungsdetails</string>
+
+<string name="information">Information</string>
+<string name="offline_info">Sie haben keine Internetverbindung. Im Offlinemodus fortfahren?</string>
 
 </resources>
 
