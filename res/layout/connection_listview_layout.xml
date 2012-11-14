@@ -40,7 +40,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/untertitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dip"

@@ -309,7 +309,6 @@ public class PassaggioList {
 		return list;
 	}
 	
-	
 	/**
 	 * This method returns a vector of all the times passed the bus this bus stop when executing the line 
 	 * linea in the city bacino from a departure to a destination
@@ -318,35 +317,42 @@ public class PassaggioList {
 	 * @param partenza is the departure busstop
 	 * @return a cursor with all the times when the bus pass the bus stop
 	 */
-	public static Cursor getCursor(int linea,String destinazione,String partenza)
+	public static Passaggio getPassaggio(int linea,String partenza,String destinazione, String orario_des, String orario_arr, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione};
+		String[] selectionArgs = {Integer.toString(linea), partenza, destinazione, orario_des + ":00", orario_arr + ":00"};
 		Cursor c = null;
-		String query = "select distinct strftime('%H:%M',o1.orario) as _id " +
+		Passaggio list = null;
+		String query = "select o1.id as id,  strftime('%H:%M',o1.orario) as orario, o1.palinaId as palinaId, " +
+				"o1.progressivo as progressivo, o1.corsaId as corsaId " +
 				"from "+
 				"(select id, lineaId " +
-				"from corse "+
+				"from " + table_prefix + "corse as corse "+
 				"where "+
-				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' "+ 
-				"and lineaId = ?) as c, " +
-				"(select progressivo, orario, corsaId "+
-				"from orarii "+
+				"lineaId = ?) as c, " +
+				"(select progressivo, orario, corsaId, id, palinaId "+
+				"from " + table_prefix + "orarii "+
 				"where palinaId IN (" +
 				"select id from paline where nome_de = ? " +
 				")) as o1, " +
-				"(select progressivo , corsaId "+
-				"from orarii " +
+				"(select progressivo , corsaId, orario "+
+				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
 				"select id from paline where nome_de = ? " +
 				")) as o2 " +
 				"where c.id = o1.corsaId " +
 				"and c.id = o2.corsaId " +
 				"and o1.progressivo < o2.progressivo " +
-				"order by _id";
+				"and o1.orario = ? " +
+				"and o2.orario = ? " +
+				"limit 1";
 		try
 		{
 			c = sqlite.rawQuery(query, selectionArgs);
+			if(c.moveToFirst())
+			{
+				list = new Passaggio(c);
+			}
 		}
 		catch (Exception e)
 		{
@@ -354,7 +360,7 @@ public class PassaggioList {
 			Log.v("EXITSQL", "fehler bei rawQuery");
 			System.exit(-1);
 		}
-		return c;
+		return list;
 	}
 	
 }

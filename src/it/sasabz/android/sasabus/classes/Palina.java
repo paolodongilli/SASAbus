@@ -105,7 +105,10 @@ public class Palina extends DBObject{
 			this.setLatitude(c.getDouble(c.getColumnIndex("latitudine")));
 	}
 
-	
+	public String getHaltestelle()
+	{
+		return this.name_it.trim() + " - " + this.name_de.trim(); 
+	}
 	
 	/**
 	 * @return the name_de
@@ -175,7 +178,8 @@ public class Palina extends DBObject{
 		{
 			ret = this.getName_it().trim();
 		}
-		ret = ret.substring(1, ret.indexOf(")")) + " -" + ret.substring(ret.indexOf(")") + 1);
+		if(ret.indexOf(")") != -1 && ret.indexOf("(") != -1)
+			ret = ret.substring(1, ret.indexOf(")")) + " -" + ret.substring(ret.indexOf(")") + 1);
 		return ret;
 	}
 	

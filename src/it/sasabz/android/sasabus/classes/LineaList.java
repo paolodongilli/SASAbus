@@ -181,4 +181,23 @@ public class LineaList {
 		sqlite.close();
 		return line;
 	}
+	
+	/**                                                                                                                                                                                                          
+	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
+	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
+	 */
+	public static  Linea  getByNumLin(String linecode, String table_prefix)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String[] args = {linecode};
+		Cursor cursor = sqlite.rawQuery("select * from " + table_prefix + "linee where num_lin = ?", args);
+		Linea line = null;
+		if(cursor.moveToFirst())
+		{
+			line = new Linea(cursor);
+		}
+		cursor.close();
+		sqlite.close();
+		return line;
+	}
 }

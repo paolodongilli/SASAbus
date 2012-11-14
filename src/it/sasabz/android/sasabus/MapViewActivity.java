@@ -231,12 +231,6 @@ public class MapViewActivity extends MapActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

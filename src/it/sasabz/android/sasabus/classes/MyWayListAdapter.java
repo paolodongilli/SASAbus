@@ -26,6 +26,7 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 
 import java.text.ParseException;
@@ -34,7 +35,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.Time;
@@ -75,40 +75,51 @@ public class MyWayListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		
-		if (v == null) 
+		LayoutInflater vi = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if (position == 0) 
 		{
-              LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(layoutId, null);
+			v = vi.inflate(R.layout.way_row_first, null);
+		} 
+		else if (position == list.size() - 1) 
+		{
+			v = vi.inflate(R.layout.way_row_end, null);
+		}
+		else 
+		{
+			v = vi.inflate(R.layout.way_row_middle, null);
 		}
 		if (list != null)
 		{
-			TextView textViewPalina = (TextView) v.findViewById(whereIdList[0]);
-			TextView textViewOrario = (TextView) v.findViewById(whereIdList[1]);
+			TextView departure = (TextView) v.findViewById(R.id.departure);
 			Time currentTime = new Time();
 			currentTime.setToNow();
 			currentTime.set(0, currentTime.minute, currentTime.hour, currentTime.monthDay, currentTime.month, currentTime.year);
 			Time sasaTime = list.get(position).getOrario();
-			textViewOrario.setText(list.get(position).getOrario().format("%H:%M"));
-			textViewPalina.setText(PalinaList.getById(list.get(position).getIdPalina()).toString());
+			departure.setText(list.get(position).getOrario().format("%H:%M") + " "+ PalinaList.getById(list.get(position).getIdPalina()).toString());
 			if (actpos < position)
 			{
-				v.setBackgroundColor(Color.rgb(0, 70, 0));
+				//v.setBackgroundColor(Color.rgb(0, 70, 0));
+				//departure.setTextColor()
 			}
 			else if (actpos > position)
 			{
-				v.setBackgroundColor(Color.rgb(70, 0, 0));
+				//v.setBackgroundColor(Color.rgb(70, 0, 0));
+				departure.setTextColor(context.getResources().getColor(R.color.divider_background));
 			}
 			else if(sasaTime.before(currentTime))
 			{
-				v.setBackgroundColor(Color.rgb(70, 0, 0));
+				//v.setBackgroundColor(Color.rgb(70, 0, 0));
+				departure.setTextColor(context.getResources().getColor(R.color.divider_background));
 			}
 			else if(sasaTime.after(currentTime))
 			{
-				v.setBackgroundColor(Color.rgb(0, 70, 0));
+				//v.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
 			else
 			{
-				v.setBackgroundColor(Color.rgb(255, 125, 33));
+				//v.setBackgroundColor(Color.rgb(255, 125, 33));
+				departure.setTextColor(context.getResources().getColor(R.color.sasa_orange));
 			}
 		}
 		

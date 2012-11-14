@@ -28,9 +28,11 @@ package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.SASAbus;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import android.database.Cursor;
+import android.util.Log;
 
 public class BacinoList {
 	
@@ -59,6 +61,50 @@ public class BacinoList {
 		return list;
 	}
 	
+	public static Bacino getBacino(String start, String stop, String linecode)
+	{
+		Bacino ret = null;
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Vector<DBObject> list = getList();
+		Iterator<DBObject> iter = list.iterator();
+		boolean gefunden = false;
+		while(iter.hasNext() && !gefunden)
+		{
+			Bacino bac = (Bacino)iter.next();
+			String[] args = {linecode, start, stop};
+			Cursor cursor = sqlite.rawQuery("select * " +
+    				"from "+
+    				"(select id, lineaId " +
+    				"from " + bac.getTable_prefix() + "corse as corse "+
+    				"where " +
+    				"lineaId = (" +
+    				"Select id from " + bac.getTable_prefix() + "linee where num_lin = ?) ) as c, " +
+    				"(select progressivo, orario, corsaId "+
+    				"from " + bac.getTable_prefix() + "orarii "+
+    				"where palinaId IN (" +
+    				"select id from paline where nome_de = ?" +
+    				")) as o1, " +
+    				"(select progressivo , corsaId "+
+    				"from " + bac.getTable_prefix() + "orarii " +
+    				"where palinaId IN (" +
+    				"select id from paline where nome_de = ?" +
+    				")) as o2 " +
+    				"where o1.progressivo < o2.progressivo " +
+    				"and c.id = o1.corsaId " +
+    				"and c.id = o2.corsaId " +
+    				"LIMIT 1 ", 
+    				args);
+			if(cursor.moveToFirst())
+			{
+				ret = bac;
+				gefunden = true;
+			}
+			cursor.close();
+
+		}
+		sqlite.close();
+		return ret;
+	}
 	
 	public static  Bacino  getById(int id)
 	{

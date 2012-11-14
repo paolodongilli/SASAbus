@@ -35,19 +35,20 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                 android:id="@+id/tableRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
+
                 <ImageView
                     android:id="@+id/imageView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/middle_punkt" />
-
+                    android:src="@drawable/an_punkt" />
+
                 <TextView
                     android:id="@+id/departure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="bottom"
                     android:text="Medium Text"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </TableRow>

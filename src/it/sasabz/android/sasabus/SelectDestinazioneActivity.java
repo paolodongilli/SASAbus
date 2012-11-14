@@ -70,7 +70,7 @@ public class SelectDestinazioneActivity extends ListActivity {
         	finish();
         }
         setContentView(R.layout.standard_listview_layout);
-        TextView titel = (TextView)findViewById(R.id.titel);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
         titel.setText(R.string.select_palina);
         
         Resources res = getResources();
@@ -135,12 +135,6 @@ public class SelectDestinazioneActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

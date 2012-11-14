@@ -156,12 +156,12 @@ public class OnlineSelectStopActivity extends Activity {
         XMLStationList statlist = new XMLStationList(this);
         if(toPalina != null)
         {
-        	to = toPalina.getName_it() + " - " + toPalina.getName_de();
+        	to = toPalina.getHaltestelle();
         	Log.v("ONLINE-SELECT-TO", to);
         }
         if(fromPalina != null)
         {
-        	from = fromPalina.getName_it() + " - " + fromPalina.getName_de();
+        	from = fromPalina.getHaltestelle();
         	Log.v("ONLINE-SELECT-FROM", from);
         }
         statlist.execute(from, to);
@@ -318,7 +318,7 @@ public class OnlineSelectStopActivity extends Activity {
 		switch (item.getItemId()) {
 			case OFFLINE:
 			{
-				Intent oldmode = new Intent(this, SelectModeActivity.class);
+				Intent oldmode = new Intent(this, SelectBacinoActivity.class);
 				startActivity(oldmode);
 				return true;
 			}
@@ -332,12 +332,6 @@ public class OnlineSelectStopActivity extends Activity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

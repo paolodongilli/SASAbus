@@ -126,11 +126,17 @@ public class HomeActivity extends Activity {
 				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
 					Intent getSelect = new Intent(getThis(), OnlineSelectStopActivity.class);
+					String fromtext = "";
 					if(from.getText().toString().trim().equals(""))
-						getSelect.putExtra("from", from.getHint().toString());
+						fromtext = from.getHint().toString();
 					else
-						getSelect.putExtra("from", from.getText().toString());
-					getSelect.putExtra("to", to.getText().toString());
+						fromtext = from.getText().toString();
+					String totext = to.getText().toString();
+					fromtext = "(" + fromtext.replace(" -", ")");
+					totext = "(" + totext.replace(" -", ")");
+					
+					getSelect.putExtra("from", fromtext);
+					getSelect.putExtra("to", totext);
 					getSelect.putExtra("datetime", datetime.getText().toString());
 					startActivity(getSelect);
 				}
@@ -403,7 +409,7 @@ public class HomeActivity extends Activity {
         }
         else
         {
-        	Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
+        	Intent download = new Intent(this, CheckDatabaseActivity.class);
 			startActivity(download);
         }
 	}
@@ -467,7 +473,7 @@ public class HomeActivity extends Activity {
 		switch (item.getItemId()) {
 			case OFFLINE:
 			{
-				Intent oldmode = new Intent(this, SelectModeActivity.class);
+				Intent oldmode = new Intent(this, SelectBacinoActivity.class);
 				startActivity(oldmode);
 				return true;
 			}
@@ -481,12 +487,6 @@ public class HomeActivity extends Activity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

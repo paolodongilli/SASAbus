@@ -46,6 +46,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,9 +68,8 @@ public class InfoActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.listview_infos_layout);
-
-		TextView titel = (TextView) findViewById(R.id.titel);
+		setContentView(R.layout.connection_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
 		titel.setText(R.string.menu_infos);
 
 		fillData();
@@ -96,7 +96,7 @@ public class InfoActivity extends ListActivity {
 				});
 		Information information = (Information) list.get(position);
 		builder.setTitle(information.getTitel());
-		builder.setMessage(information.getNachricht());
+		builder.setMessage(Html.fromHtml(information.getNachricht()));
 		builder.create().show();
 	}
 
@@ -122,7 +122,7 @@ public class InfoActivity extends ListActivity {
 	{
 		this.list = list;
 		MyListAdapter infos = new MyListAdapter(SASAbus.getContext(),
-				R.id.text, R.layout.infos_row, list);
+				R.id.text, R.layout.news_row, list);
 		setListAdapter(infos);
 		progdial.dismiss();
 	}
@@ -145,11 +145,6 @@ public class InfoActivity extends ListActivity {
 		}
 		case R.id.menu_credits: {
 			new Credits(this).show();
-			return true;
-		}
-		case R.id.menu_settings: {
-			Intent settings = new Intent(this, SetSettingsActivity.class);
-			startActivity(settings);
 			return true;
 		}
 		}

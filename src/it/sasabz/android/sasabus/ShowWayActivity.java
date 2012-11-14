@@ -26,6 +26,7 @@
 package it.sasabz.android.sasabus;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -88,9 +89,6 @@ public class ShowWayActivity extends ListActivity {
 	 */
 	private int pos;
 	
-	//test pointer activity
-	private final int POINTER = 10;
-	
 	private Bacino bacino = null;
 	
 	//test map activity
@@ -104,20 +102,68 @@ public class ShowWayActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle extras = getIntent().getExtras();
+		//following parameters for offline mode
 		orarioId = 0;
 		destinazione = null;
 		int bacinonr = 0;
+		//following parameters for online mode
+		String linecode = null;
+		String start = null;
+		String orario_des = null;
+		String orario_arr = null;
 		if (extras != null) {
-			orarioId = extras.getInt("orario");
 			destinazione = extras.getString("destinazione");
-			linea = extras.getInt("linea");
 			bacinonr = extras.getInt("bacino");
+			if(bacinonr == 0)
+			{
+				start = extras.getString("partenza");
+				linecode = extras.getString("line");
+				orario_des = extras.getString("orario_des");
+				orario_arr = extras.getString("orario_arr");
+			}
+			else
+			{
+				linea = extras.getInt("linea");
+				orarioId = extras.getInt("orario");
+			}
 		}
-		bacino = BacinoList.getById(bacinonr);
-		Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
-		Palina part = PalinaList.getById(pas.getIdPalina());
-		Palina dest = PalinaList.getTranslation(destinazione, "de");
-		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
+		Palina dest = null;
+		Palina part = null;
+		Linea line = null;
+		if(bacinonr == 0)
+		{
+			String lang = "it";
+			if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+				lang = "de";
+			part = PalinaList.getTranslation(start, lang);
+			dest = PalinaList.getTranslation(destinazione, lang);
+			if(part == null || dest == null)
+			{
+				finish();
+			}
+			bacino = BacinoList.getBacino(part.getName_de(), dest.getName_de(), linecode);
+			line = LineaList.getByNumLin(linecode, bacino.getTable_prefix());
+			linea = line.getId();
+			Passaggio pas = PassaggioList.getPassaggio(line.getId(), part.getName_de(), dest.getName_de(), orario_des, orario_arr, bacino.getTable_prefix());
+			if (pas != null)
+			{
+				orarioId = pas.getId();
+			}
+			else
+			{
+				finish();
+			}
+		}
+		else
+		{
+			dest = PalinaList.getTranslation(destinazione, "de");
+			bacino = BacinoList.getById(bacinonr);
+			Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
+			part = PalinaList.getById(pas.getIdPalina());
+			line = LineaList.getById(linea, bacino.getTable_prefix());
+		}
+	
+		
 		if (part == null || dest == null || line == null)
 		{
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
@@ -125,7 +171,7 @@ public class ShowWayActivity extends ListActivity {
 			return;
 		}
 		setContentView(R.layout.standard_listview_layout);
-		TextView titel = (TextView)findViewById(R.id.titel);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
 		titel.setText(R.string.show_way);
 		
 		Resources res = getResources();
@@ -159,7 +205,6 @@ public class ShowWayActivity extends ListActivity {
 	private void fillData() {
 		list = PassaggioList.getVectorWay(orarioId, destinazione, bacino.getTable_prefix());
 		pos = getNextTimePosition(list);
-		int[] wherelist = {R.id.palina, R.id.orario};
         MyWayListAdapter paline = new MyWayListAdapter(this, list, pos);
         setListAdapter(paline);
 	}
@@ -211,7 +256,6 @@ public class ShowWayActivity extends ListActivity {
     	 super.onCreateOptionsMenu(menu);
     	 MenuInflater inflater = getMenuInflater();
     	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, POINTER, 3, R.string.pointing);
     	 menu.add(0, MAP, 4, R.string.map);
          return true;
     }
@@ -229,24 +273,10 @@ public class ShowWayActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);
 				startActivity(infos);
-				return true;
-			}
-			case POINTER:
-			{
-				Intent pointeract = new Intent(this, PointingLocationActivity.class);
-				Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
-				pointeract.putExtra("palina", pas.getIdPalina());
-				startActivity(pointeract);
 				return true;
 			}
 			case MAP:

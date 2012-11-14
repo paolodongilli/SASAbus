@@ -116,7 +116,7 @@ public class XMLStation {
 		else
 		{
 			String geteilt = this.name.substring(0, this.name.indexOf("-")).trim();
-			ret = geteilt.substring(1, geteilt.indexOf(")"))+ " - " + geteilt.substring(geteilt.indexOf(")") + 1).trim();
+			ret = geteilt.substring(1, geteilt.indexOf(")")) + " - " + geteilt.substring(geteilt.indexOf(")") + 1).trim();
 		}
 		return ret;
 	}

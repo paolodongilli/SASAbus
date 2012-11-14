@@ -74,32 +74,29 @@ public class MyXMLConnectionAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		
-		if (v == null) 
+	
+	    LayoutInflater vi = (LayoutInflater)SASAbus.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if (position == 0) 
 		{
-              LayoutInflater vi = (LayoutInflater)SASAbus.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              if(position == 0)
-              {
-            	  if(list != null && list.size() == 1)
-					{
-            		  v = vi.inflate(R.layout.con_transfer_row_one, null); 
-					}
-            	  else
-            	  {
-            		  v = vi.inflate(R.layout.con_transfer_row_first, null); 
-            	  }
-              }
-              else
-              {
-            	  if(position == list.size() - 1)
-            	  {
-            		  v = vi.inflate(R.layout.con_transfer_row_last, null);
-            	  }
-            	  else
-            	  {
-            		  v = vi.inflate(R.layout.con_transfer_row_follower, null);
-            	  }
-              }
+			if (list != null && list.size() == 1) 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_one, null);
+			} 
+			else 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_first, null);
+			}
+		} 
+		else 
+		{
+			if (position == list.size() - 1) 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_last, null);
+			}
+			else 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_follower, null);
+			}
 		}
 		if (list != null)
 		{

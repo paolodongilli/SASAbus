@@ -208,7 +208,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		switch (item.getItemId()) {
 		case OFFLINE:
 		{
-			Intent oldmode = new Intent(this, SelectModeActivity.class);
+			Intent oldmode = new Intent(this, SelectBacinoActivity.class);
 			startActivity(oldmode);
 			return true;
 		}
@@ -218,11 +218,6 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		}
 		case R.id.menu_credits: {
 			new Credits(this).show();
-			return true;
-		}
-		case R.id.menu_settings: {
-			Intent settings = new Intent(this, SetSettingsActivity.class);
-			startActivity(settings);
 			return true;
 		}
 		case R.id.menu_infos: {

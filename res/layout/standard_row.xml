@@ -28,4 +28,4 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="fill_parent"
     android:textColor="#ffffff"
     android:gravity="center_vertical|center_horizontal"
-    android:textSize="32sp"/>
+    android:textSize="32dip"/>

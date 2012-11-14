@@ -47,6 +47,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Medium Text"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </TableRow>

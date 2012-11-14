@@ -89,11 +89,9 @@ public class SelectPalinaActivity extends ListActivity {
 			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
 			finish();
 		}
-        setContentView(R.layout.standard_listview_layout);
-        
-        
-        TextView text = (TextView)findViewById(R.id.titel);
-        text.setText(R.string.select_destination);
+		setContentView(R.layout.standard_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
+        titel.setText(R.string.select_destination);
         
         Resources res = getResources();
         
@@ -157,12 +155,6 @@ public class SelectPalinaActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

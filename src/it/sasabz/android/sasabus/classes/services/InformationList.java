@@ -54,105 +54,6 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 	private final InfoActivity activity;
 	
 	
-	/**                                                                                                                                                                                                          
-	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
-	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
-	 */
-	public static  Vector <DBObject>  getList() throws ClientProtocolException, IOException
-	{
-		Vector <DBObject> list = null;
-		SASAbusXML parser = new SASAbusXML();
-		
-		String newsserver = SASAbus.getContext().getString(R.string.newsserver);
-		SasabusHTTP http = new SasabusHTTP(newsserver);
-		String xml = http.postData();
-		if(xml == null)
-		{
-			throw new IOException("XML request string is NULL");
-		}
-		Document doc = parser.getDomElement(xml); // getting DOM element
-		
-		NodeList nl = doc.getElementsByTagName("meldung");
-		 
-		// looping through all item nodes <item>
-		for (int i = 0; i < nl.getLength(); i++) {
-			if(list == null)
-			{
-				list = new Vector<DBObject>();
-			}
-			Element e = (Element) nl.item(i);
-			
-			String id = parser.getValue(e, "id");
-			String titel_de = parser.getValue(e, "titel_de"); // name child value
-		    String titel_it = parser.getValue(e, "titel_it"); // cost child value
-		    String nachricht_de = parser.getValue(e, "nachricht_de"); // description child value
-		    String nachricht_it = parser.getValue(e, "nachricht_it");
-		    String stadt = parser.getValue(e, "gebiet");
-			
-			Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
-			
-			list.add(info);
-				
-		}
-		
-		
-		return list;
-	}
-	
-	/**                                                                                                                                                                                                          
-	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
-	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
-	 */
-	public static DBObject getById(int newsId) throws ClientProtocolException, IOException
-	{
-		SASAbusXML parser = new SASAbusXML();
-		
-		String newsserver = SASAbus.getContext().getString(R.string.newsserver);
-		SasabusHTTP http = new SasabusHTTP(newsserver);
-		
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("id", Integer.toString(newsId)));
-		
-		String xml = http.postData(nameValuePairs);
-		if(xml == null)
-		{
-			throw new IOException("XML request string is NULL");
-		}
-		Document doc = parser.getDomElement(xml); // getting DOM element
-		
-		NodeList nl = doc.getElementsByTagName("meldung");
-		 
-		Information info = null;
-		
-		// looping through all item nodes <item>
-		if(nl.getLength() > 0) 
-		{
-			Element e = (Element) nl.item(0);
-			
-			String id = parser.getValue(e, "id");
-			String titel_de = parser.getValue(e, "titel_de"); // name child value
-		    String titel_it = parser.getValue(e, "titel_it"); // cost child value
-		    String nachricht_de = parser.getValue(e, "nachricht_de"); // description child value
-		    String nachricht_it = parser.getValue(e, "nachricht_it");
-		    String stadt = parser.getValue(e, "gebiet");
-			
-			info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));	
-		}
-		
-		
-		return info;
-	}
-	
-	/**                                                                                                                                                                                                          
-	 * This function returns a vector of all the objects momentanly avaiable in the database                                                                                                                     
-	 * @return a vector of objects if all goes right, alternativ it returns a MyError                                                                                                                              
-	 * @throws IOException 
-	 * @throws ClientProtocolException 
-	 */
 	public InformationList(InfoActivity activity)
 	{
 		super();
@@ -164,7 +65,6 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 		Vector <DBObject> list = null;
 		try
 		{
-			SASAbusXML parser = new SASAbusXML();
 			
 			String newsserver = SASAbus.getContext().getString(R.string.newsserver);
 			SasabusHTTP http = new SasabusHTTP(newsserver);
@@ -177,29 +77,66 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 			{
 				throw new IOException("XML request string is NULL");
 			}
-			Document doc = parser.getDomElement(xml); // getting DOM element
 			
-			NodeList nl = doc.getElementsByTagName("meldung");
-			 
-			// looping through all item nodes <item>
-			for (int i = 0; i < nl.getLength(); i++) {
-				if(list == null)
+			String [] stringarray = xml.split("\n");
+			
+			String id = "";
+			String titel_de = "";
+			String titel_it = "";
+			String nachricht_de = "";
+			String nachricht_it = "";
+			String stadt = "";
+			
+			for(int j = 0; j < stringarray.length;++j)
+			{
+				if(stringarray[j].contains("<id>"))
 				{
-					list = new Vector<DBObject>();
+					id = stringarray[j].substring(4, stringarray[j].indexOf("</id>"));
 				}
-				Element e = (Element) nl.item(i);
+				else if(stringarray[j].contains("<titel_de>"))
+				{
+					titel_de = stringarray[j].substring(10, stringarray[j].indexOf("</titel_de>"));
+				}
+				else if(stringarray[j].contains("<titel_it>"))
+				{
+					titel_it = stringarray[j].substring(10, stringarray[j].indexOf("</titel_it>"));
+				}
+				else if(stringarray[j].contains("<nachricht_de>"))
+				{
+					if(stringarray[j].indexOf("</nachricht_de>") != -1)
+						nachricht_de = stringarray[j].substring(14, stringarray[j].indexOf("</nachricht_de>"));
+					else
+						nachricht_de = stringarray[j].substring(14);
+				}
+				else if(stringarray[j].contains("<nachricht_it>"))
+				{
+					if(stringarray[j].indexOf("</nachricht_it>") != -1)
+						nachricht_it = stringarray[j].substring(14, stringarray[j].indexOf("</nachricht_it>"));
+					else
+						nachricht_it = stringarray[j].substring(14);
+				}
+				else if(stringarray[j].contains("<gebiet>"))
+				{
+					stadt = stringarray[j].substring(8, stringarray[j].indexOf("</gebiet>"));
+				}
 				
-				String id = parser.getValue(e, "id");
-				String titel_de = parser.getValue(e, "titel_de"); // name child value
-			    String titel_it = parser.getValue(e, "titel_it"); // cost child value
-			    String nachricht_de = parser.getValue(e, "nachricht_de"); // description child value
-			    String nachricht_it = parser.getValue(e, "nachricht_it");
-			    String stadt = parser.getValue(e, "gebiet");
-				
-				Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
-				
-				list.add(info);
+				if(!id.equals("") && !titel_de.equals("") && !titel_it.equals("") && !nachricht_de.equals("")
+						&& !nachricht_it.equals("") && !stadt.equals(""))
+				{
+					Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
+					if(list == null)
+					{
+						list = new Vector<DBObject>();
+					}
+					list.add(info);
 					
+					id = "";
+					titel_de = "";
+					titel_it = "";
+					nachricht_de = "";
+					nachricht_it = "";
+					stadt = "";
+				}
 			}
 		}
 		catch(Exception e)
