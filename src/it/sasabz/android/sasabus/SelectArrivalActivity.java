@@ -100,8 +100,8 @@ public class SelectArrivalActivity extends ListActivity {
         TextView to = (TextView)findViewById(R.id.to);
         
         lineat.setText(res.getString(R.string.line) + " " + line.toString());
-        from.setText("");
-        to.setText(res.getString(R.string.from) + " " + arrival.toString());
+        to.setText("");
+        from.setText(res.getString(R.string.from) + " " + arrival.toString());
         
         fillData();
     }

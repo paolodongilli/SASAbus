@@ -150,8 +150,8 @@ public class MapViewActivity extends MapActivity {
 		
 		
 		
-		Drawable start = getResources().getDrawable(R.drawable.glyphicons_347_hand_up);
-		Drawable stop = getResources().getDrawable(R.drawable.glyphicons_348_hand_down);
+		Drawable start = getResources().getDrawable(R.drawable.ab_punkt);
+		Drawable stop = getResources().getDrawable(R.drawable.ab_punkt);
 		
 		
 		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);

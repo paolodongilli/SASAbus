@@ -43,6 +43,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medium Text"
+        android:textStyle="bold"
         android:layout_marginTop="15dip"
         android:layout_marginBottom="15dip"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -58,6 +59,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="0.40" 
+        android:dividerHeight="3dip"
+        android:divider="@android:color/black"
         >
     </ListView>
 
@@ -65,6 +68,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="match_parent"
         android:layout_height="72dp" 
         android:layout_marginBottom="3dp"
+        android:layout_marginTop="15dip"
         android:background="@color/info_background"
         >
 

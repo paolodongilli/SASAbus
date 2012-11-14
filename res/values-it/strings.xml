@@ -30,7 +30,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="select_linea">Scegli la linea:</string>
 <string name="select_destination">Scegli la destinazione:</string>
 <string name="select_palina">Scegli la fermata (salita):</string>
-<string name="show_orari">Visualizzazione orari:</string>
+<string name="show_orari">Orari:</string>
 <string name="select_mode">Scegli la modalità:</string>
 
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
@@ -63,7 +63,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="mode_qr_code">modalità QR Code</string>
 <string name="menu_old_mode">Offline</string>
 
-<string name="show_way">Percorso</string>
+<string name="show_way">Percorso:</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
 <string name="menu_infos">Avvisi</string>

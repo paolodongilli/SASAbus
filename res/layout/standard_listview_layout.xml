@@ -43,6 +43,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medium Text"
+        android:textStyle="bold"
         android:layout_marginTop="15dip"
         android:layout_marginBottom="15dip"
         android:textAppearance="?android:attr/textAppearanceMedium" />
