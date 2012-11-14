@@ -51,6 +51,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -540,6 +542,10 @@ public class HomeActivity extends Activity {
     @Override
     public void startActivity(Intent intent)
     {
+    	if(!haveNetworkConnection())
+    	{
+    		createOfflineAlertDialog();
+    	}
     	if(updatecheck != null)
 		{
 			Log.v("HomeActivity", "AsynTask cancelled!");
@@ -548,6 +554,58 @@ public class HomeActivity extends Activity {
     	super.startActivity(intent);
     }
     
+    /**
+	 * this method checks if a networkconnection is active or not
+	 * @return boolean if the network is reachable or not
+	 */
+	private boolean haveNetworkConnection() 
+	{
+		boolean haveConnectedWifi = false;
+		boolean haveConnectedMobile = false;
+
+		ConnectivityManager cm = (ConnectivityManager) (this.getSystemService(Context.CONNECTIVITY_SERVICE));
+		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+		for (NetworkInfo ni : netInfo) {
+			//testing WIFI connection
+			if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+				if (ni.isConnected())
+					haveConnectedWifi = true;
+			//testing GPRS/EDGE/UMTS/HDSPA/HUSPA/LTE connection
+			if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+				if (ni.isConnected())
+					haveConnectedMobile = true;
+		}
+		return haveConnectedWifi || haveConnectedMobile;
+	}
+    
+	private void createOfflineAlertDialog()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.information);
+		builder.setMessage(R.string.offline_info);
+		
+		builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+			
+		});
+		
+		builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Intent oldmode = new Intent(getThis(), SelectBacinoActivity.class);
+				startActivity(oldmode);
+			}
+			
+		});
+		
+	}
+	
     public final Dialog createDownloadAlertDialog(int msg) 
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);

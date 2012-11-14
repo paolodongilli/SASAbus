@@ -57,7 +57,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:id="@id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="0.40" >
+        android:layout_weight="0.40" 
+        android:dividerHeight="0dip"
+        android:divider="@null"
+        >
     </ListView>
 
      <TableLayout

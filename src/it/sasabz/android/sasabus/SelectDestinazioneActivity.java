@@ -110,7 +110,7 @@ public class SelectDestinazioneActivity extends ListActivity {
      */
     private void fillData() {
     	list = PalinaList.getListLinea(linea, bacino.getTable_prefix());
-    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
         setListAdapter(destinazioni);
     }
     

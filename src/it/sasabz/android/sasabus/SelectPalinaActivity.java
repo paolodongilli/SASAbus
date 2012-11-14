@@ -86,7 +86,7 @@ public class SelectPalinaActivity extends ListActivity {
 		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
 		if(arrival == null || line == null)
 		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
 			finish();
 		}
 		setContentView(R.layout.standard_listview_layout);
@@ -130,7 +130,7 @@ public class SelectPalinaActivity extends ListActivity {
      */
     private void fillData() {
         list = PalinaList.getListDestinazione(arrivo, linea, bacino.getTable_prefix());
-        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
         setListAdapter(paline);
     }
     

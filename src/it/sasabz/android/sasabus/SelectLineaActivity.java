@@ -100,7 +100,6 @@ public class SelectLineaActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         int linea = list.get(position).getId(); 
-        Log.v("LINEA ID", Integer.toString(linea));
     	Intent selDest = new Intent(this, SelectDestinazioneActivity.class);;
     	selDest.putExtra("linea", linea);
     	selDest.putExtra("bacino", bacino.getId());
@@ -114,7 +113,7 @@ public class SelectLineaActivity extends ListActivity {
     private void fillData() {
     	list = LineaList.getList(bacino.getTable_prefix());
     	list = LineaList.sort(list);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
         setListAdapter(linee);
     }  
     

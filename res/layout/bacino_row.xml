@@ -48,10 +48,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Large Text"
                     android:textColor="#ffffff"
                     android:layout_marginLeft="15dip"
-                    android:textSize="32dip"
+                    android:textSize="25dip"
                      />
 
             </TableRow>
