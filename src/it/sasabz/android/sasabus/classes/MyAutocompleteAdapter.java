@@ -73,7 +73,6 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
           }
 		TextView textView = (TextView) v.findViewById(R.id.text1);
 		textView.setTextColor(context.getResources().getColor(R.color.black));
-		textView.setTextSize(12);
 		if (datalist != null)
 		{
 			DBObject listItem = datalist.get(position);
