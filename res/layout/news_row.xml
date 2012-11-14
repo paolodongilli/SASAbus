@@ -50,7 +50,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_gravity="center_vertical"
                     android:textColor="#ffffff"
                     android:layout_marginLeft="15dip"
-                    android:textSize="20dip"
+                    android:layout_marginRight="10dip"
+                    android:textSize="15dip"
                      />
 
             </TableRow>

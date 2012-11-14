@@ -545,6 +545,7 @@ public class HomeActivity extends Activity {
     	if(!haveNetworkConnection())
     	{
     		createOfflineAlertDialog();
+    		return;
     	}
     	if(updatecheck != null)
 		{
