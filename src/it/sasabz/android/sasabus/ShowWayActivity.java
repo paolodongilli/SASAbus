@@ -180,7 +180,7 @@ public class ShowWayActivity extends ListActivity {
         TextView from = (TextView)findViewById(R.id.from);
         TextView to = (TextView)findViewById(R.id.to);
         
-        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        lineat.setText(res.getString(R.string.line_txt) + " " + line.toString());
         from.setText(res.getString(R.string.from) + " " + part.toString());
         to.setText(res.getString(R.string.to) + " " + dest.toString());
 		

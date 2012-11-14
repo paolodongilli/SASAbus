@@ -148,5 +148,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="information">Information</string>
 <string name="offline_info">You have no internet connectivity. Please enable internetconnection or switch to the offline mode. Switch to offline mode?</string>
 
+<string name="start">Start</string>
+<string name="zwischenstop">Intermediate stop</string>
+<string name="ziel">Arrival</string>
+
 </resources>
 

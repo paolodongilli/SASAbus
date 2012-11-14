@@ -142,5 +142,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="information">Information</string>
 <string name="offline_info">Sie haben keine Internetverbindung. Im Offlinemodus fortfahren?</string>
 
+<string name="start">Start</string>
+<string name="zwischenstop">Zwischenstop</string>
+<string name="ziel">Ziel</string>
+
 </resources>
 

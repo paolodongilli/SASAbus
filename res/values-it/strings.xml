@@ -139,4 +139,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="information">Informazione</string>
 <string name="offline_info">Nessuna conessione a internet disponibile. Proseguire senza conessione?</string>
 
+<string name="start">Partenza</string>
+<string name="zwischenstop">Fermata intermedia</string>
+<string name="ziel">Arrivo</string>
+
 </resources>

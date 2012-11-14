@@ -620,7 +620,7 @@ public class HomeActivity extends Activity {
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
 				Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
-				startActivity(download);
+				myStartActivity(download);
 			}
 		});
 		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

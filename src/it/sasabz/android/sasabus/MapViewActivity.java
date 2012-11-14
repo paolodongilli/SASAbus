@@ -154,8 +154,8 @@ public class MapViewActivity extends MapActivity {
 		Drawable stop = getResources().getDrawable(R.drawable.ab_punkt);
 		
 		
-		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);
-		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), stop);
+		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.start), part.toString(), start);
+		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.ziel), dest.toString(), stop);
 		
 		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(start);
 		MyArrayItemizedOverlay dest_arr = new MyArrayItemizedOverlay(stop);
@@ -184,7 +184,7 @@ public class MapViewActivity extends MapActivity {
 			if(pal.getId() != dest.getId() && pal.getId() != part.getId())
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
-				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
+				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.zwischenstop), pal.toString(), inter);
 				intermediate.addItem(overlay);
 			}
 		}
