@@ -91,6 +91,8 @@ public class ShowWayActivity extends ListActivity {
 	
 	private Bacino bacino = null;
 	
+	private Palina dest = null;
+	
 	//test map activity
 	private final int MAP = 11;
 
@@ -127,7 +129,7 @@ public class ShowWayActivity extends ListActivity {
 				orarioId = extras.getInt("orario");
 			}
 		}
-		Palina dest = null;
+		dest = null;
 		Palina part = null;
 		Linea line = null;
 		if(bacinonr == 0)
@@ -203,7 +205,12 @@ public class ShowWayActivity extends ListActivity {
 	 * @return a cursor to the time table
 	 */
 	private void fillData() {
-		list = PassaggioList.getVectorWay(orarioId, destinazione, bacino.getTable_prefix());
+		list = PassaggioList.getVectorWay(orarioId, dest.getName_de(), bacino.getTable_prefix());
+		Log.v("SHOWWAYACTIVITY", "orarioId: " + orarioId + " | destinazione: " +destinazione + " | bacino_table_prefix: " + bacino.getTable_prefix() + " | list: " + list);
+		if (list == null){
+			finish();
+			return;
+		}
 		pos = getNextTimePosition(list);
         MyWayListAdapter paline = new MyWayListAdapter(this, list, pos);
         setListAdapter(paline);
@@ -286,7 +293,7 @@ public class ShowWayActivity extends ListActivity {
 			{
 				Intent mapview = new Intent(this, MapViewActivity.class);
 				Passaggio part = PassaggioList.getById(orarioId, bacino.getTable_prefix());
-				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione, bacino.getTable_prefix());
+				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, this.dest.getName_de(), bacino.getTable_prefix());
 				mapview.putExtra("partenza", part.getIdPalina());
 				mapview.putExtra("destinazione", dest.getIdPalina());
 				mapview.putExtra("line", linea);

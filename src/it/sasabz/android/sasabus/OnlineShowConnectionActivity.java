@@ -51,6 +51,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -76,6 +77,8 @@ public class OnlineShowConnectionActivity extends ListActivity {
 	private ProgressDialog progress = null;
 	
 	private Vector<XMLConnectionRequest> list = null;
+	
+	private XMLConnectionRequestList request = null;
 
 	public OnlineShowConnectionActivity() {
 	}
@@ -84,6 +87,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		return this;
 	}
 
+	
 	/** Called with the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -118,9 +122,10 @@ public class OnlineShowConnectionActivity extends ListActivity {
 			progress = new ProgressDialog(this);
 		    progress.setMessage(getResources().getText(R.string.waiting));
 		    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		    progress.setCancelable(false);
 		    progress.show();
 		    
-			XMLConnectionRequestList request = new XMLConnectionRequestList(from, to, datetime, this);
+			request = new XMLConnectionRequestList(from, to, datetime, this);
 			request.execute();
 		}
 		else
@@ -148,7 +153,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 
 		setListAdapter(adapter);
 		
-		if(progress != null)
+		if(progress != null && progress.isShowing())
 			progress.dismiss();
 	}
 
