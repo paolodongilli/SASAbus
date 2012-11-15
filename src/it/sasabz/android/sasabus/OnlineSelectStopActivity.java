@@ -58,6 +58,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -90,10 +91,13 @@ public class OnlineSelectStopActivity extends Activity {
     private Spinner to_spinner = null;
     private Button search;
     
+    
     public static final int XML_FAILURE = 0;
     public static final int NO_DATA = 1;
     
 	public final static int OFFLINE = 34;
+	
+	private XMLStationList statlist = null;
 
     
     private Vector<XMLConnectionRequest> list = null;
@@ -105,6 +109,7 @@ public class OnlineSelectStopActivity extends Activity {
     {
     	return this;
     }
+    
     
     /** Called with the activity is first created. */
     @Override
@@ -154,7 +159,7 @@ public class OnlineSelectStopActivity extends Activity {
         progress.setCancelable(false);
         progress.show();
         
-        XMLStationList statlist = new XMLStationList(this);
+        statlist = new XMLStationList(this);
         if(toPalina != null)
         {
         	to = toPalina.getHaltestelle();
