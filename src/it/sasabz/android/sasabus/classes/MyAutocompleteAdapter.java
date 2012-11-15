@@ -93,7 +93,7 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	@Override
 	public Object getItem(int position) {
-		if(datalist == null)
+		if(datalist == null || position >= datalist.size())
 			return null;
 		return datalist.get(position);
 	}

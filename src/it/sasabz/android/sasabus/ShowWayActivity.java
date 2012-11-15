@@ -290,7 +290,7 @@ public class ShowWayActivity extends ListActivity {
 			{
 				Intent mapview = new Intent(this, MapViewActivity.class);
 				Passaggio part = PassaggioList.getById(orarioId, bacino.getTable_prefix());
-				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, destinazione, bacino.getTable_prefix());
+				Passaggio dest = PassaggioList.getWayEndpoint(orarioId, this.dest.getName_de(), bacino.getTable_prefix());
 				mapview.putExtra("partenza", part.getIdPalina());
 				mapview.putExtra("destinazione", dest.getIdPalina());
 				mapview.putExtra("line", linea);
