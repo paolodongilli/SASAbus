@@ -151,6 +151,7 @@ public class OnlineSelectStopActivity extends Activity {
         progress = new ProgressDialog(this);
         progress.setMessage(getResources().getText(R.string.waiting));
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setCancelable(false);
         progress.show();
         
         XMLStationList statlist = new XMLStationList(this);

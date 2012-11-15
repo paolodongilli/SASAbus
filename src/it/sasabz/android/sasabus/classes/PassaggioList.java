@@ -153,7 +153,6 @@ public class PassaggioList {
 	public static Vector<Passaggio> getVectorWay(int passaggio, String destinazione, String table_prefix)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String[] selectionArgs = {Integer.toString(passaggio), destinazione};
 		Cursor c = null;
 		Vector<Passaggio> list = null;
 		String query = "select o1.id as id, strftime('%H:%M',o1.orario) as orario, o1.palinaId as palinaId, " +
@@ -161,22 +160,23 @@ public class PassaggioList {
 				"from "+
 				"(select progressivo, orario, corsaId, id, palinaId "+
 				"from " + table_prefix + "orarii "+
-				"where id = ?" +
+				"where id = \"" + passaggio + "\" " +
 				") as o2, " +
 				"" + table_prefix + "orarii as o1, " +
 				"(select progressivo , corsaId "+
 				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
-				"select id from paline where nome_de = ? " +
+				"select id from paline where nome_de = \"" +destinazione + "\" " +
 				")) as o3 " +
 				"where o1.corsaId = o2.corsaId " +
 				"and o2.corsaId = o3.corsaId " +
 				"and o1.progressivo >= o2.progressivo " +
 				"and o1.progressivo <= o3.progressivo " +
 				"order by o1.progressivo";
+		Log.v("PASSAGIOLIST", "QUERY: " + query);
 		try
 		{
-			c = sqlite.rawQuery(query, selectionArgs);
+			c = sqlite.rawQuery(query, null);
 			if(c.moveToFirst())
 			{
 				list = new Vector<Passaggio>();

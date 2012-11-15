@@ -118,6 +118,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 			progress = new ProgressDialog(this);
 		    progress.setMessage(getResources().getText(R.string.waiting));
 		    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		    progress.setCancelable(false);
 		    progress.show();
 		    
 			XMLConnectionRequestList request = new XMLConnectionRequestList(from, to, datetime, this);

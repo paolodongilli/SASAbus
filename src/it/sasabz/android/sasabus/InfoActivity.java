@@ -112,6 +112,7 @@ public class InfoActivity extends ListActivity {
 		
 		progdial.setMessage(getResources().getText(R.string.waiting));
 		progdial.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progdial.setCancelable(false);
 		progdial.show();
 		
 		InformationList info = new InformationList(this);
