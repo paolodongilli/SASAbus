@@ -23,6 +23,8 @@
  */
 package it.sasabz.android.sasabus.hafas;
 
+import it.sasabz.android.sasabus.classes.Palina;
+import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.SASAbusXML;
 
 import java.util.Locale;
@@ -98,13 +100,23 @@ public class XMLStation {
 		String ret = "";
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
-			String geteilt = this.name.substring(this.name.indexOf("-") + 1).trim();
-			ret =  geteilt.substring(1, geteilt.indexOf(")"))+ " - " +geteilt.substring(geteilt.indexOf(")") + 1).trim();
+			String italienisch = this.name.substring(0, this.name.indexOf("-")).trim();
+			Palina station = PalinaList.getTranslation(italienisch, "it");
+			if(station != null)
+			{
+				ret = station.getName_de();
+				ret =  ret.substring(1, ret.indexOf(")"))+ " - " + ret.substring(ret.indexOf(")") + 1).trim();
+			}
+			else
+			{
+				String geteilt = this.name.substring(this.name.indexOf("-") + 1).trim();
+				ret =  geteilt.substring(1, geteilt.indexOf(")"))+ " - " +geteilt.substring(geteilt.indexOf(")") + 1).trim();
+			}
 		}
 		else
 		{
 			String geteilt = this.name.substring(0, this.name.indexOf("-")).trim();
-			ret = geteilt.substring(1, geteilt.indexOf(")"))+ " - " + geteilt.substring(geteilt.indexOf(")") + 1).trim();
+			ret = geteilt.substring(1, geteilt.indexOf(")")) + " - " + geteilt.substring(geteilt.indexOf(")") + 1).trim();
 		}
 		return ret;
 	}

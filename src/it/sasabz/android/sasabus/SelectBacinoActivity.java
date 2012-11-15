@@ -63,16 +63,8 @@ public class SelectBacinoActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.standard_listview_layout);
-        TextView titel = (TextView)findViewById(R.id.titel);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
         titel.setText(R.string.select_bacino);
-        
-        TextView line = (TextView)findViewById(R.id.line);
-        TextView from = (TextView)findViewById(R.id.from);
-        TextView to = (TextView)findViewById(R.id.to);
-        
-        line.setText("");
-        from.setText("");
-        to.setText("");
         
         fillData();
     }
@@ -98,7 +90,7 @@ public class SelectBacinoActivity extends ListActivity {
      */
     private void fillData() {
         list = BacinoList.getList();
-        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+        MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
         setListAdapter(bacini);
     }
     
@@ -123,12 +115,6 @@ public class SelectBacinoActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

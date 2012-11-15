@@ -4,7 +4,7 @@
 strings.xml
  
  
-Copyright (C) 2012 Markus Windegger
+Copyright (C) 2011 Paolo Dongilli & Markus Windegger
 
 This file is part of SasaBus.
 
@@ -30,7 +30,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="select_linea">Select bus number:</string>
 <string name="select_destination">Select destination:</string>
 <string name="select_palina">Select bus stop:</string>
-<string name="show_orari">Show schedule:</string>
+<string name="show_orari">schedule</string>
 <string name="select_mode">Select mode:</string>
 
 <string name="md5_error">Calculated MD5 of database file is different from downloaded MD5.</string>
@@ -39,7 +39,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_about">About</string>
 <string name="updates">... updates ...</string>
 <string name="license">SASAbus is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n\nThe Google Maps Icons are relaesed under the cc contributed by Maps Icons Collection http://mapicons.nicolasmollet.com</string>
-<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\nData: CC-SA-NC by http://open.sasabz.it</string>
+<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\n\nData: CC-SA-NC by http://open.sasabz.it</string>
 <string name="supp_email">For support and contact with the developers send a mail to: android@sasabz.it</string>
 <string name="disclaimer">SASAbus is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</string>
 <string name="gpl">You should have received a copy of the GNU General Public License along with SASAbus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</string>
@@ -62,11 +62,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="mode_normal">Normal Mode</string>
 <string name="mode_qr_code">QR Code Mode</string>
 
-<string name="show_way">Show Route</string>
+<string name="show_way">Show Route:</string>
 <string name="weiter">Go!</string>
 <string name="menu_settings">Settings</string>
 <string name="menu_test">this is a test</string>
 <string name="menu_infos">News</string>
+<string name="menu_old_mode">Offline</string>
+
 
 <string name="gps_prefs">GPS Preferences</string>
 <string name="general_prefs">General preferences</string>
@@ -90,7 +92,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="to">To: </string>
 <string name="from_txt">From</string>
 <string name="to_txt">To</string>
+<string name="line_txt">Line</string>
 
+<string name="download_available">Schedule update available. Download?</string>
 
 <string name="intermediate">Intermediate Stop</string>
 
@@ -116,6 +120,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="mode_favoriten">Favourites</string>
 <string name="mode_online">Online Mode</string>
+<string name="mode_home">Home</string>
 <string name="select_stop">Select busstop</string>
 
 <string name="online_connection_error">The entered pattern matches no busstop</string>
@@ -126,10 +131,26 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="reset">Reset</string>
 
+<string name="waiting">Please wait...</string>
+<string name="transfers">Trasferimenti</string>
+
+
 <string name="set_date">Date</string>
 <string name="set_time">Time</string>
 
+<string name="error_station">One of the referred Station was not found</string>
+<string name="error">Error</string>
+<string name="error_connection">Failure during Connectionquery, please try again or modify request!</string>
+
+<string name="connection">Connections</string>
 <string name="connection_details">Connection details</string>
+
+<string name="information">Information</string>
+<string name="offline_info">You have no internet connectivity. Please enable internetconnection or switch to the offline mode. Switch to offline mode?</string>
+
+<string name="start">Start</string>
+<string name="zwischenstop">Intermediate stop</string>
+<string name="ziel">Arrival</string>
 
 </resources>
 

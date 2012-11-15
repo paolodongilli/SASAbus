@@ -1,6 +1,6 @@
 /**
  *
- * SelectLineaLocationActivity.java
+ * SelectPalinaActivity.java
  * 
  * Created: Jan 16, 2011 11:41:06 AM
  * 
@@ -25,11 +25,12 @@
 
 package it.sasabz.android.sasabus;
 
-import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Bacino;
+import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Linea;
@@ -41,64 +42,66 @@ import it.sasabz.android.sasabus.classes.PalinaList;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectLineaLocationActivity extends ListActivity {
+public class SelectArrivalActivity extends ListActivity {
 
-	//this is the list of lines
-    private Vector<DBObject> list = null;
+	//saves the linea global for this object
+    private int linea;
     
-    //this is the parture busstop name
-    private String partenza = null;
+    //saves the arrival global for this object
+    private String arrivo;
     
-    //this is the destination busstop name
-    private String destinazione = null;
+    //saves the list of possible parture bus-stops for this object
+    private Vector<DBObject> list;
+
+    private Bacino bacino = null;
+    private Palina arrival = null;
     
-    
-    public SelectLineaLocationActivity() {
+    public SelectArrivalActivity() {
     }
 
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		Bundle extras = getIntent().getExtras();
-		partenza = null;
-		destinazione = null;
+        Bundle extras = getIntent().getExtras();
+		linea = 0;
+		arrivo = null;
+		int bacinonr = 0;
 		if (extras != null) {
-			partenza = extras.getString("partenza");
-			destinazione = extras.getString("destinazione");
+			linea = extras.getInt("linea");
+			arrivo = extras.getString("arrival");
+			bacinonr = extras.getInt("bacino");
 		}
-		Palina departure = PalinaList.getTranslation(partenza, "de");
-		Palina destination = PalinaList.getTranslation(destinazione, "de");
-		if(departure == null || destination == null)
+		bacino = BacinoList.getById(bacinonr);
+		arrival = PalinaList.getTranslation(arrivo, "de");
+		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
+		if(arrival == null || line == null)
 		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
 			finish();
 		}
-		
-        setContentView(R.layout.standard_listview_layout);
-        Resources res = getResources();
-        TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.select_linea);
+		setContentView(R.layout.palina_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
+        titel.setText(R.string.select_destination);
         
-        TextView line = (TextView)findViewById(R.id.line);
+        Resources res = getResources();
+        
+        TextView lineat = (TextView)findViewById(R.id.line);
         TextView from = (TextView)findViewById(R.id.from);
         TextView to = (TextView)findViewById(R.id.to);
         
-        line.setText("");
-        from.setText(res.getString(R.string.from) + " " + departure.toString());
-        to.setText(res.getString(R.string.to) + " " + destination.toString());
+        lineat.setText(res.getString(R.string.line_txt) + " " + line.toString());
+        to.setText("");
+        from.setText(res.getString(R.string.from) + " " + arrival.toString());
         
         fillData();
     }
@@ -113,24 +116,23 @@ public class SelectLineaLocationActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        int linea = list.get(position).getId();
-    	Intent selDest = new Intent(this, ShowOrariActivity.class);;
-    	selDest.putExtra("linea", linea);
-    	selDest.putExtra("palina", partenza);
-    	selDest.putExtra("destinazione", destinazione);
-    	startActivity(selDest);
+    	Intent showOrario = new Intent(this, ShowOrariActivity.class);
+    	showOrario.putExtra("linea", linea);
+    	showOrario.putExtra("palina", arrival.getName_de());
+    	Palina palina = (Palina)list.get(position);
+    	showOrario.putExtra("destinazione", palina.getName_de());
+    	showOrario.putExtra("bacino", bacino.getId());
+    	startActivity(showOrario);
     }
-    
+
     /**
-     * this method fills the list_view with the lines which connect the parture busstop 
-     * with the destination busstop
+     * this method fills the possible parture busstops into the list_view
      */
     private void fillData() {
-    	list = LineaList.getListDestPart(destinazione, partenza);
-    	list = LineaList.sort(list);
-    	MyListAdapter linee = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
-        setListAdapter(linee);
-    }  
+        list = PalinaList.getListDestinazione(arrivo, linea, bacino.getTable_prefix());
+        MyListAdapter paline = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.arrival_row, list);
+        setListAdapter(paline);
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,12 +155,6 @@ public class SelectLineaLocationActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

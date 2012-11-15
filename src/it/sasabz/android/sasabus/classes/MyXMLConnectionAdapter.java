@@ -37,7 +37,9 @@ import java.util.Date;
 import java.util.Vector;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.text.Html;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,53 +74,75 @@ public class MyXMLConnectionAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		
-		if (v == null) 
+	
+	    LayoutInflater vi = (LayoutInflater)SASAbus.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		if (position == 0) 
 		{
-              LayoutInflater vi = (LayoutInflater)SASAbus.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(R.layout.con_transfer_row, null);
+			if (list != null && list.size() == 1) 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_one, null);
+			} 
+			else 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_first, null);
+			}
+		} 
+		else 
+		{
+			if (position == list.size() - 1) 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_last, null);
+			}
+			else 
+			{
+				v = vi.inflate(R.layout.con_transfer_row_follower, null);
+			}
 		}
 		if (list != null)
 		{
-			TextView departure = (TextView) v.findViewById(R.id.departure);
-			TextView arrival = (TextView) v.findViewById(R.id.arrival);
-			TextView departuretime = (TextView) v.findViewById(R.id.deptime);
-			TextView arrivaltime = (TextView) v.findViewById(R.id.arrtime);
-			TextView transfers = (TextView) v.findViewById(R.id.transfers);
 			XMLConnection conreq = list.get(position);
 			if(conreq != null)
 			{
 				SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-				departure.setText(conreq.getDeparture().getStation().getHaltestelle());
-				departuretime.setText(simple.format(conreq.getDeparture().getArrtime()));
-				String transfertext = "";
+				if(position == 0)
+				{
+					TextView departure = (TextView) v.findViewById(R.id.departure);
+					departure.setText(Html.fromHtml("<b>" + simple.format(conreq.getDeparture().getArrtime()) + " " + conreq.getDeparture().getStation().getHaltestelle() + "</b> "));
+				}
+				
+				TextView arrival = (TextView) v.findViewById(R.id.arrival);
+				arrival.setText(Html.fromHtml("<b>" + simple.format(conreq.getArrival().getArrtime()) + " " + conreq.getArrival().getStation().getHaltestelle() + "</b> "));
+				
+				
+				TextView info = (TextView) v.findViewById(R.id.info);
+				ImageView image = (ImageView)v.findViewById(R.id.image);
+				String infotext = ""; 
 				if(conreq instanceof XMLWalk)
 				{
-					ImageView image = (ImageView)v.findViewById(R.id.image);
 					int random = (int)(Math.random() * 10) % 2;
 					if(random == 1)
 					{
-						image.setImageResource(R.drawable.glyphicons_339_rabbit);
+						image.setImageResource(R.drawable.middle_rabbit);
 					}
 					else
 					{
-						image.setImageResource(R.drawable.glyphicons_338_turtle);
+						image.setImageResource(R.drawable.middle_turtle);
 					}
+					infotext = simple.format(conreq.getDuration());
 				}
 				else if(conreq instanceof XMLJourney)
 				{
-					ImageView image = (ImageView)v.findViewById(R.id.image);
+					image.setImageResource(R.drawable.middle_bus);
 					
-					image.setImageResource(R.drawable.glyphicons_031_bus);
-					
-					transfertext = " | " + SASAbus.getContext().getResources().getString(R.string.line);
-					transfertext += (" " + ((XMLJourney)conreq).getAttribut("NUMBER"));
+					infotext = simple.format(conreq.getDuration());
+					Resources res = SASAbus.getContext().getResources();
+					infotext += (" -&gt; <font color=\"" + res.getColor(R.color.sasa_orange) + "\">" + res.getString(R.string.line) + 
+							" " + ((XMLJourney)conreq).getAttribut("NUMBER") + "</font>");
+					Log.v("XMLCONNECTION-infotext", infotext);
 					
 					
 				}
-				transfers.setText(simple.format(conreq.getDuration()) + transfertext);
-				arrival.setText(conreq.getArrival().getStation().getHaltestelle());
-				arrivaltime.setText(simple.format(conreq.getArrival().getArrtime()));
+				info.setText(Html.fromHtml(infotext));
 				
 			}
 		}

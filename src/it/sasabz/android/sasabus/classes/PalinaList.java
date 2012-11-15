@@ -75,6 +75,28 @@ public class PalinaList {
 	 * Returns a list of all bus-stops avaiable in the database
 	 * @return a vector of all bus-stops in the database
 	 */
+	public static Vector <DBObject> getNameList()
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline", null);
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
 	public static Vector <DBObject> getListLinea(int linea)
 	{
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
@@ -115,59 +137,103 @@ public class PalinaList {
 	}
 	
 	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getListLinea(int linea, String table_prefix)
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		String [] args = {Integer.toString(linea)};
+		Cursor cursor = null;
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+		{
+			cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+					"from paline, " +
+					"(select id from " + table_prefix + "corse where lineaId = ?) as corse, " + table_prefix +
+					"orarii as orarii " +
+					"where orarii.corsaId = corse.id " +
+					"AND orarii.palinaId = paline.id " +
+					"order by paline.nome_de", args);
+		}
+		else
+		{
+				cursor = sqlite.rawQuery("select distinct paline.nome_de as nome_de, paline.nome_it as nome_it " +
+				"from paline, " +
+				"(select id from " + table_prefix + "corse where lineaId = ?) as corse, " + table_prefix +
+				"orarii as orarii " +
+				"where orarii.corsaId = corse.id " +
+				"AND orarii.palinaId = paline.id " +
+				"order by paline.nome_it", args);
+		}
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	
+	/**
 	 * Returns a list of all bus-stops avaiable in the database which were connected via linea to
 	 * the destination destinazione
 	 * @param destinazione is the name of the destination busstop
 	 * @param linea is the number of the line tho connect 
 	 * @return a vector of all bus-stops in the database which were connected via linea to the destination
 	 */
-	public static Vector <DBObject> getListDestinazione(String destinazione, int linea)
+	public static Vector <DBObject> getListDestinazione(String destinazione, int linea, String table_prefix)
 	{	
 		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
 		String [] args = {Integer.toString(linea),destinazione};
 		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
 				"from " +
 				"(select id, lineaId " +
-				"from corse " +
+				"from " + table_prefix + "corse as corse " +
 				"where  " +
 				"lineaId = ? " +
 				"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
 				") as c, " +
 				"(select progressivo, orario, corsaId " +
-				"from orarii " +
+				"from " + table_prefix + "orarii " +
 				"where palinaId IN ( " +
 				"select id from paline where nome_de = ? " +		
 				")) as o1, " +
-				"orarii as o2, " +
+				"" + table_prefix + "orarii as o2, " +
 				"paline p " +
 				"where " +
 				"o1.corsaId = c.id " +
 				"and o2.corsaId = o1.corsaId " +
 				"and o2.palinaId = p.id " +
-				"and o1.progressivo > o2.progressivo " +
+				"and o1.progressivo < o2.progressivo " +
 				"order by p.nome_it";
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 		{
 			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
 					"from " +
 					"(select id, lineaId " +
-					"from corse " +
+					"from " + table_prefix + "corse as corse " +
 					"where  " +
 					"lineaId = ? " +
 					"and substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
 					") as c, " +
 					"(select progressivo, orario, corsaId " +
-					"from orarii " +
+					"from " + table_prefix + "orarii " +
 					"where palinaId IN ( " +
 					"select id from paline where nome_de = ? " +		
 					")) as o1, " +
-					"orarii as o2, " +
+					"" + table_prefix + "orarii as o2, " +
 					"paline p " +
 					"where " +
 					"o1.corsaId = c.id " +
 					"and o2.corsaId = o1.corsaId " +
 					"and o2.palinaId = p.id " +
-					"and o1.progressivo > o2.progressivo " +
+					"and o1.progressivo < o2.progressivo " +
 					"order by p.nome_de";
 		}
 		Cursor cursor = sqlite.rawQuery(query, args);
@@ -185,8 +251,9 @@ public class PalinaList {
 		return list;
 	}
 	
+	
 	/**
-	 * 
+	 * Gets a lists of palinas which are in a certain radius of a location fix
 	 */
 	public static Vector<DBObject> getListGPS (Location loc) throws Exception
 	{
@@ -229,74 +296,30 @@ public class PalinaList {
 	}
 	
 	
-
 	/**
-	 * This methode gives me all the busstops which are connected to the departure busstop called partenza
-	 * (all possible destinations)
-	 * @param partenza is the departure busstop
-	 * @return a list of all possible destinations without changing bus
+	 * Get the nearest palina of a locationfix
+	 * @param loc is the location of the last fix
+	 * @return a palina
+	 * @throws Exception
 	 */
-	public static Vector <DBObject> getListPartenza(String partenza)
-	{	
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		String [] args = {partenza};
-		String query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
-				"from " +
-				"(select id, lineaId " +
-				"from corse " +
-				"where  " +
-				"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
-				") as c, " +
-				"(select progressivo, orario, corsaId " +
-				"from orarii " +
-				"where palinaId IN ( " +
-				"select id from paline where nome_de = ? " +		
-				")) as o1, " +
-				"orarii as o2, " +
-				"paline p " +
-				"where " +
-				"o1.corsaId = c.id " +
-				"and o2.corsaId = o1.corsaId " +
-				"and o2.palinaId = p.id " +
-				"and o1.progressivo < o2.progressivo " +
-				"order by p.nome_it";
-		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
-		{
-			query = "select distinct p.nome_de as nome_de, p.nome_it as nome_it " +
-					"from " +
-					"(select id, lineaId " +
-					"from corse " +
-					"where  " +
-					"substr(corse.effettuazione,round(strftime('%J','now','localtime')) - round(strftime('%J', '" + Config.getStartDate() + "')) + 1,1)='1' " + 
-					") as c, " +
-					"(select progressivo, orario, corsaId " +
-					"from orarii " +
-					"where palinaId IN ( " +
-					"select id from paline where nome_de = ? " +		
-					")) as o1, " +
-					"orarii as o2, " +
-					"paline p " +
-					"where " +
-					"o1.corsaId = c.id " +
-					"and o2.corsaId = o1.corsaId " +
-					"and o2.palinaId = p.id " +
-					"and o1.progressivo < o2.progressivo " +
-					"order by p.nome_de";
-		}
-		Cursor cursor = sqlite.rawQuery(query, args);
-		Vector <DBObject> list = null;
+	public static Palina getPalinaGPS (Location loc) throws Exception
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());			
+		String latitude = Double.toString(loc.getLatitude());
+		String longitude = Double.toString(loc.getLongitude());
+		String [] args = {longitude, longitude, latitude, latitude};
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline order by " +
+				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?)", args);
+		Palina palina = null;
 		if(cursor.moveToFirst())
 		{
-			list = new Vector<DBObject>();
-			do {
-				Palina element = new Palina(cursor);
-				list.add(element);
-			} while(cursor.moveToNext());
+			palina = new Palina(cursor);
 		}
 		cursor.close();
 		sqlite.close();
-		return list;
+		return palina;
 	}
+
 	
 	
 	/**

@@ -39,14 +39,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SelectDestinazioneActivity extends ListActivity {
+public class SelectDepartureActivity extends ListActivity {
 
     
     private Vector<DBObject> list = null;
     
     private int linea;
     
-    public SelectDestinazioneActivity() {
+    private Bacino bacino = null;
+    
+    public SelectDepartureActivity() {
     }
 
     /** Called with the activity is first created. */
@@ -55,18 +57,21 @@ public class SelectDestinazioneActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         linea = 0;
+        int bacinonr = 0;
 		if (extras != null) {
 			linea = extras.getInt("linea");
+			bacinonr = extras.getInt("bacino");
 		}
-        Linea line = LineaList.getById(linea);
+		bacino = BacinoList.getById(bacinonr);
+        Linea line = LineaList.getById(linea, bacino.getTable_prefix());
         if(line == null)
         {
-        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG);
+        	Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG).show();
         	finish();
         }
-        setContentView(R.layout.standard_listview_layout);
-        TextView titel = (TextView)findViewById(R.id.titel);
-        titel.setText(R.string.select_destination);
+        setContentView(R.layout.palina_listview_layout);
+        TextView titel = (TextView)findViewById(R.id.untertitel);
+        titel.setText(R.string.select_palina);
         
         Resources res = getResources();
         
@@ -74,7 +79,7 @@ public class SelectDestinazioneActivity extends ListActivity {
         TextView from = (TextView)findViewById(R.id.from);
         TextView to = (TextView)findViewById(R.id.to);
         
-        lineat.setText(res.getString(R.string.line) + " " + line.toString());
+        lineat.setText(res.getString(R.string.line_txt) + " " + line.toString());
         from.setText("");
         to.setText("");
         
@@ -91,9 +96,10 @@ public class SelectDestinazioneActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Palina destinazione = (Palina)list.get(position);
-    	Intent selDest = new Intent(this, SelectPalinaActivity.class);
-    	selDest.putExtra("destinazione", destinazione.getName_de());
+    	Palina arrival = (Palina)list.get(position);
+    	Intent selDest = new Intent(this, SelectArrivalActivity.class);
+    	selDest.putExtra("arrival", arrival.getName_de());
+    	selDest.putExtra("bacino", bacino.getId());
     	selDest.putExtra("linea", linea);
     	startActivity(selDest);
     	
@@ -103,8 +109,8 @@ public class SelectDestinazioneActivity extends ListActivity {
      * this method gets a list of palinas and fills the list_view with the palinas
      */
     private void fillData() {
-    	list = PalinaList.getListLinea(linea);
-    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.standard_row, list);
+    	list = PalinaList.getListLinea(linea, bacino.getTable_prefix());
+    	MyListAdapter destinazioni = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.departure_row, list);
         setListAdapter(destinazioni);
     }
     
@@ -129,12 +135,6 @@ public class SelectDestinazioneActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

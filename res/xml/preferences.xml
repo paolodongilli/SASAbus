@@ -30,14 +30,6 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:title="@string/general_prefs"
         android:key="general_prefs">
 
-        <ListPreference 
-            android:key="mode"
-            android:title="@string/mode"
-            android:summary="@string/mode_descr"
-            android:defaultValue="0" 
-            android:entries="@array/mode_names"
-            android:entryValues="@array/mode_values"
-        />
         
         <ListPreference 
             android:key="infos"
@@ -49,26 +41,6 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         />
         
 
-    </PreferenceCategory>
-    
-    
-     
-     <!-- GPS Preferences -->
-    
-	<PreferenceCategory 
-        android:title="@string/gps_prefs"
-        android:key="gps_prefs">
-        
-        
-        <ListPreference 
-            android:key="radius_gps"
-            android:title="@string/rad_gps"
-            android:summary="@string/gps_descr"
-            android:defaultValue="0.0018" 
-            android:entries="@array/radius_names"
-            android:entryValues="@array/radius_values"
-        />    
-            
     </PreferenceCategory>
     
 </PreferenceScreen>

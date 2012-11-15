@@ -23,7 +23,7 @@
  *
  */
 
-package it.sasabz.android.sasabus.classes;
+package it.sasabz.android.sasabus.classes.services;
 
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
@@ -31,6 +31,10 @@ import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.SASAbus;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.Config;
+import it.sasabz.android.sasabus.classes.Decompress;
+import it.sasabz.android.sasabus.classes.MD5Utils;
+import it.sasabz.android.sasabus.classes.SasabusFTP;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,9 +92,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 	private Resources res;
 
 	private String filename;
-	private PowerManager.WakeLock wakeLock;
 	private CheckDatabaseActivity activity;
-	private transient int originalRequestedOrientation;
 	
 	private String download = null;
 	private String unzipping = null;
@@ -112,16 +114,6 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 		this.activity = activity;
 		this.res = activity.getResources();
 
-		//getting the power manager from the activity
-		PowerManager pm = (PowerManager) this.activity
-				.getSystemService(Context.POWER_SERVICE);
-		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
-				| PowerManager.ON_AFTER_RELEASE, TAG);
-		// Obtain a wakelock for SCREEN_DIM_WAKE_LOCK
-		originalRequestedOrientation = activity.getRequestedOrientation();
-		activity
-		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-		wakeLock.acquire();
 	}
 	
 	public FileRetriever(CheckDatabaseActivity activity, String filename, String download, String unzipping) {
@@ -132,16 +124,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 		this.download = download;
 		this.unzipping = unzipping;
 
-		//getting the power manager from the activity
-		PowerManager pm = (PowerManager) this.activity
-				.getSystemService(Context.POWER_SERVICE);
-		wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK
-				| PowerManager.ON_AFTER_RELEASE, TAG);
-		// Obtain a wakelock for SCREEN_DIM_WAKE_LOCK
-		originalRequestedOrientation = activity.getRequestedOrientation();
-		activity
-		.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-		wakeLock.acquire();
+		
 	}
 
 	
@@ -165,13 +148,11 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		originalRequestedOrientation = activity.getRequestedOrientation();
-		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-		wakeLock.acquire();
 	}
 
 	@Override
 	protected Long doInBackground(Void...params) {	
+		Log.v("FileRetriever", "Bin beim Download, " + this.filename + "!");
 		SASAbus config = (SASAbus) activity.getApplicationContext();
 		// Check if db exists
 		Resources res = activity.getResources();
@@ -193,8 +174,11 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 		}
 
 		//creates all files (zip, md5 and db)
+		Log.v("FR", "Open db file");
 		File dbFile = new File(dbDir, dbFileName);
+		Log.v("FR", "Open db file");
 		dbZIPFile = new File(dbDir, dbZIPFileName);
+		Log.v("FR", "Open db file");
 		md5File = new File(dbDir, md5FileName);
 
 		
@@ -256,6 +240,7 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 			// verify we have a network connection
 			if (haveNetworkConnection()) 
 			{
+				
 				if(config.getDbDownloadAttempts() < 2) 
 				{
 					//download the new Database and the new md5-file with the FileRetriver
@@ -580,12 +565,9 @@ public class FileRetriever  extends AsyncTask<Void, String, Long>{
 	protected void onPostExecute(Long result) {
 		super.onPostExecute(result);
 
-		wakeLock.release();
-		activity.setRequestedOrientation(originalRequestedOrientation);
-
 		Log.v("FileRetriever", "this result has been arrived in the onPostExecute-method: " + result);
 		
-		if(this.filename.equals(activity.getResources().getString(R.string.app_name) + ".db"))
+		if(this.filename.equals(activity.getResources().getString(R.string.app_name_db) + ".db"))
 		{
 			activity.showDialog(result.intValue(), CheckDatabaseActivity.FR_DB);
 		}

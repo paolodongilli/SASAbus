@@ -40,6 +40,8 @@ import org.mapsforge.core.GeoPoint;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.About;
+import it.sasabz.android.sasabus.classes.Bacino;
+import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.Linea;
@@ -76,6 +78,8 @@ public class MapViewActivity extends MapActivity {
 	//provides the lineaid for this object
 	private int linea = -1;
 	
+	private Bacino bacino = null;
+	
 	//provides the orarioId for this object
 	private int orarioId = -1;
 	
@@ -86,23 +90,26 @@ public class MapViewActivity extends MapActivity {
 		Bundle extras = getIntent().getExtras();
 		partenza = 0;
 		destinazione = 0;
+		int bacinonr = 0;
 		if (extras != null) {
 			partenza = extras.getInt("partenza");
 			destinazione = extras.getInt("destinazione");
 			linea = extras.getInt("line");
 			orarioId = extras.getInt("orarioId");
+			bacinonr = extras.getInt("bacino");
 		}
-
+		
 		Palina part = PalinaList.getById(partenza);
 		part.setId(partenza);
 		Palina dest = PalinaList.getById(destinazione);
 		dest.setId(destinazione);
 		
-		Linea line = LineaList.getById(linea);
+		bacino = BacinoList.getById(bacinonr);
+		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
 		
 		Resources res = getResources();
 		
-		Passaggio pas = PassaggioList.getById(orarioId);
+		Passaggio pas = PassaggioList.getById(orarioId, bacino.getTable_prefix());
 		
 		if (part == null || dest == null || line == null || pas == null)
 		{
@@ -143,12 +150,12 @@ public class MapViewActivity extends MapActivity {
 		
 		
 		
-		Drawable start = getResources().getDrawable(R.drawable.glyphicons_347_hand_up);
-		Drawable stop = getResources().getDrawable(R.drawable.glyphicons_348_hand_down);
+		Drawable start = getResources().getDrawable(R.drawable.ab_punkt);
+		Drawable stop = getResources().getDrawable(R.drawable.ab_punkt);
 		
 		
-		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.from), part.toString(), start);
-		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.to), dest.toString(), stop);
+		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,res.getString(R.string.start), part.toString(), start);
+		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,res.getString(R.string.ziel), dest.toString(), stop);
 		
 		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(start);
 		MyArrayItemizedOverlay dest_arr = new MyArrayItemizedOverlay(stop);
@@ -160,7 +167,7 @@ public class MapViewActivity extends MapActivity {
 		mapView.getOverlays().add(dest_arr);
 		
 
-		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId, dest.getName_de());
+		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId, dest.getName_de(), bacino.getTable_prefix());
 		
 		Iterator<Passaggio> iter = paslist.iterator();
 		
@@ -177,7 +184,7 @@ public class MapViewActivity extends MapActivity {
 			if(pal.getId() != dest.getId() && pal.getId() != part.getId())
 			{
 				GeoPoint point = new GeoPoint(pal.getLatitude(), pal.getLongitude());
-				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.intermediate), pal.toString(), inter);
+				MyOverlayItem overlay = new MyOverlayItem(point,res.getString(R.string.zwischenstop), pal.toString(), inter);
 				intermediate.addItem(overlay);
 			}
 		}
@@ -224,12 +231,6 @@ public class MapViewActivity extends MapActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

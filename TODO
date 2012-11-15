@@ -1,6 +1,0 @@
-- prevedere scelta data e ora (NOW o data/ora specifica)
-- aggiungere un Webservice per calcolare un percorso che usa piu linee
-
-- Die Liniensortierung sollte irgendwie in aufsteigender Reihenfolge geschehen: evt. könnte man doch die Linieneangaben intern in zwei numerische Felder aufteilen und danach „richtig“ sortiert ausgeben?
-- Zum Thema der grafische Darstellung der Routen bzw. Linien und Haltestellen, das beim letzten Mal mit Markus besprochen wurde, sollten wir uns evt. auch noch was überlegen ….
-- Implementation of the webservice to get ome additional infos about lines from SASA

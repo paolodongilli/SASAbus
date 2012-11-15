@@ -40,6 +40,8 @@ public class Bacino extends DBObject {
 	
 	private String bacino_it = null;
 	
+	private String table_prefix = null;
+	
 	
 	
 	
@@ -71,6 +73,7 @@ public class Bacino extends DBObject {
 		super(c.getInt(c.getColumnIndex("id")));
 		this.setBacino_de(c.getString(c.getColumnIndex("nome_de")));
 		this.setBacino_it(c.getString(c.getColumnIndex("nome_it")));
+		this.setTable_prefix(c.getString(c.getColumnIndex("nome_table")));
 	}
 	
 	/**
@@ -101,6 +104,16 @@ public class Bacino extends DBObject {
 		this.bacino_it = bacino_it;
 	}
 
+	public String getTable_prefix()
+	{
+		return this.table_prefix;
+	}
+	
+	public void setTable_prefix(String table_prefix)
+	{
+		this.table_prefix = table_prefix;
+	}
+	
 	/**
 	 * This method returns the string related to the locale set on the smartphone 
 	 */

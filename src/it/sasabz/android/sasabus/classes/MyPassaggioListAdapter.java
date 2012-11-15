@@ -23,6 +23,7 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 
 import java.text.ParseException;
@@ -31,7 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.format.Time;
@@ -75,39 +75,24 @@ public class MyPassaggioListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		
-		if (v == null) 
-		{
-              LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(layoutId, null);
-		}
+        LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        v = vi.inflate(layoutId, null);
 		if (list != null)
 		{
 			TextView textView = (TextView) v.findViewById(whereId);
-			Time currentTime = new Time();
-			currentTime.setToNow();
-			currentTime.set(0, currentTime.minute, currentTime.hour, currentTime.monthDay, currentTime.month, currentTime.year);
-			Time sasaTime = list.get(position).getOrario();
 			textView.setText(list.get(position).getOrario().format("%H:%M"));
-			if (actpos < position)
+			if(actpos + 1 == position)
 			{
-				textView.setBackgroundColor(Color.rgb(0, 70, 0));
+				textView.setBackgroundColor(this.context.getResources().getColor(R.color.sasa_orange));
 			}
-			else if (actpos > position)
+			else if(actpos < position)
 			{
-				textView.setBackgroundColor(Color.rgb(70, 0, 0));
+				//textView.setBackgroundColor(Color.rgb(0, 70, 0));
 			}
-			else if(sasaTime.before(currentTime))
+			else if (actpos >= position)
 			{
-				textView.setBackgroundColor(Color.rgb(70, 0, 0));
-			}
-			else if(sasaTime.after(currentTime))
-			{
-				textView.setBackgroundColor(Color.rgb(0, 70, 0));
-			}
-			else
-			{
-				textView.setBackgroundColor(Color.rgb(255, 125, 33));
+				//textView.setBackgroundColor(Color.rgb(70, 0, 0));
+				textView.setTextColor(context.getResources().getColor(R.color.divider_background));
 			}
 		}
 		return v;

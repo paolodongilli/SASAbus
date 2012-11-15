@@ -25,8 +25,11 @@ package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.string;
+import it.sasabz.android.sasabus.ShowWayActivity;
 import it.sasabz.android.sasabus.hafas.XMLConnection;
+import it.sasabz.android.sasabus.hafas.XMLJourney;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -35,9 +38,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 
@@ -59,11 +70,39 @@ public class ConnectionDialog extends Dialog{
 		fillData();
 	}
 	
+	public Context getThis()
+	{
+		return this.getContext();
+	}
+	
 	private void fillData()
 	{
 		MyXMLConnectionAdapter adapter = new MyXMLConnectionAdapter(list);
 		ListView listv = (ListView)findViewById(android.R.id.list);
 		listv.setAdapter(adapter);
+		listv.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+				XMLConnection conn = (XMLConnection)list.get(position);
+				Log.v("CONNECTION-DIALOG", "PRESSED " + conn.getDeparture().getStation().getHaltestelle());
+				if(conn instanceof XMLJourney)
+				{
+					SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
+					Intent intent = new Intent(getThis(), ShowWayActivity.class);
+					intent.putExtra("line", ((XMLJourney)conn).getAttribut("NUMBER"));
+					String fromtext = "(" + conn.getDeparture().getStation().getHaltestelle().replace(" -", ")");
+					String totext = "(" + conn.getArrival().getStation().getHaltestelle().replace(" -", ")");
+					Log.v("CONNECTION-DIALOG", "FROM: " + fromtext);
+					Log.v("CONNECTION-DIALOG", "TO: " + totext);
+					intent.putExtra("partenza", fromtext);
+					intent.putExtra("destinazione", totext);
+					intent.putExtra("orario_des", simple.format(conn.getDeparture().getArrtime()));
+					intent.putExtra("orario_arr", simple.format(conn.getArrival().getArrtime()));
+					getThis().startActivity(intent);
+				}
+			}
+		});
 	}
 	
 	

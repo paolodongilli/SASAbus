@@ -77,14 +77,6 @@ public class SelectFavoritenActivity extends ListActivity {
         
         TextView titel = (TextView)findViewById(R.id.titel);
         titel.setText(R.string.mode_favoriten);
-        
-        TextView line = (TextView)findViewById(R.id.line);
-        TextView from = (TextView)findViewById(R.id.from);
-        TextView to = (TextView)findViewById(R.id.to);
-        
-        line.setText("");
-        from.setText("");
-        to.setText("");
         fillData();
     }
 
@@ -171,12 +163,6 @@ public class SelectFavoritenActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_settings:
-			{
-				Intent settings = new Intent(this, SetSettingsActivity.class);
-				startActivity(settings);
-				return true;
-			}
 			case R.id.menu_infos:
 			{
 				Intent infos = new Intent(this, InfoActivity.class);

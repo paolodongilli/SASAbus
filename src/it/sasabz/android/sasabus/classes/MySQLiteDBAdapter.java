@@ -26,14 +26,18 @@
 
 package it.sasabz.android.sasabus.classes;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import it.sasabz.android.sasabus.HomeActivity;
 import it.sasabz.android.sasabus.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+import android.util.Log;
 
 
 /**
@@ -48,6 +52,19 @@ public class MySQLiteDBAdapter {
 	private static int counteropen = 0;
 	private static int transactioncounter = 0;
 	
+	public static boolean exists(Context context)
+	{
+		String appName = context.getResources().getString(R.string.app_name_db);
+		String dbFileName = appName + ".db";
+		if(helper == null)
+		{
+			helper = new DatabaseHelper(dbFileName, null);
+		}
+		if(!helper.databaseFileExists())
+			return false;
+		return true;
+	}
+	
 	/**
 	 * This static method allows you tu getting an instance of the current database
 	 * @param context is the actual context
@@ -58,15 +75,16 @@ public class MySQLiteDBAdapter {
 		if(counteropen == 0)
 		{
 			Resources res = context.getResources();
-			String appName = res.getString(R.string.app_name);
+			String appName = res.getString(R.string.app_name_db);
 			String dbFileName = appName + ".db";
-	        helper = new DatabaseHelper(dbFileName,null);
-	        sqlite = helper.getReadableDatabase();
-	        if(sqlite == null)
-	        {
-	        	System.err.println("Die Datenbank konnte nicht geoeffnet werden");
-	        	System.exit(-2);
-	        }
+			if(helper == null)
+				helper = new DatabaseHelper(dbFileName,null);
+			sqlite = helper.getReadableDatabase();
+			if(sqlite == null)
+			{
+				System.err.println("Die Datenbank konnte nicht geoeffnet werden");
+				System.exit(-2);
+			}
 		}
 		++counteropen;
 		return new MySQLiteDBAdapter();

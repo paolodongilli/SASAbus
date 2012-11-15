@@ -35,6 +35,7 @@ import java.util.Vector;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,24 +73,20 @@ public class MyXMLConnectionRequestAdapter extends BaseAdapter {
 		if (v == null) 
 		{
               LayoutInflater vi = (LayoutInflater)SASAbus.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(R.layout.connection_row, null);
+              v = vi.inflate(R.layout.connection_row_new, null);
 		}
 		if (list != null)
 		{
 			TextView departure = (TextView) v.findViewById(R.id.departure);
+			TextView infos = (TextView) v.findViewById(R.id.info);
 			TextView arrival = (TextView) v.findViewById(R.id.arrival);
-			TextView departuretime = (TextView) v.findViewById(R.id.deptime);
-			TextView arrivaltime = (TextView) v.findViewById(R.id.arrtime);
-			TextView transfers = (TextView) v.findViewById(R.id.transfers);
 			XMLConnectionRequest conreq = list.get(position);
 			if(conreq != null)
 			{
 				SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
-				departure.setText(conreq.getDeparture().getStation().getHaltestelle());
-				departuretime.setText(simple.format(conreq.getDeparture().getArrtime()));
-				transfers.setText(conreq.getTransfers() + " | " + simple.format(conreq.getDuration()));
-				arrival.setText(conreq.getArrival().getStation().getHaltestelle());
-				arrivaltime.setText(simple.format(conreq.getArrival().getArrtime()));
+				departure.setText(Html.fromHtml("<b>" + simple.format(conreq.getDeparture().getArrtime()) + " " + conreq.getDeparture().getStation().getHaltestelle() + "</b>"));
+				infos.setText(simple.format(conreq.getDuration()) + " -> " + SASAbus.getContext().getResources().getString(R.string.transfers)  + ": "+ conreq.getTransfers());
+				arrival.setText(Html.fromHtml("<b>" + simple.format(conreq.getArrival().getArrtime()) + " " + conreq.getArrival().getStation().getHaltestelle() + "</b>"));
 			}
 		}
 		

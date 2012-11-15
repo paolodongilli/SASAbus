@@ -189,9 +189,9 @@ public class ScanCodeActivity extends Activity
                     	if(partenza != null)
                     	{
                     		finish();
-                    		Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
-                    		selDest.putExtra("partenza", partenza.getName_de());
-                    		startActivity(selDest);
+                    		//Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
+                    		//selDest.putExtra("partenza", partenza.getName_de());
+                    		//startActivity(selDest);
                     	}
                     	else
                     	{
@@ -244,9 +244,9 @@ public class ScanCodeActivity extends Activity
                         	if(partenza != null)
                         	{
                         		finish();
-                        		Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
-                        		selDest.putExtra("partenza", partenza.getName_de());
-                        		startActivity(selDest);
+                        		//Intent selDest = new Intent(getContext(), SelectDestinazioneLocationActivity.class);
+                        		//selDest.putExtra("partenza", partenza.getName_de());
+                        		//startActivity(selDest);
                         	}
                         	else
                         	{

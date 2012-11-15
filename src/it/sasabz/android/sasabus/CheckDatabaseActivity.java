@@ -33,7 +33,7 @@ package it.sasabz.android.sasabus;
 
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.classes.FileRetriever;
+import it.sasabz.android.sasabus.classes.services.FileRetriever;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -76,7 +76,7 @@ public class CheckDatabaseActivity extends Activity {
 	public void check_db()
 	{
 		Resources res = this.getResources();
-		String db_filename = res.getString(R.string.app_name) + ".db";
+		String db_filename = res.getString(R.string.app_name_db) + ".db";
 		try {
 			new FileRetriever(this, db_filename, res.getString(R.string.downloading_db), res.getString(R.string.unzipping_db)).execute();
 		}
@@ -192,41 +192,6 @@ public class CheckDatabaseActivity extends Activity {
 	 */
 	public void startActivity() {
 		finish();
-		Intent startact = null;
-		 try
-	        {
-			 	SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
-	        	int mode = Integer.parseInt(shared.getString("mode", "0"));
-	        	Log.v("preferences", "mode: " + mode);
-	        	if(mode == 0)
-	            {
-	            	startact = new Intent(this, SelectModeActivity.class);
-	            }
-	        	if(mode == 1)
-	            {
-	            	startact = new Intent(this, SelectPalinaLocationActivity.class);
-	            }
-	            if(mode == 2)
-	            {
-	            	startact = new Intent(this, SelectBacinoActivity.class);
-	            }
-	            PackageManager pm = this.getApplicationContext().getPackageManager();
-	            if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-	            {
-	            	startact = new Intent(this, SelectBacinoActivity.class);
-	            }
-	            else
-	            {
-	            	startact = new Intent(this, SelectModeActivity.class);
-	            }
-	        	
-	        }
-		 catch (Exception e)
-		 {
-			 startact = new Intent(this, SelectModeActivity.class);
-			 
-		 }
-		 startActivity(startact);
 	}
 
 	protected Dialog onCreateDialog(int id, int res) {
@@ -236,12 +201,12 @@ public class CheckDatabaseActivity extends Activity {
 		case NO_DB_UPDATE_AVAILABLE:
 			return createErrorAlertDialog(R.string.no_db_update_available);
 		case DOWNLOAD_SUCCESS_DIALOG:
-			String filename = getString(R.string.app_name)+ ".db";
+			String filename = getString(R.string.app_name_db)+ ".db";
 			if(res == FR_OSM)
 				filename = getString(R.string.app_name_osm)+ ".map";
 			return createAlertDialog(R.string.db_ok,  filename, res);
 		case DB_OK:
-			String filename_ok = getString(R.string.app_name)+ ".db";
+			String filename_ok = getString(R.string.app_name_db)+ ".db";
 			if(res == FR_OSM)
 				filename_ok = getString(R.string.app_name_osm)+ ".map";
 			return createAlertDialog(R.string.db_ok,  filename_ok, res);

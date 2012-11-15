@@ -4,7 +4,7 @@
 strings.xml
  
  
-Copyright (C) 2012 Markus Windegger
+Copyright (C) 2011 Paolo Dongilli & Markus Windegger
 
 This file is part of SasaBus.
 
@@ -28,10 +28,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="select_bacino">Gebiet wählen:</string>
 <string name="select_linea">Buslinie wählen:</string>
-<string name="select_destination">Ziel wählen:</string>
+<string name="select_destination">Ankunftshaltestelle wählen:</string>
 <string name="select_palina">Abfahrtshaltestelle wählen:</string>
 <string name="select_mode">Modus wählen:</string>
-<string name="show_orari">Fahrzeiten anzeigen:</string>
+<string name="show_orari">Abfahrtszeiten:</string>
 
 <string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
@@ -39,7 +39,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="menu_about">Über SASAbus</string>
 <string name="updates">... Aktualisierungen ...</string>
 <string name="license">SASAbus ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.</string>
-<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\nDaten: CC-SA-NC by http://open.sasabz.it</string>
+<string name="copyright">Software: Copyright (C) %1$s SASAbus Team\n\nDaten: CC-SA-NC by http://open.sasabz.it</string>
 <string name="supp_email">Für Hilfe, Support, Anregungen etc. einfach eine Mail an: android@sasabz.it</string>
 <string name="disclaimer">Die Veröffentlichung von SASAbus erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.</string>
 <string name="gpl">Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe &lt;http://www.gnu.org/licenses/&gt;.</string>
@@ -62,7 +62,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="mode_qr_code">QR Code Modus</string>
 
 <string name="weiter">Los!</string>
-<string name="show_way">Streckenführung</string>
+<string name="show_way">Streckenführung:</string>
 <string name="menu_settings">Einstellungen</string>
 <string name="menu_test">Das ist ein Test</string>
 <string name="menu_infos">News</string>
@@ -74,6 +74,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="gps_descr">Legt fest in welchem Umkreis die Haltestellen angezeigt werden</string>
 <string name="mode">Standardmodus</string>
 <string name="mode_descr">Standardmodus beim Start der Anwendung</string>
+<string name="menu_old_mode">Offline</string>
+
 <string name="line_infos">Stadt</string>
 <string name="line_infos_descr">Legt fest, für welche Stadt die News angezeigt werden</string>
 
@@ -87,6 +89,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="to">Bis: </string>
 <string name="from_txt">Von</string>
 <string name="to_txt">Bis</string>
+<string name="line_txt">Linie</string>
+
+<string name="download_available">Update des Fahrplans vorhanden. Herunterladen?</string>
 
 <string name="intermediate">Zwischenhalt</string>
 
@@ -111,18 +116,35 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="online_connection_error">Die gesuchte Haltestelle wurde nicht gefunden.</string>
 <string name="mode_favoriten">Favoriten</string>
 <string name="mode_online">Online Modus</string>
+<string name="mode_home">Home</string>
 <string name="search_connection">Suche Verbindung</string>
 <string name="select_stop">Bitte Haltestelle aussuchen</string>
 
 <string name="time">Datum und Uhrzeit:</string>
 <string name="time_txt">dd.mm.yyyy</string>
 
+<string name="waiting">Bitte warten...</string>
+<string name="transfers">Umstiege</string>
+
+
 <string name="reset">Reset</string>
 
 <string name="set_date">Datum</string>
 <string name="set_time">Uhrzeit</string>
 
+<string name="error_station">Eine der gesuchten Haltestellen konnte nicht gefunden werden!</string>
+<string name="error">Fehler</string>
+<string name="error_connection">Fehler beim Abfrage der Verbindung, bitte nochmals versuchen oder Abfrage ändern!</string>
+
+<string name="connection">Verbindungen</string>
 <string name="connection_details">Verbindungsdetails</string>
+
+<string name="information">Information</string>
+<string name="offline_info">Sie haben keine Internetverbindung. Im Offlinemodus fortfahren?</string>
+
+<string name="start">Start</string>
+<string name="zwischenstop">Zwischenstop</string>
+<string name="ziel">Ziel</string>
 
 </resources>
 
