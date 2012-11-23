@@ -23,10 +23,11 @@
  */
 package it.sasabz.android.sasabus.classes;
 
-import it.sasabz.android.sasabus.SASAbus;
+
 
 import java.util.Iterator;
 import java.util.Vector;
+
 
 import android.R;
 import android.content.Context;
@@ -37,7 +38,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -50,6 +50,9 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	private Vector<DBObject> datalist = new Vector<DBObject>();
 	private final int layoutId;
 
+	private long lasttime = 0;
+	
+	private long delta = 1000;
 	
 	/**
 	 * This constructor creates an object with the following parameters
@@ -107,7 +110,11 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	 @Override
 	    public Filter getFilter() {
-	        Filter myFilter = new Filter() {
+		 Filter myFilter = null;
+		 if(System.currentTimeMillis() - lasttime > delta)
+		 {
+			 lasttime = System.currentTimeMillis();
+			 myFilter  = new Filter() {
 	            @Override
 	            protected FilterResults performFiltering(CharSequence constraint) {
 	                FilterResults filterResults = new FilterResults();              
@@ -136,12 +143,6 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	                			datalist.add(object);
 	                		}
 	                	}
-	                	Log.v("AUTOCOMP-FILTER-CONSTRAINTS: ", "CONSTRAINT-STRING: " + constraint.toString());
-	                	for(int i = 0; i < constraints.length; ++ i)
-	                	{
-	                		Log.v("AUTOCOMP-FILTER-CONSTRAINT", "CONSTRAINT-STRING-PARTS: " + constraints[i]);
-	                	}
-	                	Log.v("AUTOCOMP-FILTER", "Nr items: " + datalist.size());
 	                    filterResults.values = datalist;
 	                    filterResults.count = datalist.size();
 	                }
@@ -160,6 +161,7 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	            	}
 	            }
 	        };
-	        return myFilter;
+		 }
+	    return myFilter;
 	    }
 }
