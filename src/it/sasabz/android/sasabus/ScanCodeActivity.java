@@ -239,7 +239,7 @@ public class ScanCodeActivity extends Activity
                     		}
                     		else
                     		{
-                    			partenza = PalinaList.getTranslation(name_de, "de", daten[index_city]);
+                    			partenza = PalinaList.getTranslation(name_de, "de");
                     		}
                         	if(partenza != null)
                         	{
