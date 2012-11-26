@@ -69,12 +69,6 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                 android:ems="10"
                 android:hint="@string/from_txt" />
 
-            <ImageButton
-                android:id="@+id/imageButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/glyphicons_242_google_maps" />
-
         </TableRow>
 
         <TableRow
@@ -104,12 +98,6 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                 android:ems="10"
                 android:hint="@string/to_txt" />
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/glyphicons_049_star" />
-
         </TableRow>
     </TableLayout>
 
@@ -119,7 +107,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:paddingBottom="15dip" 
         android:paddingTop="15dip"
         >
-
+
+
+
+
+
+
+
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
@@ -139,7 +133,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
             android:src="@drawable/calendar_icon_new" />
 
     </LinearLayout>
-
+
+
+
+
+
     <Button
         android:id="@+id/search"
         android:layout_width="match_parent"

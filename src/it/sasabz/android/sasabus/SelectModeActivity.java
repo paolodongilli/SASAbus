@@ -98,12 +98,6 @@ public class SelectModeActivity extends ListActivity {
         	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
         	startActivity(selLinea);
         }
-        PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(mode == 3 && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	Intent selLinea = new Intent(this, ScanCodeActivity.class);
-        	startActivity(selLinea);
-        }
     }
     
     /**
