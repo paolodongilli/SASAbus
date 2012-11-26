@@ -116,14 +116,6 @@ public class SelectModeActivity extends ListActivity {
     	list.add(mod);
     	
     	PackageManager pm = this.getApplicationContext().getPackageManager();
-        if(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-        	//QR Code Mode
-        	mod = new Modus();
-        	mod.setId(3);
-        	mod.setString(res.getString(R.string.mode_qr_code));
-        	list.add(mod);
-        }
     	
     	
     	//fill the modes into the list_view
