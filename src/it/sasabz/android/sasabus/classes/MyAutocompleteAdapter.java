@@ -52,7 +52,7 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	private long lasttime = 0;
 	
-	private long delta = 1000;
+	private long delta = 500;
 	
 	/**
 	 * This constructor creates an object with the following parameters
@@ -109,59 +109,64 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	}
 
 	 @Override
-	    public Filter getFilter() {
-		 Filter myFilter = null;
-		 if(System.currentTimeMillis() - lasttime > delta)
-		 {
-			 lasttime = System.currentTimeMillis();
-			 myFilter  = new Filter() {
-	            @Override
-	            protected FilterResults performFiltering(CharSequence constraint) {
-	                FilterResults filterResults = new FilterResults();              
-	                if(constraint != null) {
-	                	datalist.clear();
-	                	Iterator<DBObject> iter = origlist.iterator();
-                		String[] constraints = constraint.toString().split(" ");
-	                	while(iter.hasNext())
-	                	{
-	                		DBObject object = iter.next();
-	                		String s = object.toString();
-	                		boolean match = false;
-	                		for(int i = 0; i < constraints.length && (match || i == 0); ++ i)
-	                		{
-	                			if(s.toLowerCase().contains(constraints[i].toString().toLowerCase()))
-	                			{
-	                				match = true;
-	                			}
-	                			else
-	                			{
-	                				match = false;
-	                			}
-	                		}
-	                		if(match)
-	                		{
-	                			datalist.add(object);
-	                		}
-	                	}
-	                    filterResults.values = datalist;
-	                    filterResults.count = datalist.size();
-	                }
-	                return filterResults;
-	            }
+	 public Filter getFilter() 
+ {
+		Filter myFilter = null;
+		myFilter = new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				FilterResults filterResults = new FilterResults();
+				if (System.currentTimeMillis() - lasttime > delta)
+				{
+					lasttime = System.currentTimeMillis();
+					if (constraint != null)
+					{
+						datalist.clear();
+						Iterator<DBObject> iter = origlist.iterator();
+						String[] constraints = constraint.toString().split(" ");
+						while (iter.hasNext())
+						{
+							DBObject object = iter.next();
+							String s = object.toString();
+							boolean match = false;
+							for (int i = 0; i < constraints.length
+									&& (match || i == 0); ++i)
+							{
+								if (s.toLowerCase()
+										.contains(
+												constraints[i].toString()
+														.toLowerCase()))
+								{
+									match = true;
+								} else
+								{
+									match = false;
+								}
+							}
+							if (match)
+							{
+								datalist.add(object);
+							}
+						}
+					}
+				}
+				filterResults.values = datalist;
+				filterResults.count = datalist.size();
+				return filterResults;
+			}
 
-	            @Override
-	            protected void publishResults(CharSequence contraint, FilterResults results) {
-	            	try
-	            	{
-	            		notifyDataSetChanged();
-	            	}
-	            	catch(Exception e)
-	            	{
-	            		Log.v("MyAutocompleteAdapter", "Error", e);
-	            	}
-	            }
-	        };
-		 }
-	    return myFilter;
-	    }
+			@Override
+			protected void publishResults(CharSequence contraint,
+					FilterResults results) {
+				try
+				{
+					notifyDataSetChanged();
+				} catch (Exception e)
+				{
+					Log.v("MyAutocompleteAdapter", "Error", e);
+				}
+			}
+		};
+		return myFilter;
+	}
 }
