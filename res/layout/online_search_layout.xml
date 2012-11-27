@@ -92,7 +92,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
             <AutoCompleteTextView
                 android:id="@+id/to_text"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
