@@ -453,9 +453,10 @@ public class HomeActivity extends Activity {
 	        	Log.v("HomeActivity", "No location found!!");
 	        }
 	        Vector<DBObject> palinalist = PalinaList.getNameList(); 
-	        MyAutocompleteAdapter adapter = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
-	        from.setAdapter(adapter);
-	        to.setAdapter(adapter);
+	        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
+	        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
+	        from.setAdapter(adapterfrom);
+	        to.setAdapter(adapterto);
         }
     }
 

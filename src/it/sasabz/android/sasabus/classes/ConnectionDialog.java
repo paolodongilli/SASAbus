@@ -85,7 +85,6 @@ public class ConnectionDialog extends Dialog{
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				XMLConnection conn = (XMLConnection)list.get(position);
-				Log.v("CONNECTION-DIALOG", "PRESSED " + conn.getDeparture().getStation().getHaltestelle());
 				if(conn instanceof XMLJourney)
 				{
 					SimpleDateFormat simple = new SimpleDateFormat("HH:mm");
@@ -93,8 +92,6 @@ public class ConnectionDialog extends Dialog{
 					intent.putExtra("line", ((XMLJourney)conn).getAttribut("NUMBER"));
 					String fromtext = "(" + conn.getDeparture().getStation().getHaltestelle().replace(" -", ")");
 					String totext = "(" + conn.getArrival().getStation().getHaltestelle().replace(" -", ")");
-					Log.v("CONNECTION-DIALOG", "FROM: " + fromtext);
-					Log.v("CONNECTION-DIALOG", "TO: " + totext);
 					intent.putExtra("partenza", fromtext);
 					intent.putExtra("destinazione", totext);
 					intent.putExtra("orario_des", simple.format(conn.getDeparture().getArrtime()));

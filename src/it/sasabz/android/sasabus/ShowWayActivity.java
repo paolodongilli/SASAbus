@@ -48,7 +48,9 @@ import it.sasabz.android.sasabus.classes.PalinaList;
 import it.sasabz.android.sasabus.classes.Passaggio;
 import it.sasabz.android.sasabus.classes.PassaggioList;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -137,11 +139,28 @@ public class ShowWayActivity extends ListActivity {
 			String lang = "it";
 			if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
 				lang = "de";
-			part = PalinaList.getTranslation(start, lang);
+			Log.v("SHOW-WAY-ACTIVITY", "Partenza: " + start);
+			Log.v("SHOW-WAY-ACTIVITY", "Arrivo: " + destinazione);
+			part = PalinaList.getTranslation(start.trim(), lang);
 			dest = PalinaList.getTranslation(destinazione, lang);
 			if(part == null || dest == null)
 			{
-				finish();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setCancelable(false);
+				builder.setMessage(R.string.error_connection);
+				builder.setTitle(R.string.error);
+				builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						finish();
+					}
+				});
+				builder.create();
+				builder.show();
+				return;
 			}
 			bacino = BacinoList.getBacino(part.getName_de(), dest.getName_de(), linecode);
 			line = LineaList.getByNumLin(linecode, bacino.getTable_prefix());

@@ -955,8 +955,18 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 		{
 			ret = new Vector<XMLConnectionRequest>();
 			ret.add(req);
-			ret.add(0, scrollBackward(req));
-			ret.add(scrollForward(req));
+			XMLConnectionRequest back = scrollBackward(req);
+			if(back != null && !req.getDeparture().getArrtime().equals(back.getDeparture().getArrtime()) && 
+					!req.getArrival().getArrtime().equals(back.getArrival().getArrtime()))
+			{
+				ret.add(0, back);
+			}
+			XMLConnectionRequest forward = scrollForward(req);
+			if(forward != null && !req.getDeparture().getArrtime().equals(forward.getDeparture().getArrtime()) && 
+					!req.getArrival().getArrtime().equals(forward.getArrival().getArrtime()))
+			{
+				ret.add(forward);
+			}
 		}
 		return ret;
 	}

@@ -367,45 +367,7 @@ public class PalinaList {
 					"where nome_it = ? " +
 					"LIMIT 1";
 		}
-		Cursor cursor = sqlite.rawQuery(query, args);
-		Palina element = null;
-		if(cursor.moveToFirst())
-		{
-			element = new Palina(cursor);
-		}
-		cursor.close();
-		sqlite.close();
-		return element;
-	}
-	
-	/**
-	 * Returns a Palina filled with all the information, excluded the coordinates, becaus one name can have 2 coordinates
-	 * @param name is the name of the palina to search
-	 * @param lang is the language of the name
-	 * @return the palina with the name name, otherwise NULL if the plaina was not found
-	 */
-	public static Palina getTranslation(String name, String lang, String bacino)
-	{	
-		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
-		bacino = bacino.substring(0, 1).toUpperCase() + bacino.substring(1).toLowerCase();
-		String [] args = {bacino, name};
-		String query = "select * from paline where id IN (" +
-				"select palinaId from orarii where corsaId in ("+
-				"select id from corse where lineaId in ("+
-				"select id from linee where bacinoId = ("+ 
-                "select id from bacini where nome_de = ? ) ) ) )"+
-                "AND nome_de = ? " +
-				"LIMIT 1";
-		if (lang.equals("it"))
-		{
-			query = "select * from paline where id IN (" +
-				"select palinaId from orarii where corsaId in ("+
-				"select id from corse where lineaId in ("+
-				"select id from linee where bacinoId = ("+ 
-                "select id from bacini where nome_de = ? ) ) ) )"+
-                "AND nome_it = ? " +
-				"LIMIT 1";
-		}
+		Log.v("PALINALIST", "QUERY: " + query);
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Palina element = null;
 		if(cursor.moveToFirst())

@@ -138,9 +138,6 @@ public class MyXMLConnectionAdapter extends BaseAdapter {
 					Resources res = SASAbus.getContext().getResources();
 					infotext += (" -&gt; <font color=\"" + res.getColor(R.color.sasa_orange) + "\">" + res.getString(R.string.line) + 
 							" " + ((XMLJourney)conreq).getAttribut("NUMBER") + "</font>");
-					Log.v("XMLCONNECTION-infotext", infotext);
-					
-					
 				}
 				info.setText(Html.fromHtml(infotext));
 				
