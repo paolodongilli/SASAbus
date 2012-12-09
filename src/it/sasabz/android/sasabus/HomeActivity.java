@@ -53,6 +53,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +66,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -404,6 +406,18 @@ public class HomeActivity extends Activity {
 			}
 
 		});
+        
+        ImageView img = (ImageView)findViewById(R.id.cippy);
+        img.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.firstavenue.client"));
+                startActivity(intent);
+            }
+        });
+        
         if(MySQLiteDBAdapter.exists(this))
         {
 	        updatecheck = new CheckUpdate(this);
@@ -414,6 +428,7 @@ public class HomeActivity extends Activity {
         	Intent download = new Intent(this, CheckDatabaseActivity.class);
 			startActivity(download);
         }
+        
 	}
 
 

@@ -146,4 +146,12 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:textSize="18dip"
         />
 
+    <ImageView
+        android:id="@+id/cippy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="30dip"
+        android:src="@drawable/cippy" />
+
 </LinearLayout>
