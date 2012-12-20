@@ -68,8 +68,8 @@ public class SplashScreen extends Activity {
                     finish();
 
                     // Run next activity
-                	Intent checkDatabase = new Intent(getThis(), HomeActivity.class);
-                	startActivity(checkDatabase);
+                	Intent home = new Intent(getThis(), TabHostActivity.class);
+                	startActivity(home);
                 }
             }
         };
