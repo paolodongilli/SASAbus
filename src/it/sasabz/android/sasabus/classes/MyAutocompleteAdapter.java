@@ -163,9 +163,9 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 					FilterResults results) {
 				try
 				{
-					notifyDataSetChanged();
 					if(results.values instanceof Vector<?>)
 						datalist = (Vector<DBObject>)results.values;
+					notifyDataSetChanged();
 				} catch (Exception e)
 				{
 					Log.v("MyAutocompleteAdapter", "Error", e);
