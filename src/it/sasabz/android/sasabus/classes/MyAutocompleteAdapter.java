@@ -110,18 +110,18 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	 @Override
 	 public Filter getFilter() 
- {
+	 {
 		Filter myFilter = null;
 		myFilter = new Filter() {
 			@Override
 			protected FilterResults performFiltering(CharSequence constraint) {
 				FilterResults filterResults = new FilterResults();
+				Vector<DBObject> temp_datalist = new Vector<DBObject>();
 				if (System.currentTimeMillis() - lasttime > delta)
 				{
 					lasttime = System.currentTimeMillis();
 					if (constraint != null)
 					{
-						datalist.clear();
 						Iterator<DBObject> iter = origlist.iterator();
 						String[] constraints = constraint.toString().split(" ");
 						while (iter.hasNext())
@@ -145,13 +145,17 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 							}
 							if (match)
 							{
-								datalist.add(object);
-							}
+								temp_datalist.add(object);							}
 						}
 					}
 				}
-				filterResults.values = datalist;
-				filterResults.count = datalist.size();
+				else
+				{
+					temp_datalist = datalist;
+				}
+				filterResults.values = temp_datalist;
+				filterResults.count = temp_datalist.size();
+				datalist = temp_datalist;
 				return filterResults;
 			}
 
