@@ -50,9 +50,6 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	private Vector<DBObject> datalist = new Vector<DBObject>();
 	private final int layoutId;
 
-	private long lasttime = 0;
-	
-	private long delta = 500;
 	
 	/**
 	 * This constructor creates an object with the following parameters
@@ -117,41 +114,33 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 			protected FilterResults performFiltering(CharSequence constraint) {
 				FilterResults filterResults = new FilterResults();
 				Vector<DBObject> temp_datalist = new Vector<DBObject>();
-				if (System.currentTimeMillis() - lasttime > delta)
+				if (constraint != null)
 				{
-					lasttime = System.currentTimeMillis();
-					if (constraint != null)
+					Iterator<DBObject> iter = origlist.iterator();
+					String[] constraints = constraint.toString().split(" ");
+					while (iter.hasNext())
 					{
-						Iterator<DBObject> iter = origlist.iterator();
-						String[] constraints = constraint.toString().split(" ");
-						while (iter.hasNext())
+						DBObject object = iter.next();
+						String s = object.toString();
+						boolean match = false;
+						for (int i = 0; i < constraints.length
+								&& (match || i == 0); ++i)
 						{
-							DBObject object = iter.next();
-							String s = object.toString();
-							boolean match = false;
-							for (int i = 0; i < constraints.length
-									&& (match || i == 0); ++i)
+							if (s.toLowerCase()
+									.contains(
+											constraints[i].toString()
+													.toLowerCase()))
 							{
-								if (s.toLowerCase()
-										.contains(
-												constraints[i].toString()
-														.toLowerCase()))
-								{
-									match = true;
-								} else
-								{
-									match = false;
-								}
+								match = true;
+							} else
+							{
+								match = false;
 							}
-							if (match)
-							{
-								temp_datalist.add(object);							}
 						}
+						if (match)
+						{
+							temp_datalist.add(object);							}
 					}
-				}
-				else
-				{
-					temp_datalist = datalist;
 				}
 				filterResults.values = temp_datalist;
 				filterResults.count = temp_datalist.size();
