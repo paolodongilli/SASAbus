@@ -409,10 +409,14 @@ public class HomeActivity extends Activity {
 	        updatecheck = new CheckUpdate(this);
 	        updatecheck.execute();
         }
-        else
+        else if (haveNetworkConnection())
         {
         	Intent download = new Intent(this, CheckDatabaseActivity.class);
 			startActivity(download);
+        }
+        else
+        {
+        	createErrorDialog(R.string.no_network_connection);
         }
 	}
 

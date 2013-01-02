@@ -78,7 +78,7 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 				throw new IOException("XML request string is NULL");
 			}
 			
-			String [] stringarray = xml.split("\n");
+			String [] stringarray = xml.split("<meldung>");
 			
 			String id = "";
 			String titel_de = "";
@@ -86,7 +86,25 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 			String nachricht_de = "";
 			String nachricht_it = "";
 			String stadt = "";
-			
+			for(int j = 1; j < stringarray.length;++j)
+			{
+				id = stringarray[j].substring(stringarray[j].indexOf("<id>") + 4, stringarray[j].indexOf("</id>"));
+				titel_de = stringarray[j].substring(stringarray[j].indexOf("<titel_de>") + 10, stringarray[j].indexOf("</titel_de>"));
+				titel_it = stringarray[j].substring(stringarray[j].indexOf("<titel_it>") + 10, stringarray[j].indexOf("</titel_it>"));
+				nachricht_de = stringarray[j].substring(stringarray[j].indexOf("<nachricht_de>") + 14, stringarray[j].indexOf("</nachricht_de>"));
+				nachricht_it = stringarray[j].substring(stringarray[j].indexOf("<nachricht_it>") + 14, stringarray[j].indexOf("</nachricht_it>"));
+				stadt = stringarray[j].substring(stringarray[j].indexOf("<gebiet>") + 8, stringarray[j].indexOf("</gebiet>"));
+				nachricht_de = nachricht_de.replaceAll("(\r\n|\n)", "<br />");
+				nachricht_it = nachricht_it.replaceAll("(\r\n|\n)", "<br />");
+				
+				Information info = new Information(Integer.parseInt(id), titel_de, titel_it, nachricht_de, nachricht_it, Integer.parseInt(stadt));
+				if(list == null)
+				{
+					list = new Vector<DBObject>();
+				}
+				list.add(info);
+			}
+			/**
 			for(int j = 0; j < stringarray.length;++j)
 			{
 				if(stringarray[j].contains("<id>"))
@@ -103,10 +121,14 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 				}
 				else if(stringarray[j].contains("<nachricht_de>"))
 				{
+					nachricht_de += stringarray[j];
+					while(stringarray[j].indexOf("</nachricht_de>") == -1)
+					{
+						++j;
+						nachricht_de += stringarray[j];
+					}
 					if(stringarray[j].indexOf("</nachricht_de>") != -1)
 						nachricht_de = stringarray[j].substring(14, stringarray[j].indexOf("</nachricht_de>"));
-					else
-						nachricht_de = stringarray[j].substring(14);
 				}
 				else if(stringarray[j].contains("<nachricht_it>"))
 				{
@@ -138,6 +160,7 @@ public class InformationList extends AsyncTask<Integer, Void, Vector<DBObject>> 
 					stadt = "";
 				}
 			}
+			*/
 		}
 		catch(Exception e)
 		{
