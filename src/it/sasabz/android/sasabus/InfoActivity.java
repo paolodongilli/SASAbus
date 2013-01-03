@@ -23,6 +23,11 @@
  */
 package it.sasabz.android.sasabus;
 
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.id;
+import it.sasabz.android.sasabus.R.layout;
+import it.sasabz.android.sasabus.R.menu;
+import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.Credits;

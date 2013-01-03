@@ -68,7 +68,7 @@ public class SplashScreen extends Activity {
                     finish();
 
                     // Run next activity
-                	Intent home = new Intent(getThis(), TabHostActivity.class);
+                	Intent home = new Intent(getThis(), HomeActivity.class);
                 	startActivity(home);
                 }
             }

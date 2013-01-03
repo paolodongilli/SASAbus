@@ -17,13 +17,13 @@ public class TabHostActivity extends TabActivity{
 	        TabSpec homespec = tabHost.newTabSpec("Online");
 	        // setting Title and Icon for the Tab
 	        homespec.setIndicator("Online", getResources().getDrawable(R.drawable.online));
-	        Intent homeIntent = new Intent(this, HomeActivity.class);
+	        Intent homeIntent = new Intent(this, OnlineActivity.class);
 	        homespec.setContent(homeIntent);
 	 
 	        // Tab for Offline Search
 	        TabSpec offlineSpec = tabHost.newTabSpec("Offline");
 	        offlineSpec.setIndicator("Offline", getResources().getDrawable(R.drawable.offline));
-	        Intent offlineIntent = new Intent(this, SelectBacinoActivity.class);
+	        Intent offlineIntent = new Intent(this, OfflineActivity.class);
 	        offlineSpec.setContent(offlineIntent);
 	 
 	        // Tab for Infos/News

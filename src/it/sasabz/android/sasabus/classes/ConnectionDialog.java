@@ -24,8 +24,8 @@
 package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.ShowWayActivity;
+import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.hafas.XMLConnection;
 import it.sasabz.android.sasabus.hafas.XMLJourney;
 
