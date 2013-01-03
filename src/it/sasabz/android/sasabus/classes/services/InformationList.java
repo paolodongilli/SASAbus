@@ -24,13 +24,11 @@
 package it.sasabz.android.sasabus.classes.services;
 
 
-import it.sasabz.android.sasabus.HomeActivity;
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Information;
-import it.sasabz.android.sasabus.classes.SASAbusXML;
 import it.sasabz.android.sasabus.classes.SasabusHTTP;
 
 import java.io.IOException;
@@ -39,11 +37,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.message.BasicNameValuePair;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import android.os.AsyncTask;
 import android.util.Log;
