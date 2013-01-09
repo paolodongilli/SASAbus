@@ -28,6 +28,10 @@ package it.sasabz.android.sasabus;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.id;
+import it.sasabz.android.sasabus.R.layout;
+import it.sasabz.android.sasabus.R.menu;
+import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.*;
 
 import android.app.ListActivity;

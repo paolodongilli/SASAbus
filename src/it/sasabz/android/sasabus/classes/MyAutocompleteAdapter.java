@@ -50,9 +50,6 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 	private Vector<DBObject> datalist = new Vector<DBObject>();
 	private final int layoutId;
 
-	private long lasttime = 0;
-	
-	private long delta = 500;
 	
 	/**
 	 * This constructor creates an object with the following parameters
@@ -110,48 +107,43 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 
 	 @Override
 	 public Filter getFilter() 
- {
+	 {
 		Filter myFilter = null;
 		myFilter = new Filter() {
 			@Override
 			protected FilterResults performFiltering(CharSequence constraint) {
 				FilterResults filterResults = new FilterResults();
-				if (System.currentTimeMillis() - lasttime > delta)
+				Vector<DBObject> temp_datalist = new Vector<DBObject>();
+				if (constraint != null)
 				{
-					lasttime = System.currentTimeMillis();
-					if (constraint != null)
+					Iterator<DBObject> iter = origlist.iterator();
+					String[] constraints = constraint.toString().split(" ");
+					while (iter.hasNext())
 					{
-						datalist.clear();
-						Iterator<DBObject> iter = origlist.iterator();
-						String[] constraints = constraint.toString().split(" ");
-						while (iter.hasNext())
+						DBObject object = iter.next();
+						String s = object.toString();
+						boolean match = false;
+						for (int i = 0; i < constraints.length
+								&& (match || i == 0); ++i)
 						{
-							DBObject object = iter.next();
-							String s = object.toString();
-							boolean match = false;
-							for (int i = 0; i < constraints.length
-									&& (match || i == 0); ++i)
+							if (s.toLowerCase()
+									.contains(
+											constraints[i].toString()
+													.toLowerCase()))
 							{
-								if (s.toLowerCase()
-										.contains(
-												constraints[i].toString()
-														.toLowerCase()))
-								{
-									match = true;
-								} else
-								{
-									match = false;
-								}
-							}
-							if (match)
+								match = true;
+							} else
 							{
-								datalist.add(object);
+								match = false;
 							}
 						}
+						if (match)
+						{
+							temp_datalist.add(object);							}
 					}
 				}
-				filterResults.values = datalist;
-				filterResults.count = datalist.size();
+				filterResults.values = temp_datalist;
+				filterResults.count = temp_datalist.size();
 				return filterResults;
 			}
 
@@ -160,6 +152,8 @@ public class MyAutocompleteAdapter extends BaseAdapter implements Filterable{
 					FilterResults results) {
 				try
 				{
+					if(results.values instanceof Vector<?>)
+						datalist = (Vector<DBObject>)results.values;
 					notifyDataSetChanged();
 				} catch (Exception e)
 				{

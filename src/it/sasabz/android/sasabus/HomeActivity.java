@@ -32,6 +32,11 @@ import java.util.Date;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.R.drawable;
+import it.sasabz.android.sasabus.R.id;
+import it.sasabz.android.sasabus.R.layout;
+import it.sasabz.android.sasabus.R.menu;
+import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.About;
 import it.sasabz.android.sasabus.classes.Credits;
 import it.sasabz.android.sasabus.classes.DBObject;
@@ -56,6 +61,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -423,12 +429,15 @@ public class HomeActivity extends Activity {
 	        updatecheck = new CheckUpdate(this);
 	        updatecheck.execute();
         }
-        else
+        else if (haveNetworkConnection())
         {
         	Intent download = new Intent(this, CheckDatabaseActivity.class);
 			startActivity(download);
         }
-        
+        else
+        {
+        	createErrorDialog(R.string.no_network_connection);
+        }
 	}
 
 
