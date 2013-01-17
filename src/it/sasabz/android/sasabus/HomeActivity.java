@@ -166,6 +166,7 @@ public class HomeActivity extends Activity {
 						.findViewById(R.id.DateTimePicker);
 				TextView dt = (TextView)findViewById(R.id.time);
 				String datetimestring = dt.getText().toString();
+				
 				SimpleDateFormat datetimeformat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 				Date datetime = null;
 				try
@@ -184,7 +185,8 @@ public class HomeActivity extends Activity {
 						.getString(getContentResolver(),
 								android.provider.Settings.System.TIME_12_24);
 				final boolean is24h = !(timeS == null || timeS.equals("12"));
-
+				
+				
 				// Update demo TextViews when the "OK" button is clicked
 				((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
@@ -238,7 +240,7 @@ public class HomeActivity extends Activity {
 								datetimestring += " AM";
 								break;
 							case 2:
-								datetimestring += " AM";
+								datetimestring += " PM";
 								break;
 							}
 							
@@ -369,7 +371,7 @@ public class HomeActivity extends Activity {
 								datetimestring += " AM";
 								break;
 							case 2:
-								datetimestring += " AM";
+								datetimestring += " PM";
 								break;
 							}
 							

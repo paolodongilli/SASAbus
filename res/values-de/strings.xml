@@ -146,5 +146,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="zwischenstop">Zwischenstop</string>
 <string name="ziel">Ziel</string>
 
+<string name="am">AM</string>
+<string name="pm">PM</string>
+
 </resources>
 
