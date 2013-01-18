@@ -10,9 +10,9 @@ import android.support.v4.app.FragmentTransaction;
 public class OnlineActivity extends FragmentActivity{
 	
 	
-	protected void onCreate(Bundle savedInstanceState)
+	protected void onCreate(Bundle savedInstaceState)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstaceState);
 		setContentView(R.layout.online_fragment_container);
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -25,10 +25,8 @@ public class OnlineActivity extends FragmentActivity{
 		{
 			ft.remove(fragment);
 		}
-		fragment = new OnlineSearchFragment();//OnlineSearchFragment.instantiate(this, "OnlineSearchFragment");
+		fragment = new OnlineSearchFragment();
 		ft.add(R.id.onlinefragment, fragment);
-		
-		ft.addToBackStack(null);
 		ft.commit();
 		fragmentManager.executePendingTransactions();
 	}

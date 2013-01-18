@@ -22,14 +22,16 @@
  *
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
+import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -57,21 +59,30 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineShowConnectionActivity extends ListActivity {
+public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 
 	private XMLStation from = null;
 	private XMLStation to = null;
 	private Date datetime = null;
-
+	
+	private View result = null;
+	private ListView listview = null;
+	
 	public static final int XML_FAILURE = 0;
 	public static final int NO_DATA = 1;
 	
@@ -84,46 +95,48 @@ public class OnlineShowConnectionActivity extends ListActivity {
 	
 	private XMLConnectionRequestList request = null;
 
-	public OnlineShowConnectionActivity() {
+	private OnlineShowFragment()
+	{
+		
+	}
+	
+	public OnlineShowFragment(XMLStation from, XMLStation to, String datetime) {
+		this();
+		this.from = from;
+		this.to = to;
+		SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		try
+		{
+			this.datetime = simple.parse(datetime);
+		}
+		catch(Exception e)
+		{
+			Log.v("Datumsfehler", "Das Datum hat eine falsche Formatierung angenommen!!!");
+			Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
+			getFragmentManager().popBackStack();
+		}
 	}
 
 	private Context getContext() {
-		return this;
+		return this.getActivity();
 	}
 
 	
 	/** Called with the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (!XMLRequest.haveNetworkConnection()) {
 			Toast.makeText(getContext(), R.string.no_network_connection,
 					Toast.LENGTH_LONG).show();
-			finish();
-			return;
+			getFragmentManager().popBackStack();
+			return null;
 		}
-		setContentView(R.layout.connection_listview_layout);
+		result = inflater.inflate(R.layout.connection_listview_layout, container, false);
 
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			from = new XMLStation();
-			from.fromXMLString(extras.getString("from"));
-			to = new XMLStation();
-			to.fromXMLString(extras.getString("to"));
-			SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-			try {
-				datetime = simple.parse(extras.getString("datetime"));
-			} catch (Exception e) {
-				Log.v("Datumsfehler",
-						"Das Datum hat eine falsche Formatierung angenommen!!!");
-				Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
-				finish();
-				return;
-			}
-		}
 		if(list == null)
 		{
-			progress = new ProgressDialog(this);
+			progress = new ProgressDialog(getContext());
 		    progress.setMessage(getResources().getText(R.string.waiting));
 		    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		    progress.setCancelable(false);
@@ -137,25 +150,20 @@ public class OnlineShowConnectionActivity extends ListActivity {
 			progress = null;
 			fillData(list);
 		}
+		listview = (ListView)result.findViewById(android.R.id.list);
+		listview.setOnItemClickListener(this);
+		return result;
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		XMLConnectionRequest conreq = list.get(position);
-		if (conreq.getConnectionlist() == null) {
-			Log.v("XML-LOGGER", "Die Liste der Verbindungsdetails ist null!!!!");
-		}
-		ConnectionDialog dial = new ConnectionDialog(this,
-				conreq.getConnectionlist());
-		dial.show();
-	}
+	
+	
 
 	public void fillData(Vector <XMLConnectionRequest> list) {
 		this.list = list;
 
 		MyXMLConnectionRequestAdapter adapter = new MyXMLConnectionRequestAdapter(list);
 
-		setListAdapter(adapter);
+		listview.setAdapter(adapter);
 		
 		if(progress != null && progress.isShowing())
 			progress.dismiss();
@@ -164,7 +172,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 	
 	 public AlertDialog getErrorDialog(String message)
 	    {
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 			builder.setCancelable(false);
 			builder.setMessage(message);
 			builder.setTitle(R.string.error);
@@ -174,7 +182,7 @@ public class OnlineShowConnectionActivity extends ListActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					
 					dialog.dismiss();
-					finish();
+					getFragmentManager().popBackStack();
 				}
 			});
 			return builder.create();
@@ -195,21 +203,13 @@ public class OnlineShowConnectionActivity extends ListActivity {
 	    	}
 	    }
 	
-	/**
-	 * Called when the activity is about to start interacting with the user.
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		setHasOptionsMenu(true);
 		inflater.inflate(R.menu.optionmenu, menu);
    	 	menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
-		return true;
 	}
 
 	@Override
@@ -217,24 +217,35 @@ public class OnlineShowConnectionActivity extends ListActivity {
 		switch (item.getItemId()) {
 		case OFFLINE:
 		{
-			Intent oldmode = new Intent(this, SelectBacinoActivity.class);
+			Intent oldmode = new Intent(getContext(), SelectBacinoActivity.class);
 			startActivity(oldmode);
 			return true;
 		}
 		case R.id.menu_about: {
-			new About(this).show();
+			new About(getActivity()).show();
 			return true;
 		}
 		case R.id.menu_credits: {
-			new Credits(this).show();
+			new Credits(getActivity()).show();
 			return true;
 		}
 		case R.id.menu_infos: {
-			Intent infos = new Intent(this, InfoActivity.class);
+			Intent infos = new Intent(getContext(), InfoActivity.class);
 			startActivity(infos);
 			return true;
 		}
 		}
 		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView <?> parent, View v, int position, long id) {
+		XMLConnectionRequest conreq = list.get(position);
+		if (conreq.getConnectionlist() == null) {
+			Log.v("XML-LOGGER", "Die Liste der Verbindungsdetails ist null!!!!");
+		}
+		ConnectionDialog dial = new ConnectionDialog(getContext(),
+				conreq.getConnectionlist());
+		dial.show();
 	}
 }

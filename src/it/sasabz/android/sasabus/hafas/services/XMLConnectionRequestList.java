@@ -23,9 +23,9 @@
  */
 package it.sasabz.android.sasabus.hafas.services;
 
-import it.sasabz.android.sasabus.OnlineSelectStopActivity;
-import it.sasabz.android.sasabus.OnlineShowConnectionActivity;
 import it.sasabz.android.sasabus.classes.SASAbusXML;
+import it.sasabz.android.sasabus.fragments.OnlineSelectFragment;
+import it.sasabz.android.sasabus.fragments.OnlineShowFragment;
 import it.sasabz.android.sasabus.hafas.XMLAttributVariante;
 import it.sasabz.android.sasabus.hafas.XMLBasicStop;
 import it.sasabz.android.sasabus.hafas.XMLConnection;
@@ -52,9 +52,9 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 	private XMLStation from;
 	private XMLStation to;
 	private Date datetime;
-	private OnlineShowConnectionActivity activity;
+	private OnlineShowFragment activity;
 	
-	public XMLConnectionRequestList(XMLStation from, XMLStation to, Date datetime, OnlineShowConnectionActivity activity)
+	public XMLConnectionRequestList(XMLStation from, XMLStation to, Date datetime, OnlineShowFragment activity)
 	{
 		this.from = from;
 		this.to = to;
@@ -977,7 +977,7 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 		super.onPostExecute(result);
 		if(result == null)
 		{
-			activity.myShowDialog(OnlineShowConnectionActivity.NO_DATA);
+			activity.myShowDialog(OnlineShowFragment.NO_DATA);
 			return;
 		}
 		activity.fillData(result);

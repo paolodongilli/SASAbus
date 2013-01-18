@@ -23,9 +23,9 @@
  */
 package it.sasabz.android.sasabus.hafas.services;
 
-import it.sasabz.android.sasabus.OnlineSelectStopActivity;
 import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.SASAbusXML;
+import it.sasabz.android.sasabus.fragments.OnlineSelectFragment;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
 
@@ -42,12 +42,12 @@ import android.util.Log;
 
 public class XMLStationList extends AsyncTask<String, Void, Integer> {
 	
-	private OnlineSelectStopActivity activity = null;
+	private OnlineSelectFragment activity = null;
 	
 	private Vector<XMLStation> from = null;
 	private Vector<XMLStation> to = null;
 
-	public XMLStationList(OnlineSelectStopActivity activity)
+	public XMLStationList(OnlineSelectFragment activity)
 	{
 		this.activity = activity;
 	}
@@ -112,7 +112,7 @@ public class XMLStationList extends AsyncTask<String, Void, Integer> {
 		super.onPostExecute(result);
 		if(Integer.MAX_VALUE == result)
 		{
-			activity.myShowDialog(OnlineSelectStopActivity.XML_FAILURE);
+			activity.myShowDialog(OnlineSelectFragment.XML_FAILURE);
 			return;
 		}
 		activity.fillSpinner(from, to);

@@ -22,7 +22,7 @@
  * 
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,7 +30,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 
+import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -66,12 +68,17 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputFilter.LengthFilter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -83,17 +90,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineSelectStopActivity extends Activity {
+public class OnlineSelectFragment extends Fragment {
 
     private ProgressDialog progress = null;
     private String from = "";
     private String to = "";
+    private String date = "";
     private Palina fromPalina = null;
     private Palina toPalina = null;
     private Date datum = null;
     private Spinner from_spinner = null;
     private Spinner to_spinner = null;
     private Button search;
+    private LayoutInflater inflater = null;
+    private View result = null;
+    private ViewGroup container = null;
     
     
     public static final int XML_FAILURE = 0;
@@ -102,62 +113,63 @@ public class OnlineSelectStopActivity extends Activity {
 	public final static int OFFLINE = 34;
 	
 	private XMLStationList statlist = null;
-
     
-    private Vector<XMLConnectionRequest> list = null;
+    private OnlineSelectFragment()
+    {
+    }
     
-    public OnlineSelectStopActivity() {
+    public OnlineSelectFragment(String from, String to, String date) {
+    	this();
+    	this.from = from;
+    	this.to = to;
+    	this.date = date;
     }
 
     private Context getContext()
     {
-    	return this;
+    	return this.getActivity();
     }
     
     
-    /** Called with the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(!XMLRequest.haveNetworkConnection())
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+    	this.inflater = inflater;
+    	this.container = container;
+    	if(!XMLRequest.haveNetworkConnection())
         {
         	Toast.makeText(getContext(), R.string.no_network_connection, Toast.LENGTH_LONG).show();
-        	finish();
-        	return;
+        	getFragmentManager().popBackStack();
+        	return null;
         }
         
-        Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			from = extras.getString("from");
-			to = extras.getString("to");
-			String lang = "it";
-			if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
-				lang = "de";
-			fromPalina = PalinaList.getTranslation(from, lang);
-			toPalina = PalinaList.getTranslation(to, lang);
-			SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-			try
-			{
-				datum = simple.parse(extras.getString("datetime"));
-			}
-			catch(Exception e)
-			{
-				Log.v("Datumsfehler", "Das Datum hat eine falsche Formatierung angenommen!!!");
-				Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
-				finish();
-				return;
-			}
+
+		String lang = "it";
+		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
+			lang = "de";
+		fromPalina = PalinaList.getTranslation(from, lang);
+		toPalina = PalinaList.getTranslation(to, lang);
+		SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		try
+		{
+			datum = simple.parse(date);
+		}
+		catch(Exception e)
+		{
+			Log.v("Datumsfehler", "Das Datum hat eine falsche Formatierung angenommen!!!");
+			Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
+			getFragmentManager().popBackStack();
+			return null;
 		}
 		
 		 if(from == "" || to == "")
 	        {
-	        	Toast.makeText(this, "ERROR", Toast.LENGTH_LONG).show();
+	        	Toast.makeText(getContext(), "ERROR", Toast.LENGTH_LONG).show();
 	        	Log.v("SELECT STOP ERROR", "From: " + from + " | To: " + to);
-	        	finish();
-	        	return;
+	        	getFragmentManager().popBackStack();
+	        	return null;
 	        }
 		
-        progress = new ProgressDialog(this);
+        progress = new ProgressDialog(getContext());
         progress.setMessage(getResources().getText(R.string.waiting));
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setCancelable(false);
@@ -175,15 +187,13 @@ public class OnlineSelectStopActivity extends Activity {
         	Log.v("ONLINE-SELECT-FROM", from);
         }
         statlist.execute(from, to);
+    	return null;
     }
-
-
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
+    
+    /** Called with the activity is first created. */
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     
@@ -220,9 +230,9 @@ public class OnlineSelectStopActivity extends Activity {
     	 else
     	 {
 	    	
-	    	setContentView(R.layout.online_select_layout);
+	    	result = inflater.inflate(R.layout.online_select_layout, container, false);
 	    	
-	    	TextView datetime = (TextView)findViewById(R.id.time);
+	    	TextView datetime = (TextView)result.findViewById(R.id.time);
 	        
 	        datetime.setText(datetimestring);
 	        
@@ -232,20 +242,20 @@ public class OnlineSelectStopActivity extends Activity {
 	        if(from_list == null || to_list == null)
 	        {
 	        	Toast.makeText(getContext(), R.string.online_connection_error, Toast.LENGTH_LONG).show();
-	        	finish();
+	        	getFragmentManager().popBackStack();
 	        	return;
 	        }
 	        
 	        
-	        from_spinner = (Spinner) findViewById(R.id.from_spinner);
-	        to_spinner = (Spinner) findViewById(R.id.to_spinner);
+	        from_spinner = (Spinner) result.findViewById(R.id.from_spinner);
+	        to_spinner = (Spinner) result.findViewById(R.id.to_spinner);
 	        
 	       
 	        
 	        // Create an ArrayAdapter using the string array and a default spinner layout
-	        MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(this, from_list);
+	        MyXMLStationListAdapter from_adapter = new MyXMLStationListAdapter(getContext(), from_list);
 	        // Create an ArrayAdapter using the string array and a default spinner layout
-	        MyXMLStationListAdapter to_adapter = new MyXMLStationListAdapter(this, to_list);
+	        MyXMLStationListAdapter to_adapter = new MyXMLStationListAdapter(getContext(), to_list);
 	        
 	        
 	        // Apply the adapter to the spinner
@@ -253,7 +263,7 @@ public class OnlineSelectStopActivity extends Activity {
 	        // Apply the adapter to the spinner
 	        to_spinner.setAdapter(to_adapter);
 	        
-	        search = (Button)findViewById(R.id.search);
+	        search = (Button)result.findViewById(R.id.search);
 	        
 	        search.setOnClickListener(new View.OnClickListener() {
 				
@@ -261,7 +271,7 @@ public class OnlineSelectStopActivity extends Activity {
 				public void onClick(View v) {
 					XMLStation from = (XMLStation)from_spinner.getSelectedItem();
 					XMLStation to = (XMLStation)to_spinner.getSelectedItem();
-					TextView datetime = (TextView)findViewById(R.id.time);
+					TextView datetime = (TextView)result.findViewById(R.id.time);
 					getConnectionList(from, to, datetime.getText().toString());
 				}
 			});
@@ -271,18 +281,26 @@ public class OnlineSelectStopActivity extends Activity {
     public void getConnectionList(XMLStation from, XMLStation to, String datetime)
     {
     	progress.dismiss();
-    	Intent showConnection = new Intent(getContext(), OnlineShowConnectionActivity.class);
-		showConnection.putExtra("from", from.toXMLString());
-		showConnection.putExtra("to", to.toXMLString());
-		showConnection.putExtra("datetime", datetime);
-		finish();
-		startActivity(showConnection);
+    	//Intent showConnection = new Intent(getContext(), OnlineShowFragment.class);
+    	Fragment fragment = new OnlineShowFragment(from, to, datetime);
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+		
+		Fragment old = fragmentManager.findFragmentById(R.id.onlinefragment);
+		if(old != null)
+		{
+			ft.remove(old);
+		}
+		ft.add(R.id.onlinefragment, fragment);
+		ft.disallowAddToBackStack();
+		ft.commit();
+		fragmentManager.executePendingTransactions();
     }
     
     
     public AlertDialog getErrorDialog(String message)
     {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setCancelable(false);
 		builder.setMessage(message);
 		builder.setTitle(R.string.error);
@@ -292,7 +310,7 @@ public class OnlineSelectStopActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				
 				dialog.dismiss();
-				finish();
+				getFragmentManager().popBackStack();
 			}
 		});
 		return builder.create();
@@ -314,13 +332,11 @@ public class OnlineSelectStopActivity extends Activity {
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	 super.onCreateOptionsMenu(menu);
-    	 MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	 super.onCreateOptionsMenu(menu, inflater);
+    	 setHasOptionsMenu(true);
     	 inflater.inflate(R.menu.optionmenu, menu);
     	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
-
-         return true;
     }
     
     @Override
@@ -328,23 +344,23 @@ public class OnlineSelectStopActivity extends Activity {
 		switch (item.getItemId()) {
 			case OFFLINE:
 			{
-				Intent oldmode = new Intent(this, SelectBacinoActivity.class);
+				Intent oldmode = new Intent(getContext(), SelectBacinoActivity.class);
 				startActivity(oldmode);
 				return true;
 			}
 			case R.id.menu_about:
 			{
-				new About(this).show();
+				new About(this.getActivity()).show();
 				return true;
 			}
 			case R.id.menu_credits:
 			{
-				new Credits(this).show();
+				new Credits(this.getActivity()).show();
 				return true;
 			}	
 			case R.id.menu_infos:
 			{
-				Intent infos = new Intent(this, InfoActivity.class);
+				Intent infos = new Intent(getContext(), InfoActivity.class);
 				startActivity(infos);
 				return true;
 			}

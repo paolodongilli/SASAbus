@@ -367,7 +367,6 @@ public class PalinaList {
 					"where nome_it = ? " +
 					"LIMIT 1";
 		}
-		Log.v("PALINALIST", "QUERY: " + query);
 		Cursor cursor = sqlite.rawQuery(query, args);
 		Palina element = null;
 		if(cursor.moveToFirst())

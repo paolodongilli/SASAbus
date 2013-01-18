@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.InfoActivity;
-import it.sasabz.android.sasabus.OnlineSelectStopActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.drawable;
@@ -65,6 +64,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -109,6 +110,11 @@ public class OnlineSearchFragment extends Fragment {
     	return this;
     }
     
+    @Override
+    public void onResume() {
+    	super.onResume();
+    }
+    
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
     	this.inflater_glob = inflater;
@@ -138,7 +144,7 @@ public class OnlineSearchFragment extends Fragment {
 				
 				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
-					Intent getSelect = new Intent(getThis().getActivity(), OnlineSelectStopActivity.class);
+					//Intent getSelect = new Intent(getThis().getActivity(), OnlineSelectStopActivity.class);
 					String fromtext = "";
 					if(from.getText().toString().trim().equals(""))
 						fromtext = from.getHint().toString();
@@ -147,11 +153,19 @@ public class OnlineSearchFragment extends Fragment {
 					String totext = to.getText().toString();
 					fromtext = "(" + fromtext.replace(" -", ")");
 					totext = "(" + totext.replace(" -", ")");
+					Fragment fragment = new OnlineSelectFragment(fromtext, totext, datetime.getText().toString());
+					FragmentManager fragmentManager = getFragmentManager();
+					FragmentTransaction ft = fragmentManager.beginTransaction();
 					
-					getSelect.putExtra("from", fromtext);
-					getSelect.putExtra("to", totext);
-					getSelect.putExtra("datetime", datetime.getText().toString());
-					myStartActivity(getSelect);
+					Fragment old = fragmentManager.findFragmentById(R.id.onlinefragment);
+					if(old != null)
+					{
+						ft.remove(old);
+					}
+					ft.add(R.id.onlinefragment, fragment);
+					ft.addToBackStack(null);
+					ft.commit();
+					fragmentManager.executePendingTransactions();
 				}
 			}
 		});
