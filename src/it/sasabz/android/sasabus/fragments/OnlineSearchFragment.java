@@ -416,7 +416,41 @@ public class OnlineSearchFragment extends Fragment {
 			}
 
 		});
-    	
+        AutoCompleteTextView from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
+        AutoCompleteTextView to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
+        LocationManager locman = (LocationManager)this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(MySQLiteDBAdapter.exists(this.getActivity()))
+        {
+	        if(lastloc == null)
+	        {
+	        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	        }
+	        if(lastloc != null)
+	        {
+	        	try
+	        	{
+	        		Palina palina = PalinaList.getPalinaGPS(lastloc);
+	        		if(palina != null)
+	        		{
+	        			from.setHint(palina.toString());
+	        		}
+	        	}
+	        	catch(Exception e)
+	        	{
+	        		Log.e("HomeActivity", "Fehler bei der Location", e);
+	        	}
+	        }
+	        else
+	        {
+	        	Log.v("HomeActivity", "No location found!!");
+	        }
+	        Vector<DBObject> palinalist = PalinaList.getNameList(); 
+	        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
+	        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
+	        from.setAdapter(adapterfrom);
+	        to.setAdapter(adapterto);
+        }
     	return result;
     }
     
@@ -431,41 +465,7 @@ public class OnlineSearchFragment extends Fragment {
         {
 	        updatecheck = new CheckUpdate(this);
 	        updatecheck.execute();
-	        AutoCompleteTextView from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
-	        AutoCompleteTextView to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
-	        LocationManager locman = (LocationManager)this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-	        Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	        if(MySQLiteDBAdapter.exists(this.getActivity()))
-	        {
-		        if(lastloc == null)
-		        {
-		        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		        }
-		        if(lastloc != null)
-		        {
-		        	try
-		        	{
-		        		Palina palina = PalinaList.getPalinaGPS(lastloc);
-		        		if(palina != null)
-		        		{
-		        			from.setHint(palina.toString());
-		        		}
-		        	}
-		        	catch(Exception e)
-		        	{
-		        		Log.e("HomeActivity", "Fehler bei der Location", e);
-		        	}
-		        }
-		        else
-		        {
-		        	Log.v("HomeActivity", "No location found!!");
-		        }
-		        Vector<DBObject> palinalist = PalinaList.getNameList(); 
-		        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
-		        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
-		        from.setAdapter(adapterfrom);
-		        to.setAdapter(adapterto);
-	        }
+	        
         }
         else if (haveNetworkConnection())
         {

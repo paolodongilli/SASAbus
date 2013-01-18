@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <fragment class="it.sasabz.android.sasabus.fragments.OnlineSearchFragment"
-        android:id="@+id/onlinefragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <FrameLayout 
+   		android:id="@+id/onlinefragment"
+    	android:layout_height="match_parent"
+    	android:layout_width="match_parent"
+    >
+    </FrameLayout>
 </LinearLayout>
