@@ -23,7 +23,7 @@
  * 
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.fragments;
 
 
 import java.text.SimpleDateFormat;
@@ -31,7 +31,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
+import it.sasabz.android.sasabus.CheckDatabaseActivity;
+import it.sasabz.android.sasabus.InfoActivity;
+import it.sasabz.android.sasabus.OnlineSelectStopActivity;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.drawable;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
@@ -62,10 +66,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -75,7 +81,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeActivity extends Activity {
+public class OnlineSearchFragment extends Fragment {
 
 	
 	public final static int DOWNLOAD_AVAILABLE = 0;
@@ -92,48 +98,47 @@ public class HomeActivity extends Activity {
 	
 	private CheckUpdate updatecheck = null;
     
-    public HomeActivity() {
+	private View result = null;
+	private LayoutInflater inflater_glob = null;
+	
+    public OnlineSearchFragment() {
     }
 
-    private HomeActivity getThis()
+    private OnlineSearchFragment getThis()
     {
     	return this;
     }
     
-    
-    
-    /** Called with the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.online_search_layout);
-        
-        Date datum = new Date();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+    	this.inflater_glob = inflater;
+    	result = inflater.inflate(R.layout.online_search_layout, container, false);
+    	
+    	Date datum = new Date();
         SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         
         
-        TextView datetime = (TextView)findViewById(R.id.time);
+        TextView datetime = (TextView)result.findViewById(R.id.time);
         String datetimestring = "";
         
         datetimestring = simple.format(datum);
         
         datetime.setText(datetimestring);
         
-        Button search = (Button)findViewById(R.id.search);
+        Button search = (Button)result.findViewById(R.id.search);
         
         search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AutoCompleteTextView from = (AutoCompleteTextView)findViewById(R.id.from_text);
-				AutoCompleteTextView to = (AutoCompleteTextView)findViewById(R.id.to_text);
-				TextView datetime = (TextView)findViewById(R.id.time);
+				AutoCompleteTextView from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
+				AutoCompleteTextView to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
+				TextView datetime = (TextView)result.findViewById(R.id.time);
 				
 				String from_txt = getThis().getResources().getString(R.string.from_txt);
 				
 				if((!from.getText().toString().trim().equals("") || !from.getHint().toString().trim().equals(from_txt)) && !to.getText().toString().trim().equals(""))
 				{
-					Intent getSelect = new Intent(getThis(), OnlineSelectStopActivity.class);
+					Intent getSelect = new Intent(getThis().getActivity(), OnlineSelectStopActivity.class);
 					String fromtext = "";
 					if(from.getText().toString().trim().equals(""))
 						fromtext = from.getHint().toString();
@@ -157,14 +162,13 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				
 				// Create the dialog
-				final Dialog mDateTimeDialog = new Dialog(getThis());
+				final Dialog mDateTimeDialog = new Dialog(getThis().getActivity());
 				// Inflate the root layout
-				final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater()
-						.inflate(R.layout.date_time_dialog, null);
+				final RelativeLayout mDateTimeDialogView = (RelativeLayout) inflater_glob.inflate(R.layout.date_time_dialog, null);
 				// Grab widget instance
 				final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
 						.findViewById(R.id.DateTimePicker);
-				TextView dt = (TextView)findViewById(R.id.time);
+				TextView dt = (TextView)result.findViewById(R.id.time);
 				String datetimestring = dt.getText().toString();
 				
 				SimpleDateFormat datetimeformat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -182,7 +186,7 @@ public class HomeActivity extends Activity {
 				// Check is system is set to use 24h time (this doesn't seem to
 				// work as expected though)
 				final String timeS = android.provider.Settings.System
-						.getString(getContentResolver(),
+						.getString(getThis().getActivity().getContentResolver(),
 								android.provider.Settings.System.TIME_12_24);
 				final boolean is24h = !(timeS == null || timeS.equals("12"));
 				
@@ -244,7 +248,7 @@ public class HomeActivity extends Activity {
 								break;
 							}
 							
-							TextView time = (TextView)findViewById(R.id.time);
+							TextView time = (TextView)result.findViewById(R.id.time);
 							time.setText(datetimestring);
 							mDateTimeDialog.dismiss();
 						}
@@ -282,7 +286,7 @@ public class HomeActivity extends Activity {
 
 		});
         
-        ImageButton datepicker = (ImageButton)findViewById(R.id.datepicker);
+        ImageButton datepicker = (ImageButton)result.findViewById(R.id.datepicker);
         
         datepicker.setOnClickListener(new View.OnClickListener() {
 			
@@ -290,14 +294,14 @@ public class HomeActivity extends Activity {
 			public void onClick(View v) {
 				
 				// Create the dialog
-				final Dialog mDateTimeDialog = new Dialog(getThis());
+				final Dialog mDateTimeDialog = new Dialog(getThis().getActivity());
 				// Inflate the root layout
-				final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater()
+				final RelativeLayout mDateTimeDialogView = (RelativeLayout) inflater_glob
 						.inflate(R.layout.date_time_dialog, null);
 				// Grab widget instance
 				final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
 						.findViewById(R.id.DateTimePicker);
-				TextView dt = (TextView)findViewById(R.id.time);
+				TextView dt = (TextView)result.findViewById(R.id.time);
 				String datetimestring = dt.getText().toString();
 				SimpleDateFormat datetimeformat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 				Date datetime = null;
@@ -314,7 +318,7 @@ public class HomeActivity extends Activity {
 				// Check is system is set to use 24h time (this doesn't seem to
 				// work as expected though)
 				final String timeS = android.provider.Settings.System
-						.getString(getContentResolver(),
+						.getString(getThis().getActivity().getContentResolver(),
 								android.provider.Settings.System.TIME_12_24);
 				final boolean is24h = !(timeS == null || timeS.equals("12"));
 
@@ -375,7 +379,7 @@ public class HomeActivity extends Activity {
 								break;
 							}
 							
-							TextView time = (TextView)findViewById(R.id.time);
+							TextView time = (TextView)result.findViewById(R.id.time);
 							time.setText(datetimestring);
 							mDateTimeDialog.dismiss();
 						}
@@ -412,14 +416,60 @@ public class HomeActivity extends Activity {
 			}
 
 		});
-        if(MySQLiteDBAdapter.exists(this))
+    	
+    	return result;
+    }
+    
+    /** Called with the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        
+        
+        if(MySQLiteDBAdapter.exists(this.getActivity()))
         {
 	        updatecheck = new CheckUpdate(this);
 	        updatecheck.execute();
+	        AutoCompleteTextView from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
+	        AutoCompleteTextView to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
+	        LocationManager locman = (LocationManager)this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+	        Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	        if(MySQLiteDBAdapter.exists(this.getActivity()))
+	        {
+		        if(lastloc == null)
+		        {
+		        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		        }
+		        if(lastloc != null)
+		        {
+		        	try
+		        	{
+		        		Palina palina = PalinaList.getPalinaGPS(lastloc);
+		        		if(palina != null)
+		        		{
+		        			from.setHint(palina.toString());
+		        		}
+		        	}
+		        	catch(Exception e)
+		        	{
+		        		Log.e("HomeActivity", "Fehler bei der Location", e);
+		        	}
+		        }
+		        else
+		        {
+		        	Log.v("HomeActivity", "No location found!!");
+		        }
+		        Vector<DBObject> palinalist = PalinaList.getNameList(); 
+		        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
+		        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
+		        from.setAdapter(adapterfrom);
+		        to.setAdapter(adapterto);
+	        }
         }
         else if (haveNetworkConnection())
         {
-        	Intent download = new Intent(this, CheckDatabaseActivity.class);
+        	Intent download = new Intent(this.getActivity(), CheckDatabaseActivity.class);
 			startActivity(download);
         }
         else
@@ -428,59 +478,14 @@ public class HomeActivity extends Activity {
         }
 	}
 
-
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        AutoCompleteTextView from = (AutoCompleteTextView)findViewById(R.id.from_text);
-        AutoCompleteTextView to = (AutoCompleteTextView)findViewById(R.id.to_text);
-        LocationManager locman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(MySQLiteDBAdapter.exists(this))
-        {
-	        if(lastloc == null)
-	        {
-	        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-	        }
-	        if(lastloc != null)
-	        {
-	        	try
-	        	{
-	        		Palina palina = PalinaList.getPalinaGPS(lastloc);
-	        		if(palina != null)
-	        		{
-	        			from.setHint(palina.toString());
-	        		}
-	        	}
-	        	catch(Exception e)
-	        	{
-	        		Log.e("HomeActivity", "Fehler bei der Location", e);
-	        	}
-	        }
-	        else
-	        {
-	        	Log.v("HomeActivity", "No location found!!");
-	        }
-	        Vector<DBObject> palinalist = PalinaList.getNameList(); 
-	        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
-	        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this, android.R.layout.simple_list_item_1, palinalist);
-	        from.setAdapter(adapterfrom);
-	        to.setAdapter(adapterto);
-        }
-    }
-
     
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	 super.onCreateOptionsMenu(menu);
-    	 MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	 super.onCreateOptionsMenu(menu, inflater);
+    	 setHasOptionsMenu(true);
     	 inflater.inflate(R.menu.optionmenu, menu);
     	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
-         return true;
     }
     
     @Override
@@ -488,23 +493,23 @@ public class HomeActivity extends Activity {
 		switch (item.getItemId()) {
 			case OFFLINE:
 			{
-				Intent oldmode = new Intent(this, SelectBacinoActivity.class);
+				Intent oldmode = new Intent(this.getActivity(), SelectBacinoActivity.class);
 				startActivity(oldmode);
 				return true;
 			}
 			case R.id.menu_about:
 			{
-				new About(this).show();
+				new About(this.getActivity()).show();
 				return true;
 			}
 			case R.id.menu_credits:
 			{
-				new Credits(this).show();
+				new Credits(this.getActivity()).show();
 				return true;
 			}	
 			case R.id.menu_infos:
 			{
-				Intent infos = new Intent(this, InfoActivity.class);
+				Intent infos = new Intent(this.getActivity(), InfoActivity.class);
 				myStartActivity(infos);
 				return true;
 			}
@@ -526,7 +531,7 @@ public class HomeActivity extends Activity {
 		case NO_SD_CARD:
 			return createErrorDialog(R.string.sd_card_not_mounted);
 		case DOWNLOAD_FILES:
-			Intent down = new Intent(this, CheckDatabaseActivity.class);
+			Intent down = new Intent(this.getActivity(), CheckDatabaseActivity.class);
 			myStartActivity(down);
 			return null;
 		default:
@@ -536,7 +541,7 @@ public class HomeActivity extends Activity {
     
     public final Dialog createErrorDialog(int msg) 
    	{
-   		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
    		// builder.setTitle(R.string.a_given_string);
    		builder.setIcon(R.drawable.icon);
    		builder.setMessage(msg);
@@ -577,7 +582,7 @@ public class HomeActivity extends Activity {
 		boolean haveConnectedWifi = false;
 		boolean haveConnectedMobile = false;
 
-		ConnectivityManager cm = (ConnectivityManager) (this.getSystemService(Context.CONNECTIVITY_SERVICE));
+		ConnectivityManager cm = (ConnectivityManager) (getActivity().getSystemService(Context.CONNECTIVITY_SERVICE));
 		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
 		for (NetworkInfo ni : netInfo) {
 			//testing WIFI connection
@@ -594,7 +599,7 @@ public class HomeActivity extends Activity {
     
 	private void createOfflineAlertDialog()
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		builder.setTitle(R.string.information);
 		builder.setMessage(R.string.offline_info);
 		
@@ -612,7 +617,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				Intent oldmode = new Intent(getThis(), SelectBacinoActivity.class);
+				Intent oldmode = new Intent(getThis().getActivity(), SelectBacinoActivity.class);
 				startActivity(oldmode);
 			}
 			
@@ -623,7 +628,7 @@ public class HomeActivity extends Activity {
 	
     public final Dialog createDownloadAlertDialog(int msg) 
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
 		// builder.setTitle(R.string.a_given_string);
 		builder.setIcon(R.drawable.icon);
 		//builder.setMessage(msg);
@@ -632,7 +637,7 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.dismiss();
-				Intent download = new Intent(getThis(), CheckDatabaseActivity.class);
+				Intent download = new Intent(getThis().getActivity(), CheckDatabaseActivity.class);
 				myStartActivity(download);
 			}
 		});

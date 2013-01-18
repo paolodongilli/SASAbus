@@ -27,6 +27,7 @@ package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.layout;
+import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -68,7 +69,7 @@ public class SplashScreen extends Activity {
                     finish();
 
                     // Run next activity
-                	Intent home = new Intent(getThis(), HomeActivity.class);
+                	Intent home = new Intent(getThis(), TabHostActivity.class);
                 	startActivity(home);
                 }
             }
