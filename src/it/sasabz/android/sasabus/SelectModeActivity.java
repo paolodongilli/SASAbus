@@ -42,6 +42,7 @@ import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.fragments.BacinoFragment;
 import it.sasabz.android.sasabus.hafas.XMLRequest;
 import it.sasabz.android.sasabus.hafas.XMLStation;
 import it.sasabz.android.sasabus.hafas.services.XMLStationList;
@@ -99,7 +100,7 @@ public class SelectModeActivity extends ListActivity {
          */
         if(mode == 2)
         {
-        	Intent selLinea = new Intent(this, SelectBacinoActivity.class);
+        	Intent selLinea = new Intent(this, BacinoFragment.class);
         	startActivity(selLinea);
         }
     }
@@ -148,12 +149,6 @@ public class SelectModeActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(this, InfoActivity.class);
-				startActivity(infos);
-				return true;
-			}
 		}
 		return false;
 	}

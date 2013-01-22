@@ -156,7 +156,6 @@ public class InfoActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		menu.removeItem(R.id.menu_infos);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.optionmenu, menu);
 		return true;

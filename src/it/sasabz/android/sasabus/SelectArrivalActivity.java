@@ -159,12 +159,6 @@ public class SelectArrivalActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(this, InfoActivity.class);
-				startActivity(infos);
-				return true;
-			}
 		}
 		return false;
 	}

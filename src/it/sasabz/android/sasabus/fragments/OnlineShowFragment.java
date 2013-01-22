@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -85,8 +84,6 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 	
 	public static final int XML_FAILURE = 0;
 	public static final int NO_DATA = 1;
-	
-	public final static int OFFLINE = 34;
 
 	
 	private ProgressDialog progress = null;
@@ -203,40 +200,6 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 	    	}
 	    }
 	
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		setHasOptionsMenu(true);
-		inflater.inflate(R.menu.optionmenu, menu);
-   	 	menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case OFFLINE:
-		{
-			Intent oldmode = new Intent(getContext(), SelectBacinoActivity.class);
-			startActivity(oldmode);
-			return true;
-		}
-		case R.id.menu_about: {
-			new About(getActivity()).show();
-			return true;
-		}
-		case R.id.menu_credits: {
-			new Credits(getActivity()).show();
-			return true;
-		}
-		case R.id.menu_infos: {
-			Intent infos = new Intent(getContext(), InfoActivity.class);
-			startActivity(infos);
-			return true;
-		}
-		}
-		return false;
-	}
 
 	@Override
 	public void onItemClick(AdapterView <?> parent, View v, int position, long id) {

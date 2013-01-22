@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -90,7 +89,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineSelectFragment extends Fragment {
+public class OnlineSelectFragment extends Fragment{
 
     private ProgressDialog progress = null;
     private String from = "";
@@ -109,8 +108,6 @@ public class OnlineSelectFragment extends Fragment {
     
     public static final int XML_FAILURE = 0;
     public static final int NO_DATA = 1;
-    
-	public final static int OFFLINE = 34;
 	
 	private XMLStationList statlist = null;
     
@@ -187,7 +184,9 @@ public class OnlineSelectFragment extends Fragment {
         	Log.v("ONLINE-SELECT-FROM", from);
         }
         statlist.execute(from, to);
-    	return null;
+        result = inflater.inflate(R.layout.online_select_layout, container, false);
+        result.setVisibility(View.INVISIBLE);
+        return result;
     }
     
     /** Called with the activity is first created. */
@@ -230,7 +229,7 @@ public class OnlineSelectFragment extends Fragment {
     	 else
     	 {
 	    	
-	    	result = inflater.inflate(R.layout.online_select_layout, container, false);
+	    	
 	    	
 	    	TextView datetime = (TextView)result.findViewById(R.id.time);
 	        
@@ -275,6 +274,7 @@ public class OnlineSelectFragment extends Fragment {
 					getConnectionList(from, to, datetime.getText().toString());
 				}
 			});
+	        result.setVisibility(View.VISIBLE);
     	 }
     }
     
@@ -331,40 +331,4 @@ public class OnlineSelectFragment extends Fragment {
     	}
     }
     
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	 super.onCreateOptionsMenu(menu, inflater);
-    	 setHasOptionsMenu(true);
-    	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
-    }
-    
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case OFFLINE:
-			{
-				Intent oldmode = new Intent(getContext(), SelectBacinoActivity.class);
-				startActivity(oldmode);
-				return true;
-			}
-			case R.id.menu_about:
-			{
-				new About(this.getActivity()).show();
-				return true;
-			}
-			case R.id.menu_credits:
-			{
-				new Credits(this.getActivity()).show();
-				return true;
-			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(getContext(), InfoActivity.class);
-				startActivity(infos);
-				return true;
-			}
-		}
-		return false;
-	}
 }

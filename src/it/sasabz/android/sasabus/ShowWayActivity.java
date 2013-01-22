@@ -306,12 +306,6 @@ public class ShowWayActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(this, InfoActivity.class);
-				startActivity(infos);
-				return true;
-			}
 			case MAP:
 			{
 				Intent mapview = new Intent(this, MapViewActivity.class);

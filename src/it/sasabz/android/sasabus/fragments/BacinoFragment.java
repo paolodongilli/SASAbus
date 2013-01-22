@@ -23,12 +23,14 @@
  * 
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.fragments;
 
 import java.util.Locale;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.SASAbus;
+import it.sasabz.android.sasabus.SelectLineaActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -53,12 +55,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class SelectBacinoActivity extends ListActivity {
+public class BacinoFragment extends ListActivity {
 
     
     private Vector<DBObject> list = null;
     
-    public SelectBacinoActivity() {
+    public BacinoFragment() {
     }
 
     /** Called with the activity is first created. */
@@ -119,12 +121,6 @@ public class SelectBacinoActivity extends ListActivity {
 				new Credits(this).show();
 				return true;
 			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(this, InfoActivity.class);
-				startActivity(infos);
-				return true;
-			}
 		}
 		return false;
 	}

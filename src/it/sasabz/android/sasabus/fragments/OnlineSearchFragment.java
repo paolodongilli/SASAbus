@@ -29,12 +29,12 @@ package it.sasabz.android.sasabus.fragments;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Vector;
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.SelectBacinoActivity;
 import it.sasabz.android.sasabus.R.drawable;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
@@ -66,6 +66,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -74,15 +76,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineSearchFragment extends Fragment {
+public class OnlineSearchFragment extends Fragment{
 
 	
 	public final static int DOWNLOAD_AVAILABLE = 0;
@@ -96,6 +101,9 @@ public class OnlineSearchFragment extends Fragment {
 	public final static int DB_UP = 2;
 	
 	public final static int OFFLINE = 34;
+	
+	private AutoCompleteTextView from;
+	private AutoCompleteTextView to;
 	
 	private CheckUpdate updatecheck = null;
     
@@ -111,10 +119,14 @@ public class OnlineSearchFragment extends Fragment {
     }
     
     @Override
-    public void onResume() {
-    	super.onResume();
+    public void onPause() {
+    	// TODO Auto-generated method stub
+    	super.onPause();
+    	InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(result.getWindowToken(), 0);
     }
     
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
     	this.inflater_glob = inflater;
@@ -430,8 +442,25 @@ public class OnlineSearchFragment extends Fragment {
 			}
 
 		});
-        AutoCompleteTextView from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
-        AutoCompleteTextView to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
+        from = (AutoCompleteTextView)result.findViewById(R.id.from_text);
+        to = (AutoCompleteTextView)result.findViewById(R.id.to_text);
+
+        from.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            	InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    			mgr.hideSoftInputFromWindow(from.getWindowToken(), 0);
+            }
+        });
+        
+        to.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            	InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    			mgr.hideSoftInputFromWindow(to.getWindowToken(), 0);
+            }
+        });
+        
         LocationManager locman = (LocationManager)this.getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if(MySQLiteDBAdapter.exists(this.getActivity()))
@@ -462,8 +491,12 @@ public class OnlineSearchFragment extends Fragment {
 	        Vector<DBObject> palinalist = PalinaList.getNameList(); 
 	        MyAutocompleteAdapter adapterfrom = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
 	        MyAutocompleteAdapter adapterto = new MyAutocompleteAdapter(this.getActivity(), android.R.layout.simple_list_item_1, palinalist);
+	        
 	        from.setAdapter(adapterfrom);
 	        to.setAdapter(adapterto);
+	        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			mgr.hideSoftInputFromWindow(from.getWindowToken(), 0);
+			mgr.hideSoftInputFromWindow(to.getWindowToken(), 0);
         }
     	return result;
     }
@@ -493,43 +526,11 @@ public class OnlineSearchFragment extends Fragment {
 	}
 
     
-    
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    	 super.onCreateOptionsMenu(menu, inflater);
-    	 setHasOptionsMenu(true);
-    	 inflater.inflate(R.menu.optionmenu, menu);
-    	 menu.add(0, OFFLINE, 3, R.string.menu_old_mode);
+    public void onResume()
+    {
+    	super.onResume();
     }
-    
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case OFFLINE:
-			{
-				Intent oldmode = new Intent(this.getActivity(), SelectBacinoActivity.class);
-				startActivity(oldmode);
-				return true;
-			}
-			case R.id.menu_about:
-			{
-				new About(this.getActivity()).show();
-				return true;
-			}
-			case R.id.menu_credits:
-			{
-				new Credits(this.getActivity()).show();
-				return true;
-			}	
-			case R.id.menu_infos:
-			{
-				Intent infos = new Intent(this.getActivity(), InfoActivity.class);
-				myStartActivity(infos);
-				return true;
-			}
-		}
-		return false;
-	}
     
     public void showDialog(int id, int res)
 	{
@@ -631,7 +632,7 @@ public class OnlineSearchFragment extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				Intent oldmode = new Intent(getThis().getActivity(), SelectBacinoActivity.class);
+				Intent oldmode = new Intent(getThis().getActivity(), BacinoFragment.class);
 				startActivity(oldmode);
 			}
 			

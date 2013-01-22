@@ -25,10 +25,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <LinearLayout android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <!--
+    	<TextView
         android:id="@+id/titel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +37,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:textColor="@color/header_text" 
         android:text="@string/app_name"
         />
+        -->
 
     <TableLayout
         android:layout_width="match_parent"
