@@ -29,6 +29,7 @@ package it.sasabz.android.sasabus.classes;
 import java.util.Locale;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
 
 public class Modus extends DBObject {
 

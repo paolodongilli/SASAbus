@@ -32,18 +32,19 @@ import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Favorit;
 import it.sasabz.android.sasabus.classes.FavoritenDB;
 import it.sasabz.android.sasabus.classes.FavoritenList;
-import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.Modus;
-import it.sasabz.android.sasabus.classes.MyFavoritenListAdapter;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.adapter.MyFavoritenListAdapter;
+import it.sasabz.android.sasabus.classes.adapter.MyListAdapter;
+import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
+import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
+import it.sasabz.android.sasabus.classes.dbobjects.LineaList;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
+import it.sasabz.android.sasabus.fragments.OrarioFragment;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -95,7 +96,7 @@ public class SelectFavoritenActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Favorit fav = list.get(position);
-    	Intent showOrari = new Intent(this, ShowOrariActivity.class);
+    	Intent showOrari = new Intent(this, OrarioFragment.class);
     	showOrari.putExtra("linea", fav.getLinea());
     	showOrari.putExtra("palina", fav.getPartenza_de());
     	showOrari.putExtra("destinazione", fav.getDestinazione_de());

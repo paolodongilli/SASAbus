@@ -30,32 +30,38 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
-import it.sasabz.android.sasabus.SelectLineaActivity;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.adapter.MyListAdapter;
+import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
+import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-public class BacinoFragment extends ListActivity {
+public class BacinoFragment extends Fragment implements OnItemClickListener{
 
     
     private Vector<DBObject> list = null;
@@ -63,65 +69,55 @@ public class BacinoFragment extends ListActivity {
     public BacinoFragment() {
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    		Bundle savedInstanceState) {
+    	// TODO Auto-generated method stub
+    	View result = inflater.inflate(R.layout.standard_listview_layout, container, false);
+    	TextView titel = (TextView)result.findViewById(R.id.untertitel);
+        titel.setText(R.string.select_bacino);
+        
+        fillData(result);
+    	return result;
+    }
+    
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.standard_listview_layout);
-        TextView titel = (TextView)findViewById(R.id.untertitel);
-        titel.setText(R.string.select_bacino);
-        
-        fillData();
     }
 
-    /**
-     * Called when the activity is about to start interacting with the user.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        int bacino = list.get(position).getId();
-    	Intent selLinea = new Intent(this, SelectLineaActivity.class);
-    	selLinea.putExtra("bacino", bacino);
-    	startActivity(selLinea);
-    }
     
     /**
      * this method gets the list from the bacinolist and then fills the list with the bacini
      */
-    private void fillData() {
+    private void fillData(View result) {
         list = BacinoList.getList();
+        ListView listview = (ListView)result.findViewById(android.R.id.list);
         MyListAdapter bacini = new MyListAdapter(SASAbus.getContext(), R.id.text, R.layout.bacino_row, list);
-        setListAdapter(bacini);
+        listview.setAdapter(bacini);
+        listview.setOnItemClickListener(this);
     }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	 super.onCreateOptionsMenu(menu);
-    	 MenuInflater inflater = getMenuInflater();
-    	 inflater.inflate(R.menu.optionmenu, menu);
-         return true;
-    }
-    
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_about:
-			{
-				new About(this).show();
-				return true;
-			}
-			case R.id.menu_credits:
-			{
-				new Credits(this).show();
-				return true;
-			}	
+
+	@Override
+	public void onItemClick(AdapterView<?> adapterview, View v, int position, long id) {
+        int bacino = list.get(position).getId();
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction ft = fragmentManager.beginTransaction();
+		
+		Fragment fragment = fragmentManager.findFragmentById(R.id.onlinefragment);
+		if(fragment != null)
+		{
+			ft.remove(fragment);
 		}
-		return false;
+		fragment = new LineaFragment(bacino);
+		ft.add(R.id.onlinefragment, fragment);
+		ft.addToBackStack(null);
+		ft.commit();
+		fragmentManager.executePendingTransactions();
+		
 	}
+    
+   
 }

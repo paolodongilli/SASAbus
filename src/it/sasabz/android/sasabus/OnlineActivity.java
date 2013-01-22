@@ -1,7 +1,7 @@
 package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Credits;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
 import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.content.Intent;
 import android.os.Bundle;

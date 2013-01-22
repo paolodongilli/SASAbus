@@ -1,7 +1,8 @@
 package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Credits;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
+import it.sasabz.android.sasabus.fragments.BacinoFragment;
 import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,7 @@ public class OfflineActivity extends FragmentActivity{
 		{
 			ft.remove(fragment);
 		}
-		fragment = new OnlineSearchFragment();
+		fragment = new BacinoFragment();
 		ft.add(R.id.onlinefragment, fragment);
 		ft.commit();
 		fragmentManager.executePendingTransactions();

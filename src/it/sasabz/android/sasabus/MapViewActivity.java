@@ -44,18 +44,18 @@ import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.Bacino;
-import it.sasabz.android.sasabus.classes.BacinoList;
 import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.Linea;
-import it.sasabz.android.sasabus.classes.LineaList;
 import it.sasabz.android.sasabus.classes.MyOverlayItem;
-import it.sasabz.android.sasabus.classes.Palina;
-import it.sasabz.android.sasabus.classes.PalinaList;
-import it.sasabz.android.sasabus.classes.Passaggio;
-import it.sasabz.android.sasabus.classes.PassaggioList;
+import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
+import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
+import it.sasabz.android.sasabus.classes.dbobjects.Linea;
+import it.sasabz.android.sasabus.classes.dbobjects.LineaList;
+import it.sasabz.android.sasabus.classes.dbobjects.Palina;
+import it.sasabz.android.sasabus.classes.dbobjects.PalinaList;
+import it.sasabz.android.sasabus.classes.dbobjects.Passaggio;
+import it.sasabz.android.sasabus.classes.dbobjects.PassaggioList;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
 
 
 import android.content.Intent;

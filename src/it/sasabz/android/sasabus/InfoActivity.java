@@ -28,13 +28,13 @@ import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.BacinoList;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Information;
 import it.sasabz.android.sasabus.classes.Modus;
-import it.sasabz.android.sasabus.classes.MyListAdapter;
+import it.sasabz.android.sasabus.classes.adapter.MyListAdapter;
+import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
 import it.sasabz.android.sasabus.classes.services.InformationList;
 
 import java.io.IOException;

@@ -146,4 +146,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="am">AM</string>
 <string name="pm">PM</string>
 
+<string name="earlier">precedente</string>
+<string name="later">successivo</string>
+
 </resources>

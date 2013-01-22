@@ -155,5 +155,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="am">AM</string>
 <string name="pm">PM</string>
 
+<string name="earlier">earlier</string>
+<string name="later">later</string>
+
 </resources>
 

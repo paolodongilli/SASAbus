@@ -27,6 +27,7 @@
 package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.SASAbus;
+import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;

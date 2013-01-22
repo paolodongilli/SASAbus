@@ -27,14 +27,15 @@ package it.sasabz.android.sasabus.classes.services;
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
-import it.sasabz.android.sasabus.classes.DBObject;
 import it.sasabz.android.sasabus.classes.Information;
-import it.sasabz.android.sasabus.classes.SasabusHTTP;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
+import it.sasabz.android.sasabus.classes.network.SasabusHTTP;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

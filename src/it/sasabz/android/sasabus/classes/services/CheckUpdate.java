@@ -7,12 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.MD5Utils;
-import it.sasabz.android.sasabus.classes.SasabusFTP;
+import it.sasabz.android.sasabus.classes.network.SasabusFTP;
 import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.content.Context;
 import android.content.res.Resources;

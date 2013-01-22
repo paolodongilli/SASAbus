@@ -24,7 +24,7 @@
  */
 package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.classes.MySQLiteDBAdapter;
+import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;

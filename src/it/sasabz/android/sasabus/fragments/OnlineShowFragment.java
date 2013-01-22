@@ -35,19 +35,19 @@ import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.About;
-import it.sasabz.android.sasabus.classes.ConnectionDialog;
-import it.sasabz.android.sasabus.classes.Credits;
-import it.sasabz.android.sasabus.classes.MyXMLConnectionRequestAdapter;
-import it.sasabz.android.sasabus.classes.Palina;
-import it.sasabz.android.sasabus.hafas.XMLAttributVariante;
-import it.sasabz.android.sasabus.hafas.XMLConnection;
-import it.sasabz.android.sasabus.hafas.XMLConnectionRequest;
-import it.sasabz.android.sasabus.hafas.XMLJourney;
-import it.sasabz.android.sasabus.hafas.XMLRequest;
-import it.sasabz.android.sasabus.hafas.XMLStation;
-import it.sasabz.android.sasabus.hafas.XMLWalk;
-import it.sasabz.android.sasabus.hafas.services.XMLConnectionRequestList;
+import it.sasabz.android.sasabus.classes.adapter.MyXMLConnectionRequestAdapter;
+import it.sasabz.android.sasabus.classes.dbobjects.Palina;
+import it.sasabz.android.sasabus.classes.dialogs.About;
+import it.sasabz.android.sasabus.classes.dialogs.ConnectionDialog;
+import it.sasabz.android.sasabus.classes.dialogs.Credits;
+import it.sasabz.android.sasabus.classes.hafas.XMLAttributVariante;
+import it.sasabz.android.sasabus.classes.hafas.XMLConnection;
+import it.sasabz.android.sasabus.classes.hafas.XMLConnectionRequest;
+import it.sasabz.android.sasabus.classes.hafas.XMLJourney;
+import it.sasabz.android.sasabus.classes.hafas.XMLRequest;
+import it.sasabz.android.sasabus.classes.hafas.XMLStation;
+import it.sasabz.android.sasabus.classes.hafas.XMLWalk;
+import it.sasabz.android.sasabus.classes.hafas.services.XMLConnectionRequestList;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -119,6 +119,13 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 	}
 
 	
+	public void onResume()
+	{
+		super.onResume();
+		if(list != null)
+			fillData(list);
+	}
+	
 	/** Called with the activity is first created. */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,7 +138,7 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		}
 		result = inflater.inflate(R.layout.connection_listview_layout, container, false);
 
-		if(list == null)
+		if(list == null && request == null)
 		{
 			progress = new ProgressDialog(getContext());
 		    progress.setMessage(getResources().getText(R.string.waiting));
@@ -149,6 +156,8 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		}
 		listview = (ListView)result.findViewById(android.R.id.list);
 		listview.setOnItemClickListener(this);
+		TextView later = (TextView)result.findViewById(R.id.later);
+		TextView earlier = (TextView)result.findViewById(R.id.earlier);
 		return result;
 	}
 
@@ -207,8 +216,7 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		if (conreq.getConnectionlist() == null) {
 			Log.v("XML-LOGGER", "Die Liste der Verbindungsdetails ist null!!!!");
 		}
-		ConnectionDialog dial = new ConnectionDialog(getContext(),
-				conreq.getConnectionlist());
+		ConnectionDialog dial = new ConnectionDialog(this, conreq.getConnectionlist());
 		dial.show();
 	}
 }
