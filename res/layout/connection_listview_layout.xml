@@ -66,40 +66,34 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_height="wrap_content" 
         android:layout_marginBottom="3dip"
         android:layout_marginTop="15dip"
-        android:background="@color/info_background"
         >
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:gravity="center_vertical|center_horizontal"
+            >
+			
 
-            <TextView
+            <ImageButton
                 android:id="@+id/earlier"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="@string/earlier"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" 
-                android:layout_marginRight="15dip"
-                android:textColor="@color/sasa_orange"
+                android:src="@drawable/glyphicons_earlier"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dip"
                 />
 
-            <TextView
+            <ImageButton
                 android:id="@+id/later"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-               	android:layout_weight="1"
-                android:layout_column="2"
-                android:text="@string/later"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium" 
-                android:layout_marginLeft="15dip"
-                android:textColor="@color/sasa_orange"
+                android:src="@drawable/glyphicons_later" 
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dip"
                 />
+
         </TableRow>
 
     </TableLayout>

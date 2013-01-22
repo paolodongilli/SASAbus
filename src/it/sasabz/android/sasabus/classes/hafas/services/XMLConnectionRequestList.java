@@ -53,7 +53,12 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 	private XMLStation from;
 	private XMLStation to;
 	private Date datetime;
-	private OnlineShowFragment activity;
+	protected OnlineShowFragment activity;
+	
+	public XMLConnectionRequestList()
+	{
+		
+	}
 	
 	public XMLConnectionRequestList(XMLStation from, XMLStation to, Date datetime, OnlineShowFragment activity)
 	{
@@ -63,7 +68,7 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 		this.activity = activity;
 	}
 	
-	private XMLConnectionRequest scrollForward(XMLConnectionRequest request)
+	protected XMLConnectionRequest scrollForward(XMLConnectionRequest request)
 	{
 		XMLConnectionRequest req = new XMLConnectionRequest();
 		String xml = XMLRequest.conScrollRequest(request.getContext(), true);
@@ -358,7 +363,7 @@ public class XMLConnectionRequestList extends AsyncTask<Void, Void, Vector<XMLCo
 		return req;
 	}
 	
-	private XMLConnectionRequest scrollBackward(XMLConnectionRequest request)
+	protected XMLConnectionRequest scrollBackward(XMLConnectionRequest request)
 	{
 		XMLConnectionRequest req = new XMLConnectionRequest();
 		String xml = XMLRequest.conScrollRequest(request.getContext(), false);

@@ -47,7 +47,9 @@ import it.sasabz.android.sasabus.classes.hafas.XMLJourney;
 import it.sasabz.android.sasabus.classes.hafas.XMLRequest;
 import it.sasabz.android.sasabus.classes.hafas.XMLStation;
 import it.sasabz.android.sasabus.classes.hafas.XMLWalk;
+import it.sasabz.android.sasabus.classes.hafas.services.XMLBackwardScroll;
 import it.sasabz.android.sasabus.classes.hafas.services.XMLConnectionRequestList;
+import it.sasabz.android.sasabus.classes.hafas.services.XMLForwardScroll;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -69,6 +71,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,12 +159,47 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		}
 		listview = (ListView)result.findViewById(android.R.id.list);
 		listview.setOnItemClickListener(this);
-		TextView later = (TextView)result.findViewById(R.id.later);
-		TextView earlier = (TextView)result.findViewById(R.id.earlier);
+		ImageButton later = (ImageButton)result.findViewById(R.id.later);
+		ImageButton earlier = (ImageButton)result.findViewById(R.id.earlier);
+		
+		later.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				progress = new ProgressDialog(getContext());
+			    progress.setMessage(getResources().getText(R.string.waiting));
+			    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			    progress.setCancelable(false);
+			    progress.show();
+				XMLForwardScroll forward = new XMLForwardScroll(list, getThis());
+				forward.execute();
+				
+			}
+		});
+		
+		earlier.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				progress = new ProgressDialog(getContext());
+			    progress.setMessage(getResources().getText(R.string.waiting));
+			    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			    progress.setCancelable(false);
+			    progress.show();
+				XMLBackwardScroll backward = new XMLBackwardScroll(list, getThis());
+				backward.execute();
+				
+			}
+		});
 		return result;
 	}
 
-	
+	public OnlineShowFragment getThis()
+	{
+		return this;
+	}
 	
 
 	public void fillData(Vector <XMLConnectionRequest> list) {
