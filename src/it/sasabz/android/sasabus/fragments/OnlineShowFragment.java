@@ -94,6 +94,9 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 	private Vector<XMLConnectionRequest> list = null;
 	
 	private XMLConnectionRequestList request = null;
+	
+	private boolean isEarlier = false;
+	private boolean isLater = false;
 
 	private OnlineShowFragment()
 	{
@@ -172,6 +175,7 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 			    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			    progress.setCancelable(false);
 			    progress.show();
+			    isLater = true;
 				XMLForwardScroll forward = new XMLForwardScroll(list, getThis());
 				forward.execute();
 				
@@ -188,6 +192,7 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 			    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			    progress.setCancelable(false);
 			    progress.show();
+			    isEarlier = true;
 				XMLBackwardScroll backward = new XMLBackwardScroll(list, getThis());
 				backward.execute();
 				
@@ -208,7 +213,16 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		MyXMLConnectionRequestAdapter adapter = new MyXMLConnectionRequestAdapter(list);
 
 		listview.setAdapter(adapter);
-		
+		if(isLater)
+		{
+			listview.setSelection(list.size());
+			isLater = false;
+		}
+		if(isEarlier)
+		{
+			listview.setSelection(0);
+			isEarlier = false;
+		}
 		if(progress != null && progress.isShowing())
 			progress.dismiss();
 	}
