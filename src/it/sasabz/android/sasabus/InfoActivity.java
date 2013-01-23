@@ -77,7 +77,7 @@ public class InfoActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.connection_listview_layout);
+		setContentView(R.layout.standard_listview_layout);
         TextView titel = (TextView)findViewById(R.id.untertitel);
 		titel.setText(R.string.menu_infos);
 		if(haveNetworkConnection())
