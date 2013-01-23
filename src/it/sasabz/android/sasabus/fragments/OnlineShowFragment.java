@@ -35,6 +35,8 @@ import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
+import it.sasabz.android.sasabus.classes.Favorit;
+import it.sasabz.android.sasabus.classes.FavoritenDB;
 import it.sasabz.android.sasabus.classes.adapter.MyXMLConnectionRequestAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
 import it.sasabz.android.sasabus.classes.dialogs.About;
@@ -59,6 +61,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -71,6 +74,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -162,8 +166,8 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 		}
 		listview = (ListView)result.findViewById(android.R.id.list);
 		listview.setOnItemClickListener(this);
-		ImageButton later = (ImageButton)result.findViewById(R.id.later);
-		ImageButton earlier = (ImageButton)result.findViewById(R.id.earlier);
+		Button later = (Button)result.findViewById(R.id.later);
+		Button earlier = (Button)result.findViewById(R.id.earlier);
 		
 		later.setOnClickListener(new View.OnClickListener() {
 			
@@ -198,6 +202,25 @@ public class OnlineShowFragment extends Fragment implements OnItemClickListener{
 				
 			}
 		});
+		
+		Button favorites = (Button)result.findViewById(R.id.favorite);
+		favorites.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SQLiteDatabase favdb = new FavoritenDB(getActivity()).getReadableDatabase();
+				Favorit favorit = new Favorit(from.getName(), to.getName());
+				if(favorit.insert(favdb))
+				{
+					Toast.makeText(getActivity(), R.string.favorit_add, Toast.LENGTH_LONG).show();
+				}
+				favdb.close();
+				
+			}
+		});
+		
+		
 		return result;
 	}
 

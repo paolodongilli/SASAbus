@@ -64,35 +64,32 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
             android:gravity="center_vertical|center_horizontal"
             >
 			
-
-            <ImageButton
+            <Button
                 android:id="@+id/favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/glyphicons_049_star"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dip"
-                android:layout_marginLeft="10dip"
-                />
+                android:drawableLeft="@drawable/glyphicons_049_star"
+                android:gravity="right|center_vertical"
+                android:text="@string/favorit" />
             
-            <ImageButton
+            <Button
                 android:id="@+id/earlier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/glyphicons_earlier"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dip"
-                android:layout_marginLeft="10dip"
-                />
+                android:drawableLeft="@drawable/glyphicons_earlier"
+                android:gravity="right|center_vertical"
+                android:text="@string/earlier" />
 
-            <ImageButton
+            <Button
                 android:id="@+id/later"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/glyphicons_later" 
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dip"
-                />
+                android:drawableLeft="@drawable/glyphicons_later"
+                android:gravity="right|center_vertical"
+                android:text="@string/later" />
 
         </TableRow>
 

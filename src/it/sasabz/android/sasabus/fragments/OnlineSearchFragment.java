@@ -48,6 +48,7 @@ import it.sasabz.android.sasabus.classes.dbobjects.Palina;
 import it.sasabz.android.sasabus.classes.dbobjects.PalinaList;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
+import it.sasabz.android.sasabus.classes.dialogs.SelectFavoritenDialog;
 import it.sasabz.android.sasabus.classes.services.CheckUpdate;
 import it.sasabz.android.sasabus.classes.services.FileRetriever;
 
@@ -87,7 +88,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OnlineSearchFragment extends Fragment{
+public class OnlineSearchFragment extends Fragment {
 
 	
 	public final static int DOWNLOAD_AVAILABLE = 0;
@@ -116,6 +117,11 @@ public class OnlineSearchFragment extends Fragment{
     private OnlineSearchFragment getThis()
     {
     	return this;
+    }
+    
+    public View getResult()
+    {
+    	return result;
     }
     
     @Override
@@ -498,6 +504,15 @@ public class OnlineSearchFragment extends Fragment{
 			mgr.hideSoftInputFromWindow(from.getWindowToken(), 0);
 			mgr.hideSoftInputFromWindow(to.getWindowToken(), 0);
         }
+        Button favorites = (Button)result.findViewById(R.id.favorites);
+        favorites.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				SelectFavoritenDialog dialog = new SelectFavoritenDialog(getThis());
+				dialog.show();
+			}
+		});
     	return result;
     }
     

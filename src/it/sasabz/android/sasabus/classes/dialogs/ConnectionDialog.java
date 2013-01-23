@@ -102,14 +102,37 @@ public class ConnectionDialog extends Dialog{
 					FragmentManager fragmentManager = fragment.getFragmentManager();
 					FragmentTransaction ft = fragmentManager.beginTransaction();
 					
-					Fragment fragment = fragmentManager.findFragmentById(R.id.onlinefragment);
-					if(fragment != null)
+					Fragment old = fragmentManager.findFragmentById(R.id.onlinefragment);
+					if(old != null)
 					{
-						ft.remove(fragment);
+						ft.remove(old);
 					}
-					fragment = new WayFragment(((XMLJourney)conn).getAttribut("NUMBER"), fromtext, totext, 
-							simple.format(conn.getDeparture().getArrtime()), 
-							simple.format(conn.getArrival().getArrtime()));
+					Fragment fragment = null;
+					try
+					{
+						fragment = new WayFragment(((XMLJourney)conn).getAttribut("NUMBER"), fromtext, totext, 
+								simple.format(conn.getDeparture().getArrtime()), 
+								simple.format(conn.getArrival().getArrtime()));
+					}
+					catch(Exception e)
+					{
+						fragment = old;
+						AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+						builder.setCancelable(false);
+						builder.setMessage(R.string.error_connection);
+						builder.setTitle(R.string.error);
+						builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+									dialog.dismiss();
+							}
+						});
+						builder.create();
+						builder.show();
+						fragmentManager.popBackStack();
+					}
 					ft.add(R.id.onlinefragment, fragment);
 					ft.addToBackStack(null);
 					ft.commit();

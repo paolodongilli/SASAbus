@@ -110,8 +110,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="scan_text_not_implemented">Questa opzione sarà disponibile a breve.</string>
 
 <string name="map">Mappa</string>
+<string name="map_pick">Dalla carta</string>
 <string name="favorit">Aggiungi ai preferiti</string>
 <string name="mode_favoriten">Preferiti</string>
+<string name="favorit_add">Aggiunta ai preferiti con successo!</string>
+<string name="favorit_pick">Dai preferiti</string>
 
 <string name="online_connection_error">La fermata non e\' stata trovata.</string>
 <string name="mode_online">Modalita\' Online</string>

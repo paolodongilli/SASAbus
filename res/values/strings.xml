@@ -116,7 +116,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="delete">Delete</string>
 
 <string name="map">Map</string>
+<string name="map_pick">From map</string>
 <string name="favorit">Add to favourites</string>
+<string name="favorit_add">Successfully added to favourites</string>
+<string name="favorit_pick">From favourites</string>
+
 
 <string name="mode_favoriten">Favourites</string>
 <string name="mode_online">Online Mode</string>

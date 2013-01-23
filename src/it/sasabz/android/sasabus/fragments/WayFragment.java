@@ -34,6 +34,7 @@ import java.util.Calendar;
 
 import it.sasabz.android.sasabus.MapViewActivity;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.R.id;
 import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
@@ -118,7 +119,7 @@ public class WayFragment extends Fragment {
 		departure = PalinaList.getById(orario.getIdPalina());
 	}
 	
-	public WayFragment(String line, String from, String to, String orario_part, String orario_arr)
+	public WayFragment(String line, String from, String to, String orario_part, String orario_arr) throws Exception
 	{
 		String lang = "it";
 		if((Locale.getDefault().getLanguage()).indexOf(Locale.GERMAN.toString()) != -1)
@@ -129,49 +130,26 @@ public class WayFragment extends Fragment {
 		arrival = PalinaList.getTranslation(to.trim(), lang);
 		if(departure == null || arrival == null)
 		{
-			createErrorDialog();
-			return;
+			throw new Exception();
 		}
 		bacino = BacinoList.getBacino(departure.getName_de(), arrival.getName_de(), line);
 		if(bacino == null)
 		{
-			createErrorDialog();
-			return;
+			throw new Exception();
 		}
 		linea = LineaList.getByNumLin(line, bacino.getTable_prefix());
 		if(linea == null)
 		{
-			createErrorDialog();
-			return;
+			throw new Exception();
 		}
 		orario = PassaggioList.getPassaggio(linea.getId(), departure.getName_de(), arrival.getName_de(), 
 				orario_part, orario_arr, bacino.getTable_prefix());
 		if (orario == null)
 		{
-			createErrorDialog();
-			return;
+			throw new Exception();
 		}
 	}
 	
-	public void createErrorDialog()
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setCancelable(false);
-		builder.setMessage(R.string.error_connection);
-		builder.setTitle(R.string.error);
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				
-				dialog.dismiss();
-			}
-		});
-		builder.create();
-		builder.show();
-		getActivity().getSupportFragmentManager().popBackStack();
-		return;	
-	}
 
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater, ViewGroup container, 
@@ -200,6 +178,25 @@ public class WayFragment extends Fragment {
 	}
 	
 	
+	public void createErrorDialog()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setCancelable(false);
+		builder.setMessage(R.string.error_connection);
+		builder.setTitle(R.string.error);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+					dialog.dismiss();
+			}
+		});
+		builder.create();
+		builder.show();
+		getFragmentManager().popBackStack();
+		return;	
+	}
 	
 	/**
 	 * fills the listview with the timetable

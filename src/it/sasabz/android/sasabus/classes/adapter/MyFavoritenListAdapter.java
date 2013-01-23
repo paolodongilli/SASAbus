@@ -23,13 +23,14 @@
  */
 package it.sasabz.android.sasabus.classes.adapter;
 
+import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Favorit;
 import it.sasabz.android.sasabus.classes.FavoritenDB;
+import it.sasabz.android.sasabus.fragments.DepartureFragment;
 
 import java.util.Vector;
 
-import android.R;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -47,8 +48,6 @@ import android.widget.TextView;
 public class MyFavoritenListAdapter extends BaseAdapter {
 	private final Context context;
 	private final Vector<Favorit> list;
-	private final int layoutId;
-	private final int whereId;
 
 	
 	/**
@@ -58,11 +57,9 @@ public class MyFavoritenListAdapter extends BaseAdapter {
 	 * @param layoutId is the layout id of the list_view
 	 * @param list is the list of dbobject's which are to putting in the list_view
 	 */
-	public MyFavoritenListAdapter(Context context, int whereId, int layoutId, Vector<Favorit> list) {
+	public MyFavoritenListAdapter(Context context, Vector<Favorit> list) {
 		this.context = context;
 		this.list = list;
-		this.layoutId = layoutId;
-		this.whereId = whereId;
 	}
 
 	@Override
@@ -70,31 +67,19 @@ public class MyFavoritenListAdapter extends BaseAdapter {
 		View v = convertView;  
 		if (v == null) {
               LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-              v = vi.inflate(layoutId, null);
+              v = vi.inflate(R.layout.favoriten_row, null);
           }
-		TextView textView = (TextView) v.findViewById(whereId);
+		TextView departure = (TextView) v.findViewById(R.id.departure);
+		TextView arrival = (TextView) v.findViewById(R.id.arrival);
 		if (list != null)
 		{
 			Favorit listItem = list.get(position);
 			if(listItem != null)
 			{
-				String favtext = list.get(position).toString();
-				if(!favtext.equals(""))
-					textView.setText(favtext);
-				else
-				{
-					textView.setText("");	
-					try
-					{
-						SQLiteDatabase db = new FavoritenDB(context).getWritableDatabase();
-						listItem.delete(db);
-						db.close();
-					}
-					catch(Exception e)
-					{
-						
-					}
-				}
+				String favtext_arrival = list.get(position).getDestinazioneString();
+				String favtext_departure = list.get(position).getPartenzaString();
+				departure.setText(favtext_departure);
+				arrival.setText(favtext_arrival);
 			}
 		}
 		return v;
