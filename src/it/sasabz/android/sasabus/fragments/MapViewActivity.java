@@ -23,7 +23,7 @@
  * 
  */
 
-package it.sasabz.android.sasabus;
+package it.sasabz.android.sasabus.fragments;
 
 
 

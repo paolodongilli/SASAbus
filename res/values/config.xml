@@ -52,8 +52,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     <string name="ftp_user">getANdata</string>
     <string name="ftp_passwd">jogYgoD9.8Zo7</string>
     
-    <!-- unofficial xml-server -->
+    <!-- unofficial xml-server 
     <string name="xml_server">http://travelplaner.sasabz.it/bin/extxml.bin</string>
+    -->
+     
+    <string name="xml_server">http://bolzano.opensasa.info/bin/extxml.bin</string>
      
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     

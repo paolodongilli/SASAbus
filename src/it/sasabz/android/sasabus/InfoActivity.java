@@ -80,6 +80,14 @@ public class InfoActivity extends ListActivity {
 		setContentView(R.layout.standard_listview_layout);
         TextView titel = (TextView)findViewById(R.id.untertitel);
 		titel.setText(R.string.menu_infos);
+	}
+
+	/**
+	 * Called when the activity is about to start interacting with the user.
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
 		if(haveNetworkConnection())
 			fillData();
 		else
@@ -98,14 +106,6 @@ public class InfoActivity extends ListActivity {
 			});
 			builder.create().show();
 		}
-	}
-
-	/**
-	 * Called when the activity is about to start interacting with the user.
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
 	}
 
 	@Override

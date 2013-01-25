@@ -53,7 +53,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="gps_disabled_title">GPS disattivato</string>
 <string name="gps_disabled">Dati GPS non disponibili. Si prega di attivare il GPS o di riprovare più tardi.</string>
 <string name="gps_wait">Attendere la richiesta delle coordinate</string>
-<string name="error_title">Errore di download</string>
+<string name="error_title">Errore</string>
 <string name="error_text">Si è verificato un errore durante il download. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="error_application">Si è verificato un errore durante l\'interrogazione del database. Si prega di riprovare piu tardi o di contattare l\'autore dell\'applicazione</string>
 <string name="credits_text">SASAbus è opera del lavoro del SASAbus Team:\n\nPaolo Dongilli\n&lt;paolo.dongilli@gmail.com&gt;\n\nMarkus Windegger\n&lt;markus@mowiso.com&gt;\n\nLe icone sono presi dal sito www.glyphicons.com e rilasciati sotto la licenza cc-3.0-sha-nc!</string>
@@ -151,5 +151,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="earlier">precedente</string>
 <string name="later">successivo</string>
+
+<string name="offline">Offline</string>
+<string name="online">Con Internet</string>
+<string name="info">Info</string>
 
 </resources>
