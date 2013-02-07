@@ -101,9 +101,7 @@ public class OnlineSelectFragment extends Fragment{
     private Spinner from_spinner = null;
     private Spinner to_spinner = null;
     private Button search;
-    private LayoutInflater inflater = null;
     private View result = null;
-    private ViewGroup container = null;
     
     
     public static final int XML_FAILURE = 0;
@@ -130,8 +128,6 @@ public class OnlineSelectFragment extends Fragment{
     
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-    	this.inflater = inflater;
-    	this.container = container;
     	if(!XMLRequest.haveNetworkConnection())
         {
         	Toast.makeText(getContext(), R.string.no_network_connection, Toast.LENGTH_LONG).show();
@@ -146,9 +142,16 @@ public class OnlineSelectFragment extends Fragment{
 		fromPalina = PalinaList.getTranslation(from, lang);
 		toPalina = PalinaList.getTranslation(to, lang);
 		SimpleDateFormat simple = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		boolean plus12 = false;
+		if(date.contains("PM"))
+		{
+			plus12 = true;
+		}
 		try
 		{
 			datum = simple.parse(date);
+			if(plus12)
+				datum.setHours(datum.getHours() + 12);
 		}
 		catch(Exception e)
 		{

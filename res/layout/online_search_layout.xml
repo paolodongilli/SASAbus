@@ -45,7 +45,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 	    android:gravity="left|center_vertical"
 	    android:paddingBottom="15dip"
 	    android:paddingTop="15dip" >
-
+<!--
      <Button
          android:id="@+id/map"
          android:layout_width="wrap_content"
@@ -53,7 +53,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
          android:drawableLeft="@drawable/glyphicons_242_google_maps"
          android:text="@string/map_pick" 
          />
-
+-->
      <Button
          android:id="@+id/favorites"
          android:layout_width="wrap_content"

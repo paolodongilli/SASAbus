@@ -126,7 +126,6 @@ public class OnlineSearchFragment extends Fragment {
     
     @Override
     public void onPause() {
-    	// TODO Auto-generated method stub
     	super.onPause();
     	InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(result.getWindowToken(), 0);
@@ -223,7 +222,7 @@ public class OnlineSearchFragment extends Fragment {
 				final boolean is24h = !(timeS == null || timeS.equals("12"));
 				
 				
-				// Update demo TextViews when the "OK" button is clicked
+				
 				((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 							mDateTimePicker.clearFocus();
