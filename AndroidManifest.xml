@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
-    package="it.sasabz.android.sasabus" android:versionCode="20" android:versionName="0.2.9">
+    package="it.sasabz.android.sasabus" android:versionCode="23" android:versionName="0.2.12">
     
 	<uses-sdk android:minSdkVersion="3" android:targetSdkVersion="10"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -28,7 +28,28 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".CheckDatabaseActivity" android:label="@string/check_database" 
-		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".OnlineActivity" android:label="@string/check_database" 
+		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".OfflineActivity" android:label="@string/check_database" 
+		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".TabHostActivity" android:label="@string/search_connection" 
+		    		android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -53,25 +74,13 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
-		<activity android:name="CheckOSMActivity" android:label="@string/check_osm">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
 		<activity android:name="SelectFavoritenActivity" android:label="@string/mode_favoriten">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
-		<activity android:name="InfoActivity" android:label="@string/menu_infos">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</activity>
-		<activity android:name="SelectBacinoActivity" android:label="@string/select_bacino">
+				<activity android:name="SelectBacinoActivity" android:label="@string/select_bacino">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -102,37 +111,7 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:label="@string/select_palina" android:name="SelectPalinaLocationActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
-		<activity android:label="@string/select_destination" android:name="SelectDestinazioneLocationActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
 		<activity android:name="ShowOrariActivity" android:label="@string/show_orari">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
-		<activity android:name="SelectLineaLocationActivity" android:label="@string/select_linea">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
-		<activity android:name="ShowOrariLocationActivity" android:label="@string/show_orari">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
-		<activity android:name="SelectModeActivity" android:label="@string/select_mode">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
@@ -150,24 +129,19 @@
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:name="PointingLocationActivity" android:label="@string/pointing">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
-			</intent-filter>
-		</activity>
 		<activity android:name="MapViewActivity" android:label="@string/map">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"></action>
 				<category android:name="android.intent.category.DEFAULT"></category>
 			</intent-filter>
 		</activity>
-		<activity android:name="ScanCodeActivity" android:label="@string/scan">
+		<activity android:name="InfoActivity" android:label="@string/menu_infos">
 			<intent-filter>
-				<action android:name="android.intent.action.VIEW"></action>
-				<category android:name="android.intent.category.DEFAULT"></category>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+
 		<service android:enabled="true" android:name="UpdateService"></service>
 	</application>
 </manifest>

@@ -52,7 +52,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="gps_disabled_title">GPS disabled</string>
 <string name="gps_disabled">The GPS-data on your mobile phone is not available, please turn your GPS on or try again later.</string>
 <string name="gps_wait">Waiting while getting GPS coordinates</string>
-<string name="error_title">Download Error</string>
+<string name="error_title">Error</string>
 <string name="error_text">An error occurred during the download. Try again later or contact the maintainer of the application</string>
 <string name="error_application">An error occurred while fetching objects from the database ... please try again or contact the maintainer of the application</string>
 <string name="menu_credits">Credits</string>
@@ -116,7 +116,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="delete">Delete</string>
 
 <string name="map">Map</string>
+<string name="map_pick">From map</string>
 <string name="favorit">Add to favourites</string>
+<string name="favorit_add">Successfully added to favourites</string>
+<string name="favorit_pick">From favourites</string>
+
 
 <string name="mode_favoriten">Favourites</string>
 <string name="mode_online">Online Mode</string>
@@ -151,6 +155,16 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="start">Start</string>
 <string name="zwischenstop">Intermediate stop</string>
 <string name="ziel">Arrival</string>
+
+<string name="am">AM</string>
+<string name="pm">PM</string>
+
+<string name="earlier">earlier</string>
+<string name="later">later</string>
+
+<string name="offline">Offline</string>
+<string name="online">Online</string>
+<string name="info">Info</string>
 
 </resources>
 

@@ -48,9 +48,8 @@ public class FavoritenList {
 			do {
 				Log.v("Listenerstellung", "ID: " + cursor.getInt(cursor.getColumnIndex("id")));
 				Favorit element = new Favorit(cursor.getInt(cursor.getColumnIndex("id")),
-						cursor.getInt(cursor.getColumnIndex("linea")), 
-						cursor.getString(cursor.getColumnIndex("partenza_de")),
-						cursor.getString(cursor.getColumnIndex("destinazione_de")));
+						cursor.getString(cursor.getColumnIndex("partenza")),
+						cursor.getString(cursor.getColumnIndex("destinazione")));
 				list.add(element);
 			} while(cursor.moveToNext());
 		}
@@ -72,9 +71,8 @@ public class FavoritenList {
 		if(cursor.moveToFirst())
 		{
 			list =  new Favorit(cursor.getInt(cursor.getColumnIndex("id")),
-						cursor.getInt(cursor.getColumnIndex("linea")), 
-						cursor.getString(cursor.getColumnIndex("partenza_de")),
-						cursor.getString(cursor.getColumnIndex("destinazione_de")));
+						cursor.getString(cursor.getColumnIndex("partenza")),
+						cursor.getString(cursor.getColumnIndex("destinazione")));
 		}
 		cursor.close();
 		sqlite.close();

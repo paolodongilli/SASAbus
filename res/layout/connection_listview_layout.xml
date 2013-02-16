@@ -25,20 +25,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp" 
+    android:orientation="vertical" 
     >
 
-    <TextView
-        android:id="@+id/titel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/header_background"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/header_text" 
-        android:text="@string/app_name"
-        />
 
     <TextView
         android:id="@+id/untertitel"
@@ -50,14 +39,60 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
  	<ListView
-        android:id="@id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="10dip"
-        android:layout_height="0dip"
-        android:layout_weight="0.40" 
-        android:dividerHeight="1dip"
-        android:divider="@color/divider_background"
-        >
+ 	    android:id="@id/android:list"
+ 	    android:layout_width="fill_parent"
+ 	    android:layout_height="0dip"
+ 	    android:layout_marginTop="10dip"
+ 	    android:layout_weight="0.04"
+ 	    android:divider="@color/divider_background"
+ 	    android:dividerHeight="1dip" >
+
     </ListView>
+    
+ 	
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="3dip"
+        android:layout_marginTop="15dip"
+        >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:gravity="center_vertical|center_horizontal"
+            >
+			
+            <Button
+                android:id="@+id/favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@drawable/glyphicons_049_star"
+                android:gravity="right|center_vertical"
+                android:text="@string/favorit" />
+            
+            <Button
+                android:id="@+id/earlier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@drawable/glyphicons_earlier"
+                android:gravity="right|center_vertical"
+                android:text="@string/earlier" />
+
+            <Button
+                android:id="@+id/later"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawableLeft="@drawable/glyphicons_later"
+                android:gravity="right|center_vertical"
+                android:text="@string/later" />
+
+        </TableRow>
+
+    </TableLayout>
     
 </LinearLayout>

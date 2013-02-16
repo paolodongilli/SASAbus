@@ -7,13 +7,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
-import it.sasabz.android.sasabus.HomeActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.MD5Utils;
-import it.sasabz.android.sasabus.classes.SasabusFTP;
+import it.sasabz.android.sasabus.classes.network.SasabusFTP;
+import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
@@ -24,18 +25,18 @@ import android.util.Log;
 
 public class CheckUpdate extends AsyncTask<Void, String, Long> {
 
-	private final HomeActivity activity;
+	private final OnlineSearchFragment activity;
 	
 	private final String TAG = "CheckUpdate";
 
-	public CheckUpdate(HomeActivity activity) {
+	public CheckUpdate(OnlineSearchFragment activity) {
 		super();
 		this.activity = activity;
 	}
 
 	@Override
 	protected Long doInBackground(Void... params) {
-		SASAbus config = (SASAbus) activity.getApplicationContext();
+		SASAbus config = (SASAbus) activity.getActivity().getApplicationContext();
 		Resources res = activity.getResources();
 		String dbDirName = res.getString(R.string.db_dir);
 		String dbFileName = res.getString(R.string.app_name_db) + ".db";
@@ -43,14 +44,14 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 		// Check if the sd-card is mounted
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			return Long.valueOf(HomeActivity.NO_SD_CARD);
+			return Long.valueOf(OnlineSearchFragment.NO_SD_CARD);
 		}
 		File dbDir = new File(Environment.getExternalStorageDirectory(),
 				dbDirName);
 		// check if dbDir exists; if not create it
 		if (!dbDir.exists()) {
 			dbDir.mkdirs();
-			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
+			return Long.valueOf(OnlineSearchFragment.DOWNLOAD_FILES);
 		}
 		// creates all files (zip, md5 and db)
 		File dbFile = new File(dbDir, dbFileName);
@@ -96,10 +97,10 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 			}
 		} else {
 			download = true;
-			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
+			return Long.valueOf(OnlineSearchFragment.DOWNLOAD_FILES);
 		}
 		if(download)
-			return Long.valueOf(HomeActivity.DOWNLOAD_AVAILABLE);
+			return Long.valueOf(OnlineSearchFragment.DOWNLOAD_AVAILABLE);
 		
 		
 		dbDirName = res.getString(R.string.db_dir);
@@ -157,18 +158,18 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 			}
 		} else {
 			download = true;
-			return Long.valueOf(HomeActivity.DOWNLOAD_FILES);
+			return Long.valueOf(OnlineSearchFragment.DOWNLOAD_FILES);
 		}
 		if(download)
-			return Long.valueOf(HomeActivity.DOWNLOAD_AVAILABLE);
-		return Long.valueOf(HomeActivity.DB_OK);
+			return Long.valueOf(OnlineSearchFragment.DOWNLOAD_AVAILABLE);
+		return Long.valueOf(OnlineSearchFragment.DB_OK);
 		
 	}
 	
 	@Override
 	protected void onPostExecute(Long result) {
 		super.onPostExecute(result);
-		activity.showDialog(result.intValue(), HomeActivity.DB_UP);
+		activity.showDialog(result.intValue(), OnlineSearchFragment.DB_UP);
 
 	}
 
@@ -245,7 +246,7 @@ public class CheckUpdate extends AsyncTask<Void, String, Long> {
 		boolean haveConnectedMobile = false;
 
 		ConnectivityManager cm = (ConnectivityManager) (activity
-				.getSystemService(Context.CONNECTIVITY_SERVICE));
+				.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE));
 		NetworkInfo[] netInfo = cm.getAllNetworkInfo();
 		for (NetworkInfo ni : netInfo) {
 			// testing WIFI connection

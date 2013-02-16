@@ -25,10 +25,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <LinearLayout android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <!--
+    	<TextView
         android:id="@+id/titel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,31 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:textColor="@color/header_text" 
         android:text="@string/app_name"
         />
+        -->
 
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="left|center_vertical"
+	    android:paddingBottom="15dip"
+	    android:paddingTop="15dip" >
+<!--
+     <Button
+         android:id="@+id/map"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:drawableLeft="@drawable/glyphicons_242_google_maps"
+         android:text="@string/map_pick" 
+         />
+-->
+     <Button
+         android:id="@+id/favorites"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:drawableLeft="@drawable/glyphicons_049_star"
+         android:text="@string/favorit_pick" />
+     
+    </LinearLayout>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -109,11 +133,6 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         >
 
 
-
-
-
-
-
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
@@ -130,20 +149,17 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/calendar_icon_new" />
+            android:src="@drawable/calendar_icon_new" 
+            />
 
     </LinearLayout>
-
-
-
-
 
     <Button
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_connection" 
-        android:textSize="18dip"
-        />
+        android:text="@string/search_connection"
+        android:drawableLeft="@drawable/glyphicons_027_search"
+         />
 
 </LinearLayout>

@@ -26,6 +26,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:fillViewport="true">
         <TimePicker android:id="@+id/TimePicker"
-                android:layout_width="fill_parent" android:layout_height="wrap_content"
-                android:layout_marginLeft="5dip" android:layout_marginRight="5dip"/>
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip" 
+                android:layout_marginRight="5dip"
+                />
 </LinearLayout>

@@ -23,6 +23,8 @@
  */
 package it.sasabz.android.sasabus.classes;
 
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 

@@ -62,7 +62,7 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
 
     public DateTimePicker(Context context, AttributeSet attrs, int defStyle) {
             super(context, attrs, defStyle);
-
+            
             // Get LayoutInflater instance
             final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             // Inflate myself
@@ -71,7 +71,7 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
             // Inflate the date and time picker views
             final LinearLayout datePickerView = (LinearLayout) inflater.inflate(R.layout.datepicker, null);
             final LinearLayout timePickerView = (LinearLayout) inflater.inflate(R.layout.timepicker, null);
-
+            
             // Grab a Calendar instance
             mCalendar = Calendar.getInstance();
             // Grab the ViewSwitcher so we can attach our picker views to it
@@ -84,8 +84,8 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
             
             // Init time picker
             timePicker = (TimePicker) timePickerView.findViewById(R.id.TimePicker);
-            timePicker.setOnTimeChangedListener(this);
             timePicker.setIs24HourView(true);
+            timePicker.setOnTimeChangedListener(this);
 
             // Handle button clicks
             ((Button) findViewById(R.id.SwitchToTime)).setOnClickListener(this); // shows the time picker
@@ -106,8 +106,8 @@ public class DateTimePicker extends RelativeLayout implements View.OnClickListen
     // Called every time the user changes TimePicker values
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
             // Update the internal Calendar instance
-            mCalendar.set(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), hourOfDay, minute);
-    }
+    		mCalendar.set(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), hourOfDay, minute);
+    }	
 
     // Handle button clicks
     public void onClick(View v) {

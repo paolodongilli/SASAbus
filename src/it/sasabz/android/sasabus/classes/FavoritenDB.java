@@ -39,9 +39,8 @@ public class FavoritenDB extends SQLiteOpenHelper{
 	 private static final String FAVORITEN_TABLE_CREATE =
 	                "CREATE TABLE " + FAVORITEN_TABLE_NAME + "(" +
 	                		"id INT AUTO_INCREMENT, " +
-	                		"linea INT, " +
-	                		"partenza_de TEXT, " +
-	                		"destinazione_de TEXT );";
+	                		"partenza TEXT, " +
+	                		"destinazione TEXT );";
 	
 	
 	
@@ -57,7 +56,7 @@ public class FavoritenDB extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("delete from " + FAVORITEN_TABLE_NAME + ";");
-		
+		db.execSQL("drop table" + FAVORITEN_TABLE_NAME + ";");
 	}
 
 }
