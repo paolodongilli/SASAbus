@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.InfoActivity;
+import it.sasabz.android.sasabus.MapSelectActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.R.drawable;
 import it.sasabz.android.sasabus.R.id;
@@ -102,6 +103,8 @@ public class OnlineSearchFragment extends Fragment {
 	public final static int DB_UP = 2;
 	
 	public final static int OFFLINE = 34;
+	
+	public final static int REQUESTCODE_ACTIVITY = 123;
 	
 	private AutoCompleteTextView from;
 	private AutoCompleteTextView to;
@@ -512,6 +515,16 @@ public class OnlineSearchFragment extends Fragment {
 				dialog.show();
 			}
 		});
+        
+        Button mappicker = (Button)result.findViewById(R.id.map);
+        mappicker.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), MapSelectActivity.class);
+				startActivityForResult(intent, REQUESTCODE_ACTIVITY);
+			}
+		});
     	return result;
     }
     
@@ -680,5 +693,34 @@ public class OnlineSearchFragment extends Fragment {
 		
 		return builder.create();
 	}
+    
+    public void onActivityResult(int requestCode, int resultCode, Intent data) 
+    {
+    	if (requestCode == REQUESTCODE_ACTIVITY)
+    	{
+    		if (resultCode == Activity.RESULT_OK)
+    		{
+    			Bundle extras = data.getExtras();
+    			String from = extras.getString("from");
+    			String to = extras.getString("to");
+    			
+    			if(from != null && from != "")
+    			{
+    				TextView from_text = (TextView)result.findViewById(R.id.from_text);
+    				from_text.setText(from);
+    			}
+    			
+    			if(to != null && to != "")
+    			{
+    				TextView to_text = (TextView)result.findViewById(R.id.to_text);
+    				to_text.setText(to);
+    			}
+    			InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    			mgr.hideSoftInputFromWindow(this.from.getWindowToken(), 0);
+    			mgr.hideSoftInputFromWindow(this.to.getWindowToken(), 0);
+    		}
+ 
+    	}
+    }
     
 }

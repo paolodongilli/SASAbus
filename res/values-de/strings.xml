@@ -32,6 +32,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="select_palina">Abfahrtshaltestelle wählen:</string>
 <string name="select_mode">Modus wählen:</string>
 <string name="show_orari">Abfahrtszeiten:</string>
+<string name="select_from_to">Von oder Bis auswählen</string>
 
 <string name="md5_error">MD5-Prüfsumme stimmt nicht überein.</string>
 <string name="db_download_error">Das Herunterladen der SASAbus-Datenbank ist fehlgeschlagen.</string>
@@ -94,6 +95,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="download_available">Update des Fahrplans vorhanden. Herunterladen?</string>
 
 <string name="intermediate">Zwischenhalt</string>
+<string name="bus_stop">Haltestelle: </string>
 
 <string name="no_map_update_available">OpenStreetMap Daten update nicht verfügbar. Probieren Sie es später nocheinmal!</string>
 <string name="downloading_map">Downloading OpenStreetMap Daten update ...</string>

@@ -43,9 +43,13 @@ import it.sasabz.android.sasabus.R.layout;
 import it.sasabz.android.sasabus.R.menu;
 import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
+import it.sasabz.android.sasabus.classes.MyArrayItemizedSelectOverlay;
 import it.sasabz.android.sasabus.classes.MyOverlayItem;
+import it.sasabz.android.sasabus.classes.MyOverlaySelectItem;
+import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
 import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
+import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
 import it.sasabz.android.sasabus.classes.dbobjects.Linea;
 import it.sasabz.android.sasabus.classes.dbobjects.LineaList;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
@@ -55,12 +59,17 @@ import it.sasabz.android.sasabus.classes.dbobjects.PassaggioList;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,93 +78,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MapSelectActivity extends MapActivity {
-
-	// provides the linea for this object
-	private int partenza = -1;
-
-	// provides the destination for this object
-	private int destinazione = -1;
-
-	// provides the lineaid for this object
-	private int linea = -1;
-
-	private Bacino bacino = null;
-
-	// provides the orarioId for this object
-	private int orarioId = -1;
 	
-	//is the actual position of the bus
-	private int position = -1;
-
+	private String from = "";
+	
+	private String to = "";
+	
+	/**
+	 * sets the text from the textview from to the string from
+	 * @param from is the string to set
+	 */
+	public void setFrom(String from)
+	{
+		this.from = from;
+	}
+	
+	/**
+	 * sets the text from textview to to the string to
+	 * @param to is the string to set
+	 */
+	public void setTo(String to)
+	{
+		this.to = to;
+	}
+	
+	
 	/** Called with the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Bundle extras = getIntent().getExtras();
-		partenza = 0;
-		destinazione = 0;
-		int bacinonr = 0;
-		if (extras != null)
-		{
-			partenza = extras.getInt("partenza");
-			destinazione = extras.getInt("destinazione");
-			linea = extras.getInt("line");
-			orarioId = extras.getInt("orarioId");
-			bacinonr = extras.getInt("bacino");
-			this.position = extras.getInt("position");
-		}
-		else
-		{
-			Log.v("PECH", "PECH KOPP");
-		}
-
-		Palina part = PalinaList.getById(partenza);
-		part.setId(partenza);
-		Palina dest = PalinaList.getById(destinazione);
-		dest.setId(destinazione);
 		
-		if (part == null || dest == null)
-		{
-			Toast.makeText(this, "ERROR partenza: " + partenza + " | destin: " + destinazione, Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
-
-		bacino = BacinoList.getById(bacinonr);
-		Linea line = LineaList.getById(linea, bacino.getTable_prefix());
-
-		Resources res = getResources();
-
-		Passaggio pas = PassaggioList.getById(orarioId,
-				bacino.getTable_prefix());
-
-		if (part == null || dest == null || line == null || pas == null)
-		{
-			Toast.makeText(this, res.getString(R.string.error_application),
-					Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
-		setContentView(R.layout.standard_mapview_layout);
+		setContentView(R.layout.mapview_select_layout);
 		TextView titel = (TextView) findViewById(R.id.titel);
 		titel.setText(R.string.map);
 
-		TextView lineat = (TextView) findViewById(R.id.line);
-		TextView from = (TextView) findViewById(R.id.from);
-		TextView to = (TextView) findViewById(R.id.to);
-
-		if (lineat == null || from == null || to == null)
-		{
-			Toast.makeText(this, R.string.error_application, Toast.LENGTH_LONG)
-					.show();
-			finish();
-			return;
-		}
-
-		lineat.setText(res.getString(R.string.line) + " " + line.toString());
-		from.setText(res.getString(R.string.from) + " " + part.toString());
-		to.setText(res.getString(R.string.to) + " " + dest.toString());
-
+		Resources res = getResources();
+		
 		MapView mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
@@ -164,59 +121,65 @@ public class MapSelectActivity extends MapActivity {
 						+ res.getString(R.string.app_name_osm) + ".map"));
 		mapView.setRenderTheme(InternalRenderTheme.OSMARENDER);
 
-		GeoPoint partPoint = new GeoPoint(part.getLatitude(),
-				part.getLongitude());
-		GeoPoint destPoint = new GeoPoint(dest.getLatitude(),
-				dest.getLongitude());
+		Vector<DBObject> pallist = PalinaList.getMapList();
+		
+		Iterator<DBObject> iter = pallist.iterator();
 
-		Drawable start = getResources().getDrawable(R.drawable.ab_punkt);
-		Drawable stop = getResources().getDrawable(R.drawable.ab_punkt);
-
-		MyOverlayItem partOverlay = new MyOverlayItem(partPoint,
-				res.getString(R.string.start), part.toString(), start);
-		MyOverlayItem destOverlay = new MyOverlayItem(destPoint,
-				res.getString(R.string.ziel), dest.toString(), stop);
-
-		MyArrayItemizedOverlay arr = new MyArrayItemizedOverlay(start);
-		MyArrayItemizedOverlay dest_arr = new MyArrayItemizedOverlay(stop);
-
-		arr.addItem(partOverlay);
-		dest_arr.addItem(destOverlay);
-
-		mapView.getOverlays().add(arr);
-		mapView.getOverlays().add(dest_arr);
-
-		Vector<Passaggio> paslist = PassaggioList.getVectorWay(orarioId,
-				dest.getName_de(), bacino.getTable_prefix());
-
-		Iterator<Passaggio> iter = paslist.iterator();
-
-		Drawable inter = getResources().getDrawable(
+		Drawable stop = getResources().getDrawable(
 				R.drawable.glyphicons_238_pin);
 
-		MyArrayItemizedOverlay intermediate = new MyArrayItemizedOverlay(inter);
+		MyArrayItemizedSelectOverlay intermediate = new MyArrayItemizedSelectOverlay(stop);
 
+		GeoPoint partPoint = null;
+		
 		while (iter.hasNext())
 		{
-			Passaggio passa = iter.next();
-			Palina pal = PalinaList.getById(passa.getIdPalina());
-			pal.setId(passa.getIdPalina());
-			if (pal.getId() != dest.getId() && pal.getId() != part.getId())
+			Palina pal = (Palina)iter.next();
+			GeoPoint point = new GeoPoint(pal.getLatitude(),
+					pal.getLongitude());
+			if(partPoint == null)
 			{
-				GeoPoint point = new GeoPoint(pal.getLatitude(),
-						pal.getLongitude());
-				MyOverlayItem overlay = new MyOverlayItem(point,
-						res.getString(R.string.zwischenstop), pal.toString(),
-						inter);
-				intermediate.addItem(overlay);
+				partPoint = point;
 			}
+			MyOverlaySelectItem overlay = new MyOverlaySelectItem(point, stop, this, pal);
+			intermediate.addItem(overlay);
 		}
 
 		mapView.getOverlays().add(intermediate);
 
-		mapView.setCenter(partPoint);
+		LocationManager locman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location lastloc = locman.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(MySQLiteDBAdapter.exists(this))
+        {
+	        if(lastloc == null)
+	        {
+	        	lastloc = locman.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	        }
+	        if(lastloc != null)
+	        {
+	        	try
+	        	{
+	        		Palina palina = PalinaList.getPalinaGPS(lastloc);
+	        		if(palina != null)
+	        		{
+	        			partPoint = new GeoPoint(palina.getLatitude(), palina.getLongitude());
+	        		}
+	        	}
+	        	catch(Exception e)
+	        	{
+	        		Log.e("HomeActivity", "Fehler bei der Location", e);
+	        	}
+	        }
+	        else
+	        {
+	        	Log.v("HomeActivity", "No location found!!");
+	        }
+        }
+		
+		if(partPoint != null)
+			mapView.setCenter(partPoint);
 
-		mapView.getController().setZoom(14);
+		mapView.getController().setZoom(15);
 
 	}
 
@@ -228,6 +191,30 @@ public class MapSelectActivity extends MapActivity {
 		super.onResume();
 	}
 
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        	setResult();
+           return true;
+        }
+        return false;
+    }
+
+	
+	private void setResult()
+	{
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra("from", from);
+		returnIntent.putExtra("to", to);
+		setResult(Activity.RESULT_OK,returnIntent);
+		finish();
+	}
+	
+	@Override
+	protected void onDestroy ()
+	{
+		super.onDestroy();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -253,5 +240,7 @@ public class MapSelectActivity extends MapActivity {
 		}
 		return false;
 	}
+	
+	
 
 }

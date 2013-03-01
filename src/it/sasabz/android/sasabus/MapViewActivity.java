@@ -136,7 +136,7 @@ public class MapViewActivity extends MapActivity {
 			finish();
 			return;
 		}
-		setContentView(R.layout.standard_mapview_layout);
+		setContentView(R.layout.mapview_show_layout);
 		TextView titel = (TextView) findViewById(R.id.titel);
 		titel.setText(R.string.map);
 
