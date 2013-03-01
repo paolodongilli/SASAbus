@@ -112,6 +112,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="map">Karte</string>
 <string name="map_pick">Aus Karte</string>
+<string name="map_show">Auf Karte anzeigen</string>
 <string name="favorit">Gebe zu Favoriten</string>
 <string name="favorit_add">Erfolgreich zu Favoriten hinzugefügt!</string>
 <string name="favorit_pick">Aus Favoriten</string>

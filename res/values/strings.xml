@@ -117,6 +117,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="map">Map</string>
 <string name="map_pick">From map</string>
+<string name="map_show">Show on Map</string>
 <string name="favorit">Add to favourites</string>
 <string name="favorit_add">Successfully added to favourites</string>
 <string name="favorit_pick">From favourites</string>
