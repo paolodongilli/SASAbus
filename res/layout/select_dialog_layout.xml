@@ -60,14 +60,14 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
         <Button
             android:id="@+id/select_from"
-            android:layout_width="50dip"
+            android:layout_width="70dip"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dip"
             android:text="@string/from_txt" />
 
         <Button
             android:id="@+id/select_to"
-            android:layout_width="50dip"
+            android:layout_width="70dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:text="@string/to_txt" />
