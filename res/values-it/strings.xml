@@ -32,6 +32,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="select_palina">Scegli la fermata (salita):</string>
 <string name="show_orari">Orari:</string>
 <string name="select_mode">Scegli la modalità:</string>
+<string name="select_from_to">Scegli se da o a</string>
 
 <string name="md5_error">Il checksum MD5 calcolato sul database è diverso dall\'MD5 scaricato.</string>
 <string name="db_download_error">Errore durante il download del database SASAbus.</string>
@@ -93,6 +94,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="download_available">Aggiornamento orario disponibile. Scaricare?</string>
 
 <string name="intermediate">Fermata intermedia</string>
+<string name="bus_stop">Fermata: </string>
 
 <string name="no_map_update_available">Aggiornamento OpenStreetMap non disponibile. Si prega di riprovare più tardi.</string>
 <string name="downloading_map">Sto scaricando l\'aggiornamento di OpenStreetMap ...</string>
@@ -111,6 +113,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="map">Mappa</string>
 <string name="map_pick">Dalla carta</string>
+<string name="map_show">Visualizzare sulla mappa</string>
 <string name="favorit">Aggiungi ai preferiti</string>
 <string name="mode_favoriten">Preferiti</string>
 <string name="favorit_add">Aggiunta ai preferiti con successo!</string>

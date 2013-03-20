@@ -30,6 +30,7 @@ import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;
 
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -66,6 +67,31 @@ public class PalinaList {
 			do {
 				Palina element = new Palina(cursor);
 				list.add(element);
+			} while(cursor.moveToNext());
+		}
+		cursor.close();
+		sqlite.close();
+		return list;
+	}
+	
+	/**
+	 * Returns a list of all bus-stops avaiable in the database
+	 * @return a vector of all bus-stops in the database
+	 */
+	public static Vector <DBObject> getMapList()
+	{
+		MySQLiteDBAdapter sqlite = MySQLiteDBAdapter.getInstance(SASAbus.getContext());
+		Cursor cursor = sqlite.rawQuery("select *  from paline order by nome_de", null);
+		Vector <DBObject> list = null;
+		if(cursor.moveToFirst())
+		{
+			list = new Vector<DBObject>();
+			do {
+				Palina element = new Palina(cursor);
+				if(list.size() > 0 && !list.lastElement().toString().trim().equals(element.toString().trim()))
+					list.add(element);
+				else if(list.size() == 0)
+					list.add(element);
 			} while(cursor.moveToNext());
 		}
 		cursor.close();
@@ -310,7 +336,7 @@ public class PalinaList {
 		String latitude = Double.toString(loc.getLatitude());
 		String longitude = Double.toString(loc.getLongitude());
 		String [] args = {longitude, longitude, latitude, latitude};
-		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it from paline order by " +
+		Cursor cursor = sqlite.rawQuery("select distinct nome_de, nome_it, longitudine, latitudine from paline order by " +
 				" (longitudine - ?) * (longitudine - ?) + (latitudine - ? ) * (latitudine - ?)", args);
 		Palina palina = null;
 		if(cursor.moveToFirst())
@@ -342,6 +368,7 @@ public class PalinaList {
 		if(cursor.moveToFirst())
 		{
 			element = new Palina(cursor);
+			element.setId(id);
 		}
 		cursor.close();
 		sqlite.close();

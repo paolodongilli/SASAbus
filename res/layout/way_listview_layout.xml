@@ -48,6 +48,21 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
            android:textAppearance="?android:attr/textAppearanceLarge"
            android:textStyle="bold" />
 
+       <TableRow
+           android:id="@+id/tableRow4"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" 
+           android:layout_marginBottom="15dip"
+           >
+           
+           <Button
+         android:id="@+id/mapview"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:drawableLeft="@drawable/glyphicons_242_google_maps"
+         android:text="@string/map_show" />
+           
+       </TableRow>
 
     <ListView
         android:id="@id/android:list"

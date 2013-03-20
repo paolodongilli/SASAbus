@@ -32,6 +32,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="select_palina">Select bus stop:</string>
 <string name="show_orari">schedule</string>
 <string name="select_mode">Select mode:</string>
+<string name="select_from_to">Select from or to</string>
 
 <string name="md5_error">Calculated MD5 of database file is different from downloaded MD5.</string>
 <string name="db_download_error">Error while downloading the SASAbus database.</string>
@@ -97,6 +98,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="download_available">Schedule update available. Download?</string>
 
 <string name="intermediate">Intermediate Stop</string>
+<string name="bus_stop">Stop: </string>
 
 <string name="no_map_update_available">OpenStreetMap data update is not available. Please try again later.</string>
 <string name="downloading_map">Downloading OpenStreetMap data update ...</string>
@@ -117,6 +119,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="map">Map</string>
 <string name="map_pick">From map</string>
+<string name="map_show">Show on Map</string>
 <string name="favorit">Add to favourites</string>
 <string name="favorit_add">Successfully added to favourites</string>
 <string name="favorit_pick">From favourites</string>

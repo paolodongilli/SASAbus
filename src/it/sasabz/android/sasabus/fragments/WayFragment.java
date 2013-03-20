@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import it.sasabz.android.sasabus.MapViewActivity;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.R.id;
@@ -63,6 +64,8 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
@@ -72,6 +75,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -153,7 +157,7 @@ public class WayFragment extends Fragment {
 	@Override
 	public View onCreateView(android.view.LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
-		View result = inflater.inflate(R.layout.palina_listview_layout, container, false);
+		View result = inflater.inflate(R.layout.way_listview_layout, container, false);
 		
 		TextView titel = (TextView)result.findViewById(R.id.untertitel);
 		titel.setText(R.string.show_way);
@@ -173,6 +177,27 @@ public class WayFragment extends Fragment {
 			((ListView)result.findViewById(android.R.id.list)).setSelection(pos);
 		}
 		
+		Button mapButton = (Button)result.findViewById(R.id.mapview);
+		
+		mapButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent mapview = new Intent(getActivity(), MapViewActivity.class);
+				
+				Passaggio part = PassaggioList.getById(orario.getId(), bacino.getTable_prefix());
+				Passaggio dest = PassaggioList.getWayEndpoint(orario.getId(), arrival.getName_de(), bacino.getTable_prefix());
+				
+				mapview.putExtra("partenza", part.getIdPalina());
+				mapview.putExtra("destinazione", dest.getIdPalina());
+				mapview.putExtra("line", linea.getId());
+				mapview.putExtra("orarioId", orario.getId());
+				mapview.putExtra("position", pos);
+				mapview.putExtra("bacino", bacino.getId());
+				startActivity(mapview);
+			}
+		});
+
 		return result;
 	}
 	
@@ -257,19 +282,6 @@ public class WayFragment extends Fragment {
 			return i;
 		}
 	}
-
-
-	/*
-		Intent mapview = new Intent(this, MapViewActivity.class);
-		Passaggio part = PassaggioList.getById(orarioId, bacino.getTable_prefix());
-		Passaggio dest = PassaggioList.getWayEndpoint(orarioId, this.dest.getName_de(), bacino.getTable_prefix());
-		mapview.putExtra("partenza", part.getIdPalina());
-		mapview.putExtra("destinazione", dest.getIdPalina());
-		mapview.putExtra("line", linea);
-		mapview.putExtra("orarioId", orarioId);
-		mapview.putExtra("bacino", bacino.getId());
-		startActivity(mapview);
-	 */
 	
 	
 	
