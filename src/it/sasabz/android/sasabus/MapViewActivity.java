@@ -31,17 +31,10 @@ import java.util.Vector;
 
 import org.mapsforge.android.maps.MapActivity;
 import org.mapsforge.android.maps.MapView;
-import org.mapsforge.android.maps.overlay.ArrayItemizedOverlay;
-import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.android.maps.rendertheme.InternalRenderTheme;
 import org.mapsforge.core.GeoPoint;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.R.drawable;
-import it.sasabz.android.sasabus.R.id;
-import it.sasabz.android.sasabus.R.layout;
-import it.sasabz.android.sasabus.R.menu;
-import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
 import it.sasabz.android.sasabus.classes.MyOverlayItem;
 import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
@@ -55,7 +48,6 @@ import it.sasabz.android.sasabus.classes.dbobjects.PassaggioList;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -64,7 +56,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,8 +75,6 @@ public class MapViewActivity extends MapActivity {
 	// provides the orarioId for this object
 	private int orarioId = -1;
 	
-	//is the actual position of the bus
-	private int position = -1;
 
 	/** Called with the activity is first created. */
 	@Override
@@ -102,7 +91,6 @@ public class MapViewActivity extends MapActivity {
 			linea = extras.getInt("line");
 			orarioId = extras.getInt("orarioId");
 			bacinonr = extras.getInt("bacino");
-			this.position = extras.getInt("position");
 		}
 		else
 		{

@@ -1,6 +1,5 @@
 package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.classes.hafas.services.XMLConnectionRequestList;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.widget.TabHost.TabSpec;
 
 public class TabHostActivity extends TabActivity implements OnTabChangeListener{
 	 
+	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
         super.onCreate(savedInstanceState);

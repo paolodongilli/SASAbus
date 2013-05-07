@@ -25,40 +25,12 @@ package it.sasabz.android.sasabus.classes.dialogs;
 
 import it.sasabz.android.sasabus.MapSelectActivity;
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.R.string;
-import it.sasabz.android.sasabus.classes.adapter.MyXMLConnectionAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
-import it.sasabz.android.sasabus.classes.hafas.XMLConnection;
-import it.sasabz.android.sasabus.classes.hafas.XMLJourney;
-import it.sasabz.android.sasabus.fragments.OrarioFragment;
-import it.sasabz.android.sasabus.fragments.WayFragment;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Vector;
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -74,6 +46,7 @@ public class SelectDialog extends Dialog{
 		this.palina = palina;
 	}
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		setContentView(R.layout.select_dialog_layout);

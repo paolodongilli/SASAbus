@@ -3,7 +3,6 @@ package it.sasabz.android.sasabus;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
 import it.sasabz.android.sasabus.fragments.BacinoFragment;
-import it.sasabz.android.sasabus.fragments.OnlineSearchFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;

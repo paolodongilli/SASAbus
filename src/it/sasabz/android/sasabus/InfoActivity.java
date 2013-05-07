@@ -24,23 +24,14 @@
 package it.sasabz.android.sasabus;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.R.id;
-import it.sasabz.android.sasabus.R.layout;
-import it.sasabz.android.sasabus.R.menu;
-import it.sasabz.android.sasabus.R.string;
 import it.sasabz.android.sasabus.classes.Information;
-import it.sasabz.android.sasabus.classes.Modus;
 import it.sasabz.android.sasabus.classes.adapter.MyListAdapter;
-import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;
 import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
 import it.sasabz.android.sasabus.classes.services.InformationList;
 
-import java.io.IOException;
 import java.util.Vector;
-
-import org.apache.http.client.ClientProtocolException;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,7 +39,6 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -61,7 +51,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class InfoActivity extends ListActivity {
 

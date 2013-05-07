@@ -32,20 +32,15 @@ package it.sasabz.android.sasabus;
 
 
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.services.FileRetriever;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class CheckDatabaseActivity extends Activity {
@@ -114,6 +109,7 @@ public class CheckDatabaseActivity extends Activity {
 		builder.setMessage(String.format(getString(msg),placeholder));
 		builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 
+			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				if(res == FR_DB)
 				{
@@ -179,7 +175,6 @@ public class CheckDatabaseActivity extends Activity {
 		return builder.create();
 	}
 
-	
 	private Context getContext()
 	{
 		return super.getApplicationContext();
