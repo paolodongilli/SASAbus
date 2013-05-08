@@ -1,6 +1,6 @@
 /**
  *
- * MapViewActivity.java
+ * MapSelectActivity.java
  *
  * Created: Mar 15, 2012 22:40:06 PM
  *
@@ -20,6 +20,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This activity provides a map to select one of the various bus stops
  *
  */
 

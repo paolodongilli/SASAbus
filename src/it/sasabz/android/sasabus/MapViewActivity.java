@@ -21,6 +21,9 @@
  * You should have received a copy of the GNU General Public License
  * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
  *
+ * This activity provides a map an the possibility to show a list of
+ * bus stops which were contained in a "journey" (from - to)
+ *
  */
 
 package it.sasabz.android.sasabus;
@@ -144,6 +147,10 @@ public class MapViewActivity extends MapActivity {
 		from.setText(res.getString(R.string.from) + " " + part.toString());
 		to.setText(res.getString(R.string.to) + " " + dest.toString());
 
+		
+		/*
+		 * Creating the MapView an the overlays to show the journay on the map.
+		 */
 		MapView mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setClickable(true);
 		mapView.setBuiltInZoomControls(true);
