@@ -21,9 +21,12 @@
  * You should have received a copy of the GNU General Public License
  * along with SasaBus. If not, see <http://www.gnu.org/licenses/>.
  *
+<<<<<<< HEAD
  * This activity provides a map an the possibility to show a list of
  * bus stops which were contained in a "journey" (from - to)
  *
+=======
+>>>>>>> 9953b151ccb50fe6b852c8ea73cf2811caaf01a1
  */
 
 package it.sasabz.android.sasabus;
@@ -51,6 +54,7 @@ import it.sasabz.android.sasabus.classes.dbobjects.PassaggioList;
 import it.sasabz.android.sasabus.classes.dialogs.About;
 import it.sasabz.android.sasabus.classes.dialogs.Credits;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

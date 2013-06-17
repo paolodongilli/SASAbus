@@ -24,12 +24,14 @@
 package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.MapSelectActivity;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
 import it.sasabz.android.sasabus.classes.dialogs.SelectDialog;
 
 import org.mapsforge.android.maps.overlay.OverlayItem;
 import org.mapsforge.core.GeoPoint;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
