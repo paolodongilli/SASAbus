@@ -4,3 +4,4 @@
 *.mwb.bak
 .DS_STORE
 .classpath
+project.properties
