@@ -29,7 +29,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.adapter.MyXMLStationListAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
 import it.sasabz.android.sasabus.classes.dbobjects.PalinaList;

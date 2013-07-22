@@ -23,7 +23,6 @@
  */
 package it.sasabz.android.sasabus.classes.adapter;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Favorit;
 import java.util.Vector;
 

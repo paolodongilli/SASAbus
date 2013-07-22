@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import it.sasabz.android.sasabus.MapViewActivity;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.adapter.MyWayListAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Bacino;
 import it.sasabz.android.sasabus.classes.dbobjects.BacinoList;

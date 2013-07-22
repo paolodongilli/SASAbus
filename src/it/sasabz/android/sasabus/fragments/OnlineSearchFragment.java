@@ -34,7 +34,6 @@ import java.util.Vector;
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
 import it.sasabz.android.sasabus.InfoActivity;
 import it.sasabz.android.sasabus.MapSelectActivity;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.DateTimePicker;
 import it.sasabz.android.sasabus.classes.adapter.MyAutocompleteAdapter;
 import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;

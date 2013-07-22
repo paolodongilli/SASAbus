@@ -26,7 +26,6 @@
  */
 package it.sasabz.android.sasabus.classes.adapter;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.dbobjects.PalinaList;
 import it.sasabz.android.sasabus.classes.dbobjects.Passaggio;
 

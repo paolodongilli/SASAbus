@@ -27,7 +27,6 @@ package it.sasabz.android.sasabus.classes.dialogs;
 import java.util.Locale;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Favorit;
 import it.sasabz.android.sasabus.classes.FavoritenDB;

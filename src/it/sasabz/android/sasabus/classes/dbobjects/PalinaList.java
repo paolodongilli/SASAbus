@@ -30,7 +30,6 @@ import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.adapter.MySQLiteDBAdapter;
 
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 

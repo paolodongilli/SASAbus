@@ -40,7 +40,6 @@ import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.rendertheme.InternalRenderTheme;
 import org.mapsforge.core.GeoPoint;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.MyArrayItemizedOverlay;
 import it.sasabz.android.sasabus.classes.MyOverlayItem;
 import it.sasabz.android.sasabus.classes.dbobjects.Bacino;

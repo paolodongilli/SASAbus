@@ -23,7 +23,6 @@
  */
 package it.sasabz.android.sasabus.classes;
 
-import it.sasabz.android.sasabus.R;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

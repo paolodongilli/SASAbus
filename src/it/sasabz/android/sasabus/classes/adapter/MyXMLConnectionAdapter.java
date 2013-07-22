@@ -23,7 +23,6 @@
  */
 package it.sasabz.android.sasabus.classes.adapter;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.hafas.XMLConnection;
 import it.sasabz.android.sasabus.classes.hafas.XMLJourney;

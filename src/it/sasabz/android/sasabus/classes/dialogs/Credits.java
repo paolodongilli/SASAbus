@@ -24,7 +24,6 @@
  */
 package it.sasabz.android.sasabus.classes.dialogs;
 
-import it.sasabz.android.sasabus.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.network.SASAbusXML;
 
@@ -100,7 +99,7 @@ public class XMLRequest {
 		{
 			xmlrequest += "B";
 		}
-		xmlrequest += "\"><ConResCtxt>" + context + "</ConResCtxt>\n</ConScrReq>\n</ReqC";
+		xmlrequest += "\"><ConResCtxt>" + context + "</ConResCtxt>\n</ConScrReq>\n</ReqC>";
 		return execute(xmlrequest);
 	}
 	

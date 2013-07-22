@@ -27,7 +27,6 @@ package it.sasabz.android.sasabus.classes.hafas;
 
 import it.sasabz.android.sasabus.SASAbus;
 
-import it.sasabz.android.sasabus.R;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;

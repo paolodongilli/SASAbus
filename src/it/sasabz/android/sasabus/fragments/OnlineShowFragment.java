@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Favorit;
 import it.sasabz.android.sasabus.classes.FavoritenDB;
 import it.sasabz.android.sasabus.classes.adapter.MyXMLConnectionRequestAdapter;

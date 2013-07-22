@@ -25,7 +25,6 @@
  */
 package it.sasabz.android.sasabus;
 
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.Information;
 import it.sasabz.android.sasabus.classes.adapter.MyListAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.DBObject;

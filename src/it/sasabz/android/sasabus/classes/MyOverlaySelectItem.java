@@ -24,7 +24,6 @@
 package it.sasabz.android.sasabus.classes;
 
 import it.sasabz.android.sasabus.MapSelectActivity;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.classes.dbobjects.Palina;
 import it.sasabz.android.sasabus.classes.dialogs.SelectDialog;
 

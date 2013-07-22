@@ -26,7 +26,6 @@
 package it.sasabz.android.sasabus.fragments;
 
 import java.util.Vector;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.adapter.MyPassaggioListAdapter;
 import it.sasabz.android.sasabus.classes.dbobjects.Bacino;

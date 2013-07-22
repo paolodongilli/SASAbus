@@ -9,7 +9,6 @@ import java.util.TimeZone;
 
 
 import it.sasabz.android.sasabus.CheckDatabaseActivity;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Config;
 import it.sasabz.android.sasabus.classes.MD5Utils;

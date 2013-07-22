@@ -25,7 +25,6 @@ package it.sasabz.android.sasabus.classes.services;
 
 
 import it.sasabz.android.sasabus.InfoActivity;
-import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.SASAbus;
 import it.sasabz.android.sasabus.classes.Information;
 import it.sasabz.android.sasabus.classes.dbobjects.DBObject;
