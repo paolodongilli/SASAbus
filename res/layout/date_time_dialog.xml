@@ -25,7 +25,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/DateTimeDialog" android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <it.sasabz.android.sasabus.classes.DateTimePicker
+        <it.sasabz.sasabus.ui.routing.DateTimePicker
                 android:id="@+id/DateTimePicker" 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />

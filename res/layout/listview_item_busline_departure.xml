@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/listitem_height">
+    
+    <TextView
+	    android:id="@+id/textview_time"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginLeft="5dp"
+	    android:text="00:00"
+	    android:textSize="@dimen/textsize_standard"
+	    android:textStyle="bold" />
+    
+	<TextView
+	    android:id="@+id/textview_busstop"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_centerVertical="true"
+	    android:layout_toLeftOf="@id/textview_time"
+	    android:ellipsize="marquee"
+	    android:singleLine="true"
+	    android:text="Meran - Seilb. Meran 2000 test test"
+	    android:textSize="@dimen/textsize_standard" />
+    
+</RelativeLayout>

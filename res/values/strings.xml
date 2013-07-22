@@ -66,7 +66,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="show_way">Show Route:</string>
 <string name="weiter">Go!</string>
 <string name="menu_settings">Settings</string>
+<string name="menu_map">Map</string>
 <string name="menu_test">this is a test</string>
+<string name="menu_more">More</string>
 <string name="menu_infos">News</string>
 <string name="menu_old_mode">Offline</string>
 
@@ -167,7 +169,32 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="offline">Offline</string>
 <string name="online">Online</string>
+<string name="next_bus">Next Bus</string>
 <string name="info">Info</string>
 
-</resources>
+<string name="bus_stops_nearby">Bus stops nearby</string>
+<string name="bus_stop_from_map">Bus stop from map</string>
 
+<string name="departure_bus_stop">Departure bus stop</string>
+<string name="arrival_bus_stop">Arrival bus stop</string>
+
+<string name="more">More</string>
+<string name="nearby_button">Bus stops nearby</string>
+<string name="map_button">Select bus stop from map</string>
+<string name="favorites_button">Favorite bus stops</string>
+
+<string name="date_pattern">dd/mm/yyyy</string>
+<string name="time_pattern">hh/mm</string>
+
+<string name="preferences">Preferences</string>
+<string name="preference_notifications_title">Notifications</string>
+<string name="preference_notifications_summary">Receive notifications if short-term changes occur to your favored bus lines.</string>
+
+<string name="activity_label_results">Connections found</string>
+
+<string name="departures">Departures</string>
+<string name="departure_times">Departure times</string>
+<string name="course">Course</string>
+
+
+</resources>

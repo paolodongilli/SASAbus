@@ -67,8 +67,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="show_way">Percorso:</string>
 <string name="weiter">Avanti</string>
 <string name="menu_settings">Impostazioni</string>
-<string name="menu_infos">Avvisi</string>
 
+<string name="menu_map">Mappa</string>
+<string name="menu_more">Più</string>
+<string name="menu_infos">Avvisi</string>
 
 <string name="gps_prefs">Impostazioni GPS</string>
 <string name="general_prefs">Impostazioni generali</string>
@@ -157,6 +159,31 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="offline">Offline</string>
 <string name="online">Con Internet</string>
+<string name="next_bus">Prossimo bus</string>
 <string name="info">Info</string>
+
+<string name="bus_stops_nearby">Fermate nei dintorni</string>
+<string name="bus_stop_from_map">Fermata dalla mappa</string>
+
+<string name="departure_bus_stop">Fermata di partenza</string>
+<string name="arrival_bus_stop">Fermata d\'arrivo</string>
+
+<string name="more">Più</string>
+<string name="nearby_button">Fermate vicine</string>
+<string name="map_button">Selezionare fermata dalla mappa</string>
+<string name="favorites_button">Fermate preferiti</string>
+
+<string name="date_pattern">gg/mm/aaaa</string>
+<string name="time_pattern">oo/mm</string>
+
+<string name="preferences">Impostazioni</string>
+<string name="preference_notifications_title">Notifiche</string>
+<string name="preference_notifications_summary">Ricevere notifiche se avvengono modifiche alle tue linie preferite a breve termine.</string>
+
+<string name="activity_label_results">Collegamenti trovati</string>
+
+<string name="departures">Partenze</string>
+<string name="departure_times">Orario di partenza</string>
+<string name="course">Percorso</string>
 
 </resources>

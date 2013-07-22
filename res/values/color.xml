@@ -28,4 +28,14 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     <color name="sasa_orange">#F58220</color>
     <color name="divider_background">#666666</color>
     <color name="info_background">#333333</color>
+    
+    <color name="grey_background">#EEEEEE</color>
+    <color name="grey1">#f5f5f5</color>
+    <color name="grey2">#f0f0f0</color>
+    <color name="grey3">#CCCCCC</color>
+    <color name="grey4">#898989</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="orange_focused">#80FF8800</color>
+    <color name="orange_pressed">#B3FF8800</color>
+   
 </resources>

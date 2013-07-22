@@ -1,75 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!-- con_transfer_row.xml Copyright (C) 2012 Markus Windegger This file is 
+	part of SasaBus. SasaBus is free software: you can redistribute it and/or 
+	modify it under the terms of the GNU General Public License as published 
+	by the Free Software Foundation, either version 3 of the License, or (at 
+	your option) any later version. SasaBus is distributed in the hope that it 
+	will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+	of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+	Public License for more details. You should have received a copy of the GNU 
+	General Public License along with SasaBus. If not, see <http://www.gnu.org/licenses/>. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:layout_marginBottom="3dip"
+	android:layout_marginTop="3dip">
 
-con_transfer_row.xml
- 
- 
-Copyright (C) 2012 Markus Windegger
+	<TableLayout android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-This file is part of SasaBus.
+		<TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 
-SasaBus is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+			<ImageView android:id="@+id/imageView1"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical" android:src="@drawable/ab_punkt" />
 
-SasaBus is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+			<TextView android:id="@+id/text" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:layout_gravity="center_vertical"
+				android:textColor="#ffffff" android:layout_marginLeft="15dip"
+				android:textSize="20dip" />
 
-You should have received a copy of the GNU General Public License
-along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
+		</TableRow>
 
--->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" 
-        android:layout_marginBottom="3dip"
-        android:layout_marginTop="3dip"
-        >
+		<TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
 
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ab_punkt" />
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="#ffffff"
-                    android:layout_marginLeft="15dip"
-                    android:textSize="20dip"
-                     />
 
-            </TableRow>
+		<TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
 
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-            </TableRow>
- 		</TableLayout>
-    </LinearLayout>
+	</TableLayout>
+</LinearLayout>

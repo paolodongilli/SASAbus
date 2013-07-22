@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearlayout_nextbus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient"
+    android:padding="@dimen/activity_padding"
+    tools:context="it.sasabz.sasabus.ui.busstop.NextBusFragment">
+
+    <it.sasabz.sasabus.ui.SearchInputField
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/departure_bus_stop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp">
+        
+        <include layout="@layout/imagebutton_mapview"
+            android:id="@+id/imagebutton_mapview" />
+
+        <TextView
+            android:id="@+id/textview_busstop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imagebutton_mapview"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:text="Bolzano - Via Siemens 19"
+            android:textSize="25sp" />
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+	    android:id="@+id/linearlayout_results"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:padding="@dimen/container_padding"
+	    android:background="@drawable/now_layout">
+	
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/title_with_underline">
+		    
+            <TextView
+                android:id="@+id/textview_line"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Arrives in: \n (minutes incl. delay)" />
+            
+		    <TextView
+		        android:id="@+id/textview_arrives_in"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBaseline="@id/textview_line"
+		        android:layout_marginRight="20dp"
+		        android:text="@string/line_txt"
+		        style="@style/title" />
+	    
+	    </RelativeLayout>
+	
+	    <ListView
+	        android:id="@+id/listview_next_buses"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content">
+	    </ListView>
+	    
+	</LinearLayout>
+    
+
+</LinearLayout>

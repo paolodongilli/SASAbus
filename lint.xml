@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="NewApi">
-        <ignore path="src\it\sasabz\android\sasabus\CheckDatabaseActivity.java" />
+        <ignore path="src/it/sasabz/android/sasabus/CheckDatabaseActivity.java" />
     </issue>
     <issue id="ParserError">
         <ignore path="src/it/sasabz/android/services/CheckUpdate.java" />

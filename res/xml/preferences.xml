@@ -26,21 +26,24 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
     <!-- General Preferences -->
     
+    
      <PreferenceCategory 
         android:title="@string/general_prefs"
         android:key="general_prefs">
 
         
+        <CheckBoxPreference
+            android:title="@string/preference_notifications_title"
+            android:summary="@string/preference_notifications_summary" />
+
         <ListPreference 
             android:key="infos"
             android:title="@string/line_infos"
             android:summary="@string/line_infos_descr"
             android:defaultValue="0" 
             android:entries="@array/info_names"
-            android:entryValues="@array/info_values"
-        />
+            android:entryValues="@array/info_values" />
         
-
     </PreferenceCategory>
     
 </PreferenceScreen>

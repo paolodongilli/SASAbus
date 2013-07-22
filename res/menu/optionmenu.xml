@@ -23,7 +23,27 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
 <menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="@string/menu_about" android:id="@+id/menu_about"></item>
-    <item android:title="@string/menu_credits" android:id="@+id/menu_credits"></item>
+  	xmlns:android="http://schemas.android.com/apk/res/android">
+  	
+    <item android:id="@+id/menu_infos"
+	    android:icon="@drawable/ic_menu_info"
+	    android:title="@string/info"
+	    android:showAsAction="always|withText" />
+    
+    <item
+        android:id="@+id/menu_map"
+        android:icon="@drawable/ic_menu_map"
+        android:title="@string/menu_map"
+        android:showAsAction="always|withText" />
+    
+	<item
+	    android:id="@+id/menu_about"
+	    android:title="@string/menu_about"
+	    android:showAsAction="never" />
+	
+	<item 
+	     android:id="@+id/menu_settings"
+	     android:title="@string/menu_settings"
+	     android:showAsAction="never" />
+	
 </menu>

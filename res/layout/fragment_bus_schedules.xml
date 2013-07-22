@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview_busschedules"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/background_gradient">
+
+    <LinearLayout
+        android:id="@+id/linearlayout_fragment_bus_schedules"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_padding" >
+
+        <LinearLayout
+            android:id="@+id/linearlayout_area"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/imagebutton_area_map"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/map"
+                android:scaleType="centerInside"
+                android:src="@drawable/mapview" />
+
+            <Spinner
+                android:id="@+id/spinner_area"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_busline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/spinner_busline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:spinnerMode="dropdown" />
+
+            <Spinner
+                android:id="@+id/spinner_busline_direction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/container_padding"
+            android:background="@drawable/now_layout">
+
+            
+            <RelativeLayout 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/title_with_underline">
+                
+	            <TextView
+	                android:id="@+id/textview_departures_title"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/departures"
+	                style="@style/title" />
+	            
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/listview_busline_departures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ListView>
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</ScrollView>
