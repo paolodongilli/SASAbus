@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.network.SASAbusXML;
 import it.sasabz.sasabus.ui.SASAbus;
 

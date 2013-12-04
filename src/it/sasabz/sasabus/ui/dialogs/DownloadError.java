@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.ui.dialogs;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

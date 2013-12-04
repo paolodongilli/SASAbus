@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.ui.adapter;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.Itinerary;
 
 import java.util.ArrayList;

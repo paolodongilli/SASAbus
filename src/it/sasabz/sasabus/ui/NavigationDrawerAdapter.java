@@ -2,7 +2,7 @@ package it.sasabz.sasabus.ui;
 
 import java.util.List;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.ui.MainActivity.DrawerItem;
 import android.content.Context;
 import android.view.LayoutInflater;

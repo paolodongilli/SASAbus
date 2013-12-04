@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="it.sasabz.android.sasabus" android:versionCode="24"
+	package="it.sasabz.sasabus" android:versionCode="24"
 	android:versionName="0.4.0">
 	
 	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="18" />
@@ -80,7 +80,7 @@
 			</intent-filter>
 		</activity>
 		
-		<service android:enabled="true" android:name="it.sasabz.android.sasabus.UpdateService" />
+		<service android:enabled="true" android:name="it.sasabz.sasabus.UpdateService" />
 		
 	</application>
 </manifest>

@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.data.models;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.FavoritenDB;
 import it.sasabz.sasabus.data.orm.BusStopList;
 import it.sasabz.sasabus.ui.SASAbus;

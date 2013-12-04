@@ -36,7 +36,7 @@ import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.rendertheme.InternalRenderTheme;
 import org.mapsforge.core.GeoPoint;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.MySQLiteDBAdapter;
 import it.sasabz.sasabus.data.models.BusStop;
 import it.sasabz.sasabus.data.models.DBObject;

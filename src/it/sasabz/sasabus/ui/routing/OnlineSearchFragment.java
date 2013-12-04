@@ -33,7 +33,7 @@ import java.util.Date;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.MySQLiteDBAdapter;
 import it.sasabz.sasabus.data.models.BusStop;
 import it.sasabz.sasabus.data.models.DBObject;

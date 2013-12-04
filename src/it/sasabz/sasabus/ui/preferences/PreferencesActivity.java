@@ -3,7 +3,7 @@
  */
 package it.sasabz.sasabus.ui.preferences;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;

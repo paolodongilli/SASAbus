@@ -1,6 +1,6 @@
 package it.sasabz.sasabus.ui.about;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import android.os.Bundle;
 
 /**

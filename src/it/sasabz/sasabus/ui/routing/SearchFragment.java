@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.searchinputfield.SearchInputField;
 import android.app.Activity;

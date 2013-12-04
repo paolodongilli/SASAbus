@@ -23,13 +23,13 @@
  */
 package it.sasabz.sasabus.ui.dialogs;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import it.sasabz.android.sasabus.R.string;
+import it.sasabz.sasabus.R.string;
 import it.sasabz.sasabus.data.hafas.XMLConnection;
 import it.sasabz.sasabus.data.hafas.XMLJourney;
 import it.sasabz.sasabus.data.models.BusStop;

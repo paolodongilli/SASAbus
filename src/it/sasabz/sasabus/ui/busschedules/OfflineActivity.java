@@ -30,7 +30,7 @@
  */
 package it.sasabz.sasabus.ui.busschedules;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.ui.dialogs.About;
 import it.sasabz.sasabus.ui.dialogs.Credits;
 import android.os.Bundle;

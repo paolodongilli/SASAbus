@@ -2,7 +2,7 @@ package it.sasabz.sasabus.ui.routing;
 
 import java.util.ArrayList;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.hafas.XMLConnection;
 import it.sasabz.sasabus.logic.BusSchedulesDatabase;
 import it.sasabz.sasabus.logic.SearchConnection;

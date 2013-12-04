@@ -2,7 +2,7 @@ package it.sasabz.sasabus.ui;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.ui.news.CityNewsFragment;
 import android.content.Context;
 import android.content.DialogInterface;

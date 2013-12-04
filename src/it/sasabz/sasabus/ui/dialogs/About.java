@@ -24,7 +24,7 @@
  */
 package it.sasabz.sasabus.ui.dialogs;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import java.util.Calendar;
 
 import android.app.Activity;

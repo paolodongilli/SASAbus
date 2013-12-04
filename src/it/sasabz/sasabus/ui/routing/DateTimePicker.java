@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.ui.routing;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 
 import java.util.Calendar;
 

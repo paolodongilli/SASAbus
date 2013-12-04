@@ -26,7 +26,7 @@ package it.sasabz.sasabus.data.hafas;
 
 
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.ui.SASAbus;
 
 import java.io.IOException;

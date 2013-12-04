@@ -28,7 +28,7 @@
 
 package it.sasabz.sasabus.logic;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.FileRetriever;
 import android.app.Activity;
 import android.app.AlertDialog;

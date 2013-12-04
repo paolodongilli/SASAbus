@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.ui.map;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.BusStop;
 import it.sasabz.sasabus.ui.dialogs.SelectDialog;
 

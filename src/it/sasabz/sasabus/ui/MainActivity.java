@@ -59,7 +59,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.logic.Utility;
 import it.sasabz.sasabus.ui.about.AboutActivity;
 import it.sasabz.sasabus.ui.busschedules.BusSchedulesFragment;

@@ -27,7 +27,7 @@ package it.sasabz.sasabus.ui.routing;
 import java.util.Locale;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.FavoritenDB;
 import it.sasabz.sasabus.data.models.BusStop;
 import it.sasabz.sasabus.data.models.Favorit;

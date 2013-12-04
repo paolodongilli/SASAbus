@@ -23,7 +23,7 @@
  */
 package it.sasabz.sasabus.data.orm;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.DBObject;
 import it.sasabz.sasabus.data.models.News;
 import it.sasabz.sasabus.data.network.SasabusHTTP;

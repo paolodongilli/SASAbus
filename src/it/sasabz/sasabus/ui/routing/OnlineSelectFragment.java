@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.hafas.XMLRequest;
 import it.sasabz.sasabus.data.hafas.XMLStation;
 import it.sasabz.sasabus.data.hafas.services.XMLStationList;

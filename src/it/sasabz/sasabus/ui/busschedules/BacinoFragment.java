@@ -28,7 +28,7 @@ package it.sasabz.sasabus.ui.busschedules;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.DBObject;
 import it.sasabz.sasabus.data.orm.AreaList;
 import it.sasabz.sasabus.ui.SASAbus;

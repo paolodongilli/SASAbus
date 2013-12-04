@@ -28,7 +28,7 @@ package it.sasabz.sasabus.data;
 
 
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.network.SasabusFTP;
 import it.sasabz.sasabus.logic.DownloadDatabase;
 import it.sasabz.sasabus.ui.SASAbus;

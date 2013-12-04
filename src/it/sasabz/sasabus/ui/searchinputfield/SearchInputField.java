@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.BusStop;
 import it.sasabz.sasabus.data.models.News;
 import it.sasabz.sasabus.ui.CustomDialog;

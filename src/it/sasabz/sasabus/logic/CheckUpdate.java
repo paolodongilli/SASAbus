@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.Config;
 import it.sasabz.sasabus.data.MD5Utils;
 import it.sasabz.sasabus.data.network.SasabusFTP;

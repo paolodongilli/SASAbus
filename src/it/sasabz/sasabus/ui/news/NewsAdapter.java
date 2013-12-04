@@ -2,7 +2,7 @@ package it.sasabz.sasabus.ui.news;
 
 import java.util.List;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.DBObject;
 import it.sasabz.sasabus.data.models.News;
 import android.content.Context;

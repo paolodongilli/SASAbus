@@ -26,7 +26,7 @@
 package it.sasabz.sasabus.ui.fragments;
 
 import java.util.ArrayList;
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.Area;
 import it.sasabz.sasabus.data.models.BusLine;
 import it.sasabz.sasabus.data.models.BusStop;

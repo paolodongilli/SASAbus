@@ -3,7 +3,7 @@ package it.sasabz.sasabus.ui.news;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import it.sasabz.sasabus.data.models.News;
 import it.sasabz.sasabus.logic.DownloadNews;
 import it.sasabz.sasabus.ui.CustomDialog;

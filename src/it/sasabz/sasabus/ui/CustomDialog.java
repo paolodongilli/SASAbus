@@ -2,7 +2,7 @@ package it.sasabz.sasabus.ui;
 
 import java.util.List;
 
-import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
