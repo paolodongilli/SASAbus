@@ -28,7 +28,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
     android:layout_height="fill_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-	android:keepScreenOn="true" >
+	android:keepScreenOn="true" >
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:layout_gravity="center"
         android:layout_weight="8.33"
         android:src="@drawable/androidlogo" />
-
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:textColor="@color/sasa_orange"
         android:textSize="56dp"
         android:textStyle="bold" />
-
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:text="@string/version"
         android:textColor="@color/sasa_orange"
         android:textSize="20dp" />
-
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"

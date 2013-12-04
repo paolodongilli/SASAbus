@@ -1,6 +1,12 @@
 package it.sasabz.sasabus.ui;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
+import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.ui.news.CityNewsFragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,4 +52,18 @@ public class Utility {
         // Convert the dps to pixels, based on density scale
         return (int) (pixels * scale + 0.5f);
     }
+	
+	public static void showNetworkErrorDialog(SherlockFragment fragment) {
+		CustomDialog.Builder infoDialogBuilder = new CustomDialog.Builder(fragment);
+		infoDialogBuilder.setTitle(fragment.getResources().getString(R.string.error));
+		infoDialogBuilder.setMessage(fragment.getResources().getString(R.string.error));
+		infoDialogBuilder.setNegativeButton(fragment.getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		infoDialogBuilder.show();
+	}
+	
 }

@@ -38,5 +38,9 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         <item name="2">Bozen</item>
     </string-array>
     
+    <string-array name="cities">
+        <item>Bozen</item>
+        <item>Meran</item>
+    </string-array>
 
 </resources>

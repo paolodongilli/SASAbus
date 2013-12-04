@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearlayout_nextbus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +8,7 @@
     android:padding="@dimen/activity_padding"
     tools:context="it.sasabz.sasabus.ui.busstop.NextBusFragment">
 
-    <it.sasabz.sasabus.ui.SearchInputField
+    <it.sasabz.sasabus.ui.searchinputfield.SearchInputField
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/departure_bus_stop" />
@@ -40,23 +39,20 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    android:padding="@dimen/container_padding"
+	    style="@style/box_with_title"
 	    android:background="@drawable/now_layout">
-	
         
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/title_with_underline">
-		    
+            style="@style/title_box">
             <TextView
                 android:id="@+id/textview_line"
                 style="@style/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Arrives in: \n (minutes incl. delay)" />
-            
+                android:text="Arrives in:" />
 		    <TextView
 		        android:id="@+id/textview_arrives_in"
 		        android:layout_width="wrap_content"
@@ -65,8 +61,11 @@
 		        android:layout_marginRight="20dp"
 		        android:text="@string/line_txt"
 		        style="@style/title" />
-	    
 	    </RelativeLayout>
+	    <View
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="@dimen/title_underline_height"
+	  	    style="@style/title_underline" />
 	
 	    <ListView
 	        android:id="@+id/listview_next_buses"

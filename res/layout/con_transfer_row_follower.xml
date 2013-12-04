@@ -48,7 +48,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/middle_bus" />
-
+
                 <TextView
                     android:id="@+id/info"
                     android:layout_width="wrap_content"
@@ -69,7 +69,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/middle_punkt" />
-
+
                 <TextView
                     android:id="@+id/arrival"
                     android:layout_width="wrap_content"

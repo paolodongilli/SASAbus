@@ -118,6 +118,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="scan">Scanning</string>
 
 <string name="delete">Delete</string>
+<string name="refresh">Refresh</string>
+<string name="save">Save</string>
 
 <string name="map">Map</string>
 <string name="map_pick">From map</string>
@@ -135,14 +137,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="online_connection_error">The entered pattern matches no busstop</string>
 <string name="search_connection">Search connection</string>
 
-<string name="time">Date and time:</string>
+<string name="date_and_time">Date and time:</string>
 <string name="time_txt">dd/mm/yyyy</string>
 
 <string name="reset">Reset</string>
 
 <string name="waiting">Please wait...</string>
 <string name="transfers">Trasferimenti</string>
-
 
 <string name="set_date">Date</string>
 <string name="set_time">Time</string>
@@ -155,7 +156,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="connection_details">Connection details</string>
 
 <string name="information">Information</string>
-<string name="offline_info">You have no internet connectivity. Please enable internetconnection or switch to the offline mode. Switch to offline mode?</string>
+<string name="offline_info">You have no internet connectivity. Please turn on your internet connection.</string>
 
 <string name="start">Start</string>
 <string name="zwischenstop">Intermediate stop</string>
@@ -169,11 +170,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="offline">Offline</string>
 <string name="online">Online</string>
-<string name="next_bus">Next Bus</string>
 <string name="info">Info</string>
 
 <string name="bus_stops_nearby">Bus stops nearby</string>
 <string name="bus_stop_from_map">Bus stop from map</string>
+
+<string name="departure">Departure:</string>
+<string name="arrival">Arrival:</string>
 
 <string name="departure_bus_stop">Departure bus stop</string>
 <string name="arrival_bus_stop">Arrival bus stop</string>
@@ -183,6 +186,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="map_button">Select bus stop from map</string>
 <string name="favorites_button">Favorite bus stops</string>
 
+<string name="date">Date:</string>
+<string name="time">Time:</string>
 <string name="date_pattern">dd/mm/yyyy</string>
 <string name="time_pattern">hh/mm</string>
 
@@ -196,5 +201,15 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="departure_times">Departure times</string>
 <string name="course">Course</string>
 
+<string name="lines">Lines</string>
+
+<string name="bus_lines">Bus lines</string>
+<string name="bus_stops">Bus stops</string>
+<string name="search_route">Search route</string>
+<string name="parking_spots">Parking spots</string>
+<string name="news">News</string>
+
+<string name="drawer_open">Open navigation drawer</string>
+<string name="drawer_close">Close navigation drawer</string>
 
 </resources>

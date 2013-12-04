@@ -79,7 +79,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         android:paddingTop="15dip"
         android:paddingBottom="15dip"
         />
-
+
     <Button
         android:id="@+id/search"
         android:layout_width="match_parent"

@@ -9,7 +9,6 @@
 	    android:layout_height="wrap_content"
 	    android:layout_centerVertical="true"
 	    android:layout_alignParentRight="true"
-	    android:layout_marginRight="5dp"
 	    android:text="03:30"
 	    android:textSize="@dimen/textsize_standard"
 	    android:textStyle="bold" />
@@ -18,7 +17,6 @@
 	    android:id="@+id/textview_busline"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_toRightOf="@id/textview_time"
 	    android:layout_centerVertical="true"
 	    android:ellipsize="marquee"
 	    android:singleLine="true"

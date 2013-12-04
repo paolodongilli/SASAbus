@@ -64,11 +64,38 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         <item name="2">Bolzano</item>
     </string-array>
     
+   	<string-array name="cities">
+        <item>Bolzano</item>
+        <item>Merano</item>
+    </string-array>
+    
      <string-array name="info_values">
         <item name="0">0</item>
         <item name="1">1</item>
         <item name="2">2</item>
     </string-array>
     
-
+    <!-- Navigation Drawer Items -->
+    
+    <string-array name="navigation_drawer_entries">
+        <item>@string/search_route</item>
+        <item>@string/bus_lines</item>
+        <item>@string/bus_stops</item>
+        <item>@string/news</item>
+    </string-array>
+    
+    <string-array name="navigation_drawer_icons">
+        <item>@drawable/ic_action_nearby</item>
+        <item>@drawable/ic_action_map</item>
+        <item>@drawable/ic_action_favorites</item>
+        <item>@drawable/ic_navigation_news</item>
+    </string-array>
+    
+    <string-array name="navigation_drawer_fragments">
+        <item>it.sasabz.sasabus.ui.routing.SearchFragment</item>
+        <item>it.sasabz.sasabus.ui.busschedules.BusSchedulesFragment</item>
+        <item>it.sasabz.sasabus.ui.busstop.NextBusFragment</item>
+        <item>it.sasabz.sasabus.ui.news.NewsFragment</item>
+    </string-array>
+    
 </resources>

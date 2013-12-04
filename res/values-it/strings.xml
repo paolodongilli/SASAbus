@@ -109,6 +109,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="no">No</string>
 
 <string name="delete">Rimuovi</string>
+<string name="refresh">Aggiorna</string>
+<string name="save">Salvare</string>
 
 <string name="error_scan_text">Errore durante la scansione del codice QR: codice non valido per SASAbus</string>
 <string name="scan_text_not_implemented">Questa opzione sarà disponibile a breve.</string>
@@ -127,7 +129,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="mode_home">Home</string>
 <string name="select_stop">Scegliere la fermata</string>
 
-<string name="time">Data e ora:</string>
+<string name="date_and_time">Data e ora:</string>
 <string name="time_txt">gg/mm/yyyy</string>
 
 <string name="waiting">Attendere...</string>
@@ -145,7 +147,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="connection_details">Dettaglio connessione</string>
 
 <string name="information">Informazione</string>
-<string name="offline_info">Nessuna connessione a internet disponibile. Proseguire senza connessione?</string>
+<string name="offline_info">Non Sei connesso a internet. Prego attiva la connessione internet.</string>
 
 <string name="start">Partenza</string>
 <string name="zwischenstop">Fermata intermedia</string>
@@ -159,11 +161,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="offline">Offline</string>
 <string name="online">Con Internet</string>
-<string name="next_bus">Prossimo bus</string>
 <string name="info">Info</string>
 
 <string name="bus_stops_nearby">Fermate nei dintorni</string>
 <string name="bus_stop_from_map">Fermata dalla mappa</string>
+
+<string name="departure">Partenza:</string>
+<string name="arrival">Arrivo:</string>
 
 <string name="departure_bus_stop">Fermata di partenza</string>
 <string name="arrival_bus_stop">Fermata d\'arrivo</string>
@@ -171,8 +175,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="more">Più</string>
 <string name="nearby_button">Fermate vicine</string>
 <string name="map_button">Selezionare fermata dalla mappa</string>
-<string name="favorites_button">Fermate preferiti</string>
+<string name="favorites_button">Fermate preferite</string>
 
+<string name="date">Data:</string>
+<string name="time">Ora:</string>
 <string name="date_pattern">gg/mm/aaaa</string>
 <string name="time_pattern">oo/mm</string>
 
@@ -185,5 +191,16 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="departures">Partenze</string>
 <string name="departure_times">Orario di partenza</string>
 <string name="course">Percorso</string>
+
+<string name="lines">Linee</string>
+
+<string name="bus_lines">Linee</string>
+<string name="bus_stops">Fermate</string>
+<string name="search_route">Cerca percorso</string>
+<string name="parking_spots">Parcheggi</string>
+<string name="news">Notizie</string>
+
+<string name="drawer_open">Apri menu di navigazione</string>
+<string name="drawer_close">Chiudi menu di navigazione</string>
 
 </resources>

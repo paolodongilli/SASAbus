@@ -37,5 +37,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
         <item name="1">Merano</item>
         <item name="2">Bolzano</item>
     </string-array>
+    
+    <string-array name="cities">
+        <item>Bolzano</item>
+        <item>Merano</item>
+    </string-array>
 
 </resources>

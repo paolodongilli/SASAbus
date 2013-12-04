@@ -37,6 +37,9 @@ public class Itinerary extends DBObject {
 	/** the id of the bus stop */
 	private int busStopId = 0;
 	
+	/** name of the busstop */
+	private String busStopName = "";
+	
 	/**	the code of the course */
 	private int courseCode = 0;
 	
@@ -114,6 +117,20 @@ public class Itinerary extends DBObject {
 	 */
 	public void setBusStopId(int busStopId) {
 		this.busStopId = busStopId;
+	}
+	
+	/**
+	 * @return the name of the bus stop (palina)
+	 */
+	public String getBusStopName() {
+		return busStopName;
+	}
+
+	/**
+	 * @param busStopName is the id of a bus stop (palina)
+	 */
+	public void setBusStopName(String busStopName) {
+		this.busStopName = busStopName;
 	}
 
 	/**

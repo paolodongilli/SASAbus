@@ -40,7 +40,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                    android:id="@+id/tableRow6"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content" >
-
+
                    <ImageView
                        android:id="@+id/image"
                        android:layout_width="wrap_content"
@@ -54,7 +54,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
                 <TableLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
-
+
                     <TableRow
                         android:id="@+id/tableRow2"
                         android:layout_width="wrap_content"

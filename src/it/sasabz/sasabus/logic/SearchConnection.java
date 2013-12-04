@@ -1,5 +1,7 @@
 package it.sasabz.sasabus.logic;
 
+import it.sasabz.sasabus.ui.routing.SearchResultsActivity.SearchCallback;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -7,8 +9,44 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
+import android.util.Log;
+
 public class SearchConnection {
 
+	
+	public void searchForConnection(String departure, String arrival, String date, String time,
+			final Activity activity, final SearchCallback callback) {
+		
+		//TODO make a new request and generate necessary object, 
+		//when everything downloaded and splitted...
+		
+		//when finished return results
+		
+		
+		Thread thread = new Thread(){
+			@Override
+			public void run() {
+				try {
+					synchronized(this) {
+						wait(2000);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							callback.searchIsFinished(null);
+						}
+					});
+				}
+				
+			}
+		};
+		thread.start();
+	}
+	
 	public List<String> getConncections() {
 		
 		

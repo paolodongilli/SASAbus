@@ -11,7 +11,7 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.data.Config;
 import it.sasabz.sasabus.data.MD5Utils;
 import it.sasabz.sasabus.data.network.SasabusFTP;
-import it.sasabz.sasabus.ui.MainTabActivity;
+import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.SASAbus;
 import it.sasabz.sasabus.ui.routing.OnlineSearchFragment;
 import android.app.Activity;
@@ -22,7 +22,7 @@ import android.util.Log;
 
 /**
  *Checks if updates of maps or bus schedules are available.
- *Gets launched on startup by {@link MainTabActivity}
+ *Gets launched on startup by {@link MainActivity}
  */
 public class CheckUpdate extends AsyncTask<Void, String, Long> {
 

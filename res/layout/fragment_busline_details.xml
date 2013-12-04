@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id="@+id/relativelayout_busline"
         android:layout_width="wrap_content"
-        android:layout_height="25dp" >
+        android:layout_height="25dp"
+        android:layout_marginLeft="2dp" >
 
         <TextView
             android:id="@+id/textview_busline"
@@ -57,13 +58,13 @@
             android:layout_weight="4"
             android:orientation="vertical"
             android:layout_marginBottom="5dp"
-            android:padding="@dimen/container_padding"
+            style="@style/box_with_title"
             android:background="@drawable/now_layout">
 
             <RelativeLayout 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/title_with_underline">
+                style="@style/title_box">
 	            <TextView
 	                android:id="@+id/textview_departure_times_title"
 	                android:layout_width="match_parent"
@@ -71,6 +72,10 @@
 	                android:text="@string/departure_times"
 	                style="@style/title" />
             </RelativeLayout>
+            <View
+	            android:layout_width="match_parent"
+	            android:layout_height="@dimen/title_underline_height"
+	            style="@style/title_underline" />
 
             <ListView
                 android:id="@+id/listview_departure_times"
@@ -89,13 +94,12 @@
             android:layout_height="0dp"
             android:layout_weight="6"
             android:orientation="vertical"
-            android:padding="@dimen/container_padding"
+            style="@style/box_with_title"
             android:background="@drawable/now_layout">
-
             <RelativeLayout 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/title_with_underline">
+                style="@style/title_box">
 	            <TextView
 	                android:id="@+id/textview_line_course_title"
 	                android:layout_width="match_parent"
@@ -103,6 +107,10 @@
 	                android:text="@string/course"
 	                style="@style/title" />
 	        </RelativeLayout>
+	        <View
+	            android:layout_width="match_parent"
+	            android:layout_height="@dimen/title_underline_height"
+	            style="@style/title_underline" />
             
             <ListView
                 android:id="@+id/listview_line_course"

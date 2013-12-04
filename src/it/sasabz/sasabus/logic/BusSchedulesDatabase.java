@@ -23,7 +23,7 @@ public class BusSchedulesDatabase {
 		List<Area> fakeList = new ArrayList<Area>();
 			fakeList.add(new Area(0, "Bolzano", "Bozen"));;
 			fakeList.add(new Area(0, "Merano", "Meran"));
-			fakeList.add(new Area(0, "Extraurbano", "Überland"));
+			fakeList.add(new Area(0, "Extraurbano", "Ãœberland"));
 		
 		return fakeList;
 		
@@ -68,8 +68,8 @@ public class BusSchedulesDatabase {
 		//the starting and ending bus stop of a specific line
 		
 		List<String> fakeList = new ArrayList<String>();
-			fakeList.add("Fagenstraße - Kardaun");
-			fakeList.add("Kardaun - Fagenstraße");
+			fakeList.add("FagenstraÃŸe - Kardaun");
+			fakeList.add("Kardaun - FagenstraÃŸe");
 		
 		return fakeList;
 	}

@@ -61,6 +61,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
      
     <string name="newsserver">http://www.sasabz.it/android/android_infos.php</string>
     
+    <string name="newsserverjson">http://www.sasabz.it/android/android_json.php</string>
+    
     <string name="favoriten_db_name">favoriten_db</string>
     
     <string name="accessId">openSASA</string>

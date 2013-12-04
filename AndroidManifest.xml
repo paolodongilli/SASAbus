@@ -3,7 +3,7 @@
 	package="it.sasabz.android.sasabus" android:versionCode="24"
 	android:versionName="0.4.0">
 	
-	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="18" />
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -21,7 +21,7 @@
 		android:icon="@drawable/icon" android:allowBackup="true"
 		android:theme="@style/Theme.Sasabus">
 
-		<activity android:name="it.sasabz.sasabus.ui.MainTabActivity" android:label="@string/app_name"
+		<activity android:name="it.sasabz.sasabus.ui.MainActivity" android:label="@string/app_name"
 			android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -52,7 +52,7 @@
 			</intent-filter>
 		</activity>
 		
-		<activity android:name="it.sasabz.sasabus.ui.info.InfoActivity" android:label="@string/info">
+		<activity android:name="it.sasabz.sasabus.ui.news.NewsFragment" android:label="@string/info">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

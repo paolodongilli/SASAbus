@@ -59,7 +59,7 @@
 	    <item name="android:listViewWhiteStyle">@style/ListViewTheme.Sasabus.White</item>
 	
 	    <item name="android:spinnerItemStyle">@style/SpinnerItemTheme.Sasabus</item>
-
+	    
     </style>
 
     <style name="ActionBar.Solid.Sasabus" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">

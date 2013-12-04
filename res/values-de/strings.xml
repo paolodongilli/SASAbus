@@ -113,6 +113,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="scan_text_not_implemented">Dieses Feature ist in kürze Verfügbar!</string>
 
 <string name="delete">Löschen</string>
+<string name="refresh">Aktualisieren</string>
+<string name="save">Speichern</string>
 
 <string name="map">Karte</string>
 <string name="map_pick">Aus Karte</string>
@@ -128,12 +130,11 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="search_connection">Suche Verbindung</string>
 <string name="select_stop">Bitte Haltestelle aussuchen</string>
 
-<string name="time">Datum und Uhrzeit:</string>
+<string name="date_and_time">Datum und Uhrzeit:</string>
 <string name="time_txt">dd.mm.yyyy</string>
 
 <string name="waiting">Bitte warten...</string>
 <string name="transfers">Umstiege</string>
-
 
 <string name="reset">Reset</string>
 
@@ -148,7 +149,7 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="connection_details">Verbindungsdetails</string>
 
 <string name="information">Information</string>
-<string name="offline_info">Sie haben keine Internetverbindung. Im Offlinemodus fortfahren?</string>
+<string name="offline_info">Sie haben keine Internetverbindung. Bitte schalten Sie Ihre Internetverbindung ein.</string>
 
 <string name="start">Start</string>
 <string name="zwischenstop">Zwischenstop</string>
@@ -162,11 +163,13 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 
 <string name="offline">Offline</string>
 <string name="online">Mit Internet</string>
-<string name="next_bus">Nächster Bus</string>
 <string name="info">Info</string>
 
 <string name="bus_stops_nearby">Bushaltestellen in der Nähe</string>
 <string name="bus_stop_from_map">Bushaltestelle aus Karte</string>
+
+<string name="departure">Abfahrt:</string>
+<string name="arrival">Ankunft:</string>
 
 <string name="departure_bus_stop">Start-Haltestelle</string>
 <string name="arrival_bus_stop">End-Haltestelle</string>
@@ -176,6 +179,8 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="map_button">Bushaltestelle aus Karte auswählen</string>
 <string name="favorites_button">Favorisierte Bushaltestellen</string>
 
+<string name="date">Datum:</string>
+<string name="time">Uhrzeit:</string>
 <string name="date_pattern">tt/mm/jjjj</string>
 <string name="time_pattern">hh/mm</string>
 
@@ -188,5 +193,16 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="departures">Abfahrten</string>
 <string name="departure_times">Abfahrtszeiten</string>
 <string name="course">Streckenverlauf</string>
+
+<string name="lines">Linien</string>
+
+<string name="bus_lines">Buslinien</string>
+<string name="bus_stops">Bushaltestellen</string>
+<string name="search_route">Routensuche</string>
+<string name="parking_spots">Parkplätze</string>
+<string name="news">Neuigkeiten</string>
+
+<string name="drawer_open">Öffne Navigations-Menü</string>
+<string name="drawer_close">Schließe Navigations-Menü</string>
 
 </resources>

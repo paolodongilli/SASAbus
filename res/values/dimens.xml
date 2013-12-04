@@ -5,9 +5,11 @@
     
     <dimen name="search_input_fields_margin">10dp</dimen>
     
-    <dimen name="container_padding">10dp</dimen>
-    
     <dimen name="listitem_height">33dp</dimen>
     
+    <dimen name="textsize_big">20sp</dimen>
+    
     <dimen name="textsize_standard">18sp</dimen>
+    
+    <dimen name="title_underline_height">2dp</dimen>
 </resources>
