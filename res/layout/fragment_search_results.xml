@@ -54,6 +54,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="Vadena - Birti"
+                   android:singleLine="true"
                    android:textSize="15sp" />
 
                <TextView
@@ -61,6 +62,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="Gargazzone - Municipio"
+                   android:singleLine="true"
                    android:textSize="15sp" />
            </LinearLayout>
 
@@ -84,7 +86,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="2dp"
-                   android:text="25.07.2013"
+                   android:text="16/01/2014"
                    android:textSize="15sp" />
 
                <TextView
@@ -101,7 +103,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="2dp"
-                   android:text="12:05"
+                   android:text="10:00"
                    android:textSize="15sp" />
            </LinearLayout>
         </RelativeLayout>

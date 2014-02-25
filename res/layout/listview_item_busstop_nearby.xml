@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/dialog_listview_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/dialog_listview_item">
+    android:paddingLeft="10dp"
+    android:paddingRight="3dp" >
     
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
     
 	    <ImageView
 	        android:id="@+id/imageview_direction"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_centerHorizontal="true"
-	        android:src="@drawable/ic_direction"
-	        android:rotation="310" />
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginTop="-8dp"
+	        android:rotation="310"
+	        android:src="@drawable/ic_direction" />
 	    
 	    <TextView
-		    android:id="@+id/textview_distance"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerHorizontal="true"
-		    android:layout_below="@id/imageview_direction"
-		    android:layout_marginTop="-5dp"
-		    android:text="300m"
-		    android:textSize="14sp" />
+	        android:id="@+id/textview_distance"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/imageview_direction"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="0dp"
+	        android:text="300m"
+	        android:textSize="14sp" />
     
     </RelativeLayout>
     
@@ -33,7 +39,8 @@
 	    android:id="@+id/textview_busstop"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_centerVertical="true"
+	    android:layout_marginRight="40dp"
+	    android:layout_marginTop="3dp"
 	    android:ellipsize="marquee"
 	    android:singleLine="true"
 	    android:text="Bolzano - Via Siemens 2"

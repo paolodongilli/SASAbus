@@ -1,5 +1,3 @@
-*~
 /bin/
 /gen/
-*.mwb.bak
-.DS_STORE
+/TODO.txt

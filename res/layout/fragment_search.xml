@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    android:padding="@dimen/activity_padding"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_padding" >
 
     <RelativeLayout
         android:id="@+id/linearlayout_search_input_fields"
@@ -13,147 +13,143 @@
         android:orientation="vertical" >
 
         <!-- container of buttons and input field for departure -->
-        
+
         <ImageButton
-		   	android:id="@+id/imagebutton_switch"
-		   	android:layout_height="wrap_content"
-		   	android:layout_width="wrap_content"
-		   	android:layout_alignParentRight="true"
-		   	android:layout_centerVertical="true"
-		   	android:layout_marginLeft="-15dp"
-		   	style="@style/button_with_icon"
-			android:src="@drawable/selector_button_switch" />
+            android:id="@+id/imagebutton_switch"
+            style="@style/button_with_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-15dp"
+            android:src="@drawable/selector_button_switch" />
 
         <!-- departure inputfield -->
-		<RelativeLayout
-             android:id="@+id/linearlayout_departure"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_toLeftOf="@id/imagebutton_switch"
-             android:orientation="horizontal"
-             android:layout_marginBottom="3dp">
-             
-		   <ImageButton
-	         	android:id="@+id/imagebutton_map_departure"
-		       	android:layout_height="wrap_content"
-		      	android:layout_width="wrap_content"
-	          	android:layout_alignParentRight="true"
-	          	android:layout_centerVertical="true"
-	          	android:layout_marginLeft="-10dp"
-	          	style="@style/button_with_icon"
-	       		android:src="@drawable/selector_button_nearby" />
-             
+
+        <RelativeLayout
+            android:id="@+id/linearlayout_departure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_toLeftOf="@id/imagebutton_switch"
+            android:orientation="horizontal" >
+
+            <!--
 	       <AutoCompleteTextView
 	           android:id="@+id/autocompletetextview_departure"
 	           android:layout_width="match_parent"
 	           android:layout_height="wrap_content"
-	           android:layout_toLeftOf="@id/imagebutton_map_departure"
 	           android:layout_centerVertical="true"
 	           android:hint="@string/departure_bus_stop"
-	           android:singleLine="true"
-	           android:imeOptions="actionDone" />
-		       
-		</RelativeLayout>
-		
-		
-		<!-- arrival inputfield -->
-		<RelativeLayout
-             android:id="@+id/linearlayout_arrival"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:orientation="horizontal"
-             android:layout_toLeftOf="@id/imagebutton_switch"
-             android:layout_below="@id/linearlayout_departure">
-	       
-		   	<ImageButton
-		   	    android:id="@+id/imagebutton_map_arrival"
-				android:layout_height="wrap_content"
-	          	android:layout_width="wrap_content"
-	           	android:layout_alignParentRight="true"
-	           	android:layout_centerVertical="true"
-	           	android:layout_marginLeft="-10dp"
-	           	style="@style/button_with_icon"
-	           	android:src="@drawable/selector_button_nearby" />
-	           
-	       <AutoCompleteTextView
-	           android:id="@+id/autocompletetextview_arrival"
-	           android:layout_width="match_parent"
-	           android:layout_height="wrap_content"
-	           android:layout_toLeftOf="@id/imagebutton_map_arrival"
-	           android:layout_centerVertical="true"
-	           android:hint="@string/arrival_bus_stop"
-	           android:singleLine="true"
-	           android:imeOptions="actionDone" />
-		       
-		</RelativeLayout>
+	           android:imeOptions="actionDone"
+	           android:singleLine="true" />
+            -->
 
-<!--         <it.sasabz.sasabus.ui.searchinputfield.SearchInputField -->
-<!--             android:id="@+id/searchinputfieldDeparture" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:hint="@string/departure_bus_stop" /> -->
+            <it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText
+                android:id="@+id/autocompletetextview_departure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:hint="@string/departure_bus_stop"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
+            
+        </RelativeLayout>
 
-<!--         container of buttons and input field for arrival -->
+        <!-- arrival inputfield -->
 
-<!--         <it.sasabz.sasabus.ui.searchinputfield.SearchInputField -->
-<!--             android:id="@+id/searchinputfieldArrival" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:hint="@string/arrival_bus_stop" /> -->
+        <RelativeLayout
+            android:id="@+id/linearlayout_arrival"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearlayout_departure"
+            android:layout_toLeftOf="@id/imagebutton_switch"
+            android:orientation="horizontal" >
+
+            <it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText
+                android:id="@+id/autocompletetextview_arrival"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:hint="@string/arrival_bus_stop"
+                android:imeOptions="actionDone"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+        <!-- <it.sasabz.sasabus.ui.searchinputfield.SearchInputField -->
+        <!-- android:id="@+id/searchinputfieldDeparture" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:hint="@string/departure_bus_stop" /> -->
+
+
+        <!-- container of buttons and input field for arrival -->
+
+
+        <!-- <it.sasabz.sasabus.ui.searchinputfield.SearchInputField -->
+        <!-- android:id="@+id/searchinputfieldArrival" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:hint="@string/arrival_bus_stop" /> -->
     </RelativeLayout>
- <!-- search input fields -->
- 
- 
- 	<TableLayout
- 	    android:layout_width="wrap_content"
- 	    android:layout_height="wrap_content"
- 	    android:layout_marginLeft="12dp">
+    <!-- search input fields -->
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp" >
+
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
+
             <TextView
-			    android:id="@+id/textview_hint_date"
-			    style="@style/text_hint"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:gravity="center_vertical"
-			    android:text="@string/date" />
-	        <Button
-	            android:id="@+id/button_date"
-	            style="@style/button_with_text"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_vertical|center_horizontal"
-	            android:text="@string/date_pattern" />
-        </TableRow><!-- Date -->
-        <TableRow 
+                android:id="@+id/textview_hint_date"
+                style="@style/text_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/date" />
+
+            <Button
+                android:id="@+id/button_date"
+                style="@style/button_with_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="16.01.2014" />
+        </TableRow> <!-- Date -->
+
+        <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
+
             <TextView
-	            android:id="@+id/textview_hint_time"
-	            style="@style/text_hint"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_vertical"
-	            android:text="@string/time" />
-	        <Button
-	            android:id="@+id/button_time"
-	            style="@style/button_with_text"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_vertical|center_horizontal"
-	            android:text="@string/time_pattern" />
-        </TableRow><!-- Time -->
- 	    
- 	</TableLayout>
-	        
-	<Button
+                android:id="@+id/textview_hint_time"
+                style="@style/text_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/time" />
+
+            <Button
+                android:id="@+id/button_time"
+                style="@style/button_with_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="10:00" />
+        </TableRow> <!-- Time -->
+
+    </TableLayout>
+
+    <Button
         android:id="@+id/button_search"
+        style="@style/search_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_action_search"
         android:layout_marginTop="20dp"
-        style="@style/search_button"
+        android:drawableLeft="@drawable/ic_action_search"
         android:text="@string/search_connection" />
 
 </LinearLayout>

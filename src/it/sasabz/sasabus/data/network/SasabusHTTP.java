@@ -1,41 +1,36 @@
-/**
+/*
+ * SASAbus - Android app for SASA bus open data
  *
  * SasabusHTTP.java
- * 
- * Created: May 1, 2012 18:20:40 PM
- * 
- * Copyright (C) 2012 Markus Windegger
- * 
  *
- * This file is part of SasaBus.
-
- * SasaBus is free software: you can redistribute it and/or modify
+ * Created: May 1, 2012 18:20:40 PM
+ *
+ * Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+ *
+ * This file is part of SASAbus.
+ *
+ * SASAbus is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SasaBus is distributed in the hope that it will be useful,
+ * SASAbus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package it.sasabz.sasabus.data.network;
 
-import it.sasabz.sasabus.data.FileRetriever;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -48,115 +43,80 @@ import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
-public class SasabusHTTP {
+public class SasabusHTTP
+{
 
-	private String hostname;
+   private String hostname;
 
-	public SasabusHTTP(String hostname) {
-		this.hostname = hostname;
-	}
+   public SasabusHTTP(String hostname)
+   {
+      this.hostname = hostname;
+   }
 
-	public synchronized boolean get(FileOutputStream outputStream,
-			String filename, FileRetriever fileret) throws Exception {
+   public synchronized Date getModificationTime(String filename) throws IOException
+   {
+      URL url = new URL(this.hostname + filename);
+      URLConnection ucon = url.openConnection();
 
-		BufferedOutputStream output = new BufferedOutputStream(outputStream);
-		URL url = new URL(this.hostname + filename);
-		URLConnection ucon = url.openConnection();
+      ucon.connect();
 
-		ucon.connect();
+      long date_ms = ucon.getLastModified();
 
-		int lenghtOfFile = ucon.getContentLength();
+      Date date = new Date(date_ms);
+      Log.v("SASAbus HTTP", "Datum last mod: " + date.toLocaleString());
+      return date;
+   }
 
-		BufferedInputStream input = new BufferedInputStream(
-				ucon.getInputStream());
-		byte[] buffer = new byte[4096];
-		int bytesRead = 0;
-		long total = 0;
-		try
-		{
-			while ((bytesRead = input.read(buffer)) != -1)
-			{
-				output.write(buffer, 0, bytesRead);
-				total += bytesRead;
-				fileret.publishProgress("" + (int) (total * 100 / lenghtOfFile));
-			}
-		} catch (Exception e)
-		{
-			input.close();
-			output.flush();
-			output.close();
-			throw e;
-		}
-		output.flush();
-		output.close();
-		input.close();
+   /**
+    * Requesting data via post-request using the apache http-classes
+    * 
+    * @throws IOException
+    * @throws ClientProtocolException
+    */
+   public String postData() throws ClientProtocolException, IOException
+   {
+      HttpClient httpclient = new DefaultHttpClient();
 
-		return true;
-	}
+      HttpPost post = new HttpPost(hostname);
 
-	public synchronized Date getModificationTime(String filename)
-			throws IOException {
-		URL url = new URL(this.hostname + filename);
-		URLConnection ucon = url.openConnection();
+      Log.v("HOSTNAME", hostname);
 
-		ucon.connect();
+      HttpResponse rp = httpclient.execute(post);
 
-		long date_ms = ucon.getLastModified();
+      String responseBody = null;
 
-		Date date = new Date(date_ms);
-		Log.v("SASAbus HTTP", "Datum last mod: " + date.toLocaleString());
-		return date;
-	}
+      if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
+      {
+         responseBody = EntityUtils.toString(rp.getEntity());
+      }
+      return responseBody;
+   }
 
-	/**
-	 * Requesting data via post-request using the apache http-classes
-	 * 
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 */
-	public String postData() throws ClientProtocolException, IOException {
-		HttpClient httpclient = new DefaultHttpClient();
+   /**
+    * Requesting data via post-request using the apache http-classes
+    * 
+    * @throws IOException
+    * @throws ClientProtocolException
+    */
+   public String postData(List<NameValuePair> params) throws ClientProtocolException, IOException
+   {
+      HttpClient httpclient = new DefaultHttpClient();
 
-		HttpPost post = new HttpPost(hostname);
+      HttpPost post = new HttpPost(hostname);
 
-		Log.v("HOSTNAME", hostname);
+      Log.v("HOSTNAME", hostname);
 
-		HttpResponse rp = httpclient.execute(post);
+      post.setEntity(new UrlEncodedFormEntity(params));
 
-		String responseBody = null;
+      HttpResponse rp = httpclient.execute(post);
 
-		if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
-		{
-			responseBody = EntityUtils.toString(rp.getEntity());
-		}
-		return responseBody;
-	}
+      String responseBody = null;
 
-	/**
-	 * Requesting data via post-request using the apache http-classes
-	 * 
-	 * @throws IOException
-	 * @throws ClientProtocolException
-	 */
-	public String postData(List<NameValuePair> params)
-			throws ClientProtocolException, IOException {
-		HttpClient httpclient = new DefaultHttpClient();
-
-		HttpPost post = new HttpPost(hostname);
-
-		Log.v("HOSTNAME", hostname);
-
-		post.setEntity(new UrlEncodedFormEntity(params));
-
-		HttpResponse rp = httpclient.execute(post);
-
-		String responseBody = null;
-
-		if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
-		{
-			responseBody = EntityUtils.toString(rp.getEntity());
-		}
-		return responseBody;
-	}
+      if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
+      {
+         responseBody = EntityUtils.toString(rp.getEntity());
+      }
+      return responseBody;
+   }
 
 }

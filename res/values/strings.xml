@@ -1,28 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-
-strings.xml
- 
- 
-Copyright (C) 2011 Paolo Dongilli & Markus Windegger
-
-This file is part of SasaBus.
-
-SasaBus is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SasaBus is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
-
+<!--
+ * SASAbus - Android app for SASA bus open data
+ *
+ * strings.xml
+ *
+ * Created: Jan 3, 2014 11:29:26 AM
+ *
+ * Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+ *
+ * This file is part of SASAbus.
+ *
+ * SASAbus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASAbus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <resources>
+
+    <string name="app_name">SASAbus</string>
+    <string name="bus_station_name_language">de</string>
+    <!-- first time dialogs -->
+    <string name="first_time_opendata_dialog_title">First time</string>
+    <string name="first_time_opendata_dialog_message">The first time the application need to download open data to smartphone. Do you want make it now?</string>
+    <string name="first_time_opendata_dialog_yes">Yes</string>
+    <string name="first_time_opendata_dialog_no">Later</string>
+    <string name="first_time_map_dialog_title">Map download</string>
+    <string name="first_time_map_dialog_message">The app need to download open street map tiles. It is about 60MByte of data. If you don\'t have a flat data plan I suggest to use a wi-fi network to avoid expensive costs. Do you want to make it now?</string>
+    <string name="first_time_map_dialog_yes">Yes</string>
+    <string name="first_time_map_dialog_no">Later</string>
+    <string name="download_opendata_map_progress_dialog_title">Downloading ...</string>
+    <!-- menu/title labels -->
+    <string name="bus_lines">Bus lines</string>
+    <string name="bus_stops">Bus stops</string>
+    <string name="search_route">Search route</string>
+    <string name="parking_spots">Parking spots</string>
+    <string name="news">News</string>
+    <string name="menu_map">Map</string>
+    <!-- ActionBarDrawer -->
+    <string name="drawer_open_close">NotUsed</string>
+    <!-- BusStationAdvancedInputText -->
+    <string name="NearbyDialog_title">Bus stations near you</string>
+    <string name="NearbyDialog_searching">Searching your gps position</string>
+    <string name="SelectFromMap_title">Select stop on map</string>
+    <string name="SelectFromMap_select_stop">Select this stop</string>
+    <string name="more">More</string>
+    <string name="nearby_button">Bus stops nearby</string>
+    <string name="map_button">Select bus stop from map</string>
+    <string name="favorites_button">Favorite bus stops</string>
+    <string name="delete">Delete</string>
+    <!-- route -->
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <!-- route -->
+    <string name="departure_bus_stop">Departure bus stop</string>
+    <string name="arrival_bus_stop">Arrival bus stop</string>
+    <string name="search_connection">Search connection</string>
+    <string name="searching_connection">Searching ...</string>
+    <!-- route detail -->
+    <string name="departure">Departure:</string>
+    <string name="arrival">Arrival:</string>
+    <!-- bus lines -->
+    <string name="BusSchedulesFragment_area_all">All lines</string>
+    <string name="BusSchedulesFragment_area_bz">Bolzano area</string>
+    <string name="BusSchedulesFragment_area_me">Merano area</string>
+    <string name="BusSchedulesFragment_area_other">Other lines</string>
+    <string name="BusSchedulesFragment_select_line">Select ...</string>
+    <string name="BusSchedulesFragment_refresh">Refresh</string>
+    <string name="BusSchedulesFragment_searching">Searching ...</string>
+    <string name="departures">Departures</string>
+    <!-- bus lines detail -->
+    <string name="line_txt">Line</string>
+    <string name="course">Course</string>
+    <!-- bus station departures -->
+    <string name="NextBusFragment_searching">Searching ...</string>
+    <!-- menu news -->
+    <string name="refresh">Refresh</string>
+    <string name="lines">Lines</string>
+
+    <!--
+Previous version 
+    
 <string name="no_values">No values found.</string>
 <string name="check_database">Checking Database</string>
 
@@ -208,8 +273,10 @@ along with SasaBus.  If not, see <http://www.gnu.org/licenses/>.
 <string name="search_route">Search route</string>
 <string name="parking_spots">Parking spots</string>
 <string name="news">News</string>
+<string name="menu_map">Map</string>
 
 <string name="drawer_open">Open navigation drawer</string>
 <string name="drawer_close">Close navigation drawer</string>
+    -->
 
 </resources>

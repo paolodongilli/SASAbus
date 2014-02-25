@@ -52,43 +52,6 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/linearlayout_departure_times"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:orientation="vertical"
-            android:layout_marginBottom="5dp"
-            style="@style/box_with_title"
-            android:background="@drawable/now_layout">
-
-            <RelativeLayout 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/title_box">
-	            <TextView
-	                android:id="@+id/textview_departure_times_title"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:text="@string/departure_times"
-	                style="@style/title" />
-            </RelativeLayout>
-            <View
-	            android:layout_width="match_parent"
-	            android:layout_height="@dimen/title_underline_height"
-	            style="@style/title_underline" />
-
-            <ListView
-                android:id="@+id/listview_departure_times"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:choiceMode="singleChoice"
-                android:fadeScrollbars="false"
-				android:scrollingCache="false">
-            </ListView>
-            
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/linearlayout_line_course"
             android:layout_width="match_parent"
             android:layout_height="0dp"
