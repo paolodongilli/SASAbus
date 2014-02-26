@@ -25,7 +25,7 @@
 
 package it.sasabz.sasabus.ui.searchinputfield;
 
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.map.MapView;
 import it.sasabz.sasabus.ui.map.OnSelectBusStation;

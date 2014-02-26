@@ -28,7 +28,7 @@ package it.sasabz.sasabus.ui.routing;
 import it.bz.tis.sasabus.backend.server.sasabusdb.SASAbusDBServerImpl;
 import it.bz.tis.sasabus.backend.shared.SASAbusDBDataReady;
 import it.bz.tis.sasabus.backend.shared.travelplanner.ConRes;
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 
 import java.text.ParseException;

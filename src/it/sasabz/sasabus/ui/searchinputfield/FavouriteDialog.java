@@ -25,7 +25,7 @@
 
 package it.sasabz.sasabus.ui.searchinputfield;
 
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.opendata.client.model.Favourite;

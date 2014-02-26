@@ -27,7 +27,7 @@ package it.sasabz.sasabus.ui.routing;
 
 import it.bz.tis.sasabus.backend.shared.travelplanner.ConRes;
 import it.bz.tis.sasabus.backend.shared.travelplanner.Connection;
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import android.os.Bundle;
 import android.view.LayoutInflater;

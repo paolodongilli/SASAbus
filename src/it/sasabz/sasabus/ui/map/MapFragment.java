@@ -25,7 +25,7 @@
 
 package it.sasabz.sasabus.ui.map;
 
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busstop.NextBusFragment;
 import android.os.Bundle;

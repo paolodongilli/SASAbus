@@ -26,7 +26,7 @@
 <resources>
 
     <string name="app_name">SASAbus</string>
-    <string name="bus_station_name_language">de</string>
+    <string name="bus_station_name_language">it</string>
     <!-- first time dialogs -->
     <string name="first_time_opendata_dialog_title">First time</string>
     <string name="first_time_opendata_dialog_message">The first time the application need to download open data to smartphone. Do you want make it now?</string>

@@ -25,7 +25,7 @@
 
 package it.sasabz.sasabus.ui.busschedules;
 
-import it.sasabz.sasabus.R;
+import it.sasabz.android.sasabus.R;
 
 import java.util.List;
 
