@@ -30,8 +30,6 @@ import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.opendata.client.RemoteVersionDateReady;
 import it.sasabz.sasabus.opendata.client.SASAbusOpenDataDownloadCallback;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
-import it.sasabz.sasabus.ui.map.BZ_ME_OSMTileList;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,8 +37,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -48,11 +48,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -66,7 +68,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import bz.davide.dmxmljson.json.HTTPAsyncJSONDownloader;
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -78,6 +79,8 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class MainActivity extends SherlockFragmentActivity
 {
+
+   final String                  OSM_ZIP_NAME            = "osm-tiles.zip";
 
    private static final String   HOME_FRAGMENT           = "HOME_FRAGMENT";
 
@@ -152,8 +155,7 @@ public class MainActivity extends SherlockFragmentActivity
                   MainActivity.this.downloadSASAbusOpenDataToLocalStore();
                }
             };
-            firstTimeDialogBuilder.setPositiveButton(this.getString(R.string.first_time_opendata_dialog_yes),
-                                                     yes);
+            firstTimeDialogBuilder.setPositiveButton(this.getString(R.string.first_time_opendata_dialog_yes), yes);
             OnClickListener no = new OnClickListener()
             {
 
@@ -163,8 +165,7 @@ public class MainActivity extends SherlockFragmentActivity
                   MainActivity.this.finish(); // Close the app: no data can be used!
                }
             };
-            firstTimeDialogBuilder.setNegativeButton(this.getString(R.string.first_time_opendata_dialog_no),
-                                                     no);
+            firstTimeDialogBuilder.setNegativeButton(this.getString(R.string.first_time_opendata_dialog_no), no);
             this.firstTimeDialog = firstTimeDialogBuilder.create();
             this.firstTimeDialog.show();
 
@@ -173,9 +174,9 @@ public class MainActivity extends SherlockFragmentActivity
          {
 
             Intent intent = this.getIntent();
-            if (intent != null &&
-                intent.getExtras() != null &&
-                intent.getExtras().getBoolean(FORCE_UPDATE_FOREGROUND, false))
+            if (intent != null
+                && intent.getExtras() != null
+                && intent.getExtras().getBoolean(FORCE_UPDATE_FOREGROUND, false))
             {
                this.downloadSASAbusOpenDataToLocalStore();
             }
@@ -330,8 +331,7 @@ public class MainActivity extends SherlockFragmentActivity
                MainActivity.this.downloadOSMTiles();
             }
          };
-         firstTimeDialogBuilder.setPositiveButton(this.getString(R.string.first_time_opendata_dialog_yes),
-                                                  yes);
+         firstTimeDialogBuilder.setPositiveButton(this.getString(R.string.first_time_opendata_dialog_yes), yes);
          OnClickListener no = new OnClickListener()
          {
 
@@ -348,50 +348,47 @@ public class MainActivity extends SherlockFragmentActivity
 
    }
 
+   @SuppressLint("NewApi")
    private void downloadOSMTiles()
    {
-      final ProgressDialog progressDialog = new ProgressDialog(this);
-      progressDialog.setCancelable(false);
-      progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-      progressDialog.setTitle(this.getString(R.string.download_opendata_map_progress_dialog_title));
-      progressDialog.setMessage("");
-      progressDialog.show();
 
-      new Thread(new Runnable()
+      final String downloadzip = MainActivity.this.getString(R.string.maptiles_server_url)
+                                 + "/"
+                                 + this.OSM_ZIP_NAME;
+      final File destination = new File(MainActivity.this.opendataStorage.getMapTilesRootFolder(),
+                                        this.OSM_ZIP_NAME);
+
+      destination.getParentFile().mkdirs();
+
+      if (android.os.Build.VERSION.SDK_INT >= 9) // DownloadManager requires at least api 9
       {
-         @Override
-         public void run()
+         DownloadManager dm = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+         Uri downloadzipUri = Uri.parse(downloadzip);
+         Request request = new Request(downloadzipUri);
+         request.setDestinationUri(Uri.fromFile(destination));
+         long downloadId = dm.enqueue(request);
+
+         this.registerReceiver(new OSMZipDownloadComplete(this, downloadId, destination),
+                               new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+      }
+      else
+      {
+         new Thread(new Runnable()
          {
-            try
+            @Override
+            public void run()
             {
-
-               int len;
-               byte[] buf = new byte[100000];
-
-               // Download images!
-               for (int i = 0; i < BZ_ME_OSMTileList.list.length; i++)
+               try
                {
-                  final int ii = i;
-                  MainActivity.this.runOnUiThread(new Runnable()
-                  {
-                     @Override
-                     public void run()
-                     {
-                        progressDialog.setMax(BZ_ME_OSMTileList.list.length);
-                        progressDialog.setProgress(ii);
-                        progressDialog.setMessage("OSM Tile " + BZ_ME_OSMTileList.list[ii]);
-                     }
-                  });
 
-                  String imgPath = BZ_ME_OSMTileList.list[ii];
-                  URL osmUrl = new URL(MainActivity.this.getString(R.string.maptiles_server_url) +
-                                       "/" +
-                                       imgPath);
-                  File imgFile = new File(MainActivity.this.opendataStorage.getMapTilesRootFolder(), imgPath);
-                  imgFile.getParentFile().mkdirs();
+                  int len;
+                  byte[] buf = new byte[100000];
+
+                  URL osmUrl = new URL(downloadzip);
 
                   InputStream in = osmUrl.openStream();
-                  FileOutputStream out = new FileOutputStream(imgFile);
+                  FileOutputStream out = new FileOutputStream(destination);
                   while ((len = in.read(buf)) > 0)
                   {
                      out.write(buf, 0, len);
@@ -399,22 +396,16 @@ public class MainActivity extends SherlockFragmentActivity
                   out.close();
                   in.close();
 
+                  OSMZipDownloadComplete.extractZipContent(destination);
+
                }
-               MainActivity.this.runOnUiThread(new Runnable()
+               catch (IOException ioxxx)
                {
-                  @Override
-                  public void run()
-                  {
-                     progressDialog.dismiss();
-                  }
-               });
+                  MainActivity.this.handleApplicationException(ioxxx);
+               }
             }
-            catch (IOException ioxxx)
-            {
-               MainActivity.this.handleApplicationException(ioxxx);
-            }
-         }
-      }).start();
+         }).start();
+      }
 
    }
 
