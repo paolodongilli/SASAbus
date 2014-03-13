@@ -36,14 +36,12 @@ import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -55,7 +53,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class BusSchedulesFragment extends SherlockFragment
@@ -78,12 +75,12 @@ public class BusSchedulesFragment extends SherlockFragment
 
    String                         currentArea;
 
-   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[]{
-            new BusLineGroupException(201, new String[]{OTHER}),
-            new BusLineGroupException(248, new String[]{OTHER}),
-            new BusLineGroupException(300, new String[]{OTHER}),
-            new BusLineGroupException(227, new String[]{ME}),
-            new BusLineGroupException(5000, new String[]{OTHER}),};
+   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] {
+         new BusLineGroupException(201, new String[] { OTHER }),
+         new BusLineGroupException(248, new String[] { OTHER }),
+         new BusLineGroupException(300, new String[] { OTHER }),
+         new BusLineGroupException(227, new String[] { ME }),
+         new BusLineGroupException(5000, new String[] { OTHER }), };
 
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -161,16 +158,16 @@ public class BusSchedulesFragment extends SherlockFragment
             {
                case 0:
                   BusSchedulesFragment.this.currentArea = null;
-                  break;
+               break;
                case 1:
                   BusSchedulesFragment.this.currentArea = BZ;
-                  break;
+               break;
                case 2:
                   BusSchedulesFragment.this.currentArea = ME;
-                  break;
+               break;
                case 3:
                   BusSchedulesFragment.this.currentArea = OTHER;
-                  break;
+               break;
             }
             try
             {
@@ -247,15 +244,16 @@ public class BusSchedulesFragment extends SherlockFragment
          @Override
          public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
          {
-            int index = arg2;
-            BusLine busLine = null;
-            if (index > 0)
-            {
-               busLine = busLines[index - 1];
-            }
-
             try
             {
+               int index = arg2;
+               BusLine busLine = null;
+               if (index > 0)
+               {
+                  Integer lineid = busLineIds.get(index);
+                  busLine = BusSchedulesFragment.this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(lineid);
+               }
+
                BusSchedulesFragment.this.addAdapterToListView(busLine);
             }
             catch (Exception e)

@@ -29,17 +29,18 @@
     <string name="bus_station_name_language">it</string>
     <!-- first time dialogs -->
     <string name="first_time_opendata_dialog_title">Prima apertura</string>
-    <string name="first_time_opendata_dialog_message">La prima volta l\'applicazione ha bisogno di scaricare i dati sasa sullo smartphone.
-        Vuoi procedere ora?</string>
+    <string name="first_time_opendata_dialog_message">La prima volta l\'applicazione ha bisogno di scaricare i dati sasa sullo smartphone. Vuoi procedere ora?</string>
+    <string name="update_opendata_dialog_title">Aggiornamento orari</string>
+    <string name="update_opendata_dialog_message">C\'e\' un aggiornamento degli orari dei bus. Vuoi scaricare l\'aggiornamento ora ?</string>
     <string name="first_time_opendata_dialog_yes">Si</string>
     <string name="first_time_opendata_dialog_no">Più tardi</string>
     <string name="first_time_map_dialog_title">Download mappe</string>
-    <string name="first_time_map_dialog_message">        L\'app ha bisogno delle immagini per la mappa. Sono circa 60MByte di dati.
-        Se non hai un piano dati flat ti consigliamo di usare il wi-fi per evitare costi eccessivi.
-        Vuoi scaricarle ora?</string>
+    <string name="first_time_map_dialog_message">L\'app ha bisogno delle immagini per la mappa. Sono circa 60MByte di dati. Se non hai un piano dati flat ti consigliamo di usare il wi-fi per evitare costi eccessivi. Vuoi scaricarle ora?</string>
     <string name="first_time_map_dialog_yes">Si</string>
     <string name="first_time_map_dialog_no">Più tardi</string>
     <string name="download_opendata_map_progress_dialog_title">Downloading ...</string>
+    <!-- update notification -->
+    <string name="update_opendata_notification_message">Fai click qui per scaricare l\'aggioramento</string>
     <!-- menu/title labels -->
     <string name="bus_lines">Linee</string>
     <string name="bus_stops">Fermate</string>
@@ -83,6 +84,7 @@
     <string name="line_txt">Linea</string>
     <string name="course">Corsa</string>
     <!-- bus station departures -->
+    <string name="NextBusFragment_destination">Destinazione</string>
     <string name="NextBusFragment_searching">Calcolo in corso ...</string>
     <!-- menu news -->
     <string name="refresh">Aggiorna</string>

@@ -41,6 +41,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -121,7 +122,6 @@ public class MainActivity extends SherlockFragmentActivity
 
          this.mainLocationManager = new MainLocationManager(this);
 
-         this.checkFirstTime();
       }
       catch (Exception ioxxx)
       {
@@ -140,12 +140,27 @@ public class MainActivity extends SherlockFragmentActivity
       try
       {
          final String versionDate = this.opendataStorage.getVersionDateIfExists();
-         if (versionDate == null)
+
+         Intent intent = this.getIntent();
+         final boolean forceUpdate = intent != null
+                                     && intent.getExtras() != null
+                                     && intent.getExtras().getBoolean(FORCE_UPDATE_FOREGROUND, false);
+
+         if (forceUpdate || versionDate == null)
          {
             // Sync update required, the app is empty!
             AlertDialog.Builder firstTimeDialogBuilder = new AlertDialog.Builder(this);
-            firstTimeDialogBuilder.setTitle(this.getString(R.string.first_time_opendata_dialog_title));
-            firstTimeDialogBuilder.setMessage(this.getString(R.string.first_time_opendata_dialog_message));
+
+            if (versionDate == null)
+            {
+               firstTimeDialogBuilder.setTitle(this.getString(R.string.first_time_opendata_dialog_title));
+               firstTimeDialogBuilder.setMessage(this.getString(R.string.first_time_opendata_dialog_message));
+            }
+            else
+            {
+               firstTimeDialogBuilder.setTitle(this.getString(R.string.update_opendata_dialog_title));
+               firstTimeDialogBuilder.setMessage(this.getString(R.string.update_opendata_dialog_message));
+            }
             firstTimeDialogBuilder.setCancelable(false);
             OnClickListener yes = new OnClickListener()
             {
@@ -162,7 +177,25 @@ public class MainActivity extends SherlockFragmentActivity
                @Override
                public void onClick(DialogInterface dialog, int which)
                {
-                  MainActivity.this.finish(); // Close the app: no data can be used!
+                  if (versionDate == null)
+                  {
+                     MainActivity.this.finish(); // Close the app: no data can be used!
+                  }
+                  else
+                  {
+                     try
+                     {
+                        if (forceUpdate)
+                        {
+                           MainActivity.this.notifyUserForUpdate();
+                        }
+                        MainActivity.this.checkMapFirstTime();
+                     }
+                     catch (IOException e)
+                     {
+                        MainActivity.this.handleApplicationException(e);
+                     }
+                  }
                }
             };
             firstTimeDialogBuilder.setNegativeButton(this.getString(R.string.first_time_opendata_dialog_no), no);
@@ -172,44 +205,7 @@ public class MainActivity extends SherlockFragmentActivity
          }
          else
          {
-
-            Intent intent = this.getIntent();
-            if (intent != null
-                && intent.getExtras() != null
-                && intent.getExtras().getBoolean(FORCE_UPDATE_FOREGROUND, false))
-            {
-               this.downloadSASAbusOpenDataToLocalStore();
-            }
-            else
-            {
-
-               this.opendataStorage.preloadData();
-
-               this.initUI();
-
-               this.checkMapFirstTime();
-
-               this.opendataStorage.asyncReadRemoteVersionDate(this.getString(R.string.opendata_server_url),
-                                                               new HTTPAsyncJSONDownloader(),
-                                                               new RemoteVersionDateReady()
-                                                               {
-
-                                                                  @Override
-                                                                  public void ready(String remoteDate)
-                                                                  {
-                                                                     if (!versionDate.equals(remoteDate))
-                                                                     {
-                                                                        MainActivity.this.notifyUserForUpdate();
-                                                                     }
-                                                                  }
-
-                                                                  @Override
-                                                                  public void exception(IOException ioxxx)
-                                                                  {
-                                                                     //handleApplicationException(ioxxx);
-                                                                  }
-                                                               });
-            }
+            this.checkMapFirstTime();
          }
       }
       catch (IOException ioxxx)
@@ -223,7 +219,7 @@ public class MainActivity extends SherlockFragmentActivity
 
       NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
       mBuilder.setSmallIcon(R.drawable.icon);
-      mBuilder.setContentTitle("Update available");
+      mBuilder.setContentTitle(this.getString(R.string.update_opendata_dialog_title));
       mBuilder.setContentText("Click to download timetables updates");
       mBuilder.setAutoCancel(true);
 
@@ -236,7 +232,9 @@ public class MainActivity extends SherlockFragmentActivity
       PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
       mBuilder.setContentIntent(resultPendingIntent);
       NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-      mNotificationManager.notify(0, mBuilder.build());
+      Notification notification = mBuilder.build();
+      notification.flags |= Notification.FLAG_AUTO_CANCEL;
+      mNotificationManager.notify(0, notification);
 
    }
 
@@ -279,8 +277,6 @@ public class MainActivity extends SherlockFragmentActivity
                      try
                      {
                         progressDialog.dismiss();
-                        MainActivity.this.opendataStorage.preloadData();
-                        MainActivity.this.initUI();
                         MainActivity.this.checkMapFirstTime();
                      }
                      catch (IOException e)
@@ -311,8 +307,9 @@ public class MainActivity extends SherlockFragmentActivity
       }
    }
 
-   private void checkMapFirstTime()
+   private void checkMapFirstTime() throws IOException
    {
+      this.opendataStorage.preloadData();
 
       File mapTilesRootFolder = MainActivity.this.opendataStorage.getMapTilesRootFolder();
 
@@ -329,6 +326,7 @@ public class MainActivity extends SherlockFragmentActivity
             public void onClick(DialogInterface dialog, int which)
             {
                MainActivity.this.downloadOSMTiles();
+               MainActivity.this.initUI();
             }
          };
          firstTimeDialogBuilder.setPositiveButton(this.getString(R.string.first_time_opendata_dialog_yes), yes);
@@ -338,14 +336,17 @@ public class MainActivity extends SherlockFragmentActivity
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-               // Nothing to do!
+               MainActivity.this.initUI();
             }
          };
          firstTimeDialogBuilder.setNegativeButton(this.getString(R.string.first_time_opendata_dialog_no), no);
          this.firstTimeDialog = firstTimeDialogBuilder.create();
          this.firstTimeDialog.show();
       }
-
+      else
+      {
+         MainActivity.this.initUI();
+      }
    }
 
    @SuppressLint("NewApi")
@@ -462,6 +463,42 @@ public class MainActivity extends SherlockFragmentActivity
             });
          }
       }).start();
+      try
+      {
+         this.opendataStorage.asyncReadRemoteVersionDate(this.getString(R.string.opendata_server_url),
+                                                         new HTTPAsyncJSONDownloader(),
+                                                         new RemoteVersionDateReady()
+                                                         {
+
+                                                            @Override
+                                                            public void ready(String remoteDate)
+                                                            {
+                                                               try
+                                                               {
+                                                                  String versionDate = MainActivity.this.opendataStorage.getVersionDateIfExists();
+                                                                  if (!versionDate.equals(remoteDate))
+                                                                  {
+                                                                     MainActivity.this.notifyUserForUpdate();
+                                                                  }
+                                                               }
+                                                               catch (IOException x)
+                                                               {
+                                                                  // don't report to user the problem, it is a background check.
+                                                               }
+                                                            }
+
+                                                            @Override
+                                                            public void exception(IOException ioxxx)
+                                                            {
+                                                               // don't report to user the problem, it is a background check.
+                                                            }
+                                                         });
+      }
+      catch (IOException ioException)
+      {
+         // don't report to user the problem, it is a background check.
+      }
+
    }
 
    public AndroidOpenDataLocalStorage getOpenDataStorage()
@@ -515,6 +552,8 @@ public class MainActivity extends SherlockFragmentActivity
          };
       };
       this.pregps.start();
+
+      this.checkFirstTime();
    }
 
    @Override
@@ -639,6 +678,13 @@ public class MainActivity extends SherlockFragmentActivity
    /** Swaps fragments in the main content view */
    private void selectItem(final int position)
    {
+
+      if (position == 5)
+      {
+         this.mDrawerLayout.closeDrawer(this.mDrawerList);
+         this.notifyUserForUpdate();
+         return;
+      }
 
       this.mDrawerLayout.closeDrawer(this.mDrawerList);
       this.mDrawerList.setItemChecked(position, true);
