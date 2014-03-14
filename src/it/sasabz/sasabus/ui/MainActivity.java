@@ -122,6 +122,8 @@ public class MainActivity extends SherlockFragmentActivity
 
          this.mainLocationManager = new MainLocationManager(this);
 
+         this.checkFirstTime();
+
       }
       catch (Exception ioxxx)
       {
@@ -553,7 +555,6 @@ public class MainActivity extends SherlockFragmentActivity
       };
       this.pregps.start();
 
-      this.checkFirstTime();
    }
 
    @Override
