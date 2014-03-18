@@ -38,7 +38,7 @@
         <item>@string/bus_stops</item>
         <item>@string/news</item>
         <item>@string/menu_map</item>
-        <item>* simulate update *</item>
+        <!-- <item>* simulate update *</item> -->
     </string-array>
     <string-array name="navigation_drawer_icons">
         <item>@drawable/ic_action_search</item>
