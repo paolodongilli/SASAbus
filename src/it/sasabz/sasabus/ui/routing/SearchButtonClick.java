@@ -30,15 +30,12 @@ import it.bz.tis.sasabus.backend.shared.SASAbusDBDataReady;
 import it.bz.tis.sasabus.backend.shared.travelplanner.ConRes;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
-
 import java.text.ParseException;
 import java.util.Calendar;
-
 import android.app.AlertDialog;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class SearchButtonClick implements OnClickListener
@@ -93,7 +90,8 @@ public class SearchButtonClick implements OnClickListener
       }
       else
       {
-         new AlertDialog.Builder(v.getContext()).setMessage("Wrong bus stops").setPositiveButton("Ok", null).create().show();
+         new AlertDialog.Builder(v.getContext()).setMessage(this.searchFragment.getActivity().getString(R.string.route_missing_bus_stops)).setPositiveButton("Ok",
+                                                                                                                                                             null).create().show();
       }
 
    }
@@ -147,7 +145,7 @@ public class SearchButtonClick implements OnClickListener
          SearchResultsFragment fragmentToShow = (SearchResultsFragment) SherlockFragment.instantiate(this.searchFragment.mainActivity,
                                                                                                      SearchResultsFragment.class.getName());
 
-         fragmentToShow.setData(new ConRes[]{data0, data1, data2},
+         fragmentToShow.setData(new ConRes[] { data0, data1, data2 },
                                 this.startBusStationNameItDe,
                                 this.endBusStationNameItDe,
                                 this.searchFragment.dateButton.getText().toString(),
@@ -177,9 +175,9 @@ public class SearchButtonClick implements OnClickListener
       Calendar cal = Calendar.getInstance();
       cal.setTime(DatePicker.simpleDateFormat.parse(this.searchFragment.dateButton.getText().toString()));
 
-      long ret = (cal.get(Calendar.YEAR) * 100L + cal.get(Calendar.MONTH) + 1) *
-                 100L +
-                 cal.get(Calendar.DAY_OF_MONTH);
+      long ret = (cal.get(Calendar.YEAR) * 100L + cal.get(Calendar.MONTH) + 1)
+                 * 100L
+                 + cal.get(Calendar.DAY_OF_MONTH);
 
       cal.setTime(TimePicker.simpleDateFormat.parse(this.searchFragment.timeButton.getText().toString()));
 

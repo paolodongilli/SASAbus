@@ -59,6 +59,7 @@
     <string name="nearby_button">Haltestellen in der Nähe</string>
     <string name="map_button">Haltestelle aus der KArte auswählen</string>
     <string name="favorites_button">Favoriten</string>
+    <string name="FavouriteDialog_add_favourite">"%s" zu den Favoriten hinzufügen</string>
     <string name="delete">Löschen</string>
     <!-- route -->
     <string name="date">Datum:</string>
@@ -66,11 +67,13 @@
     <!-- route -->
     <string name="departure_bus_stop">Starthaltestelle</string>
     <string name="arrival_bus_stop">Ankunftshaltestelle</string>
+    <string name="route_missing_bus_stops">Bitte Start- und Endhaltestelle eingeben</string>
     <string name="search_connection">Route berechnen</string>
     <string name="searching_connection">Beim Berechnen...</string>
     <!-- route detail -->
     <string name="departure">Abfahrt:</string>
     <string name="arrival">Ankunft:</string>
+    <string name="route_walk">Fußweg</string>
     <!-- bus lines -->
     <string name="BusSchedulesFragment_area_all">Alle Bereiche</string>
     <string name="BusSchedulesFragment_area_bz">Bereich Bozen</string>

@@ -59,6 +59,7 @@
     <string name="nearby_button">Bus stops nearby</string>
     <string name="map_button">Select bus stop from map</string>
     <string name="favorites_button">Favorite bus stops</string>
+    <string name="FavouriteDialog_add_favourite">Add "%s" to favourites</string>
     <string name="delete">Delete</string>
     <!-- route -->
     <string name="date">Date:</string>
@@ -66,11 +67,13 @@
     <!-- route -->
     <string name="departure_bus_stop">Departure bus stop</string>
     <string name="arrival_bus_stop">Arrival bus stop</string>
+    <string name="route_missing_bus_stops">Please insert departure and arrival bus stop</string>
     <string name="search_connection">Search connection</string>
     <string name="searching_connection">Searching ...</string>
     <!-- route detail -->
     <string name="departure">Departure:</string>
     <string name="arrival">Arrival:</string>
+    <string name="route_walk">Walk</string>
     <!-- bus lines -->
     <string name="BusSchedulesFragment_area_all">All lines</string>
     <string name="BusSchedulesFragment_area_bz">Bolzano area</string>

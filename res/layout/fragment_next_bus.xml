@@ -58,7 +58,7 @@
             android:id="@+id/recalculateDepartures"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Re-calculate" />
+            android:text="@string/BusSchedulesFragment_refresh" />
     </LinearLayout>
 
     <LinearLayout

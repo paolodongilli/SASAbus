@@ -31,9 +31,7 @@ import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.opendata.client.model.Favourite;
 import it.sasabz.sasabus.opendata.client.model.FavouriteList;
 import it.sasabz.sasabus.ui.MainActivity;
-
 import java.io.IOException;
-
 import android.app.Dialog;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,7 +45,7 @@ public class FavouriteDialog extends Dialog
 {
 
    public FavouriteDialog(final MainActivity mainActivity, final BusStationAdvancedInputText searchInputField)
-            throws IOException
+                                                                                                              throws IOException
    {
       super(mainActivity);
       final BusStation current = searchInputField.getSelectedBusStation();
@@ -67,7 +65,7 @@ public class FavouriteDialog extends Dialog
       {
          String name = mainActivity.getBusStationNameUsingAppLanguage(current);
          add.setEnabled(true);
-         add.setText(String.format("Add %s to favourites", name));
+         add.setText(String.format(this.getContext().getString(R.string.FavouriteDialog_add_favourite), name));
          add.setOnClickListener(new View.OnClickListener()
          {
             @Override

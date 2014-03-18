@@ -222,7 +222,7 @@ public class MainActivity extends SherlockFragmentActivity
       NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
       mBuilder.setSmallIcon(R.drawable.icon);
       mBuilder.setContentTitle(this.getString(R.string.update_opendata_dialog_title));
-      mBuilder.setContentText("Click to download timetables updates");
+      mBuilder.setContentText(this.getString(R.string.update_opendata_notification_message));
       mBuilder.setAutoCancel(true);
 
       Intent resultIntent = new Intent(this, MainActivity.class);

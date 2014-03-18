@@ -59,6 +59,7 @@
     <string name="nearby_button">Fermate vicine</string>
     <string name="map_button">Scegli fermata dalla mappa</string>
     <string name="favorites_button">Fermate favorite</string>
+    <string name="FavouriteDialog_add_favourite">Aggiungi "%s" ai preferiti</string>
     <string name="delete">Cancella</string>
     <!-- route -->
     <string name="date">Data:</string>
@@ -66,11 +67,13 @@
     <!-- route -->
     <string name="departure_bus_stop">Fermata di partenza</string>
     <string name="arrival_bus_stop">Fermata di arrivo</string>
+    <string name="route_missing_bus_stops">Prego inserire la fermata di partenza e di arrivo</string>
     <string name="search_connection">Calcola percorso</string>
     <string name="searching_connection">Calcolo in corso ...</string>
     <!-- route detail -->
     <string name="departure">Partenza:</string>
     <string name="arrival">Arrivo:</string>
+    <string name="route_walk">Camminare</string>
     <!-- bus lines -->
     <string name="BusSchedulesFragment_area_all">Tutte le aree</string>
     <string name="BusSchedulesFragment_area_bz">Area di Bolzano</string>
