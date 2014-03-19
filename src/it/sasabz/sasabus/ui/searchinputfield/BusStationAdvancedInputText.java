@@ -28,9 +28,7 @@ package it.sasabz.sasabus.ui.searchinputfield;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.ui.MainActivity;
-
 import java.io.IOException;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -137,8 +135,7 @@ public class BusStationAdvancedInputText extends RelativeLayout
          {
             try
             {
-               new SelectFromMap(BusStationAdvancedInputText.this,
-                                 BusStationAdvancedInputText.this.mainActivity).show();
+               new SelectFromMap(BusStationAdvancedInputText.this, BusStationAdvancedInputText.this.mainActivity).show();
             }
             catch (InterruptedException e)
             {
@@ -153,8 +150,7 @@ public class BusStationAdvancedInputText extends RelativeLayout
          {
             try
             {
-               new FavouriteDialog(BusStationAdvancedInputText.this.mainActivity,
-                                   BusStationAdvancedInputText.this).show();
+               new FavouriteDialog(BusStationAdvancedInputText.this.mainActivity, BusStationAdvancedInputText.this).show();
             }
             catch (IOException e)
             {
@@ -262,16 +258,33 @@ public class BusStationAdvancedInputText extends RelativeLayout
       BusStation found = null;
       if (text.length() > 0)
       {
+         // First search for an exact match, then for a partial, because some
+         // bus stations has a name that is a prefix of another: via Merano, via Merano 94, via Merano 3, ecc...
          for (BusStation busStation : this.busStations)
          {
-            if (busStation.findName_it().toUpperCase().startsWith(text) ||
-                busStation.findName_de().toUpperCase().startsWith(text))
+            if (busStation.findName_it().toUpperCase().equals(text)
+                || busStation.findName_de().toUpperCase().equals(text))
             {
                if (found != null)
                {
                   return null;
                }
                found = busStation;
+            }
+         }
+         if (found == null)
+         {
+            for (BusStation busStation : this.busStations)
+            {
+               if (busStation.findName_it().toUpperCase().startsWith(text)
+                   || busStation.findName_de().toUpperCase().startsWith(text))
+               {
+                  if (found != null)
+                  {
+                     return null;
+                  }
+                  found = busStation;
+               }
             }
          }
       }

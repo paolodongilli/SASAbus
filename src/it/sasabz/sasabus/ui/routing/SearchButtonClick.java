@@ -69,8 +69,10 @@ public class SearchButtonClick implements OnClickListener
             {
                try
                {
-                  SASAbusDBServerImpl.calcRouting(SearchButtonClick.this.startBusStationNameItDe.getORT_NAME(),
-                                                  SearchButtonClick.this.endBusStationNameItDe.getORT_NAME(),
+                  String dep = SearchButtonClick.this.startBusStationNameItDe.getRoutingName();
+                  String arr = SearchButtonClick.this.endBusStationNameItDe.getRoutingName();
+                  SASAbusDBServerImpl.calcRouting(dep,
+                                                  arr,
                                                   SearchButtonClick.this.readDateTimeForRoutingService(),
                                                   new SASAbusDBDataReady<ConRes>()
                                                   {
