@@ -218,9 +218,7 @@ public class BusStationAdvancedInputText extends RelativeLayout
 
       final ArrayAdapter<String> adapter;
 
-      adapter = new ArrayAdapter<String>(this.mainActivity,
-                                         android.R.layout.simple_dropdown_item_1line,
-                                         stationNames);
+      adapter = new ArrayAdapter<String>(this.mainActivity, R.layout.drop_down_item, stationNames);
 
       this.autocompleteTextView.setAdapter(adapter);
    }
