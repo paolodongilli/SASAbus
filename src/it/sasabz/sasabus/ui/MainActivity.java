@@ -385,6 +385,18 @@ public class MainActivity extends SherlockFragmentActivity
                try
                {
 
+                  NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
+                  mBuilder.setSmallIcon(R.drawable.icon);
+                  mBuilder.setContentTitle("SASAbus download map");
+                  mBuilder.setAutoCancel(true);
+                  PendingIntent pintent = PendingIntent.getActivity(MainActivity.this.getApplicationContext(),
+                                                                    0,
+                                                                    new Intent(),
+                                                                    0);
+                  mBuilder.setContentIntent(pintent);
+
+                  NotificationManager mNotificationManager = (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
                   int len;
                   byte[] buf = new byte[100000];
 
@@ -392,14 +404,37 @@ public class MainActivity extends SherlockFragmentActivity
 
                   InputStream in = osmUrl.openStream();
                   FileOutputStream out = new FileOutputStream(destination);
+                  int lastNotificationBytes = 0;
+                  int countBytes = 0;
                   while ((len = in.read(buf)) > 0)
                   {
+                     if (lastNotificationBytes < countBytes - 400000)
+                     {
+                        mBuilder.setContentText(String.format("%.1f MBytes", countBytes / (1024d * 1024d)));
+                        Notification notification = mBuilder.build();
+                        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                        mNotificationManager.notify(1, notification);
+                        lastNotificationBytes = countBytes;
+                     }
+
                      out.write(buf, 0, len);
+                     countBytes += len;
+
                   }
                   out.close();
                   in.close();
 
+                  mBuilder.setContentText("Extracting ...");
+                  Notification notification = mBuilder.build();
+                  notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                  mNotificationManager.notify(1, notification);
+
                   OSMZipDownloadComplete.extractZipContent(destination);
+
+                  mBuilder.setContentText("Complete!");
+                  notification = mBuilder.build();
+                  notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                  mNotificationManager.notify(1, notification);
 
                }
                catch (IOException ioxxx)
