@@ -36,6 +36,9 @@ public class BusDepartureItem
    BusTripBusStopTime[] stopTimes;
    int                  index;
 
+   String               delay       = "";
+   int                  delay_index = 0;
+
    public BusDepartureItem(String time,
                            String busStopOrLineName,
                            String destinationName,

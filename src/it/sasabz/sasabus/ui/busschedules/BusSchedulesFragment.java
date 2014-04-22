@@ -26,6 +26,8 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.data.realtime.PositionsResponse;
+import it.sasabz.sasabus.data.realtime.Properties;
 import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
 import it.sasabz.sasabus.opendata.client.model.BusDayType;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
@@ -75,8 +77,8 @@ public class BusSchedulesFragment extends SherlockFragment
 
    String                         currentArea;
 
-   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] {
-         new BusLineGroupException(201, new String[] { OTHER }),
+   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] { new BusLineGroupException(201,
+                                                                                                                   new String[] { OTHER }),
          new BusLineGroupException(248, new String[] { OTHER }),
          new BusLineGroupException(300, new String[] { OTHER }),
          new BusLineGroupException(227, new String[] { ME }),
@@ -295,6 +297,9 @@ public class BusSchedulesFragment extends SherlockFragment
             {
                try
                {
+
+                  SyncDelay syncDelay = new SyncDelay();
+
                   ArrayList<BusDepartureItem> departures = new ArrayList<BusDepartureItem>();
 
                   BusDayType calendarDay = BusSchedulesFragment.this.mainActivity.getOpenDataStorage().getBusDayTypeList().findBusDayTypeByDay(day);
@@ -312,11 +317,15 @@ public class BusSchedulesFragment extends SherlockFragment
                   for (BusTripStartVariant busTripStartVariant : variants)
                   {
 
+                     PositionsResponse delayResponse = syncDelay.delay(busLine.getLI_NR(),
+                                                                       busTripStartVariant.getVariantId());
+
                      BusTripStartTime[] times = busTripStartVariant.getTriplist();
                      for (BusTripStartTime busTripStartTime : times)
                      {
                         if (busTripStartTime.getSeconds() > seconds - 60 * 60 * 2 /* && busTripStartTime.getSeconds() <= seconds*/)
                         {
+
                            BusTripBusStopTime[] stopTimes = BusTripCalculator.calculateBusStopTimes(busLine.getLI_NR(),
                                                                                                     busTripStartVariant.getVariantId(),
                                                                                                     busTripStartTime,
@@ -327,14 +336,29 @@ public class BusSchedulesFragment extends SherlockFragment
                            for (int i = 0; i < stopTimes.length - 1 /* last stop isn't show because we show only departures */; i++)
                            {
                               BusTripBusStopTime stopTime = stopTimes[i];
-                              if (stopTime.getSeconds() >= seconds)
+                              if (stopTime.getSeconds() >= seconds - 3600)
                               {
                                  String busStationName = BusSchedulesFragment.this.mainActivity.getBusStationNameUsingAppLanguage(BusSchedulesFragment.this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(stopTime.getBusStop()).getBusStation());
                                  BusDepartureItem item = new BusDepartureItem(formatSeconds(stopTime.getSeconds()),
-                                                                              busStationName,
+                                                                              busStationName
+                                                                                    + " [ "
+                                                                                    + busLine.getLI_NR()
+                                                                                    + ":"
+                                                                                    + busTripStartVariant.getVariantId()
+                                                                                    + ", "
+                                                                                    + busTripStartTime.getId()
+                                                                                    + "]",
                                                                               destinationBusStationName,
                                                                               stopTimes,
                                                                               i);
+
+                                 System.out.println("DELAY searching for frt_fid " + busTripStartTime.getId());
+                                 Properties delayProperties = delayResponse.findPropertiesBy_frt_fid(busTripStartTime.getId());
+
+                                 if (delayProperties != null)
+                                 {
+                                    item.delay = "" + (delayProperties.getDelay_sec() + 59) / 60 + "'";
+                                 }
 
                                  departures.add(item);
                                  break;
@@ -380,7 +404,7 @@ public class BusSchedulesFragment extends SherlockFragment
                   });
 
                }
-               catch (IOException ioxxx)
+               catch (Exception ioxxx)
                {
                   BusSchedulesFragment.this.mainActivity.handleApplicationException(ioxxx);
                }

@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui.busstop;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.data.realtime.PositionsResponse;
 import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
 import it.sasabz.sasabus.opendata.client.model.BusDayType;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
@@ -38,11 +39,11 @@ import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 import it.sasabz.sasabus.ui.busschedules.BusScheduleDetailsFragment;
 import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
 import it.sasabz.sasabus.ui.busschedules.BusSchedulesFragment;
+import it.sasabz.sasabus.ui.busschedules.SyncDelay;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
 import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -63,7 +63,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
@@ -212,6 +211,9 @@ public class NextBusFragment extends SherlockFragment
             {
                try
                {
+
+                  SyncDelay syncDelay = new SyncDelay();
+
                   long count = 0;
                   long countLoadTimeTables = 0;
 
@@ -239,6 +241,9 @@ public class NextBusFragment extends SherlockFragment
                      for (BusTripStartVariant busTripStartVariant : variants)
                      {
 
+                        PositionsResponse delayResponse = syncDelay.delay(busLineId,
+                                                                          busTripStartVariant.getVariantId());
+
                         BusTripStartTime[] times = busTripStartVariant.getTriplist();
                         for (BusTripStartTime busTripStartTime : times)
                         {
@@ -260,11 +265,18 @@ public class NextBusFragment extends SherlockFragment
 
                                     count++;
 
-                                    if (stopTime.getBusStop() == busStop.getORT_NR() &&
-                                        stopTime.getSeconds() >= seconds)
+                                    if (stopTime.getBusStop() == busStop.getORT_NR()
+                                        && stopTime.getSeconds() >= seconds)
                                     {
                                        BusDepartureItem item = new BusDepartureItem(BusSchedulesFragment.formatSeconds(stopTime.getSeconds()),
-                                                                                    NextBusFragment.this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(busLineId).getShortName(),
+                                                                                    NextBusFragment.this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(busLineId).getShortName()
+                                                                                          + " [ "
+                                                                                          + busLineId
+                                                                                          + ":"
+                                                                                          + busTripStartVariant.getVariantId()
+                                                                                          + ", "
+                                                                                          + busTripStartTime.getId()
+                                                                                          + "]",
                                                                                     destinationBusStationName,
                                                                                     stopTimes,
                                                                                     i);
@@ -315,7 +327,7 @@ public class NextBusFragment extends SherlockFragment
                   });
 
                }
-               catch (IOException ioxxx)
+               catch (Exception ioxxx)
                {
                   NextBusFragment.this.mainActivity.handleApplicationException(ioxxx);
                }

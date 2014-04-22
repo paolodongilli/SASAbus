@@ -26,9 +26,7 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
-
 import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +53,9 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
       TextView time = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewTime);
       TextView busStopName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewBusStopName);
       TextView destinationName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewDestination);
+
+      TextView delay = (TextView) convertView.findViewById(R.id.textViewDelay);
+      delay.setText(this.getItem(position).delay);
 
       time.setText(this.getItem(position).getTime());
       busStopName.setText(this.getItem(position).getBusStopOrLineName());
