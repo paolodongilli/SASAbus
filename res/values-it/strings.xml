@@ -60,6 +60,11 @@
     <string name="map_button">Scegli fermata dalla mappa</string>
     <string name="favorites_button">Fermate favorite</string>
     <string name="FavouriteDialog_add_favourite">Aggiungi "%s" ai preferiti</string>
+    <string name="FavouriteDialog_delete_toast">Premi a lungo un favorito per cancellarlo</string>
+    <string name="FavouriteDialog_delete_confirm_title">Confermi cancellazione?</string>
+    <string name="FavouriteDialog_delete_confirm_message">Vuoi cancellare il favorito: %s?</string>
+    <string name="FavouriteDialog_delete_favourite_yes">Si</string>
+    <string name="FavouriteDialog_delete_favourite_cancel">Annulla</string>
     <string name="delete">Cancella</string>
     <!-- route -->
     <string name="date">Data:</string>

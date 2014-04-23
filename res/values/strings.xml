@@ -60,6 +60,11 @@
     <string name="map_button">Select bus stop from map</string>
     <string name="favorites_button">Favorite bus stops</string>
     <string name="FavouriteDialog_add_favourite">Add "%s" to favourites</string>
+    <string name="FavouriteDialog_delete_toast">Long press a favourite to delete it</string>
+    <string name="FavouriteDialog_delete_confirm_title">Confirm delete?</string>
+    <string name="FavouriteDialog_delete_confirm_message">Do you want to delete favourite: %s?</string>
+    <string name="FavouriteDialog_delete_favourite_yes">Yes</string>
+    <string name="FavouriteDialog_delete_favourite_cancel">Cancel</string>
     <string name="delete">Delete</string>
     <!-- route -->
     <string name="date">Date:</string>
