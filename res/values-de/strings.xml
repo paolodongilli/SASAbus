@@ -60,6 +60,11 @@
     <string name="map_button">Haltestelle aus der KArte auswählen</string>
     <string name="favorites_button">Favoriten</string>
     <string name="FavouriteDialog_add_favourite">"%s" zu den Favoriten hinzufügen</string>
+    <string name="FavouriteDialog_delete_toast">Auf einen Favoriten lange drücken, um ihn zu löschen</string>
+    <string name="FavouriteDialog_delete_confirm_title">Löschen bestätigen?</string>
+    <string name="FavouriteDialog_delete_confirm_message">Wollen Sie den Favoriten löschen: %s?</string>
+    <string name="FavouriteDialog_delete_favourite_yes">Ja</string>
+    <string name="FavouriteDialog_delete_favourite_cancel">Annulieren</string>
     <string name="delete">Löschen</string>
     <!-- route -->
     <string name="date">Datum:</string>
