@@ -56,7 +56,7 @@ public class FavouriteDialog extends Dialog
       super(mainActivity);
       final BusStation current = searchInputField.getSelectedBusStation();
 
-      this.setTitle("Favourites");
+      this.setTitle(mainActivity.getString(R.string.FavouriteDialog_title));
       this.setContentView(R.layout.favourite_dialog);
       this.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 

@@ -59,6 +59,7 @@
     <string name="nearby_button">Bus stops nearby</string>
     <string name="map_button">Select bus stop from map</string>
     <string name="favorites_button">Favorite bus stops</string>
+    <string name="FavouriteDialog_title">Favourites</string>
     <string name="FavouriteDialog_add_favourite">Add "%s" to favourites</string>
     <string name="FavouriteDialog_delete_toast">Long press a favourite to delete it</string>
     <string name="FavouriteDialog_delete_confirm_title">Confirm delete?</string>
