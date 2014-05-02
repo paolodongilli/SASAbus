@@ -48,6 +48,7 @@
     <string name="parking_spots">Parking spots</string>
     <string name="news">News</string>
     <string name="menu_map">Map</string>
+    <string name="menu_about">About</string>
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">NotUsed</string>
     <!-- BusStationAdvancedInputText -->

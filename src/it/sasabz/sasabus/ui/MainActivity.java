@@ -714,13 +714,14 @@ public class MainActivity extends SherlockFragmentActivity
    /** Swaps fragments in the main content view */
    private void selectItem(final int position)
    {
-
+      /*
       if (position == 5)
       {
          this.mDrawerLayout.closeDrawer(this.mDrawerList);
          this.notifyUserForUpdate();
          return;
       }
+      */
 
       this.mDrawerLayout.closeDrawer(this.mDrawerList);
       this.mDrawerList.setItemChecked(position, true);
