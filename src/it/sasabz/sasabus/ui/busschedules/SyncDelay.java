@@ -19,13 +19,23 @@ public class SyncDelay implements AsyncResponse<PositionsResponse>
    PositionsResponse         response;
    CountDownLatch            countDownLatch;
 
-   public PositionsResponse delay(int li_nr, int str_li_var) throws IOException, InterruptedException
+   public PositionsResponse delay(String[] lineVariants) throws IOException, InterruptedException
    {
-      System.out.println("DELAY REQ: " + li_nr + ":" + str_li_var);
+      String parameter = "";
+      for (int i = 0; i < lineVariants.length; i++)
+      {
+         if (i > 0)
+         {
+            parameter += ",";
+         }
+         parameter += lineVariants[i];
+      }
+
+      System.out.println("DELAY REQ: " + parameter);
 
       this.response = null;
       this.countDownLatch = new CountDownLatch(1);
-      this.realtimeDataClient.positions(li_nr, str_li_var, this);
+      this.realtimeDataClient.positions(parameter, this);
 
       this.countDownLatch.await(3, TimeUnit.SECONDS);
 

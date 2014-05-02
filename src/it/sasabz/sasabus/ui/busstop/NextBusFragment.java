@@ -26,7 +26,6 @@
 package it.sasabz.sasabus.ui.busstop;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.data.realtime.PositionsResponse;
 import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
 import it.sasabz.sasabus.opendata.client.model.BusDayType;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
@@ -241,8 +240,8 @@ public class NextBusFragment extends SherlockFragment
                      for (BusTripStartVariant busTripStartVariant : variants)
                      {
 
-                        PositionsResponse delayResponse = syncDelay.delay(busLineId,
-                                                                          busTripStartVariant.getVariantId());
+                        //PositionsResponse delayResponse = syncDelay.delay(busLineId,
+                        //                                                busTripStartVariant.getVariantId());
 
                         BusTripStartTime[] times = busTripStartVariant.getTriplist();
                         for (BusTripStartTime busTripStartTime : times)
