@@ -75,8 +75,8 @@ public class BusSchedulesFragment extends SherlockFragment
 
    String                         currentArea;
 
-   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] {
-         new BusLineGroupException(201, new String[] { OTHER }),
+   static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] { new BusLineGroupException(201,
+                                                                                                                   new String[] { OTHER }),
          new BusLineGroupException(248, new String[] { OTHER }),
          new BusLineGroupException(300, new String[] { OTHER }),
          new BusLineGroupException(227, new String[] { ME }),
@@ -228,7 +228,7 @@ public class BusSchedulesFragment extends SherlockFragment
          int lineId = busLine.getLI_NR();
          if (this.isBusLineInArea(busLine, this.currentArea))
          {
-            busLinesNames.add(busLine.getShortName() + " (" + lineId + ")");
+            busLinesNames.add(busLine.getShortName()/* + " (" + lineId + ")"*/);
             busLineIds.add(lineId);
          }
       }
