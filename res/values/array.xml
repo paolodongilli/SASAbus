@@ -38,6 +38,7 @@
         <item>@string/bus_stops</item>
         <item>@string/news</item>
         <item>@string/menu_map</item>
+        <item>@string/menu_park</item>
         <item>@string/menu_about</item>
     </string-array>
     <string-array name="navigation_drawer_icons">
@@ -46,7 +47,8 @@
         <item>@drawable/ic_action_busstop</item>
         <item>@drawable/ic_navigation_news</item>
         <item>@drawable/ic_action_map</item>
-        <item>@drawable/ic_navigation_news</item>
+        <item>@drawable/park</item>
+        <item>@drawable/about</item>
     </string-array>
     <string-array name="navigation_drawer_fragments">
         <item>it.sasabz.sasabus.ui.routing.SearchFragment</item>
@@ -54,6 +56,7 @@
         <item>it.sasabz.sasabus.ui.busstop.NextBusFragment</item>
         <item>it.sasabz.sasabus.ui.news.NewsFragment</item>
         <item>it.sasabz.sasabus.ui.map.MapFragment</item>
+        <item>it.sasabz.sasabus.ui.ParkingsFragment</item>
         <item>it.sasabz.sasabus.ui.AboutFragment</item>
     </string-array>
 
