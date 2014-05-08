@@ -231,7 +231,7 @@ public class BusSchedulesFragment extends SherlockFragment
          int lineId = busLine.getLI_NR();
          if (this.isBusLineInArea(busLine, this.currentArea))
          {
-            busLinesNames.add(busLine.getShortName() + " (" + lineId + ")");
+            busLinesNames.add(busLine.getShortName()/* + " (" + lineId + ")"*/);
             busLineIds.add(lineId);
          }
       }
