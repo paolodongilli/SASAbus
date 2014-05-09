@@ -1,7 +1,32 @@
+/*
+ * SASAbus - Android app for SASA bus open data
+ *
+ * SyncDelay.java
+ *
+ * Created: May 9, 2014 02:14:00 PM
+ *
+ * Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+ *
+ * This file is part of SASAbus.
+ *
+ * SASAbus is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SASAbus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.sasabus.data.realtime.AsyncResponse;
+import it.sasabz.sasabus.data.realtime.Feature;
 import it.sasabz.sasabus.data.realtime.PositionsResponse;
 import it.sasabz.sasabus.data.realtime.SASAbusRealtimeDataClient;
 import java.io.IOException;
@@ -21,6 +46,14 @@ public class SyncDelay implements AsyncResponse<PositionsResponse>
 
    public PositionsResponse delay(String[] lineVariants) throws IOException, InterruptedException
    {
+
+      if (lineVariants.length == 0)
+      {
+         this.response = new PositionsResponse();
+         this.response.setFeatures(new Feature[0]);
+         return this.response;
+      }
+
       String parameter = "";
       for (int i = 0; i < lineVariants.length; i++)
       {
@@ -37,7 +70,12 @@ public class SyncDelay implements AsyncResponse<PositionsResponse>
       this.countDownLatch = new CountDownLatch(1);
       this.realtimeDataClient.positions(parameter, this);
 
-      this.countDownLatch.await(3, TimeUnit.SECONDS);
+      if (!this.countDownLatch.await(3, TimeUnit.SECONDS))
+      {
+         // In case of timeout
+         this.response = new PositionsResponse();
+         this.response.setFeatures(new Feature[0]);
+      }
 
       return this.response;
    }

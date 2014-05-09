@@ -26,14 +26,8 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.data.realtime.PositionsResponse;
-import it.sasabz.sasabus.data.realtime.Properties;
-import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
-import it.sasabz.sasabus.opendata.client.model.BusDayType;
+import it.sasabz.sasabus.logic.DeparturesThread;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
-import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
-import it.sasabz.sasabus.opendata.client.model.BusTripStartTime;
-import it.sasabz.sasabus.opendata.client.model.BusTripStartVariant;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
@@ -42,9 +36,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -280,7 +271,6 @@ public class BusSchedulesFragment extends SherlockFragment
 
       if (busLine != null)
       {
-         final long startCalc = System.currentTimeMillis();
 
          ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
                                                                         android.R.layout.simple_list_item_1);
@@ -290,7 +280,16 @@ public class BusSchedulesFragment extends SherlockFragment
          SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
 
          final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
+         String[] hh_mm = BusSchedulesFragment.this.currentTime.getText().toString().split(":");
+         int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
 
+         new Thread(new DeparturesThread(new Integer[] { busLine.getLI_NR() },
+                                         day,
+                                         seconds,
+                                         null,
+                                         this.mainActivity,
+                                         this.listviewBuslineDepartures)).start();
+         /*
          new Thread(new Runnable()
          {
             @Override
@@ -320,13 +319,19 @@ public class BusSchedulesFragment extends SherlockFragment
 
                   HashMap<String, Void> uniqueLineVariants = new HashMap<String, Void>();
 
+                  ForEachBusTrip.visit(new int[] { busLine.getLI_NR() },
+                                       dayType,
+                                       seconds,
+                                       BusSchedulesFragment.this.mainActivity.getOpenDataStorage(),
+                                       null);
+
                   for (BusTripStartVariant busTripStartVariant : variants)
                   {
 
                      BusTripStartTime[] times = busTripStartVariant.getTriplist();
                      for (BusTripStartTime busTripStartTime : times)
                      {
-                        if (busTripStartTime.getSeconds() > seconds - searchStartTime /* && busTripStartTime.getSeconds() <= seconds*/)
+                        if (busTripStartTime.getSeconds() > seconds - searchStartTime /* && busTripStartTime.getSeconds() <= seconds* /)
                         {
                            uniqueLineVariants.put(String.valueOf(busLine.getLI_NR())
                                                         + ":"
@@ -344,7 +349,7 @@ public class BusSchedulesFragment extends SherlockFragment
                      BusTripStartTime[] times = busTripStartVariant.getTriplist();
                      for (BusTripStartTime busTripStartTime : times)
                      {
-                        if (busTripStartTime.getSeconds() > seconds - searchStartTime /* && busTripStartTime.getSeconds() <= seconds*/)
+                        if (busTripStartTime.getSeconds() > seconds - searchStartTime /* && busTripStartTime.getSeconds() <= seconds* /)
                         {
                            Properties delayProperties = delayResponse.findPropertiesBy_frt_fid(busTripStartTime.getId());
 
@@ -416,7 +421,7 @@ public class BusSchedulesFragment extends SherlockFragment
                            else
                            // I don't have realtime data, use timetables
                            {
-                              for (int i = 0; i < stopTimes.length - 1 /* last stop isn't show because we show only departures */; i++)
+                              for (int i = 0; i < stopTimes.length - 1 /* last stop isn't show because we show only departures * /; i++)
                               {
                                  BusTripBusStopTime stopTime = stopTimes[i];
                                  if (stopTime.getSeconds() >= seconds)
@@ -486,25 +491,10 @@ public class BusSchedulesFragment extends SherlockFragment
                }
             }
          }).start();
-         ;
+         */
 
       }
 
-   }
-
-   public static String formatSeconds(long seconds)
-   {
-      long sec = seconds % 60;
-      long min = seconds / 60 % 60;
-      long hour = seconds / 3600;
-      return "" + twoDigits(hour) + ":" + twoDigits(min);
-   }
-
-   public static String twoDigits(long num)
-   {
-      String ret = "00" + num;
-      ret = ret.substring(ret.length() - 2);
-      return ret;
    }
 
    private void addOnItemSelectedListenerToListView()
@@ -519,9 +509,7 @@ public class BusSchedulesFragment extends SherlockFragment
 
             BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(BusSchedulesFragment.this.getActivity(),
                                                                                                                   BusScheduleDetailsFragment.class.getName());
-            fragmentToShow.setData(busDepartureItem.index,
-                                   busDepartureItem.stopTimes,
-                                   BusSchedulesFragment.this.lastBusLine.getShortName());
+            fragmentToShow.setData(BusSchedulesFragment.this.lastBusLine.getShortName(), busDepartureItem);
             FragmentManager fragmentManager = BusSchedulesFragment.this.getActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
 

@@ -36,14 +36,16 @@ public class BusDepartureItem
    BusTripBusStopTime[] stopTimes;
    int                  index;
 
-   String               delay       = "";
-   int                  delay_index = 0;
+   String               delay;
+   int                  delay_index;
 
    public BusDepartureItem(String time,
                            String busStopOrLineName,
                            String destinationName,
                            BusTripBusStopTime[] stopTimes,
-                           int index)
+                           int index,
+                           String delay,
+                           int delay_index)
    {
       super();
       this.time = time;
@@ -51,6 +53,8 @@ public class BusDepartureItem
       this.destinationName = destinationName;
       this.stopTimes = stopTimes;
       this.index = index;
+      this.delay = delay;
+      this.delay_index = delay_index;
    }
 
    public String getTime()
