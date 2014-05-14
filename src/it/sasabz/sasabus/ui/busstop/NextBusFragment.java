@@ -26,31 +26,19 @@
 package it.sasabz.sasabus.ui.busstop;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
-import it.sasabz.sasabus.opendata.client.model.BusDayType;
+import it.sasabz.sasabus.logic.DeparturesThread;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
-import it.sasabz.sasabus.opendata.client.model.BusStop;
-import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
-import it.sasabz.sasabus.opendata.client.model.BusTripStartTime;
-import it.sasabz.sasabus.opendata.client.model.BusTripStartVariant;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 import it.sasabz.sasabus.ui.busschedules.BusScheduleDetailsFragment;
-import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
-import it.sasabz.sasabus.ui.busschedules.BusSchedulesFragment;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
 import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -63,7 +51,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
@@ -113,9 +100,7 @@ public class NextBusFragment extends SherlockFragment
 
             BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(NextBusFragment.this.getActivity(),
                                                                                                                   BusScheduleDetailsFragment.class.getName());
-            fragmentToShow.setData(busDepartureItem.getIndex(),
-                                   busDepartureItem.getStopTimes(),
-                                   busDepartureItem.getBusStopOrLineName());
+            fragmentToShow.setData(busDepartureItem.getBusStopOrLineName(), busDepartureItem);
             FragmentManager fragmentManager = NextBusFragment.this.getActivity().getSupportFragmentManager();
             fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
          }
@@ -193,136 +178,25 @@ public class NextBusFragment extends SherlockFragment
          SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
 
          final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
+         String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
+         int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
 
          InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
          inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
                                               InputMethodManager.HIDE_NOT_ALWAYS);
-
-         final long startCalc = System.currentTimeMillis();
 
          ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
                                                                         android.R.layout.simple_list_item_1);
          loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
          this.listviewNextBuses.setAdapter(loadingAdapter);
 
-         new Thread(new Runnable()
-         {
-            @Override
-            public void run()
-            {
-               try
-               {
-                  long count = 0;
-                  long countLoadTimeTables = 0;
+         new Thread(new DeparturesThread(NextBusFragment.this.busStation.getBusLines(),
+                                         day,
+                                         seconds,
+                                         this.busStation,
+                                         this.mainActivity,
+                                         this.listviewNextBuses)).start();
 
-                  BusDayType calendarDay = NextBusFragment.this.mainActivity.getOpenDataStorage().getBusDayTypeList().findBusDayTypeByDay(day);
-                  if (calendarDay == null)
-                  {
-                     // This day isn't in the calendar!
-                     return;
-                  }
-
-                  ArrayList<BusDepartureItem> departures = new ArrayList<BusDepartureItem>();
-
-                  final int dayType = calendarDay.getDayTypeId();
-                  String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
-                  int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
-
-                  for (int busLineId : NextBusFragment.this.busStation.getBusLines())
-                  {
-
-                     long startTimeTables = System.currentTimeMillis();
-                     BusTripStartVariant[] variants = NextBusFragment.this.mainActivity.getOpenDataStorage().getBusTripStarts(busLineId,
-                                                                                                                              dayType);
-                     long stopTimeTables = System.currentTimeMillis();
-                     countLoadTimeTables += stopTimeTables - startTimeTables;
-                     for (BusTripStartVariant busTripStartVariant : variants)
-                     {
-
-                        BusTripStartTime[] times = busTripStartVariant.getTriplist();
-                        for (BusTripStartTime busTripStartTime : times)
-                        {
-                           if (busTripStartTime.getSeconds() > seconds - 60 * 60 * 2 /*&& busTripStartTime.getSeconds() <= seconds + 60 * 60 * 30*/)
-                           {
-                              BusTripBusStopTime[] stopTimes = BusTripCalculator.calculateBusStopTimes(busLineId,
-                                                                                                       busTripStartVariant.getVariantId(),
-                                                                                                       busTripStartTime,
-                                                                                                       NextBusFragment.this.mainActivity.getOpenDataStorage());
-
-                              String destinationBusStationName = NextBusFragment.this.mainActivity.getBusStationNameUsingAppLanguage(NextBusFragment.this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(stopTimes[stopTimes.length - 1].getBusStop()).getBusStation());
-
-                              loopbusstops: for (BusStop busStop : NextBusFragment.this.busStation.getBusStops())
-                              {
-                                 for (int i = 0; i < stopTimes.length - 1 /* last stop isn't show because we show only departures */; i++)
-                                 {
-
-                                    BusTripBusStopTime stopTime = stopTimes[i];
-
-                                    count++;
-
-                                    if (stopTime.getBusStop() == busStop.getORT_NR() &&
-                                        stopTime.getSeconds() >= seconds)
-                                    {
-                                       BusDepartureItem item = new BusDepartureItem(BusSchedulesFragment.formatSeconds(stopTime.getSeconds()),
-                                                                                    NextBusFragment.this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(busLineId).getShortName(),
-                                                                                    destinationBusStationName,
-                                                                                    stopTimes,
-                                                                                    i);
-
-                                       departures.add(item);
-                                       break loopbusstops;
-                                    }
-                                 }
-                              }
-
-                           }
-                        }
-                     }
-
-                  }
-
-                  Collections.sort(departures, new Comparator<BusDepartureItem>()
-                  {
-                     @Override
-                     public int compare(BusDepartureItem i1, BusDepartureItem i2)
-                     {
-                        int diff = i1.getTime().compareTo(i2.getTime());
-                        if (diff == 0)
-                        {
-                           i1.getBusStopOrLineName().compareTo(i2.getBusStopOrLineName());
-                        }
-                        if (diff == 0)
-                        {
-                           i1.getDestinationName().compareTo(i2.getDestinationName());
-                        }
-                        return diff;
-                     }
-                  });
-                  final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(NextBusFragment.this.getSherlockActivity(),
-                                                                                                          departures);
-                  final long parsing = countLoadTimeTables;
-                  NextBusFragment.this.listviewNextBuses.post(new Runnable()
-                  {
-
-                     @Override
-                     public void run()
-                     {
-
-                        NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
-                        long stopCalc = System.currentTimeMillis();
-
-                     }
-                  });
-
-               }
-               catch (IOException ioxxx)
-               {
-                  NextBusFragment.this.mainActivity.handleApplicationException(ioxxx);
-               }
-
-            }
-
-         }).start();
       }
    }
 

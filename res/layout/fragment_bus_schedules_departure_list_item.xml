@@ -16,6 +16,13 @@
             android:text="00:00" />
 
         <TextView
+            android:id="@+id/textViewDelay"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="+" />
+
+        <TextView
             android:id="@+id/fragment_bus_schedules_departure_list_item_textViewBusStopName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
