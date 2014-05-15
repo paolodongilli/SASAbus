@@ -26,16 +26,12 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.logic.DeparturesThread;
-import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
+import it.sasabz.sasabus.ui.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
-import java.io.IOException;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -55,64 +51,31 @@ public class BusScheduleDetailsFragment extends SherlockFragment
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
    {
+      ListView listview_line_course;
 
-      try
+      MainActivity mainActivity = (MainActivity) this.getActivity();
+
+      View ret = inflater.inflate(R.layout.fragment_busline_details, container, false);
+      listview_line_course = (ListView) ret.findViewById(R.id.listview_line_course);
+
+      BusStationArrayAdapter stops = new BusStationArrayAdapter(mainActivity, this.item);
+
+      for (int i = 0; i < this.item.getStopTimes().length; ++i)
       {
-         ListView listview_line_course;
-
-         MainActivity mainActivity = (MainActivity) this.getActivity();
-
-         View ret = inflater.inflate(R.layout.fragment_busline_details, container, false);
-         listview_line_course = (ListView) ret.findViewById(R.id.listview_line_course);
-         ArrayAdapter<String> stops = new ArrayAdapter<String>(this.getActivity(),
-                                                               android.R.layout.simple_list_item_1)
-         {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
-               View superView = super.getView(position, convertView, parent);
-
-               if (position < BusScheduleDetailsFragment.this.item.getDeparture_index())
-               {
-                  superView.setBackgroundColor(Color.LTGRAY);
-               }
-               else if (position == BusScheduleDetailsFragment.this.item.getSelectedIndex()
-                        && BusScheduleDetailsFragment.this.item.getSelectedIndex() != BusScheduleDetailsFragment.this.item.getDeparture_index())
-               {
-                  superView.setBackgroundColor(Color.GRAY);
-               }
-               else
-               {
-                  superView.setBackgroundColor(Color.WHITE);
-               }
-               return superView;
-            }
-         };
-         for (int i = 0; i < this.item.stopTimes.length; i++)
-         {
-            BusTripBusStopTime stopTime = this.item.stopTimes[i];
-            String busStationName = mainActivity.getBusStationNameUsingAppLanguage(mainActivity.getOpenDataStorage().getBusStations().findBusStop(stopTime.getBusStop()).getBusStation());
-            stops.add(DeparturesThread.formatSeconds(stopTime.getSeconds())
-                      + (i >= this.item.delay_index ? "  " + this.item.delay : "")
-                      + " - "
-                      + busStationName);
-         }
-         listview_line_course.setAdapter(stops);
-         int pos = this.item.getSelectedIndex();
-         if (pos > 0)
-         {
-            pos--;
-         }
-         listview_line_course.setSelection(pos);
-         TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
-         busLineNameView.setText(this.busLineShortName);
-         TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
-         busStopNameView.setText(""); // Not used
-         return ret;
+         stops.add(this.item.getStopTimes()[i]);
       }
-      catch (IOException ioxxx)
+
+      listview_line_course.setAdapter(stops);
+      int pos = this.item.getSelectedIndex();
+      if (pos > 0)
       {
-         throw new RuntimeException(ioxxx);
+         pos--;
       }
+      listview_line_course.setSelection(pos);
+      TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
+      busLineNameView.setText(this.busLineShortName);
+      TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
+      busStopNameView.setText(""); // Not used
+      return ret;
    }
 }

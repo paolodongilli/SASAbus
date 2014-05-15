@@ -85,6 +85,16 @@ public class BusDepartureItem
       return this.selected_index;
    }
 
+   public int getDelay_index()
+   {
+      return this.delay_index;
+   }
+
+   public String getDelay()
+   {
+      return this.delay;
+   }
+
    public int getDeparture_index()
    {
       return this.departure_index;

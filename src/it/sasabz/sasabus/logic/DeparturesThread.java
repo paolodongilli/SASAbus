@@ -169,15 +169,14 @@ public class DeparturesThread implements Runnable
                   String busStationName = this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(stop.getBusStop()).getBusStation());
                   String lineName = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(busLineVariantTrip.busLineId).getShortName();
                   String text = this.optionalBusStation == null ? busStationName : lineName;
-                  BusDepartureItem item = new BusDepartureItem(formatSeconds(stop.getSeconds()),
-                                                               text
-                                                                     + " [ "
-                                                                     + busLineVariantTrip.busLineId
-                                                                     + ":"
-                                                                     + busLineVariantTrip.variant.getVariantId()
-                                                                     + ", "
-                                                                     + busLineVariantTrip.busTripStartTime.getId()
-                                                                     + "]",
+                  BusDepartureItem item = new BusDepartureItem(formatSeconds(stop.getSeconds()), text,
+                  //                                                                     + " [ "
+                  //                                                                     + busLineVariantTrip.busLineId
+                  //                                                                     + ":"
+                  //                                                                     + busLineVariantTrip.variant.getVariantId()
+                  //                                                                     + ", "
+                  //                                                                     + busLineVariantTrip.busTripStartTime.getId()
+                  //                                                                     + "]",
                                                                destinationBusStationName,
                                                                stopTimes,
                                                                i,
