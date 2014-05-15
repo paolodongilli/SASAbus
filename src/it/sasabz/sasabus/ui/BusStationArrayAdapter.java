@@ -85,11 +85,11 @@ public class BusStationArrayAdapter extends ArrayAdapter<BusTripBusStopTime>
 
       if (position < this.item.getDeparture_index())
       {
-         txt_busstopname.setTextColor(this.context.getResources().getColor(R.color.divider_grey));
-         txt_delay.setTextColor(this.context.getResources().getColor(R.color.divider_grey));
-         txt_time.setTextColor(this.context.getResources().getColor(R.color.divider_grey));
+         txt_busstopname.setTextColor(Color.GRAY);
+         txt_delay.setTextColor(Color.GRAY);
+         txt_time.setTextColor(Color.GRAY);
       }
-      else if (position == this.item.getSelectedIndex())
+      if (position == this.item.getSelectedIndex())
       {
          superView.setBackgroundColor(Color.LTGRAY);
       }
