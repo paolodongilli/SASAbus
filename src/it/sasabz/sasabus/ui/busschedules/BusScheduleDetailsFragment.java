@@ -71,9 +71,15 @@ public class BusScheduleDetailsFragment extends SherlockFragment
             public View getView(int position, View convertView, ViewGroup parent)
             {
                View superView = super.getView(position, convertView, parent);
-               if (position == BusScheduleDetailsFragment.this.item.index)
+
+               if (position < BusScheduleDetailsFragment.this.item.getDeparture_index())
                {
                   superView.setBackgroundColor(Color.LTGRAY);
+               }
+               else if (position == BusScheduleDetailsFragment.this.item.getSelectedIndex()
+                        && BusScheduleDetailsFragment.this.item.getSelectedIndex() != BusScheduleDetailsFragment.this.item.getDeparture_index())
+               {
+                  superView.setBackgroundColor(Color.GRAY);
                }
                else
                {
@@ -92,7 +98,7 @@ public class BusScheduleDetailsFragment extends SherlockFragment
                       + busStationName);
          }
          listview_line_course.setAdapter(stops);
-         int pos = this.item.index;
+         int pos = this.item.getSelectedIndex();
          if (pos > 0)
          {
             pos--;

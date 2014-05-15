@@ -34,7 +34,8 @@ public class BusDepartureItem
    private String       destinationName;
 
    BusTripBusStopTime[] stopTimes;
-   int                  index;
+   int                  selected_index;
+   int                  departure_index;
 
    String               delay;
    int                  delay_index;
@@ -43,7 +44,8 @@ public class BusDepartureItem
                            String busStopOrLineName,
                            String destinationName,
                            BusTripBusStopTime[] stopTimes,
-                           int index,
+                           int selected_index,
+                           int departure_index,
                            String delay,
                            int delay_index)
    {
@@ -52,9 +54,10 @@ public class BusDepartureItem
       this.busStopOrLineName = busStopOrLineName;
       this.destinationName = destinationName;
       this.stopTimes = stopTimes;
-      this.index = index;
+      this.selected_index = selected_index;
       this.delay = delay;
       this.delay_index = delay_index;
+      this.departure_index = departure_index;
    }
 
    public String getTime()
@@ -77,9 +80,14 @@ public class BusDepartureItem
       return this.stopTimes;
    }
 
-   public int getIndex()
+   public int getSelectedIndex()
    {
-      return this.index;
+      return this.selected_index;
+   }
+
+   public int getDeparture_index()
+   {
+      return this.departure_index;
    }
 
 }

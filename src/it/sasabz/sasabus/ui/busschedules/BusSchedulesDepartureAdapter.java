@@ -55,9 +55,9 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
       TextView destinationName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewDestination);
 
       TextView delay = (TextView) convertView.findViewById(R.id.textViewDelay);
-      delay.setText(this.getItem(position).index < this.getItem(position).delay_index
-                                                                                     ? ""
-                                                                                     : this.getItem(position).delay);
+      delay.setText(this.getItem(position).selected_index < this.getItem(position).delay_index
+                                                                                              ? ""
+                                                                                              : this.getItem(position).delay);
 
       time.setText(this.getItem(position).getTime());
       busStopName.setText(this.getItem(position).getBusStopOrLineName());

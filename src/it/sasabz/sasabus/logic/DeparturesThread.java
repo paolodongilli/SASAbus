@@ -100,29 +100,53 @@ public class DeparturesThread implements Runnable
 
             Properties delayProperties = delayResponse.findPropertiesBy_frt_fid(busLineVariantTrip.busTripStartTime.getId());
 
-            //delayProperties = new Properties();
-            //delayProperties.setDelay_sec(120);
+            /*
+            delayProperties = new Properties();
+            delayProperties.setDelay_sec(120);
             if (delayProperties != null)
             {
                delayProperties.setOrt_nr(stopTimes[1].getBusStop());
             }
 
             //delayProperties = null;
+             */
 
             String delayText = "#";
             int delayStopFoundIndex = 9999;
             int delaySecondsRoundedToMin = 0;
+
+            int departure_index = 9999;
+
+            long daySecondsFromMidnight = SASAbusTimeUtils.getDaySeconds();
 
             if (delayProperties != null)
             {
                for (int i = 0; i < stopTimes.length - 1; i++)
                {
                   BusTripBusStopTime stop = stopTimes[i];
-                  if (stop.getBusStop() == delayProperties.getOrt_nr())
+                  if (stop.getSeconds() > daySecondsFromMidnight - delayProperties.getDelay_sec())
                   {
+                     delayProperties.setOrt_nr(stopTimes[i].getBusStop());
+                     departure_index = i;
+                     // if (i > 0)
+                     // {
+                     //         i--;
+                     // }
                      delayStopFoundIndex = i;
                      delaySecondsRoundedToMin = convertDelayToMin(delayProperties.getDelay_sec()) * 60;
                      delayText = String.valueOf(convertDelayToMin(delayProperties.getDelay_sec())) + "'";
+                     break;
+                  }
+               }
+            }
+            else
+            {
+               for (int i = 0; i < stopTimes.length - 1; i++)
+               {
+                  BusTripBusStopTime stop = stopTimes[i];
+                  if (stop.getSeconds() > daySecondsFromMidnight)
+                  {
+                     departure_index = i;
                      break;
                   }
                }
@@ -157,6 +181,7 @@ public class DeparturesThread implements Runnable
                                                                destinationBusStationName,
                                                                stopTimes,
                                                                i,
+                                                               departure_index,
                                                                delayText,
                                                                delayStopFoundIndex);
 
