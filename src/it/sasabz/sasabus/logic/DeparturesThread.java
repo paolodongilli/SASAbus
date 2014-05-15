@@ -100,11 +100,14 @@ public class DeparturesThread implements Runnable
 
             Properties delayProperties = delayResponse.findPropertiesBy_frt_fid(busLineVariantTrip.busTripStartTime.getId());
 
-            delayProperties = new Properties();
-            delayProperties.setDelay_sec(120);
-            delayProperties.setOrt_nr(stopTimes[1].getBusStop());
+            //delayProperties = new Properties();
+            //delayProperties.setDelay_sec(120);
+            if (delayProperties != null)
+            {
+               delayProperties.setOrt_nr(stopTimes[1].getBusStop());
+            }
 
-            delayProperties = null;
+            //delayProperties = null;
 
             String delayText = "#";
             int delayStopFoundIndex = 9999;
