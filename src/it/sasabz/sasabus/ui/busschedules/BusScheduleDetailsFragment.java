@@ -29,7 +29,6 @@ import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.ui.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,39 +76,37 @@ public class BusScheduleDetailsFragment extends SherlockFragment
       TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
       busLineNameView.setText(this.busLineShortName);
 
+      TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
+      busStopNameView.setText(""); //not in use
+
       /*
        * Setting Delay better visible for the users!!!!!!
        */
-      TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
+      TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
       if (this.item.isRealtime())
       {
-         busStopNameView.setText(this.item.getDelay());
-         busStopNameView.setTextAppearance(mainActivity, android.R.style.TextAppearance_Large);
-         busStopNameView.setTypeface(null, Typeface.BOLD);
-         System.out.println(this.item.getDelay());
+         txt_delay.setText(this.item.getDelay());
          int delay = this.item.getDelayNumber();
          if (delay < -2)
          {
-            busStopNameView.setTextColor(Color.CYAN);
+            txt_delay.setTextColor(Color.CYAN);
          }
          else if (delay < 2)
          {
-            busStopNameView.setTextColor(Color.GREEN);
+            txt_delay.setTextColor(Color.GREEN);
          }
          else if (delay < 4)
          {
-            busStopNameView.setTextColor(Color.YELLOW);
+            txt_delay.setTextColor(mainActivity.getResources().getColor(R.color.sasa_orange));
          }
          else
          {
-            busStopNameView.setTextColor(Color.RED);
+            txt_delay.setTextColor(Color.RED);
          }
       }
       else
       {
-         busStopNameView.setText(R.string.no_realtime);
-         busStopNameView.setTextAppearance(mainActivity, android.R.style.TextAppearance_Large);
-         busStopNameView.setTypeface(null, Typeface.BOLD);
+         txt_delay.setText(R.string.no_realtime);
       }
       return ret;
    }
