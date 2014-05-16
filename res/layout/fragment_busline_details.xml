@@ -19,7 +19,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="5dp"
-            android:text="@string/line_txt"
+            android:text="@string/bus_line"
             android:textSize="17sp" />
 
         <TextView

@@ -43,7 +43,9 @@
     <string name="update_opendata_notification_message">Bitte klicken, um den aktuellen Fahrplan zu laden</string>
     <!-- menu/title labels -->
     <string name="bus_lines">Linien</string>
+    <string name="bus_line">Linie</string>
     <string name="bus_stops">Haltestellen</string>
+    <string name="bus_stop">Haltestelle</string>
     <string name="search_route">Route berechnen</string>
     <string name="parking_spots">Parkplätze</string>
     <string name="news">News</string>
