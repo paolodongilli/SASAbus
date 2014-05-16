@@ -28,6 +28,7 @@ package it.sasabz.sasabus.ui.busschedules;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.ui.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,8 +75,27 @@ public class BusScheduleDetailsFragment extends SherlockFragment
       listview_line_course.setSelection(pos);
       TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
       busLineNameView.setText(this.busLineShortName);
+
       TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
-      busStopNameView.setText(""); // Not used
+      busStopNameView.setText(this.item.getDelay()); // Not used
+      System.out.println(this.item.getDelay());
+      int delay = this.item.getDelayNumber();
+      if (delay < -2)
+      {
+         busStopNameView.setTextColor(Color.CYAN);
+      }
+      else if (delay < 2)
+      {
+         busStopNameView.setTextColor(Color.GREEN);
+      }
+      else if (delay < 4)
+      {
+         busStopNameView.setTextColor(Color.YELLOW);
+      }
+      else
+      {
+         busStopNameView.setTextColor(Color.RED);
+      }
       return ret;
    }
 }

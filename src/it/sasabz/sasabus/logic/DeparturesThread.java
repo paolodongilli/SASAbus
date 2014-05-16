@@ -134,7 +134,7 @@ public class DeparturesThread implements Runnable
                      // }
                      delayStopFoundIndex = i;
                      delaySecondsRoundedToMin = convertDelayToMin(delayProperties.getDelay_sec()) * 60;
-                     delayText = String.valueOf(convertDelayToMin(delayProperties.getDelay_sec())) + "'";
+                     //delayText = String.valueOf(convertDelayToMin(delayProperties.getDelay_sec())) + "'";
                      break;
                   }
                }
@@ -181,7 +181,7 @@ public class DeparturesThread implements Runnable
                                                                stopTimes,
                                                                i,
                                                                departure_index,
-                                                               delayText,
+                                                               delaySecondsRoundedToMin,
                                                                delayStopFoundIndex);
 
                   departures.add(item);

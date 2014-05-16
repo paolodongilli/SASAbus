@@ -37,7 +37,7 @@ public class BusDepartureItem
    int                  selected_index;
    int                  departure_index;
 
-   String               delay;
+   int                  delay;
    int                  delay_index;
 
    public BusDepartureItem(String time,
@@ -46,7 +46,7 @@ public class BusDepartureItem
                            BusTripBusStopTime[] stopTimes,
                            int selected_index,
                            int departure_index,
-                           String delay,
+                           int delay,
                            int delay_index)
    {
       super();
@@ -91,6 +91,11 @@ public class BusDepartureItem
    }
 
    public String getDelay()
+   {
+      return Integer.toString(this.delay) + "'";
+   }
+
+   public int getDelayNumber()
    {
       return this.delay;
    }
