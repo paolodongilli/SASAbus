@@ -181,7 +181,7 @@ public class DeparturesThread implements Runnable
                                                                stopTimes,
                                                                i,
                                                                departure_index,
-                                                               delaySecondsRoundedToMin,
+                                                               delaySecondsRoundedToMin / 60,
                                                                delayStopFoundIndex);
 
                   departures.add(item);

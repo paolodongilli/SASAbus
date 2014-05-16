@@ -77,7 +77,7 @@ public class BusScheduleDetailsFragment extends SherlockFragment
       busLineNameView.setText(this.busLineShortName);
 
       TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
-      busStopNameView.setText(this.item.getDelay()); // Not used
+      busStopNameView.setText(this.item.getDelay());
       System.out.println(this.item.getDelay());
       int delay = this.item.getDelayNumber();
       if (delay < -2)
