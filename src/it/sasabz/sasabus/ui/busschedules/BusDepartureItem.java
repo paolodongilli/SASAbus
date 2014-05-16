@@ -37,6 +37,8 @@ public class BusDepartureItem
    int                  selected_index;
    int                  departure_index;
 
+   boolean              isRealtime = false;
+
    int                  delay;
    int                  delay_index;
 
@@ -47,7 +49,8 @@ public class BusDepartureItem
                            int selected_index,
                            int departure_index,
                            int delay,
-                           int delay_index)
+                           int delay_index,
+                           boolean isRealtime)
    {
       super();
       this.time = time;
@@ -58,6 +61,7 @@ public class BusDepartureItem
       this.delay = delay;
       this.delay_index = delay_index;
       this.departure_index = departure_index;
+      this.isRealtime = isRealtime;
    }
 
    public String getTime()
@@ -103,6 +107,11 @@ public class BusDepartureItem
    public int getDeparture_index()
    {
       return this.departure_index;
+   }
+
+   public boolean isRealtime()
+   {
+      return this.isRealtime;
    }
 
 }

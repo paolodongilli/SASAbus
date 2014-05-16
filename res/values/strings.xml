@@ -103,6 +103,9 @@
     <string name="refresh">Refresh</string>
     <string name="lines">Lines</string>
 
+    
+    <string name="no_realtime">n.d.</string>
+    
     <!--
 Previous version 
     

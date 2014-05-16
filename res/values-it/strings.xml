@@ -100,5 +100,7 @@
     <!-- menu news -->
     <string name="refresh">Aggiorna</string>
     <string name="lines">Linee</string>
+    
+    <string name="no_realtime">n.d.</string>
 
 </resources>

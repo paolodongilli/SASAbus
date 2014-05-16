@@ -115,6 +115,8 @@ public class DeparturesThread implements Runnable
             int delayStopFoundIndex = 9999;
             int delaySecondsRoundedToMin = 0;
 
+            boolean isRealtime = false;
+
             int departure_index = 9999;
 
             long daySecondsFromMidnight = SASAbusTimeUtils.getDaySeconds();
@@ -134,6 +136,7 @@ public class DeparturesThread implements Runnable
                      // }
                      delayStopFoundIndex = i;
                      delaySecondsRoundedToMin = convertDelayToMin(delayProperties.getDelay_sec()) * 60;
+                     isRealtime = true;
                      //delayText = String.valueOf(convertDelayToMin(delayProperties.getDelay_sec())) + "'";
                      break;
                   }
@@ -182,7 +185,8 @@ public class DeparturesThread implements Runnable
                                                                i,
                                                                departure_index,
                                                                delaySecondsRoundedToMin / 60,
-                                                               delayStopFoundIndex);
+                                                               delayStopFoundIndex,
+                                                               isRealtime);
 
                   departures.add(item);
                   break;
