@@ -104,7 +104,7 @@
     <string name="no_realtime">n.d.</string>
 
     <string name="about_text">
-        &lt;a href="#"&gt;SASAbus&lt;/a&gt; - Android app per i dati aperti di SASA
+        &lt;b&gt;SASAbus&lt;/b&gt; - Android app per i dati aperti di SASA
 		&lt;p&gt;
 		Versione: %1$s
 		&lt;/p&gt;
