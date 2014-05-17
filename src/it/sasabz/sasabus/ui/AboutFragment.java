@@ -25,21 +25,41 @@
 
 package it.sasabz.sasabus.ui;
 
+import it.sasabz.android.sasabus.R;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class AboutFragment extends SherlockFragment
 {
-   @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-   {
-      final MainActivity mainActivity = (MainActivity) this.getActivity();
-      WebView webView = new WebView(mainActivity);
-      webView.loadUrl("file:///android_asset/about.html");
-      return webView;
-   }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
+	{
+		final View view = inflater.inflate(R.layout.fragment_about, container,
+				false);
+		TextView txt_about = (TextView) view.findViewById(R.id.txt_about);
+		String versionName = "";
+		try
+		{
+			PackageInfo pInfo = getActivity().getPackageManager()
+					.getPackageInfo(getActivity().getPackageName(), 0);
+			versionName = pInfo.versionName;
+		}
+		catch (Exception e)
+		{
+			// do nothing
+		}
+		txt_about.setMovementMethod(LinkMovementMethod.getInstance());
+		txt_about.setText(Html.fromHtml(getString(R.string.about_text,
+				versionName)));
+		return view;
+	}
 }
