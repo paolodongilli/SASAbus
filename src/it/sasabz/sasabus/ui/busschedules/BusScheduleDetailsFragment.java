@@ -28,8 +28,8 @@ package it.sasabz.sasabus.ui.busschedules;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.logic.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,74 +41,113 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class BusScheduleDetailsFragment extends SherlockFragment
 {
 
-   String           busLineShortName;
-   BusDepartureItem item;
+	String busLineShortName;
+	BusDepartureItem item;
 
-   public void setData(String busLineShortName, BusDepartureItem item)
-   {
-      this.busLineShortName = busLineShortName;
-      this.item = item;
-   }
+	public void setData(String busLineShortName, BusDepartureItem item)
+	{
+		this.busLineShortName = busLineShortName;
+		this.item = item;
+	}
 
-   @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-   {
-      ListView listview_line_course;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
+	{
+		ListView listview_line_course;
 
-      MainActivity mainActivity = (MainActivity) this.getActivity();
+		MainActivity mainActivity = (MainActivity) this.getActivity();
 
-      View ret = inflater.inflate(R.layout.fragment_busline_details, container, false);
-      listview_line_course = (ListView) ret.findViewById(R.id.listview_line_course);
+		View ret = inflater.inflate(R.layout.fragment_busline_details,
+				container, false);
+		listview_line_course = (ListView) ret
+				.findViewById(R.id.listview_line_course);
 
-      BusStationArrayAdapter stops = new BusStationArrayAdapter(mainActivity, this.item);
+		BusStationArrayAdapter stops = new BusStationArrayAdapter(mainActivity,
+				this.item);
 
-      for (int i = 0; i < this.item.getStopTimes().length; ++i)
-      {
-         stops.add(this.item.getStopTimes()[i]);
-      }
+		for (int i = 0; i < this.item.getStopTimes().length; ++i)
+		{
+			stops.add(this.item.getStopTimes()[i]);
+		}
 
-      listview_line_course.setAdapter(stops);
-      int pos = this.item.getSelectedIndex();
-      if (pos > 0)
-      {
-         pos--;
-      }
-      listview_line_course.setSelection(pos);
-      TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
-      busLineNameView.setText(this.busLineShortName);
+		listview_line_course.setAdapter(stops);
+		int pos = this.item.getSelectedIndex();
+		if (pos > 0)
+		{
+			pos--;
+		}
+		listview_line_course.setSelection(pos);
+		TextView busLineNameView = (TextView) ret
+				.findViewById(R.id.textview_busline_number);
+		busLineNameView.setText(this.busLineShortName);
 
-      TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
-      busStopNameView.setText(""); //not in use
+		TextView busStopNameView = (TextView) ret
+				.findViewById(R.id.textview_busstop_name);
+		busStopNameView.setText(""); // not in use
 
-      /*
-       * Setting Delay better visible for the users!!!!!!
-       */
-      TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
-      if (this.item.isRealtime())
-      {
-         txt_delay.setText(this.item.getDelay());
-         int delay = this.item.getDelayNumber();
-         if (delay < -2)
-         {
-            txt_delay.setTextColor(Color.CYAN);
-         }
-         else if (delay < 2)
-         {
-            txt_delay.setTextColor(Color.GREEN);
-         }
-         else if (delay < 4)
-         {
-            txt_delay.setTextColor(mainActivity.getResources().getColor(R.color.sasa_orange));
-         }
-         else
-         {
-            txt_delay.setTextColor(Color.RED);
-         }
-      }
-      else
-      {
-         txt_delay.setText(R.string.no_realtime);
-      }
-      return ret;
-   }
+		/*
+		 * Setting Delay better visible for the users!!!!!!
+		 */
+		TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
+		if (this.item.isRealtime())
+		{
+
+			int delay = this.item.getDelayNumber();
+			String delaytext = "";
+			if (delay == 0)
+			{
+				delaytext = "font colo='green'>"
+						+ mainActivity.getResources().getString(
+								R.string.in_time) + "</font>";
+			}
+			else if (delay < 0)
+			{
+				String formatdelay = "";
+				if (delay < -2)
+				{
+					formatdelay = "<font color='cyan'>" + this.item.getDelay()
+							+ "</font>";
+				}
+				else
+				{
+					formatdelay = "<font color='green'>" + this.item.getDelay()
+							+ "</font>";
+				}
+				delaytext = formatdelay
+						+ " "
+						+ mainActivity.getResources().getString(
+								R.string.advance);
+			}
+			else
+			{
+				String formatdelay = "";
+				if (delay < 2)
+				{
+					formatdelay = "<font color='green'>" + this.item.getDelay()
+							+ "</font>";
+				}
+				else if (delay < 4)
+				{
+					formatdelay = "<font color='orange'>"
+							+ this.item.getDelay() + "</font>";
+				}
+				else
+				{
+					formatdelay = "<font color='red'>" + this.item.getDelay()
+							+ "</font>";
+				}
+				delaytext = formatdelay + " "
+						+ mainActivity.getResources().getString(R.string.delay);
+
+			}
+
+			txt_delay.setText(Html.fromHtml(delaytext));
+		}
+		else
+		{
+			txt_delay.setText(R.string.no_realtime);
+		}
+		return ret;
+	}
 }

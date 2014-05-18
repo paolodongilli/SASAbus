@@ -101,7 +101,10 @@
     <string name="refresh">Aggiorna</string>
     <string name="lines">Linee</string>
     
-    <string name="no_realtime">n.d.</string>
+    <string name="delay">min. in ritardo</string>
+    <string name="advance">min. in anticipo</string>
+    <string name="in_time">è puntuale</string>
+    <string name="no_realtime">nessun dato</string>
 
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app per i dati aperti di SASA

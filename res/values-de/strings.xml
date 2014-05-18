@@ -101,7 +101,11 @@
     <string name="refresh">Aktualisieren</string>
     <string name="lines">Linien</string>
     
-    <string name="no_realtime">n.d.</string>
+    
+    <string name="delay">min. in Verspätung</string>
+    <string name="advance">min. zu früh</string>
+    <string name="in_time">Ist pünktlich</string>
+    <string name="no_realtime">Keine Daten</string>
 
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app für die Freien Daten von SASA

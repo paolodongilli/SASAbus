@@ -103,8 +103,10 @@
     <string name="refresh">Refresh</string>
     <string name="lines">Lines</string>
 
-    
-    <string name="no_realtime">n.d.</string>
+    <string name="delay">min. delayed</string>
+    <string name="advance">min. in advance</string>
+    <string name="in_time">In time</string>
+    <string name="no_realtime">no realtime data</string>
     
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app for SASA bus open data

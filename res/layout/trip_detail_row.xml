@@ -20,7 +20,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+<!-- Commented out because of not using this any more
     <TextView
         android:id="@+id/txt_delay"
         android:layout_width="20sp"
@@ -29,7 +29,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+-->
     <TextView
         android:id="@+id/txt_busstopname"
         android:layout_width="match_parent"

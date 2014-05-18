@@ -86,14 +86,6 @@ public class BusStationArrayAdapter extends ArrayAdapter<BusTripBusStopTime>
 		TextView txt_time = (TextView) superView.findViewById(R.id.txt_time);
 		txt_time.setText(DeparturesThread.formatSeconds(element.getSeconds()));
 
-		// TextView txt_delay = (TextView)
-		// superView.findViewById(R.id.txt_delay);
-		// String delay = "";
-		// if (position >= this.item.getDelay_index())
-		// {
-		// delay = this.item.getDelay();
-		// }
-		// txt_delay.setText(delay);
 		TextView txt_busstopname = (TextView) superView
 				.findViewById(R.id.txt_busstopname);
 		String busStationName = "";
