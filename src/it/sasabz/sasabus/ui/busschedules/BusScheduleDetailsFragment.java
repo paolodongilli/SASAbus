@@ -97,7 +97,7 @@ public class BusScheduleDetailsFragment extends SherlockFragment
 			String delaytext = "";
 			if (delay == 0)
 			{
-				delaytext = "font colo='green'>"
+				delaytext = "<font color='green'>"
 						+ mainActivity.getResources().getString(
 								R.string.in_time) + "</font>";
 			}
