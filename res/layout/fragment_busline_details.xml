@@ -75,16 +75,26 @@
                     android:layout_gravity="center_vertical"
                      />
 
-                <TextView
+                  <TextView
                     android:id="@+id/txt_delay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+     				android:ellipsize="end"
+       	 			android:singleLine="true"
+                    android:paddingLeft="10dp"
+                    android:text="5'"
+                    android:textAppearance="@style/delay" />
+                  
+                <TextView
+                    android:id="@+id/txt_delay_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
      				android:ellipsize="end"
        	 			android:singleLine="true"
                     android:paddingLeft="10dp"
-                    android:lines="2"
-                    android:text="Keine Echtzeitdaten vorhanden"
+                    android:text="vorhanden"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
                  
                  

@@ -28,8 +28,8 @@ package it.sasabz.sasabus.ui.busschedules;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.logic.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,64 +89,54 @@ public class BusScheduleDetailsFragment extends SherlockFragment
 		/*
 		 * Setting Delay better visible for the users!!!!!!
 		 */
-		TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
+		TextView txt_delay_text = (TextView) ret
+				.findViewById(R.id.txt_delay_text);
 		if (this.item.isRealtime())
 		{
+			TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
+			txt_delay.setText(this.item.getDelay());
 
 			int delay = this.item.getDelayNumber();
-			String delaytext = "";
 			if (delay == 0)
 			{
-				delaytext = "<font color='green'>"
-						+ mainActivity.getResources().getString(
-								R.string.in_time) + "</font>";
+				txt_delay.setTextColor(Color.GREEN);
+				txt_delay_text.setText(R.string.in_time);
 			}
 			else if (delay < 0)
 			{
-				String formatdelay = "";
 				if (delay < -2)
 				{
-					formatdelay = "<font color='cyan'>" + this.item.getDelay()
-							+ "</font>";
+					txt_delay.setTextColor(Color.CYAN);
 				}
 				else
 				{
-					formatdelay = "<font color='green'>" + this.item.getDelay()
-							+ "</font>";
+					txt_delay.setTextColor(Color.GREEN);
 				}
-				delaytext = formatdelay
-						+ " "
-						+ mainActivity.getResources().getString(
-								R.string.advance);
+				txt_delay_text.setText(R.string.advance);
 			}
 			else
 			{
-				String formatdelay = "";
 				if (delay < 2)
 				{
-					formatdelay = "<font color='green'>" + this.item.getDelay()
-							+ "</font>";
+					txt_delay.setTextColor(Color.GREEN);
 				}
 				else if (delay < 4)
 				{
-					formatdelay = "<font color='orange'>"
-							+ this.item.getDelay() + "</font>";
+					txt_delay.setTextColor(mainActivity.getResources()
+							.getColor(R.color.sasa_orange));
 				}
 				else
 				{
-					formatdelay = "<font color='red'>" + this.item.getDelay()
-							+ "</font>";
+					txt_delay.setTextColor(Color.RED);
 				}
-				delaytext = formatdelay + " "
-						+ mainActivity.getResources().getString(R.string.delay);
+				txt_delay_text.setText(R.string.delay);
 
 			}
 
-			txt_delay.setText(Html.fromHtml(delaytext));
 		}
 		else
 		{
-			txt_delay.setText(R.string.no_realtime);
+			txt_delay_text.setText(R.string.no_realtime);
 		}
 		return ret;
 	}
