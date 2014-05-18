@@ -26,7 +26,7 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.ui.BusStationArrayAdapter;
+import it.sasabz.sasabus.logic.BusStationArrayAdapter;
 import it.sasabz.sasabus.ui.MainActivity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class BusScheduleDetailsFragment extends SherlockFragment

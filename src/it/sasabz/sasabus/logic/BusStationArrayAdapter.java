@@ -22,11 +22,11 @@
  * You should have received a copy of the GNU General Public License
  * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.sasabz.sasabus.ui;
+package it.sasabz.sasabus.logic;
 
 import it.sasabz.android.sasabus.R;
-import it.sasabz.sasabus.logic.DeparturesThread;
 import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
+import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 import android.content.Context;
 import android.graphics.Color;
