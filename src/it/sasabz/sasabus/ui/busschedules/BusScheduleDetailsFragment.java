@@ -91,9 +91,10 @@ public class BusScheduleDetailsFragment extends SherlockFragment
 		 */
 		TextView txt_delay_text = (TextView) ret
 				.findViewById(R.id.txt_delay_text);
+		TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
+
 		if (this.item.isRealtime())
 		{
-			TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
 			txt_delay.setText(this.item.getDelay());
 
 			int delay = this.item.getDelayNumber();
@@ -136,6 +137,7 @@ public class BusScheduleDetailsFragment extends SherlockFragment
 		}
 		else
 		{
+			txt_delay.setText("");
 			txt_delay_text.setText(R.string.no_realtime);
 		}
 		return ret;
