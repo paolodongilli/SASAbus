@@ -122,14 +122,14 @@
 		&lt;p&gt;
 		Third part libraries:
 		&lt;/p&gt;
-		&lt;ul&gt;
-		&lt;li&gt;ActionBarSherlock (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;/li&gt;
-		&lt;li&gt;Viewpager (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;/li&gt;
-		&lt;li&gt;&lt;a href="http://leafletjs.com"&gt;Leaflet&lt;/a&gt; (&lt;a href="http://github.com/Leaflet/Leaflet/blob/master/LICENSE"&gt;BSD&lt;/a&gt;)&lt;/li&gt;
-		&lt;li&gt;&lt;a href="http://sasabus.org/wiki"&gt;SASAbus HTML5 backend&lt;/a&gt; (AGPLv3)&lt;/li&gt;
-		&lt;li&gt;&lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;/li&gt;
-		&lt;li&gt;&lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;/li&gt;
-		&lt;/ul&gt;
+		&lt;p&gt;
+		 - ActionBarSherlock (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)
+		 - Viewpager (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)
+		 - &lt;a href="http://leafletjs.com"&gt;Leaflet&lt;/a&gt; (&lt;a href="http://github.com/Leaflet/Leaflet/blob/master/LICENSE"&gt;BSD&lt;/a&gt;)
+		 - &lt;a href="http://sasabus.org/wiki"&gt;SASAbus HTML5 backend&lt;/a&gt; (AGPLv3)
+		 - &lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)
+		 - &lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)
+		&lt;/p&gt;
 		&lt;p&gt;
 			For suggestions or help please mail to &lt;a href="mailto:android@sasabz.it"&gt;android@sasabz.it&lt;/a&gt;.
 		&lt;/p&gt;
