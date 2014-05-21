@@ -106,6 +106,8 @@
     <string name="advance">min. zu früh</string>
     <string name="in_time">Ist pünktlich</string>
     <string name="no_realtime">Keine Daten</string>
+    
+     <string name="laststop">nach %1$s</string>
 
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app für die Freien Daten von SASA

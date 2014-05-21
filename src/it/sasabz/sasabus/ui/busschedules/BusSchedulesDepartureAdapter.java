@@ -26,9 +26,13 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
+
 import java.util.List;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,11 +49,16 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
    @Override
    public View getView(int position, View convertView, ViewGroup parent)
    {
+	   
+	   
+	   /*
       if (convertView == null)
       {
          LayoutInflater li = LayoutInflater.from(this.getContext());
          convertView = li.inflate(R.layout.fragment_bus_schedules_departure_list_item, null);
       }
+      
+      
       TextView time = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewTime);
       TextView busStopName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewBusStopName);
       TextView destinationName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewDestination);
@@ -62,8 +71,51 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
       time.setText(this.getItem(position).getTime());
       busStopName.setText(this.getItem(position).getBusStopOrLineName());
       destinationName.setText(this.getItem(position).getDestinationName());
-
-      return convertView;
+	    */
+	   
+	   if (convertView == null)
+	      {
+	         LayoutInflater li = LayoutInflater.from(this.getContext());
+	         convertView = li.inflate(R.layout.departures_detail_row, null);
+	      }
+	   
+	   BusDepartureItem listitem = getItem(position);
+	   
+	   TextView txt_departuretime = (TextView)convertView.findViewById(R.id.txt_departuretime);
+	   TextView txt_delay = (TextView)convertView.findViewById(R.id.txt_delay);
+	   TextView txt_field1 = (TextView)convertView.findViewById(R.id.txt_field1);
+	   TextView txt_laststop = (TextView)convertView.findViewById(R.id.txt_laststop);
+	   
+	   txt_departuretime.setText(listitem.getTime());
+	   if(listitem.getSelectedIndex() < listitem.getDelay_index() || !listitem.isRealtime())
+	   {
+		   txt_delay.setText(R.string.no_realtime);
+	   }
+	   else
+	   {
+		   txt_delay.setText(listitem.getDelay());
+		   int delay = listitem.getDelayNumber();
+		   if(delay < -2)
+		   {
+			   txt_delay.setTextColor(Color.CYAN);
+		   }
+		   else if(delay < 2)
+		   {
+			   txt_delay.setTextColor(Color.GREEN);
+		   }
+		   else if(delay < 4)
+		   {
+			   txt_delay.setTextColor(getContext().getResources().getColor(R.color.sasa_orange));
+		   }
+		   else
+		   {
+			   txt_delay.setTextColor(Color.RED);
+		   }
+	   }
+	  
+	   txt_field1.setText(listitem.getBusStopOrLineName());
+	   txt_laststop.setText(getContext().getString(R.string.laststop, listitem.getDestinationName()));
+	   return convertView;
    }
 
 }

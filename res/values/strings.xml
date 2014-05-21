@@ -103,10 +103,17 @@
     <string name="refresh">Refresh</string>
     <string name="lines">Lines</string>
 
+    <!-- String for the delay to display -->
     <string name="delay">min. delayed</string>
     <string name="advance">min. in advance</string>
     <string name="in_time">In time</string>
     <string name="no_realtime">no realtime data</string>
+    
+    <!-- String with parameters for the departurelist -->
+    
+    <string name="laststop">for %1$s</string>
+    
+    <!-- Strings for the aboutfragment in html (attention, <ul> and <li> are not processed properly) -->
     
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app for SASA bus open data
