@@ -112,6 +112,7 @@
     <!-- String with parameters for the departurelist -->
     
     <string name="laststop">direction %1$s</string>
+    <string name="next_departures">Next departures</string>
     
     <!-- Strings for the aboutfragment in html (attention, <ul> and <li> are not processed properly) -->
     
