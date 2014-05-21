@@ -31,6 +31,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
@@ -51,28 +52,6 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
    {
 	   
 	   
-	   /*
-      if (convertView == null)
-      {
-         LayoutInflater li = LayoutInflater.from(this.getContext());
-         convertView = li.inflate(R.layout.fragment_bus_schedules_departure_list_item, null);
-      }
-      
-      
-      TextView time = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewTime);
-      TextView busStopName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewBusStopName);
-      TextView destinationName = (TextView) convertView.findViewById(R.id.fragment_bus_schedules_departure_list_item_textViewDestination);
-
-      TextView delay = (TextView) convertView.findViewById(R.id.textViewDelay);
-      delay.setText(this.getItem(position).getSelectedIndex() < this.getItem(position).getDelay_index()
-                                                                                                       ? ""
-                                                                                                       : this.getItem(position).getDelay());
-
-      time.setText(this.getItem(position).getTime());
-      busStopName.setText(this.getItem(position).getBusStopOrLineName());
-      destinationName.setText(this.getItem(position).getDestinationName());
-	    */
-	   
 	   if (convertView == null)
 	      {
 	         LayoutInflater li = LayoutInflater.from(this.getContext());
@@ -90,9 +69,13 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
 	   if(listitem.getSelectedIndex() < listitem.getDelay_index() || !listitem.isRealtime())
 	   {
 		   txt_delay.setText(R.string.no_realtime);
+		   txt_delay.setTextColor(Color.BLACK);
+		   txt_delay.setTextAppearance(getContext(), android.R.style.TextAppearance_Small);
 	   }
 	   else
 	   {
+		   txt_delay.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
+		   txt_delay.setTypeface(null, Typeface.BOLD);
 		   txt_delay.setText(listitem.getDelay());
 		   int delay = listitem.getDelayNumber();
 		   if(delay < -2)
