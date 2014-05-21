@@ -62,15 +62,15 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
 	   
 	   TextView txt_departuretime = (TextView)convertView.findViewById(R.id.txt_departuretime);
 	   TextView txt_delay = (TextView)convertView.findViewById(R.id.txt_delay);
+	   TextView txt_delay_descr = (TextView)convertView.findViewById(R.id.txt_delay_descr);
 	   TextView txt_field1 = (TextView)convertView.findViewById(R.id.txt_field1);
 	   TextView txt_laststop = (TextView)convertView.findViewById(R.id.txt_laststop);
 	   
 	   txt_departuretime.setText(listitem.getTime());
 	   if(listitem.getSelectedIndex() < listitem.getDelay_index() || !listitem.isRealtime())
 	   {
-		   txt_delay.setText(R.string.no_realtime);
-		   txt_delay.setTextColor(Color.BLACK);
-		   txt_delay.setTextAppearance(getContext(), android.R.style.TextAppearance_Small);
+		   txt_delay_descr.setText(R.string.no_realtime);
+		   txt_delay.setText("");
 	   }
 	   else
 	   {
@@ -78,6 +78,18 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
 		   txt_delay.setTypeface(txt_delay.getTypeface(), Typeface.BOLD);
 		   txt_delay.setText(listitem.getDelay());
 		   int delay = listitem.getDelayNumber();
+		   if(delay < 0)
+		   {
+			   txt_delay_descr.setText(R.string.txt_advance);
+		   }
+		   else if (delay > 0)
+		   {
+			   txt_delay_descr.setText(R.string.txt_delay);
+		   }
+		   else
+		   {
+			   txt_delay_descr.setText("");
+		   }
 		   if(delay < -2)
 		   {
 			   txt_delay.setTextColor(Color.CYAN);

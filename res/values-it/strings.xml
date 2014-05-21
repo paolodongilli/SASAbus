@@ -106,8 +106,10 @@
     <string name="in_time">in orario</string>
     <string name="no_realtime">nessun dato</string>
 
-     <string name="laststop">direzione %1$s</string>
+     <string name="laststop">direzione: %1$s</string>
       <string name="next_departures">Prossime partenze</string>
+      <string name="txt_delay">rit.</string>
+    <string name="txt_advance">ant.</string>
     
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app per i dati aperti di SASA
