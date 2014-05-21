@@ -106,7 +106,7 @@
     <string name="in_time">in orario</string>
     <string name="no_realtime">nessun dato</string>
 
-     <string name="laststop">per %1$s</string>
+     <string name="laststop">direzione %1$s</string>
     
     <string name="about_text">
         &lt;b&gt;SASAbus&lt;/b&gt; - Android app per i dati aperti di SASA

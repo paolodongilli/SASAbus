@@ -75,7 +75,7 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
 	   else
 	   {
 		   txt_delay.setTextAppearance(getContext(), android.R.style.TextAppearance_Large);
-		   txt_delay.setTypeface(null, Typeface.BOLD);
+		   txt_delay.setTypeface(txt_delay.getTypeface(), Typeface.BOLD);
 		   txt_delay.setText(listitem.getDelay());
 		   int delay = listitem.getDelayNumber();
 		   if(delay < -2)

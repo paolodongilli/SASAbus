@@ -111,7 +111,7 @@
     
     <!-- String with parameters for the departurelist -->
     
-    <string name="laststop">for %1$s</string>
+    <string name="laststop">direction %1$s</string>
     
     <!-- Strings for the aboutfragment in html (attention, <ul> and <li> are not processed properly) -->
     
