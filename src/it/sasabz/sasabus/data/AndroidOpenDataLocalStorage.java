@@ -49,229 +49,250 @@ import bz.davide.dmxmljson.unmarshalling.IOUtil;
 
 public class AndroidOpenDataLocalStorage extends SASAbusOpenDataLocalStorage
 {
-   File   rootFolder;
-   File   mapTilesRootFolder;
+	File rootFolder;
+	File mapTilesRootFolder;
 
-   Thread backgroundThread;
+	Thread backgroundThread;
 
-   @SuppressLint("NewApi")
-   // Required for context.getExternalFilesDir for sdk_int < 8
-   public AndroidOpenDataLocalStorage(Context context) throws Exception
-   {
-      super(new OrgJSONParser());
+	@SuppressLint("NewApi")
+	// Required for context.getExternalFilesDir for sdk_int < 8
+	public AndroidOpenDataLocalStorage(Context context) throws Exception
+	{
+		super(new OrgJSONParser());
 
-      File sdcardFilesDir;
-      if (android.os.Build.VERSION.SDK_INT < 8)
-      {
-         sdcardFilesDir = Environment.getExternalStorageDirectory();
-         sdcardFilesDir = new File(sdcardFilesDir, "Android");
-         sdcardFilesDir = new File(sdcardFilesDir, "data");
-         sdcardFilesDir = new File(sdcardFilesDir, context.getPackageName());
-         sdcardFilesDir = new File(sdcardFilesDir, "files");
-      }
-      else
-      {
-         sdcardFilesDir = context.getExternalFilesDir(null);
-      }
+		/*
+		 * Creation of the directory-path where the data of SASA (Json format)
+		 * gets stored
+		 */
+		File sdcardFilesDir;
+		if (android.os.Build.VERSION.SDK_INT < 8)
+		{
+			sdcardFilesDir = Environment.getExternalStorageDirectory();
+			sdcardFilesDir = new File(sdcardFilesDir, "Android");
+			sdcardFilesDir = new File(sdcardFilesDir, "data");
+			sdcardFilesDir = new File(sdcardFilesDir, context.getPackageName());
+			sdcardFilesDir = new File(sdcardFilesDir, "files");
+		}
+		else
+		{
+			sdcardFilesDir = context.getExternalFilesDir(null);
+		}
 
-      this.rootFolder = new File(sdcardFilesDir, "sasabus-opendata");
-      this.mapTilesRootFolder = new File(sdcardFilesDir, "osm-tiles");
+		/*
+		 * Creating root folder for the data
+		 */
+		this.rootFolder = new File(sdcardFilesDir, "sasabus-opendata");
+		/*
+		 * Creating folder for openstreetmap folder
+		 */
+		this.mapTilesRootFolder = new File(sdcardFilesDir, "osm-tiles");
 
-      if (!this.rootFolder.exists())
-      {
-         this.rootFolder.mkdirs();
-      }
-      if (!this.mapTilesRootFolder.exists())
-      {
-         this.mapTilesRootFolder.mkdirs();
-      }
+		/*
+		 * Checking if the folders exists, if not, so creation of the folders
+		 */
+		if (!this.rootFolder.exists())
+		{
+			this.rootFolder.mkdirs();
+		}
+		if (!this.mapTilesRootFolder.exists())
+		{
+			this.mapTilesRootFolder.mkdirs();
+		}
 
-      this.backgroundThread = null;
+		this.backgroundThread = null;
 
-   }
+	}
 
-   public void preloadData() throws IOException
-   {
+	/**
+	 * This function
+	 * 
+	 * @throws IOException
+	 */
+	public void preloadData() throws IOException
+	{
 
-      this.getBusStations();
+		this.getBusStations();
 
-      final int backgroundThreadPriority = android.os.Process.THREAD_PRIORITY_LOWEST;//android.os.Process.THREAD_PRIORITY_BACKGROUND;
+		final int backgroundThreadPriority = android.os.Process.THREAD_PRIORITY_LOWEST;// android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
-      final long backgroundLoadingStart = System.currentTimeMillis();
+		this.backgroundThread = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				android.os.Process.setThreadPriority(backgroundThreadPriority);
 
-      this.backgroundThread = new Thread(new Runnable()
-      {
-         @Override
-         public void run()
-         {
-            android.os.Process.setThreadPriority(backgroundThreadPriority);
+				try
+				{
+					Thread.sleep(600); // Let UI to display!
 
-            try
-            {
-               Thread.sleep(600); // Let UI to display!
+					AndroidOpenDataLocalStorage.super.getBusDayTypeList();
+					AndroidOpenDataLocalStorage.super.getBusLines();
+					AndroidOpenDataLocalStorage.super.getBusPathList();
 
-               AndroidOpenDataLocalStorage.super.getBusDayTypeList();
-               AndroidOpenDataLocalStorage.super.getBusLines();
-               AndroidOpenDataLocalStorage.super.getBusPathList();
+					AndroidOpenDataLocalStorage.super
+							.getBusStandardTimeBetweenStopsList();
+					AndroidOpenDataLocalStorage.super
+							.getBusExceptionTimeBetweenStopsList();
+					AndroidOpenDataLocalStorage.super
+							.getBusWaitTimeAtStopList();
+					AndroidOpenDataLocalStorage.super
+							.getBusDefaultWaitTimeAtStopList();
+					AndroidOpenDataLocalStorage.super
+							.getBusLineWaitTimeAtStopList();
 
-               AndroidOpenDataLocalStorage.super.getBusStandardTimeBetweenStopsList();
-               AndroidOpenDataLocalStorage.super.getBusExceptionTimeBetweenStopsList();
-               AndroidOpenDataLocalStorage.super.getBusWaitTimeAtStopList();
-               AndroidOpenDataLocalStorage.super.getBusDefaultWaitTimeAtStopList();
-               AndroidOpenDataLocalStorage.super.getBusLineWaitTimeAtStopList();
+				}
+				catch (Exception ioxxx)
+				{
+					ioxxx.printStackTrace();
+				}
+			}
+		});
+		this.backgroundThread.start();
+	}
 
-               long stop = System.currentTimeMillis();
+	@Override
+	public BusDayTypeList getBusDayTypeList() throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusDayTypeList();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-            }
-            catch (Exception ioxxx)
-            {
-               ioxxx.printStackTrace();
-            }
-         }
-      });
-      this.backgroundThread.start();
-   }
+	@Override
+	public BusLineList getBusLines() throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusLines();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-   @Override
-   public BusDayTypeList getBusDayTypeList() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusDayTypeList();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	public BusPathList getBusPathList() throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusPathList();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-   @Override
-   public BusLineList getBusLines() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusLines();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	public BusStandardTimeBetweenStopsList getBusStandardTimeBetweenStopsList()
+			throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusStandardTimeBetweenStopsList();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-   @Override
-   public BusPathList getBusPathList() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusPathList();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	public BusExceptionTimeBetweenStopsList getBusExceptionTimeBetweenStopsList()
+			throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusExceptionTimeBetweenStopsList();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-   @Override
-   public BusStandardTimeBetweenStopsList getBusStandardTimeBetweenStopsList() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusStandardTimeBetweenStopsList();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	public BusWaitTimeAtStopList getBusWaitTimeAtStopList() throws IOException
+	{
+		try
+		{
+			if (this.backgroundThread != null)
+			{
+				this.backgroundThread.join();
+			}
+			return super.getBusWaitTimeAtStopList();
+		}
+		catch (InterruptedException e)
+		{
+			throw IOUtil.wrapIntoIOException(e);
+		}
+	}
 
-   @Override
-   public BusExceptionTimeBetweenStopsList getBusExceptionTimeBetweenStopsList() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusExceptionTimeBetweenStopsList();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	public void setData(String key, String data) throws IOException
+	{
+		this.writeFile(new File(this.rootFolder, key), data);
+	}
 
-   @Override
-   public BusWaitTimeAtStopList getBusWaitTimeAtStopList() throws IOException
-   {
-      try
-      {
-         if (this.backgroundThread != null)
-         {
-            this.backgroundThread.join();
-         }
-         return super.getBusWaitTimeAtStopList();
-      }
-      catch (InterruptedException e)
-      {
-         throw IOUtil.wrapIntoIOException(e);
-      }
-   }
+	@Override
+	@JavascriptInterface
+	public String getData(String key) throws IOException
+	{
+		File file = new File(this.rootFolder, key);
+		if (!file.exists())
+		{
+			return null;
+		}
+		String data = this.readFile(file);
+		return data;
+	}
 
-   @Override
-   public void setData(String key, String data) throws IOException
-   {
-      this.writeFile(new File(this.rootFolder, key), data);
-   }
+	public String readFile(File f) throws IOException
+	{
+		FileInputStream fis = new FileInputStream(f);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		HTTPAsyncJSONDownloader.copyAllBytesAndCloseStreams(fis, outputStream);
+		String ret = outputStream.toString("UTF-8");
+		return ret;
+	}
 
-   @Override
-   @JavascriptInterface
-   public String getData(String key) throws IOException
-   {
-      File file = new File(this.rootFolder, key);
-      if (!file.exists())
-      {
-         return null;
-      }
-      String data = this.readFile(file);
-      return data;
-   }
+	public void writeFile(File f, String content) throws IOException
+	{
+		FileOutputStream fos = new FileOutputStream(f);
+		fos.write(content.getBytes("UTF-8"));
+		fos.close();
+	}
 
-   public String readFile(File f) throws IOException
-   {
-      FileInputStream fis = new FileInputStream(f);
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      HTTPAsyncJSONDownloader.copyAllBytesAndCloseStreams(fis, outputStream);
-      String ret = outputStream.toString("UTF-8");
-      return ret;
-   }
-
-   public void writeFile(File f, String content) throws IOException
-   {
-      FileOutputStream fos = new FileOutputStream(f);
-      fos.write(content.getBytes("UTF-8"));
-      fos.close();
-   }
-
-   public File getMapTilesRootFolder()
-   {
-      return this.mapTilesRootFolder;
-   }
+	public File getMapTilesRootFolder()
+	{
+		return this.mapTilesRootFolder;
+	}
 
 }
