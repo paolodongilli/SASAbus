@@ -67,7 +67,7 @@ public class BusSchedulesDepartureAdapter extends ArrayAdapter<BusDepartureItem>
 	   TextView txt_laststop = (TextView)convertView.findViewById(R.id.txt_laststop);
 	   
 	   txt_departuretime.setText(listitem.getTime());
-	   if(listitem.getSelectedIndex() < listitem.getDelay_index() || !listitem.isRealtime())
+	   if(!listitem.isRealtime())
 	   {
 		   txt_delay_descr.setText(R.string.no_realtime);
 		   txt_delay.setText("");
