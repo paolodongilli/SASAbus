@@ -29,6 +29,6 @@ import it.sasabz.sasabus.opendata.client.model.BusStation;
 
 public class DistanceBusStation
 {
-   Double     distance;
-   BusStation busStation;
+   public Double     distance;
+   public BusStation busStation;
 }
