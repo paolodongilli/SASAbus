@@ -69,6 +69,7 @@
     <string name="FavouriteDialog_delete_favourite_yes">Ja</string>
     <string name="FavouriteDialog_delete_favourite_cancel">Annulieren</string>
     <string name="delete">Löschen</string>
+    <string name="nearest_bus_stations">Haltestellen in der Umgebung</string>
     <!-- route -->
     <string name="date">Datum:</string>
     <string name="time">Uhrzeit:</string>

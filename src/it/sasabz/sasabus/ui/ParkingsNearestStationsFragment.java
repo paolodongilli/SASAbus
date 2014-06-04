@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import bz.davide.dmweb.client.leaflet.DistanceCalculator;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -39,13 +40,13 @@ public class ParkingsNearestStationsFragment extends SherlockFragment {
 				container, false);
 
 		final ListView listView = (ListView) ret.findViewById(R.id.listview_nearest_stations);
-
+		((TextView)ret.findViewById(R.id.textview_parking)).setText(data.name + ": " + getString(R.string.nearest_bus_stations));
 		DistanceBusStationAdapter adapter;
 		final ArrayList<DistanceBusStation> nearestStations;
 		try {
 			nearestStations = getNearestStations(mainActivity
 					.getOpenDataStorage());
-
+			
 			adapter = new DistanceBusStationAdapter(mainActivity,
 					nearestStations);
 			listView.setAdapter(adapter);

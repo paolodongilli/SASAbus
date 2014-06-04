@@ -53,7 +53,8 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="@string/nearest_bus_stations" />
             
         </LinearLayout>
 
