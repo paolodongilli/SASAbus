@@ -72,6 +72,7 @@
     <string name="FavouriteDialog_delete_favourite_cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="nearest_bus_stations">Nearest bus stations</string>
+    <string name="deselect_all">Deseleziona tutto</string>
     <!-- route -->
     <string name="date">Date:</string>
     <string name="time">Time:</string>

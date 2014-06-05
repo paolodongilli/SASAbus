@@ -86,7 +86,6 @@
                 android:text="@string/next_departures"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
-            
         </LinearLayout>
 
         <View
@@ -103,10 +102,30 @@
                 android:id="@+id/search_lines"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp" >
 
             </LinearLayout>
         </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/selectAllLines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@android:string/selectAll" />
+
+            <Button
+                android:id="@+id/deSelectAllLines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deselect_all" />
+        </LinearLayout>
 
         <View
             style="@style/title_underline"

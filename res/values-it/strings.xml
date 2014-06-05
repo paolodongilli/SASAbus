@@ -70,6 +70,7 @@
     <string name="FavouriteDialog_delete_favourite_cancel">Annulla</string>
     <string name="delete">Cancella</string>
     <string name="nearest_bus_stations">Fermate vicine</string>
+    <string name="deselect_all">Deselect all</string>
     <!-- route -->
     <string name="date">Data:</string>
     <string name="time">Ora:</string>

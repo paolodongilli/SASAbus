@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import android.annotation.SuppressLint;
@@ -96,6 +97,9 @@ public class NextBusFragment extends SherlockFragment
 
       View view = inflater.inflate(R.layout.fragment_next_bus, container, false);
 
+      Button selectAll = (Button)view.findViewById(R.id.selectAllLines);
+      Button deselectAll = (Button)view.findViewById(R.id.deSelectAllLines);
+      
       this.searchLines = (LinearLayout) view.findViewById(R.id.search_lines);
       
       Calendar now = Calendar.getInstance();
@@ -171,6 +175,40 @@ public class NextBusFragment extends SherlockFragment
 
          this.searchInputField.setInputTextFireChange(this.initialBusStationName);
 
+         selectAll.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Enumeration<Integer> e = lines.keys();
+				while(e.hasMoreElements())
+					lines.put(e.nextElement(), true);
+				for(int i = 0; i < searchLines.getChildCount(); i++)
+					((CheckBox)searchLines.getChildAt(i)).setChecked(true);
+				try {
+					calculateDepartures(NextBusFragment.this.busStation.getBusLines());
+				} catch (ParseException exxx) {
+					mainActivity.handleApplicationException(exxx);
+				}
+			}
+		});
+
+         deselectAll.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Enumeration<Integer> e = lines.keys();
+				while(e.hasMoreElements())
+					lines.put(e.nextElement(), false);
+				for(int i = 0; i < searchLines.getChildCount(); i++)
+					((CheckBox)searchLines.getChildAt(i)).setChecked(false);
+				try{
+					calculateDepartures(new Integer[0]);
+				} catch (ParseException exxx) {
+					mainActivity.handleApplicationException(exxx);
+				}
+			}
+		});
+         
          return view;
       }
       catch (Exception ioxxx)
@@ -196,7 +234,6 @@ public class NextBusFragment extends SherlockFragment
          searchLines.removeAllViews();
          this.lines = new Hashtable<Integer, Boolean>();
          
-         //TODO Linienanuzeige NextBusFragment.this.busStation.getBusLines()
          for(int i: NextBusFragment.this.busStation.getBusLines()){
              this.lines.put(i, true);
         	 CheckBox line = new CheckBox(getActivity());
@@ -213,13 +250,9 @@ public class NextBusFragment extends SherlockFragment
 					int length = 0;
 					Log.d("Hashtable", NextBusFragment.this.lines.toString());
 					for(int i = 0; i < NextBusFragment.this.busStation.getBusLines().length && NextBusFragment.this.lines != null; i++)
-						if(NextBusFragment.this.lines.get(i))
+						if(NextBusFragment.this.lines.get(NextBusFragment.this.busStation.getBusLines()[i]))
 							length++;
-					if(length == 0){
-					       ArrayAdapter<String> adapter = new ArrayAdapter<String>(NextBusFragment.this.getActivity(),
-                                   android.R.layout.simple_list_item_1);
-					       NextBusFragment.this.listviewNextBuses.setAdapter(adapter);
-					}else{
+					{
 						Integer[] lines = new Integer[length];
 						int j = 0;
 						for(int i: NextBusFragment.this.busStation.getBusLines())
