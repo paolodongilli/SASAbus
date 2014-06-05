@@ -31,8 +31,10 @@ import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.opendata.client.model.Favourite;
 import it.sasabz.sasabus.opendata.client.model.FavouriteList;
 import it.sasabz.sasabus.ui.MainActivity;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -80,11 +82,16 @@ public class FavouriteDialog extends Dialog
                try
                {
                   Favourite[] newFavourites = new Favourite[FavouriteDialog.this.favourites.length + 1]; // Arrays.copy requires Api 9
+                  Favourite newFavourite = new Favourite(current.getRoutingName());
                   for (int i = 0; i < FavouriteDialog.this.favourites.length; i++)
                   {
+                	  if(newFavourite.getName().equals(FavouriteDialog.this.favourites[i].getName())){
+                          FavouriteDialog.this.dismiss();
+                          return;
+                	  }
                      newFavourites[i] = FavouriteDialog.this.favourites[i];
                   }
-                  newFavourites[FavouriteDialog.this.favourites.length] = new Favourite(current.getRoutingName());
+                  newFavourites[FavouriteDialog.this.favourites.length] = newFavourite;
                   openDataStorage.setFavouriteList(new FavouriteList(newFavourites));
                   FavouriteDialog.this.dismiss();
                }

@@ -43,16 +43,13 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,7 +58,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Switch;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -243,12 +239,10 @@ public class NextBusFragment extends SherlockFragment
         	 searchLines.addView(line);
         	 final int number = i;
         	 line.setOnClickListener(new OnClickListener() {
-				int line = number;
 				@Override
 				public void onClick(View v) {
 					NextBusFragment.this.lines.put(number, ((CheckBox)v).isChecked());
 					int length = 0;
-					Log.d("Hashtable", NextBusFragment.this.lines.toString());
 					for(int i = 0; i < NextBusFragment.this.busStation.getBusLines().length && NextBusFragment.this.lines != null; i++)
 						if(NextBusFragment.this.lines.get(NextBusFragment.this.busStation.getBusLines()[i]))
 							length++;
