@@ -50,12 +50,13 @@ public class DeparturesThread implements Runnable
 {
    private static final int BACK_TIME = 60 * 60 * 2;
 
-   Integer[]                busLines;
-   String                   yyyyMMdd;
-   int                      seconds;
-   BusStation               optionalBusStation;
-   MainActivity             mainActivity;
-   ListView                 listView;
+   Integer[]                   busLines;
+   String                      yyyyMMdd;
+   int                         seconds;
+   BusStation                  optionalBusStation;
+   MainActivity                mainActivity;
+   ListView                    listView;
+   ArrayList<BusDepartureItem> departures;
 
    public DeparturesThread(Integer[] busLines,
                            String yyyyMMdd,
@@ -78,7 +79,7 @@ public class DeparturesThread implements Runnable
    {
       try
       {
-         ArrayList<BusDepartureItem> departures = new ArrayList<BusDepartureItem>();
+         departures = new ArrayList<BusDepartureItem>();
 
          AndroidOpenDataLocalStorage openDataStorage = this.mainActivity.getOpenDataStorage();
 
@@ -276,7 +277,7 @@ public class DeparturesThread implements Runnable
       }
    }
 
-   static void sortDeparturesByTime(ArrayList<BusDepartureItem> departures)
+   public static void sortDeparturesByTime(ArrayList<BusDepartureItem> departures)
    {
       Collections.sort(departures, new Comparator<BusDepartureItem>()
       {
@@ -310,5 +311,9 @@ public class DeparturesThread implements Runnable
       String ret = "00" + num;
       ret = ret.substring(ret.length() - 2);
       return ret;
+   }
+   
+   public ArrayList<BusDepartureItem> getDepartures(){
+	   return departures;
    }
 }

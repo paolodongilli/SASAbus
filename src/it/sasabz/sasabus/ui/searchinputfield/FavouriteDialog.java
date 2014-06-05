@@ -85,10 +85,11 @@ public class FavouriteDialog extends Dialog
                   Favourite newFavourite = new Favourite(current.getRoutingName());
                   for (int i = 0; i < FavouriteDialog.this.favourites.length; i++)
                   {
-                	  if(newFavourite.getName().equals(FavouriteDialog.this.favourites[i].getName())){
-                          FavouriteDialog.this.dismiss();
-                          return;
-                	  }
+                	 if(newFavourite.getName().equals(FavouriteDialog.this.favourites[i].getName()))
+                	 {
+                        FavouriteDialog.this.dismiss();
+                        return;
+                	 }
                      newFavourites[i] = FavouriteDialog.this.favourites[i];
                   }
                   newFavourites[FavouriteDialog.this.favourites.length] = newFavourite;

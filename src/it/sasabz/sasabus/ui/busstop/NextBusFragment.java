@@ -31,6 +31,7 @@ import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 import it.sasabz.sasabus.ui.busschedules.BusScheduleDetailsFragment;
+import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
@@ -39,6 +40,7 @@ import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -81,9 +83,11 @@ public class NextBusFragment extends SherlockFragment
 
    String                      initialBusStationName = "";
    
-   LinearLayout                searchLines;
+   LinearLayout                searchLines, selectStations;
    
-   Hashtable<Integer, Boolean> lines;
+   Hashtable<String, Boolean>  lines;
+   
+   ArrayList<BusDepartureItem> departures;
 
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -97,6 +101,8 @@ public class NextBusFragment extends SherlockFragment
       Button deselectAll = (Button)view.findViewById(R.id.deSelectAllLines);
       
       this.searchLines = (LinearLayout) view.findViewById(R.id.search_lines);
+      
+      this.selectStations = (LinearLayout) view.findViewById(R.id.selectStations);
       
       Calendar now = Calendar.getInstance();
 
@@ -138,7 +144,7 @@ public class NextBusFragment extends SherlockFragment
             {
                try
                {
-                  NextBusFragment.this.calculateDepartures();
+                  NextBusFragment.this.newStationFound();
                }
                catch (Exception e)
                {
@@ -175,16 +181,27 @@ public class NextBusFragment extends SherlockFragment
 			
 			@Override
 			public void onClick(View v) {
-				Enumeration<Integer> e = lines.keys();
+				Enumeration<String> e = lines.keys();
 				while(e.hasMoreElements())
 					lines.put(e.nextElement(), true);
-				for(int i = 0; i < searchLines.getChildCount(); i++)
-					((CheckBox)searchLines.getChildAt(i)).setChecked(true);
-				try {
-					calculateDepartures(NextBusFragment.this.busStation.getBusLines());
-				} catch (ParseException exxx) {
-					mainActivity.handleApplicationException(exxx);
-				}
+
+					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+							NextBusFragment.this.mainActivity,
+							NextBusFragment.this.departures);
+
+					for(int i = 0; i < searchLines.getChildCount(); i++)
+						((CheckBox)searchLines.getChildAt(i)).setChecked(true);
+					
+					NextBusFragment.this.listviewNextBuses.post(new Runnable()
+					{
+					
+						@Override
+						public void run()
+						{
+							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+						}
+					});
+
 			}
 		});
 
@@ -192,16 +209,25 @@ public class NextBusFragment extends SherlockFragment
 			
 			@Override
 			public void onClick(View v) {
-				Enumeration<Integer> e = lines.keys();
+				Enumeration<String> e = lines.keys();
 				while(e.hasMoreElements())
-					lines.put(e.nextElement(), false);
+					lines.put(e.nextElement(), false);					
+				final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+						NextBusFragment.this.mainActivity,
+						new ArrayList<BusDepartureItem>());
+
 				for(int i = 0; i < searchLines.getChildCount(); i++)
 					((CheckBox)searchLines.getChildAt(i)).setChecked(false);
-				try{
-					calculateDepartures(new Integer[0]);
-				} catch (ParseException exxx) {
-					mainActivity.handleApplicationException(exxx);
-				}
+				
+				NextBusFragment.this.listviewNextBuses.post(new Runnable()
+				{
+					
+					@Override
+					public void run()
+					{
+						NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+					}
+				});
 			}
 		});
          
@@ -219,52 +245,55 @@ public class NextBusFragment extends SherlockFragment
       this.initialBusStationName = name;
    }
 
-   void calculateDepartures() throws IOException, ParseException
+   void newStationFound() throws IOException, ParseException
    {
       this.busStation = this.searchInputField.getSelectedBusStation();
 
       if (this.busStation != null)
       {
-
-         calculateDepartures(NextBusFragment.this.busStation.getBusLines());
+    	 selectStations.setVisibility(View.VISIBLE);
+         calculateDepartures();
          searchLines.removeAllViews();
-         this.lines = new Hashtable<Integer, Boolean>();
+         this.departures = null;
+         this.lines = new Hashtable<String, Boolean>();
          
-         for(int i: NextBusFragment.this.busStation.getBusLines()){
-             this.lines.put(i, true);
+         for(Integer i: NextBusFragment.this.busStation.getBusLines()){
+        	 final String name = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
+             this.lines.put(name, true);
         	 CheckBox line = new CheckBox(getActivity());
         	 line.setChecked(true);
              String lineName = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
         	 line.setText(lineName);
         	 searchLines.addView(line);
-        	 final int number = i;
         	 line.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					NextBusFragment.this.lines.put(number, ((CheckBox)v).isChecked());
-					int length = 0;
-					for(int i = 0; i < NextBusFragment.this.busStation.getBusLines().length && NextBusFragment.this.lines != null; i++)
-						if(NextBusFragment.this.lines.get(NextBusFragment.this.busStation.getBusLines()[i]))
-							length++;
+					NextBusFragment.this.lines.put(name, ((CheckBox)v).isChecked());
+					ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
+					for(BusDepartureItem item: NextBusFragment.this.departures){
+						if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
+							newDeparture.add(item);
+					}         
+					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+							NextBusFragment.this.mainActivity,
+                            newDeparture);
+
+					NextBusFragment.this.listviewNextBuses.post(new Runnable()
 					{
-						Integer[] lines = new Integer[length];
-						int j = 0;
-						for(int i: NextBusFragment.this.busStation.getBusLines())
-							if(NextBusFragment.this.lines.get(i))
-								lines[j++] = i;
-						try {
-							calculateDepartures(lines);
-						} catch (ParseException exxx) {
-							NextBusFragment.this.mainActivity.handleApplicationException(exxx);
+					
+						@Override
+						public void run()
+						{
+							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
 						}
-					}
+					});
 				}
 			});
          }
       }
    }
 
-   void calculateDepartures(Integer[] lines) throws ParseException{
+   void calculateDepartures() throws ParseException{
 	   SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
 
        final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
@@ -279,12 +308,43 @@ public class NextBusFragment extends SherlockFragment
                                                                       android.R.layout.simple_list_item_1);
        loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
        this.listviewNextBuses.setAdapter(loadingAdapter);
-       new Thread(new DeparturesThread(lines,
-                                       day,
-                                       seconds,
-                                       this.busStation,
-                                       this.mainActivity,
-                                       this.listviewNextBuses)).start();
+       final DeparturesThread departuresThread = new DeparturesThread(NextBusFragment.this.busStation.getBusLines(),
+               day,
+               seconds,
+               this.busStation,
+               this.mainActivity,
+               this.listviewNextBuses);
+       new Thread(){
+    	   public void run(){
+    		   Thread thread = new Thread(departuresThread);
+				try {
+					thread.start();
+					thread.join();
+					NextBusFragment.this.departures = departuresThread.getDepartures();ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
+					for(BusDepartureItem item: NextBusFragment.this.departures){
+						if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
+							newDeparture.add(item);
+					}         
+					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+							NextBusFragment.this.mainActivity,
+                            newDeparture);
+
+					NextBusFragment.this.listviewNextBuses.post(new Runnable()
+					{
+					
+						@Override
+						public void run()
+						{
+							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+						}
+					});
+
+				} catch (InterruptedException exxx) {
+					exxx.printStackTrace();
+					NextBusFragment.this.mainActivity.handleApplicationException(exxx);
+				}
+    	   }
+       }.start();
 
    }
    
