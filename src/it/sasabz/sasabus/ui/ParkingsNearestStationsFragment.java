@@ -65,8 +65,6 @@ public class ParkingsNearestStationsFragment extends SherlockFragment {
 					fragmentManager.beginTransaction()
 							.add(R.id.content_frame, fragmentToShow)
 							.addToBackStack(null).commit();
-					Log.d(ParkingsNearestStationsFragment.class.getSimpleName(),
-							"addedToBackStack");
 				}
 			});
 

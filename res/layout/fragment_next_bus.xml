@@ -94,6 +94,25 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_underline_height" />
 
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/search_lines"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <View
+            style="@style/title_underline"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_underline_height" />
+
         <ListView
             android:id="@+id/listview_next_buses"
             android:layout_width="match_parent"

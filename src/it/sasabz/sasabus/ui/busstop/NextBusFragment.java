@@ -35,22 +35,33 @@ import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
 import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Hashtable;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
@@ -72,6 +83,10 @@ public class NextBusFragment extends SherlockFragment
    BusStation                  busStation;
 
    String                      initialBusStationName = "";
+   
+   LinearLayout                searchLines;
+   
+   Hashtable<Integer, Boolean> lines;
 
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -81,6 +96,8 @@ public class NextBusFragment extends SherlockFragment
 
       View view = inflater.inflate(R.layout.fragment_next_bus, container, false);
 
+      this.searchLines = (LinearLayout) view.findViewById(R.id.search_lines);
+      
       Calendar now = Calendar.getInstance();
 
       this.currentDate = (Button) view.findViewById(R.id.currentDate);
@@ -175,29 +192,73 @@ public class NextBusFragment extends SherlockFragment
       if (this.busStation != null)
       {
 
-         SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
-
-         final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
-         String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
-         int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
-
-         InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-         inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
-                                              InputMethodManager.HIDE_NOT_ALWAYS);
-
-         ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
-                                                                        android.R.layout.simple_list_item_1);
-         loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
-         this.listviewNextBuses.setAdapter(loadingAdapter);
-
-         new Thread(new DeparturesThread(NextBusFragment.this.busStation.getBusLines(),
-                                         day,
-                                         seconds,
-                                         this.busStation,
-                                         this.mainActivity,
-                                         this.listviewNextBuses)).start();
-
+         calculateDepartures(NextBusFragment.this.busStation.getBusLines());
+         searchLines.removeAllViews();
+         this.lines = new Hashtable<Integer, Boolean>();
+         
+         //TODO Linienanuzeige NextBusFragment.this.busStation.getBusLines()
+         for(int i: NextBusFragment.this.busStation.getBusLines()){
+             this.lines.put(i, true);
+        	 CheckBox line = new CheckBox(getActivity());
+        	 line.setChecked(true);
+             String lineName = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
+        	 line.setText(lineName);
+        	 searchLines.addView(line);
+        	 final int number = i;
+        	 line.setOnClickListener(new OnClickListener() {
+				int line = number;
+				@Override
+				public void onClick(View v) {
+					NextBusFragment.this.lines.put(number, ((CheckBox)v).isChecked());
+					int length = 0;
+					Log.d("Hashtable", NextBusFragment.this.lines.toString());
+					for(int i = 0; i < NextBusFragment.this.busStation.getBusLines().length && NextBusFragment.this.lines != null; i++)
+						if(NextBusFragment.this.lines.get(i))
+							length++;
+					if(length == 0){
+					       ArrayAdapter<String> adapter = new ArrayAdapter<String>(NextBusFragment.this.getActivity(),
+                                   android.R.layout.simple_list_item_1);
+					       NextBusFragment.this.listviewNextBuses.setAdapter(adapter);
+					}else{
+						Integer[] lines = new Integer[length];
+						int j = 0;
+						for(int i: NextBusFragment.this.busStation.getBusLines())
+							if(NextBusFragment.this.lines.get(i))
+								lines[j++] = i;
+						try {
+							calculateDepartures(lines);
+						} catch (ParseException exxx) {
+							NextBusFragment.this.mainActivity.handleApplicationException(exxx);
+						}
+					}
+				}
+			});
+         }
       }
    }
 
+   void calculateDepartures(Integer[] lines) throws ParseException{
+	   SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+
+       final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
+       String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
+       int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
+
+       InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+       inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
+                                            InputMethodManager.HIDE_NOT_ALWAYS);
+
+       ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
+                                                                      android.R.layout.simple_list_item_1);
+       loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
+       this.listviewNextBuses.setAdapter(loadingAdapter);
+       new Thread(new DeparturesThread(lines,
+                                       day,
+                                       seconds,
+                                       this.busStation,
+                                       this.mainActivity,
+                                       this.listviewNextBuses)).start();
+
+   }
+   
 }
