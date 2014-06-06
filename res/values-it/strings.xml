@@ -119,7 +119,7 @@
 		Versione: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+		Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker
 		&lt;/p&gt;
 		&lt;p&gt;
 		Licenza: GPLv3
@@ -135,6 +135,10 @@
 		 - &lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
 		&lt;/p&gt;
+		&lt;p&gt;
+		Contribuzioni da altri:
+		 - Parking Icon: by &lt;a href="http://www.flaticon.com/authors/freepik"&gt;flaticon&lt;/a&gt; &lt;br /&gt;
+		 &lt;/p&gt;
 		&lt;p&gt;
 			Per suggerimenti e aiuto scrivete p.f. una email a &lt;a href="mailto:android@sasabz.it"&gt;android@sasabz.it&lt;/a&gt;.
 		&lt;/p&gt;
