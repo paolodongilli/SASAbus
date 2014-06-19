@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_bus" />
+        android:src="@drawable/parking6" />
     <!--
      Commented out because of not using this any more
     <TextView
