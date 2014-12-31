@@ -37,7 +37,7 @@ import bz.davide.dmxmljson.json.OrgJSONParser;
 
 public class SyncDelay implements AsyncResponse<PositionsResponse>
 {
-   SASAbusRealtimeDataClient realtimeDataClient = new SASAbusRealtimeDataClient("http://sasatest.r3-gis.com/",
+   SASAbusRealtimeDataClient realtimeDataClient = new SASAbusRealtimeDataClient("http://realtime.opensasa.info/",
                                                                                 new HTTPAsyncJSONDownloader(),
                                                                                 new OrgJSONParser());
 
