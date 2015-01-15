@@ -6,7 +6,8 @@
  *
  * Created: Jan 3, 2014 11:29:26 AM
  *
- * Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+ * Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin,
+ *   Matthias Dieter Wallnöfer
  *
  * This file is part of SASAbus.
  *
@@ -29,13 +30,13 @@
     <string name="bus_station_name_language">it</string>
     <!-- first time dialogs -->
     <string name="first_time_opendata_dialog_title">First time</string>
-    <string name="first_time_opendata_dialog_message">The first time the application need to download open data to smartphone. Do you want make it now?</string>
+    <string name="first_time_opendata_dialog_message">The first time the app needs to download open data onto the smartphone. Would you like to do it now?</string>
     <string name="update_opendata_dialog_title">Update available</string>
-    <string name="update_opendata_dialog_message">The timetable is updated. You may have old data. Do you want to download it now?</string>
+    <string name="update_opendata_dialog_message">In the meantime the timetable has been updated. Would you like to download it now?</string>
     <string name="first_time_opendata_dialog_yes">Yes</string>
     <string name="first_time_opendata_dialog_no">Later</string>
     <string name="first_time_map_dialog_title">Map download</string>
-    <string name="first_time_map_dialog_message">The app need to download open street map tiles. It is about 60MByte of data. If you don\'t have a flat data plan I suggest to use a wi-fi network to avoid expensive costs. Do you want to make it now?</string>
+    <string name="first_time_map_dialog_message">The app needs to download the OpenStreetMap map tiles, which are about 60MByte of data. If you don\'t have a flat data plan, we suggest you to use a wi-fi network to avoid expensive costs. Would you like to do it now?</string>
     <string name="first_time_map_dialog_yes">Yes</string>
     <string name="first_time_map_dialog_no">Later</string>
     <string name="download_opendata_map_progress_dialog_title">Downloading ...</string>
@@ -55,24 +56,24 @@
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">NotUsed</string>
     <!-- BusStationAdvancedInputText -->
-    <string name="NearbyDialog_title">Bus stations near you</string>
-    <string name="NearbyDialog_searching">Searching your gps position</string>
+    <string name="NearbyDialog_title">Bus stops near you</string>
+    <string name="NearbyDialog_searching">Localising your gps position</string>
     <string name="SelectFromMap_title">Select stop on map</string>
     <string name="SelectFromMap_select_stop">Select this stop</string>
     <string name="more">More</string>
     <string name="nearby_button">Bus stops nearby</string>
     <string name="map_button">Select bus stop from map</string>
-    <string name="favorites_button">Favorite bus stops</string>
+    <string name="favorites_button">Favourite bus stops</string>
     <string name="FavouriteDialog_title">Favourites</string>
     <string name="FavouriteDialog_add_favourite">Add "%s" to favourites</string>
-    <string name="FavouriteDialog_delete_toast">Long press a favourite to delete it</string>
-    <string name="FavouriteDialog_delete_confirm_title">Confirm delete?</string>
-    <string name="FavouriteDialog_delete_confirm_message">Do you want to delete favourite: %s?</string>
+    <string name="FavouriteDialog_delete_toast">Keep pressed a favourite to delete it</string>
+    <string name="FavouriteDialog_delete_confirm_title">Confirm deletion?</string>
+    <string name="FavouriteDialog_delete_confirm_message">Would you like to delete favourite "%s"?</string>
     <string name="FavouriteDialog_delete_favourite_yes">Yes</string>
     <string name="FavouriteDialog_delete_favourite_cancel">Cancel</string>
     <string name="delete">Delete</string>
-    <string name="nearest_bus_stations">Nearest bus stations</string>
-    <string name="deselect_all">Deseleziona tutto</string>
+    <string name="nearest_bus_stations">Nearest bus stops</string>
+    <string name="deselect_all">Deselect call</string>
     <!-- route -->
     <string name="date">Date:</string>
     <string name="time">Time:</string>
@@ -88,8 +89,8 @@
     <string name="route_walk">Walk</string>
     <!-- bus lines -->
     <string name="BusSchedulesFragment_area_all">All lines</string>
-    <string name="BusSchedulesFragment_area_bz">Bolzano area</string>
-    <string name="BusSchedulesFragment_area_me">Merano area</string>
+    <string name="BusSchedulesFragment_area_bz">Bolzano/Bozen area</string>
+    <string name="BusSchedulesFragment_area_me">Meran(o) area</string>
     <string name="BusSchedulesFragment_area_other">Other lines</string>
     <string name="BusSchedulesFragment_select_line">Select ...</string>
     <string name="BusSchedulesFragment_refresh">Refresh</string>
@@ -97,7 +98,7 @@
     <string name="departures">Departures</string>
     <!-- bus lines detail -->
     <string name="line_txt">Line</string>
-    <string name="course">Course</string>
+    <string name="course">Run</string>
     <!-- bus station departures -->
     <string name="NextBusFragment_destination">Destination</string>
     <string name="NextBusFragment_searching">Searching ...</string>
@@ -108,7 +109,7 @@
     <!-- String for the delay to display -->
     <string name="delay">min. delayed</string>
     <string name="advance">min. in advance</string>
-    <string name="in_time">In time</string>
+    <string name="in_time">in time</string>
     <string name="no_realtime">no realtime data</string>
     
     <!-- String with parameters for the departurelist -->
@@ -116,7 +117,7 @@
     <string name="laststop">direction: %1$s</string>
     <string name="next_departures">Next departures</string>
     <string name="txt_delay">delayed</string>
-    <string name="txt_advance">earlyer</string>
+    <string name="txt_advance">earlier</string>
     
     <!-- Strings for the aboutfragment in html (attention, <ul> and <li> are not processed properly) -->
     
@@ -126,7 +127,7 @@
 		Version: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker
+		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer
 		&lt;/p&gt;
 		&lt;p&gt;
 		License: GPLv3
