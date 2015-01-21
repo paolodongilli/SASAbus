@@ -6,7 +6,8 @@
  *
  * Created: Jan 3, 2014 11:29:26 AM
  *
- * Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin
+ * Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin,
+ *   Matthias Dieter Wallnöfer
  *
  * This file is part of SASAbus.
  *
@@ -29,13 +30,13 @@
     <string name="bus_station_name_language">it</string>
     <!-- first time dialogs -->
     <string name="first_time_opendata_dialog_title">Prima apertura</string>
-    <string name="first_time_opendata_dialog_message">La prima volta l\'applicazione ha bisogno di scaricare i dati sasa sullo smartphone. Vuoi procedere ora?</string>
+    <string name="first_time_opendata_dialog_message">La prima volta l\'app ha bisogno di scaricare i dati sasa sullo smartphone. Vuoi procedere ora?</string>
     <string name="update_opendata_dialog_title">Aggiornamento orari</string>
     <string name="update_opendata_dialog_message">C\'e\' un aggiornamento degli orari dei bus. Vuoi scaricare l\'aggiornamento ora ?</string>
     <string name="first_time_opendata_dialog_yes">Si</string>
     <string name="first_time_opendata_dialog_no">Più tardi</string>
     <string name="first_time_map_dialog_title">Download mappe</string>
-    <string name="first_time_map_dialog_message">L\'app ha bisogno delle immagini per la mappa. Sono circa 60MByte di dati. Se non hai un piano dati flat ti consigliamo di usare il wi-fi per evitare costi eccessivi. Vuoi scaricarle ora?</string>
+    <string name="first_time_map_dialog_message">L\'app ha bisogno degli OpenStreetMap Map Tiles (immagini per la mappa). Sono circa 60MByte di dati. Se non hai un piano dati flat ti consigliamo di usare il wi-fi per evitare costi eccessivi. Vuoi scaricarle ora?</string>
     <string name="first_time_map_dialog_yes">Si</string>
     <string name="first_time_map_dialog_no">Più tardi</string>
     <string name="download_opendata_map_progress_dialog_title">Downloading ...</string>
@@ -47,30 +48,32 @@
     <string name="bus_stops">Fermate</string>
     <string name="bus_stop">Fermata</string>
     <string name="search_route">Calcolo percorso</string>
-    <string name="parking_spots">Parking spots</string>
+    <string name="parking_spots">Parcheggi</string>
     <string name="news">Comunicazioni</string>
     <string name="menu_map">Mappa</string>
+    <string name="menu_park">Parcheggi</string>
+    <string name="menu_about">Info</string>
     <!-- ActionBarDrawer -->
-    <string name="drawer_open_close">NotUsed</string>
+    <string name="drawer_open_close">Inutilizzato</string>
     <!-- BusStationAdvancedInputText -->
     <string name="NearbyDialog_title">Fermate vicine</string>
     <string name="NearbyDialog_searching">Ricerca della posizione gps in corso ...</string>
     <string name="SelectFromMap_title">Scegli fermata dalla mappa</string>
     <string name="SelectFromMap_select_stop">Scegli questa fermata</string>
-    <string name="more">More</string>
+    <string name="more">Più risultati</string>
     <string name="nearby_button">Fermate vicine</string>
     <string name="map_button">Scegli fermata dalla mappa</string>
-    <string name="favorites_button">Fermate favorite</string>
+    <string name="favorites_button">Fermate preferite</string>
     <string name="FavouriteDialog_title">Preferiti</string>
     <string name="FavouriteDialog_add_favourite">Aggiungi "%s" ai preferiti</string>
-    <string name="FavouriteDialog_delete_toast">Premi a lungo un favorito per cancellarlo</string>
+    <string name="FavouriteDialog_delete_toast">Premi a lungo un preferito per cancellarlo</string>
     <string name="FavouriteDialog_delete_confirm_title">Confermi cancellazione?</string>
-    <string name="FavouriteDialog_delete_confirm_message">Vuoi cancellare il favorito: %s?</string>
+    <string name="FavouriteDialog_delete_confirm_message">Vuoi cancellare il preferito: "%s"?</string>
     <string name="FavouriteDialog_delete_favourite_yes">Si</string>
     <string name="FavouriteDialog_delete_favourite_cancel">Annulla</string>
     <string name="delete">Cancella</string>
     <string name="nearest_bus_stations">Fermate vicine</string>
-    <string name="deselect_all">Deselect all</string>
+    <string name="deselect_all">Deseleziona tutto</string>
     <!-- route -->
     <string name="date">Data:</string>
     <string name="time">Ora:</string>
@@ -108,9 +111,9 @@
     <string name="in_time">in orario</string>
     <string name="no_realtime">nessun dato</string>
 
-     <string name="laststop">direzione: %1$s</string>
-      <string name="next_departures">Prossime partenze</string>
-      <string name="txt_delay">rit.</string>
+    <string name="laststop">direzione: %1$s</string>
+    <string name="next_departures">Prossime partenze</string>
+    <string name="txt_delay">rit.</string>
     <string name="txt_advance">ant.</string>
     
     <string name="about_text">
@@ -119,7 +122,7 @@
 		Versione: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2014 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker
+		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer
 		&lt;/p&gt;
 		&lt;p&gt;
 		Licenza: GPLv3
