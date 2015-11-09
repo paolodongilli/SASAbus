@@ -28,5 +28,34 @@
     <string name="opendata_server_url">http://opensasa.info/SASAplandata/getData.php</string>
     <string name="maptiles_server_url">http://opensasa.info/files/maptiles</string>
     <string name="newsserverjson">http://www.sasabz.it/android/android_json.php</string>
+    <string name="bus_api_url"></string>
+    <string name="survey_api_url"></string>
+    <string name="survey_api_user"></string>
+    <string name="survey_api_password"></string>
 
+    <!-- Beacon -->
+    <string name="beacon_layout"></string>
+    <string name="beacon_region"></string>
+    <string name="beacon_uid"></string>
+    
+    <string name="beacon_locatingTimeout"></string>
+    <string name="beacon_backgroundScanPeriod"></string>
+    <string name="beacon_foregroundScanPeriod"></string>
+    <string name="beacon_backgroundBetweenScanPeriod"></string>
+    <string name="beacon_foregroundBetweenScanPeriod"></string>
+ 	<string name="beacon_minTripDistance"></string>
+    <string name="beacon_secondsInBus"></string>
+	<string name="beacon_lastSeenTreshold"></string>
+    <string name="beacon_lastFixTreshold"></string>
+    <string name="beacon_accuracyTreshold"></string>
+    
+    <!-- Station Beacon -->
+    <string name="station_beacon_region"></string>
+    <string name="station_beacon_uid"></string>
+    <string name="station_busStopValidityMiliSeconds"></string>
+    
+    
+    <!-- Google Analytics -->
+    <string name="google_tracking_id"></string>
+    
 </resources>

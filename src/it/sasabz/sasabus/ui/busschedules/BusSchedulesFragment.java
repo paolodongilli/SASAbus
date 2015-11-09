@@ -26,16 +26,19 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.logic.DeparturesThread;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.routing.DateButton;
 import it.sasabz.sasabus.ui.routing.DatePicker;
 import it.sasabz.sasabus.ui.routing.TimeButton;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -47,6 +50,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class BusSchedulesFragment extends SherlockFragment
@@ -118,6 +122,9 @@ public class BusSchedulesFragment extends SherlockFragment
 
          //ListView
          this.addOnItemSelectedListenerToListView();
+         
+         SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+         application.getTracker().track("BusSchedules");
 
          return view;
       }

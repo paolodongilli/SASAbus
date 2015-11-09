@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui.busstop;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.logic.DeparturesThread;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.ui.MainActivity;
@@ -60,6 +61,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -88,7 +90,8 @@ public class NextBusFragment extends SherlockFragment
    Hashtable<String, Boolean>  lines;
    
    ArrayList<BusDepartureItem> departures;
-
+   
+   
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
    {
@@ -105,7 +108,11 @@ public class NextBusFragment extends SherlockFragment
       this.selectStations = (LinearLayout) view.findViewById(R.id.selectStations);
       
       Calendar now = Calendar.getInstance();
-
+      
+      if (this.initialBusStationName == null || this.initialBusStationName.equals("")) {
+    	  this.showBeaconBusStop();
+      }
+      
       this.currentDate = (Button) view.findViewById(R.id.currentDate);
       DateButton.init(this.currentDate);
 
@@ -231,6 +238,9 @@ public class NextBusFragment extends SherlockFragment
 			}
 		});
          
+         SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+         application.getTracker().track("NextBus");
+         
          return view;
       }
       catch (Exception ioxxx)
@@ -238,6 +248,19 @@ public class NextBusFragment extends SherlockFragment
          this.mainActivity.handleApplicationException(ioxxx);
          throw new RuntimeException(ioxxx);
       }
+   }
+   
+   private void showBeaconBusStop(){
+	   try {
+		   SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+		   if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
+		       Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
+			   if (busStopId != null) {
+				   String busStationName = this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
+				   this.setInitialBusStationName(busStationName);
+			   }
+		   }
+	   } catch (IOException e) {}
    }
 
    public void setInitialBusStationName(String name)

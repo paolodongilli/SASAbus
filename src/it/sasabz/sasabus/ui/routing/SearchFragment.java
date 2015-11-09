@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui.routing;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
@@ -64,8 +65,8 @@ public class SearchFragment extends SherlockFragment
 
       this.mainActivity = (MainActivity) this.getActivity();
       final View view = inflater.inflate(R.layout.fragment_search, container, false);
-      this.setHasOptionsMenu(true);
-
+      this.setHasOptionsMenu(true);      
+      
       try
       {
 
@@ -81,7 +82,11 @@ public class SearchFragment extends SherlockFragment
       {
          this.mainActivity.handleApplicationException(ioxxx);
       }
-
+      
+      if (this.autocompletetextviewDeparture.getSelectedBusStation() == null) {
+    	  this.showBeaconBusStop();
+      }
+      
       this.buttonSearch = (Button) view.findViewById(R.id.button_search);
       this.buttonSearch.setOnClickListener(new SearchButtonClick(this));
 
@@ -104,6 +109,19 @@ public class SearchFragment extends SherlockFragment
       return view;
    }
 
+   private void showBeaconBusStop(){
+	   try {
+		   SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+		   if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
+		       Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
+			   if (busStopId != null) {
+				   String busStationName = this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
+				   this.autocompletetextviewDeparture.setInputTextFireChange(busStationName);
+			   }
+		   }
+	   } catch (IOException e) {}
+   }
+   
    @Override
    public void onPrepareOptionsMenu(Menu menu)
    {

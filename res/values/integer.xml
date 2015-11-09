@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="survey_recurring_time_default">
+        0
+    </integer>
+    <integer-array name="survey_recurring_times">
+        <item>86400</item>
+        <item>604800</item>
+        <item>2592000</item>
+        <item>@integer/survey_recurring_time_default</item>
+    </integer-array>
+
+</resources>

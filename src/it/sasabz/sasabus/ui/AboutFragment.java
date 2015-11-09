@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.Html;
@@ -60,6 +61,10 @@ public class AboutFragment extends SherlockFragment
 		txt_about.setMovementMethod(LinkMovementMethod.getInstance());
 		txt_about.setText(Html.fromHtml(getString(R.string.about_text,
 				versionName)));
+		
+        SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+          application.getTracker().track("About");
+		
 		return view;
 	}
 }

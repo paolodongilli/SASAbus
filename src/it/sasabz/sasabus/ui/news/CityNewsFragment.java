@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui.news;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.data.models.News;
 import it.sasabz.sasabus.ui.CustomDialog;
 
@@ -89,6 +90,9 @@ public class CityNewsFragment extends SherlockFragment
       {
          this.addAdapterToList();
       }
+      
+      SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+      application.getTracker().track("CityNews");
 
       return view;
    }

@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui.news;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.data.models.News;
 import it.sasabz.sasabus.logic.DownloadNews;
 import it.sasabz.sasabus.ui.MainActivity;
@@ -78,6 +79,9 @@ public class NewsFragment extends SherlockFragment
       this.addTabs(view);
 
       this.setHasOptionsMenu(true);
+      
+      SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+      application.getTracker().track("News");
 
       return view;
    }

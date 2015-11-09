@@ -26,6 +26,7 @@
 package it.sasabz.sasabus.ui;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 
 import java.net.URL;
 
@@ -135,6 +136,9 @@ public class ParkingsFragment extends SherlockFragment {
 
 			}
 		}).start();
+		
+        SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+            application.getTracker().track("Parkings");
 
 		return ret;
 

@@ -62,7 +62,6 @@ public class NewsList extends AsyncTask<Void, Void, ArrayList<News>>
 
       try
       {
-
          String newsserver = this.context.getString(R.string.newsserverjson);
          SasabusHTTP http = new SasabusHTTP(newsserver);
 

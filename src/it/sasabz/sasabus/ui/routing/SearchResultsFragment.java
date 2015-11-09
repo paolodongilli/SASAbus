@@ -28,6 +28,7 @@ package it.sasabz.sasabus.ui.routing;
 import it.bz.tis.sasabus.backend.shared.travelplanner.ConRes;
 import it.bz.tis.sasabus.backend.shared.travelplanner.Connection;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -83,6 +84,9 @@ public class SearchResultsFragment extends SherlockFragment
 
       TextView time = (TextView) view.findViewById(R.id.textview_time);
       time.setText(this.startTime);
+      
+      SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+      application.getTracker().track("SearchResults");
 
       return view;
    }

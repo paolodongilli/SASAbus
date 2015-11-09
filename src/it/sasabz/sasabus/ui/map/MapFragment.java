@@ -28,6 +28,7 @@ package it.sasabz.sasabus.ui.map;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busstop.NextBusFragment;
+import it.sasabz.sasabus.SasaApplication;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -66,6 +67,10 @@ public class MapFragment extends SherlockFragment
                                     }
                                  });
       this.mapView.start();
+      
+      SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+      application.getTracker().track("Map");
+      
       return this.mapView.getWebView();
    }
 

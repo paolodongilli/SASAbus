@@ -52,6 +52,7 @@
     <string name="news">Comunicazioni</string>
     <string name="menu_map">Mappa</string>
     <string name="menu_park">Parcheggi</string>
+    <string name="menu_settings">Impostazioni</string>
     <string name="menu_about">Info</string>
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">Inutilizzato</string>
@@ -122,7 +123,7 @@
 		Versione: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer
+		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer, Raiffeisen Online GmbH (Norman Marmsoler, Jürgen Sprenger, Aaron Falk)
 		&lt;/p&gt;
 		&lt;p&gt;
 		Licenza: GPLv3
@@ -137,14 +138,34 @@
 		 - &lt;a href="http://sasabus.org/wiki"&gt;SASAbus HTML5 backend&lt;/a&gt; (AGPLv3)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
+		 - Gson (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
+		 - AltBeacon (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
 		&lt;/p&gt;
 		&lt;p&gt;
 		Contribuzioni da altri:
 		 - Parking Icon: by &lt;a href="http://www.flaticon.com/authors/freepik"&gt;flaticon&lt;/a&gt; &lt;br /&gt;
 		 &lt;/p&gt;
 		&lt;p&gt;
-			Per suggerimenti e aiuto scrivete p.f. una email a &lt;a href="mailto:android@sasabz.it"&gt;android@sasabz.it&lt;/a&gt;.
+			Per suggerimenti e aiuto scrivete p.f. una email a &lt;a href="mailto:open@sasabz.it"&gt;open@sasabz.it&lt;/a&gt;.
+		&lt;/p&gt;
+		&lt;p&gt;
+			Privacy: ...
 		&lt;/p&gt;
     </string>
-    
+    <string name="settings_survey_recurring_title">Ciclo sondaggi</string>
+    <string name="settings_survey_daily">Giornaliero</string>
+    <string name="settings_survey_weekly">Settimanale</string>
+    <string name="settings_survey_monthly">Mensile</string>
+    <string name="settings_busstop_iBeacon_guessing_title">iBeacon riconoscimento fermata bus</string>
+    <string name="survey">Sondaggio</string>
+    <string name="survey_title">Sondaggio breve</string>
+    <string name="survey_answer_yes">Si</string>
+    <string name="survey_answer_no">No</string>
+    <string name="survey_contact_information_send">Invia</string>
+    <string name="survey_contact_information_cancel">Annulla</string>
+    <string name="survey_contact_email_address">Indirizzo E-Mail</string>
+    <string name="survey_contact_phone">Numero di telefono</string>
+    <string name="survey_required_fields">Uno dei due campi è obligatorio</string>
+    <string name="email_invalid">Indirizzo E-Mail non valido</string>
+    <string name="phone_invalid">Numero di telefono non valido</string>
 </resources>

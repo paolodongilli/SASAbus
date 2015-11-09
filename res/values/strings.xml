@@ -52,6 +52,7 @@
     <string name="news">News</string>
     <string name="menu_map">Map</string>
     <string name="menu_park">Parking</string>
+    <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">NotUsed</string>
@@ -127,7 +128,7 @@
 		Version: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer
+		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer, Raiffeisen Online GmbH (Norman Marmsoler, Jürgen Sprenger, Aaron Falk)
 		&lt;/p&gt;
 		&lt;p&gt;
 		License: GPLv3
@@ -142,16 +143,40 @@
 		 - &lt;a href="http://sasabus.org/wiki"&gt;SASAbus HTML5 backend&lt;/a&gt; (AGPLv3)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
+		 - Gson (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
+		 - AltBeacon (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
 		&lt;/p&gt;
 		&lt;p&gt;
 		Other contributions:
 		 - Parking Icon: by &lt;a href="http://www.flaticon.com/authors/freepik"&gt;flaticon&lt;/a&gt; &lt;br /&gt;
 		 &lt;/p&gt;
 		&lt;p&gt;
-			For suggestions or help please mail to &lt;a href="mailto:android@sasabz.it"&gt;android@sasabz.it&lt;/a&gt;.
+			For suggestions or help please mail to &lt;a href="mailto:open@sasabz.it"&gt;open@sasabz.it&lt;/a&gt;.
+		&lt;/p&gt;
+		&lt;p&gt;
+			Privacy: ...
 		&lt;/p&gt;
     </string>
+    <!-- Survey Texts -->
+    <string name="settings_survey_recurring_title">Survey cycle</string>
+    <string name="settings_survey_daily">Daily</string>
+    <string name="settings_survey_weekly">Weekly</string>
+    <string name="settings_survey_monthly">Monthly</string>
+    <string name="settings_survey_always">Always</string>
+    <string name="settings_busstop_iBeacon_guessing_title">iBeacon station detection</string>
     
+    
+    <string name="survey">Survey</string>
+    <string name="survey_title">Short survey</string>
+    <string name="survey_answer_yes">Yes</string>
+    <string name="survey_answer_no">No</string>
+    <string name="survey_contact_information_send">Send</string>
+    <string name="survey_contact_information_cancel">Cancel</string>
+    <string name="survey_contact_email_address">E-Mail Address</string>
+    <string name="survey_contact_phone">Phonenumber</string>
+    <string name="survey_required_fields">Please fill one of these fields</string>
+    <string name="email_invalid">Invalid E-Mail Address</string>
+    <string name="phone_invalid">Invalid Phonenumber</string>
     <!--
 Previous version 
     
@@ -345,5 +370,7 @@ Previous version
 <string name="drawer_open">Open navigation drawer</string>
 <string name="drawer_close">Close navigation drawer</string>
     -->
+
+
 
 </resources>

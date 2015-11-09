@@ -52,6 +52,7 @@
     <string name="news">Mitteilungen</string>
     <string name="menu_map">Karte</string>
     <string name="menu_park">Parkplätze</string>
+    <string name="menu_settings">Einstellungen</string>
     <string name="menu_about">Info</string>
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">Unbenutzt</string>
@@ -122,7 +123,7 @@
 		Version: %1$s
 		&lt;/p&gt;
 		&lt;p&gt;
-		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer
+		Copyright (C) 2011-2015 Paolo Dongilli, Markus Windegger, Davide Montesin, Thomas Nocker, Matthias Dieter Wallnöfer, Raiffeisen Online GmbH (Norman Marmsoler, Jürgen Sprenger, Aaron Falk)
 		&lt;/p&gt;
 		&lt;p&gt;
 		Lizenz: GPLv3
@@ -137,14 +138,35 @@
 		 - &lt;a href="http://sasabus.org/wiki"&gt;SASAbus HTML5 backend&lt;/a&gt; (AGPLv3)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmxj"&gt;DM-xml-json&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
 		 - &lt;a href="http://www.davide.bz/en/dmweb"&gt;DM-web&lt;/a&gt; (&lt;a href="http://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"&gt;LGPLv3&lt;/a&gt;)&lt;br /&gt;
-		&lt;/p&gt;
+		 - Gson (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
+		 - AltBeacon (&lt;a href="http://www.apache.org/licenses/LICENSE-2.0.txt"&gt;Apache v2.0&lt;/a&gt;)&lt;br /&gt;
+		 &lt;/p&gt;
 		&lt;p&gt;
 		Credits:
 		 - Parking Icon: by &lt;a href="http://www.flaticon.com/authors/freepik"&gt;flaticon&lt;/a&gt; &lt;br /&gt;
 		 &lt;/p&gt;
 		&lt;p&gt;
-			Für Verbesserungen, Anregungen und Kritik bitte eine Email an &lt;a href="mailto:android@sasabz.it"&gt;android@sasabz.it&lt;/a&gt;.
+			Für Verbesserungen, Anregungen und Kritik bitte eine Email an &lt;a href="mailto:open@sasabz.it"&gt;open@sasabz.it&lt;/a&gt;.
+		&lt;/p&gt;
+		&lt;p&gt;
+			Datenschutzerklärung: ...
 		&lt;/p&gt;
     </string>
+    <string name="settings_survey_recurring_title">Umfragen-Zyklus</string>
+    <string name="settings_survey_daily">Täglich</string>
+    <string name="settings_survey_weekly">Wöchentlich</string>
+    <string name="settings_survey_monthly">Monatlich</string>
+    <string name="settings_busstop_iBeacon_guessing_title">iBeacon Busstop Erkennung</string>
     
+    <string name="survey">Umfrage</string>
+    <string name="survey_title">Kurzumfrage</string>
+    <string name="survey_answer_yes">Ja</string>
+    <string name="survey_answer_no">Nein</string>
+    <string name="survey_contact_information_send">Senden</string>
+    <string name="survey_contact_information_cancel">Abbrechen</string>
+    <string name="survey_contact_email_address">E-Mail-Adresse</string>
+    <string name="survey_contact_phone">Telefonnummer</string>
+    <string name="survey_required_fields">Bitte füllen Sie eines dieser Felder aus</string>
+    <string name="email_invalid">Ungültige E-Mail-Adresse</string>
+    <string name="phone_invalid">Ungültige Telefonnummer</string>
 </resources>
