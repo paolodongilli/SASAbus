@@ -67,7 +67,6 @@
         <item>@string/settings_survey_daily</item>
         <item>@string/settings_survey_weekly</item>
         <item>@string/settings_survey_monthly</item>
-        <item>@string/settings_survey_always</item>
     </string-array>
 
 </resources>
