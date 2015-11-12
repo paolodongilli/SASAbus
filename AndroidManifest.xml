@@ -81,6 +81,20 @@
             </intent-filter>
         </receiver>
         
+        <receiver android:name="it.sasabz.sasabus.beacon.survey.SurveyBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="it.sasabz.sasabus.beacon.surveybroadcast" />
+            </intent-filter>
+        </receiver>
+        
+        <service android:name="it.sasabz.sasabus.beacon.BeaconScannerService"></service>
+        
+        <receiver android:name="it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver">
+            <intent-filter>
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        
         
         
         <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver" >

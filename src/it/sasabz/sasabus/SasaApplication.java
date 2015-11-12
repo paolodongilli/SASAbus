@@ -25,6 +25,7 @@
 package it.sasabz.sasabus;
 
 import it.sasabz.sasabus.beacon.BeaconObserver;
+import it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver;
 import it.sasabz.sasabus.beacon.busstop.BusStopBeaconHandler;
 import it.sasabz.sasabus.beacon.survey.SurveyBeaconHandler;
 import it.sasabz.sasabus.beacon.survey.action.NotificationAction;
@@ -34,7 +35,9 @@ import it.sasabz.sasabus.tracker.ITracker;
 import it.sasabz.sasabus.tracker.googleanalytics.GoogleTracker;
 import it.sasabz.sasabus.ui.AbstractSasaActivity;
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings.Secure;
@@ -54,9 +57,8 @@ public class SasaApplication extends Application {
 		super.onCreate();
 		mPreferenceManager = new SharedPreferenceManager(this.getApplicationContext());
 		mConfigManager = ConfigManager.getInstance(this.getApplicationContext());
-		mBeaconObserver = new BeaconObserver(this, new SurveyBeaconHandler(this, new NotificationAction(this)), new BusStopBeaconHandler(this));
-		mBeaconObserver.startListening();
 		mTracker = new GoogleTracker(this);
+		sendBroadcast(new Intent(this, BluetoothStateChangeReceiver.class));
 	}
 
 	/**

@@ -28,6 +28,9 @@ import java.util.Collection;
 
 import org.altbeacon.beacon.Beacon;
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.beacon.IBeaconHandler;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
@@ -45,6 +48,8 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
 		mSharedPreferenceManager.setCurrentBusStop(major);
+		Intent intent = new Intent(mApplication.getApplicationContext().getString(R.string.station_beacon_uid));
+		mApplication.getApplicationContext().sendBroadcast(intent);
 	}
 
 	@Override

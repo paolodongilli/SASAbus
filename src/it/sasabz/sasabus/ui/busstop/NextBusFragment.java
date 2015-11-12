@@ -46,9 +46,13 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,7 +95,9 @@ public class NextBusFragment extends SherlockFragment
    
    ArrayList<BusDepartureItem> departures;
    
+   BroadcastReceiver           beaconBusstopReceiver;
    
+
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
    {
@@ -110,7 +116,14 @@ public class NextBusFragment extends SherlockFragment
       Calendar now = Calendar.getInstance();
       
       if (this.initialBusStationName == null || this.initialBusStationName.equals("")) {
-    	  this.showBeaconBusStop();
+    	  beaconBusstopReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+		    	setBeaconBusStationName(getBeaconBusStop());;
+			}
+		};
+    	  initialBusStationName = getBeaconBusStop();
       }
       
       this.currentDate = (Button) view.findViewById(R.id.currentDate);
@@ -182,8 +195,6 @@ public class NextBusFragment extends SherlockFragment
             }
          });
 
-         this.searchInputField.setInputTextFireChange(this.initialBusStationName);
-
          selectAll.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -249,23 +260,46 @@ public class NextBusFragment extends SherlockFragment
          throw new RuntimeException(ioxxx);
       }
    }
+  
+   @Override
+   public void onActivityCreated(Bundle savedInstanceState){
+	   super.onActivityCreated(savedInstanceState);
+       this.searchInputField.setInputTextFireChange(this.initialBusStationName);
+   }
    
-   private void showBeaconBusStop(){
+   private String getBeaconBusStop(){
 	   try {
 		   SasaApplication application = (SasaApplication) this.getActivity().getApplication();
 		   if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
 		       Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
 			   if (busStopId != null) {
-				   String busStationName = this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
-				   this.setInitialBusStationName(busStationName);
+				   return this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
 			   }
 		   }
-	   } catch (IOException e) {}
+	   } catch (Exception e) {
+		   e.printStackTrace();
+	   }
+	   return "";
    }
 
    public void setInitialBusStationName(String name)
    {
       this.initialBusStationName = name;
+   }
+   
+   public void setBeaconBusStationName(String name)
+   {
+	   if(searchInputField.getText().equals("") || searchInputField.getText().equals(initialBusStationName) && !name.equals(initialBusStationName) && !name.equals(""))
+	      try
+	      {
+	    	  this.searchInputField.setInputTextFireChange(name);
+	      }
+	      catch (Exception e)
+	      {
+	    	  e.printStackTrace();
+	      }
+	   if(name != null && !name.equals(initialBusStationName) && !name.equals(""))
+	    	  initialBusStationName = name;
    }
 
    void newStationFound() throws IOException, ParseException
@@ -324,9 +358,10 @@ public class NextBusFragment extends SherlockFragment
        int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
 
        InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-       inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
+       try{
+    	   inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
                                             InputMethodManager.HIDE_NOT_ALWAYS);
-
+       }catch(Exception e){}
        ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
                                                                       android.R.layout.simple_list_item_1);
        loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
@@ -369,6 +404,18 @@ public class NextBusFragment extends SherlockFragment
     	   }
        }.start();
 
+   }
+   
+   @Override
+   public void onStart(){
+	   super.onStart();
+	   getActivity().registerReceiver(beaconBusstopReceiver, new IntentFilter(getString(R.string.station_beacon_uid)));
+   }
+   
+   @Override
+   public void onStop(){
+	   super.onStop();
+	   getActivity().unregisterReceiver(beaconBusstopReceiver);
    }
    
 }

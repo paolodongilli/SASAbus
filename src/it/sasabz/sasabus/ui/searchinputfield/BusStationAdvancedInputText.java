@@ -307,4 +307,8 @@ public class BusStationAdvancedInputText extends RelativeLayout
          }
       });
    }
+   
+   public String getText(){
+	   return autocompleteTextView.getText().toString();
+   }
 }
