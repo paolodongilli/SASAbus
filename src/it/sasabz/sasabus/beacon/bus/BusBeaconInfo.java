@@ -22,15 +22,16 @@
  * You should have received a copy of the GNU General Public License
  * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.sasabz.sasabus.beacon.survey;
+package it.sasabz.sasabus.beacon.bus;
 
 import java.util.Date;
 
 import android.location.Location;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 
-public class SurveyBeaconInfo {
+public class BusBeaconInfo {
 
+	private Integer nearestStartStation;
 	private String uuid;
 	private int minor;
 	private int major;
@@ -39,16 +40,17 @@ public class SurveyBeaconInfo {
 	private Location location;
 	private Integer tripId;
 	private String lineName;
+	private Integer lineId;
 	private Date lastSeen;
 	private int startBusstationId;
 	private int stopBusstationId;
 
-	public SurveyBeaconInfo(String uuid, int major, int minor, long time) {
-		this(uuid, major, minor, null, null, time, null, null);
+	public BusBeaconInfo(String uuid, int major, int minor, long time, Integer nearestStartStation) {
+		this(uuid, major, minor, null, null, time, null, null, null, nearestStartStation);
 	}
 
-	public SurveyBeaconInfo(String uuid, int major, int minor, Double longitude, Double latitude, long time, Integer tripId,
-			String lineName) {
+	public BusBeaconInfo(String uuid, int major, int minor, Double longitude, Double latitude, long time, Integer tripId,
+			String lineName, Integer lineId, Integer nearestStartStation) {
 		this.uuid = uuid;
 		this.minor = minor;
 		this.major = major;
@@ -62,6 +64,8 @@ public class SurveyBeaconInfo {
 		this.location.setTime(time);
 		this.tripId = tripId;
 		this.lineName = lineName;
+		this.lineId = lineId;
+		this.setNearestStartStation(nearestStartStation);
 		seen();
 	}
 
@@ -144,6 +148,7 @@ public class SurveyBeaconInfo {
 		setLatitude(busInformation.getGeometry().getCoordinates().get(1));
 		setTripId(busInformation.getProperties().getFrtFid());
 		setLineName(busInformation.getProperties().getLineName());
+		setLineId(busInformation.getProperties().getLineNumber());
 	}
 
 	public void setStopBusstationId(int stopBusstationId) {
@@ -158,8 +163,27 @@ public class SurveyBeaconInfo {
 		this.startBusstationId = stopBusstationId;
 	}
 
+	public Date getStartDate(){
+		return startDate;
+	}
 
 	public int getStartBusstationId() {
 		return this.startBusstationId;
+	}
+
+	public Integer getLineId() {
+		return lineId;
+	}
+
+	public void setLineId(Integer lineId) {
+		this.lineId = lineId;
+	}
+
+	public Integer getNearestStartStation() {
+		return nearestStartStation;
+	}
+
+	public void setNearestStartStation(Integer nearestStartStation) {
+		this.nearestStartStation = nearestStartStation;
 	}
 }

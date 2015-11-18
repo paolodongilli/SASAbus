@@ -31,6 +31,8 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
+
 public class BusInformationResult extends AbstractBusResult {
 
 	@SerializedName("features")
@@ -218,5 +220,19 @@ public class BusInformationResult extends AbstractBusResult {
 			}
 
 		}
+	}
+
+	public Feature getLastFeature() {
+		Feature feature = null;
+		if (hasFeatures() == true) {
+			Collections.sort(this.features, new Comparator<Feature>() {
+				@Override
+				public int compare(Feature feature0, Feature feature1) {
+					return feature0.getProperties().getGpsDate().compareTo(feature1.getProperties().getGpsDate());
+				}
+			});
+			feature = this.features.get(this.features.size() - 1);
+		}
+		return feature;
 	}
 }

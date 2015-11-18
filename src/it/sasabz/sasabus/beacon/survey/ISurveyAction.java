@@ -24,7 +24,9 @@
  */
 package it.sasabz.sasabus.beacon.survey;
 
+import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
+
 public interface ISurveyAction {
 
-	public void triggerSurvey(SurveyBeaconInfo beaconInfo);
+	public void triggerSurvey(BusBeaconInfo beaconInfo);
 }

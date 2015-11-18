@@ -57,7 +57,7 @@ public class BusApiService extends AbstractBusApiService {
 		/**
 		 * TODO remove BZ from vehicleCode
 		 */
-		params.add(new BasicNameValuePair("vehiclecode", vehicleCode + " BZ"));
+		params.add(new BasicNameValuePair("vehiclecode", ""+vehicleCode/* + " BZ"*/));
 		BusApiTask<BusInformationResult> task = new BusApiTask<BusInformationResult>(this.apiUrl + PATH_POSITIONS,
 				params, callback, BusInformationResult.class);
 		callApi(task);

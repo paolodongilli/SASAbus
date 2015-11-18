@@ -70,6 +70,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import bz.davide.dmxmljson.json.HTTPAsyncJSONDownloader;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.opendata.client.RemoteVersionDateReady;
 import it.sasabz.sasabus.opendata.client.SASAbusOpenDataDownloadCallback;
@@ -96,8 +98,6 @@ public class MainActivity extends AbstractSasaActivity {
 
 	AlertDialog firstTimeDialog;
 
-	AndroidOpenDataLocalStorage opendataStorage;
-
 	final static String FORCE_UPDATE_FOREGROUND = "FORCE_UPDATE_FOREGROUND";
 
 	Thread pregps;
@@ -112,7 +112,6 @@ public class MainActivity extends AbstractSasaActivity {
 		try {
 			super.onCreate(savedInstanceState);
 			this.addNavigationDrawer(savedInstanceState);
-			this.opendataStorage = new AndroidOpenDataLocalStorage(this);
 			this.mainLocationManager = new MainLocationManager(this);
 			this.checkFirstTime();
 		} catch (Exception ioxxx) {
@@ -127,7 +126,7 @@ public class MainActivity extends AbstractSasaActivity {
 
 	private void checkFirstTime() {
 		try {
-			final String versionDate = this.opendataStorage.getVersionDateIfExists();
+			final String versionDate = this.getOpenDataStorage().getVersionDateIfExists();
 
 			Intent intent = this.getIntent();
 			final boolean forceUpdate = intent != null && intent.getExtras() != null
@@ -252,7 +251,7 @@ public class MainActivity extends AbstractSasaActivity {
 				}
 			};
 
-			this.opendataStorage.asyncDownloadSASAbusOpenDataToLocalStore(this.getString(R.string.opendata_server_url),
+			this.getOpenDataStorage().asyncDownloadSASAbusOpenDataToLocalStore(this.getString(R.string.opendata_server_url),
 					new HTTPAsyncJSONDownloader(), downloadCallback);
 
 		} catch (IOException e) {
@@ -261,9 +260,9 @@ public class MainActivity extends AbstractSasaActivity {
 	}
 
 	private void checkMapFirstTime() throws IOException {
-		this.opendataStorage.preloadData();
+		this.getOpenDataStorage().preloadData();
 
-		File mapTilesRootFolder = MainActivity.this.opendataStorage.getMapTilesRootFolder();
+		File mapTilesRootFolder = MainActivity.this.getOpenDataStorage().getMapTilesRootFolder();
 
 		if (mapTilesRootFolder.listFiles().length == 0) // Map don't already
 														// downloaded!
@@ -300,7 +299,7 @@ public class MainActivity extends AbstractSasaActivity {
 	private void downloadOSMTiles() {
 
 		final String downloadzip = MainActivity.this.getString(R.string.maptiles_server_url) + "/" + this.OSM_ZIP_NAME;
-		final File destination = new File(MainActivity.this.opendataStorage.getMapTilesRootFolder(), this.OSM_ZIP_NAME);
+		final File destination = new File(MainActivity.this.getOpenDataStorage().getMapTilesRootFolder(), this.OSM_ZIP_NAME);
 
 		destination.getParentFile().mkdirs();
 
@@ -401,7 +400,10 @@ public class MainActivity extends AbstractSasaActivity {
 	}
 
 	void initUI() {
-		this.showFragment(0, true);
+		if(((SasaApplication)getApplication()).getSharedPreferenceManager().hasCurrentTrip())
+			this.showFragment(1, true);
+		else
+			this.showFragment(0, true);
 		this.mDrawerLayout.openDrawer(this.mDrawerList);
 		new Thread(new Runnable() {
 			@Override
@@ -420,13 +422,13 @@ public class MainActivity extends AbstractSasaActivity {
 			}
 		}).start();
 		try {
-			this.opendataStorage.asyncReadRemoteVersionDate(this.getString(R.string.opendata_server_url),
+			this.getOpenDataStorage().asyncReadRemoteVersionDate(this.getString(R.string.opendata_server_url),
 					new HTTPAsyncJSONDownloader(), new RemoteVersionDateReady() {
 
 						@Override
 						public void ready(String remoteDate) {
 							try {
-								String versionDate = MainActivity.this.opendataStorage.getVersionDateIfExists();
+								String versionDate = MainActivity.this.getOpenDataStorage().getVersionDateIfExists();
 								if (!versionDate.equals(remoteDate)) {
 									MainActivity.this.notifyUserForUpdate();
 								}
@@ -449,7 +451,7 @@ public class MainActivity extends AbstractSasaActivity {
 	}
 
 	public AndroidOpenDataLocalStorage getOpenDataStorage() {
-		return this.opendataStorage;
+		return ((SasaApplication) this.getApplication()).getOpenDataStorage();
 	}
 
 	@Override

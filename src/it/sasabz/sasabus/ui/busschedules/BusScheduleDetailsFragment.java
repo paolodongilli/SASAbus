@@ -26,10 +26,20 @@
 package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.BeaconScannerService;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
+import it.sasabz.sasabus.bus.trip.CurentTrip;
 import it.sasabz.sasabus.logic.BusStationArrayAdapter;
+import it.sasabz.sasabus.preferences.SharedPreferenceManager;
 import it.sasabz.sasabus.ui.MainActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,108 +48,111 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-public class BusScheduleDetailsFragment extends SherlockFragment
-{
+public class BusScheduleDetailsFragment extends SherlockFragment {
 
 	String busLineShortName;
 	BusDepartureItem item;
+	BroadcastReceiver itemUpdateBroadcastReceiver;
+	ListView listview_line_course;
 
-	public void setData(String busLineShortName, BusDepartureItem item)
-	{
+	public void setData(String busLineShortName, BusDepartureItem item) {
 		this.busLineShortName = busLineShortName;
 		this.item = item;
 	}
 
+	public void setData(String busLineShortName, CurentTrip curentTrip) {
+		setData(busLineShortName, curentTrip.getBusDepartureItem());
+		itemUpdateBroadcastReceiver = new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				SharedPreferenceManager mSharedPreferenceManager = ((SasaApplication) getActivity().getApplication())
+						.getSharedPreferenceManager();
+				if (mSharedPreferenceManager.hasCurrentTrip()) {
+					BusScheduleDetailsFragment.this.item = mSharedPreferenceManager.getCurrentTrip()
+							.getBusDepartureItem();
+					setupView(getView());
+				}
+			}
+		};
+	}
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
-	{
-		ListView listview_line_course;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		View ret = inflater.inflate(R.layout.fragment_busline_details, container, false);
+		listview_line_course = (ListView) ret.findViewById(R.id.listview_line_course);
+		setupView(ret);
+		if (itemUpdateBroadcastReceiver != null)
+			getActivity().registerReceiver(itemUpdateBroadcastReceiver,
+					new IntentFilter(BusDepartureItem.class.getName()));
+		return ret;
+	}
+
+	public void setupView(View ret) {
 
 		MainActivity mainActivity = (MainActivity) this.getActivity();
 
-		View ret = inflater.inflate(R.layout.fragment_busline_details,
-				container, false);
-		listview_line_course = (ListView) ret
-				.findViewById(R.id.listview_line_course);
+		BusStationArrayAdapter stops = new BusStationArrayAdapter(mainActivity, this.item);
 
-		BusStationArrayAdapter stops = new BusStationArrayAdapter(mainActivity,
-				this.item);
-
-		for (int i = 0; i < this.item.getStopTimes().length; ++i)
-		{
+		for (int i = 0; i < this.item.getStopTimes().length; ++i) {
 			stops.add(this.item.getStopTimes()[i]);
 		}
-
 		listview_line_course.setAdapter(stops);
 		int pos = this.item.getSelectedIndex();
-		if (pos > 0)
-		{
+		if (pos > 0) {
 			pos--;
 		}
 		listview_line_course.setSelection(pos);
-		TextView busLineNameView = (TextView) ret
-				.findViewById(R.id.textview_busline_number);
+		TextView busLineNameView = (TextView) ret.findViewById(R.id.textview_busline_number);
 		busLineNameView.setText(this.busLineShortName);
 
-		TextView busStopNameView = (TextView) ret
-				.findViewById(R.id.textview_busstop_name);
+		TextView busStopNameView = (TextView) ret.findViewById(R.id.textview_busstop_name);
 		busStopNameView.setText(""); // not in use
 
 		/*
 		 * Setting Delay better visible for the users!!!!!!
 		 */
-		TextView txt_delay_text = (TextView) ret
-				.findViewById(R.id.txt_delay_text);
+		TextView txt_delay_text = (TextView) ret.findViewById(R.id.txt_delay_text);
 		TextView txt_delay = (TextView) ret.findViewById(R.id.txt_delay);
 
-		if (this.item.isRealtime())
-		{
+		if (this.item.isRealtime()) {
 			txt_delay.setText(this.item.getDelay());
 
 			int delay = this.item.getDelayNumber();
-			if (delay == 0)
-			{
+			if (delay == 0) {
 				txt_delay.setTextColor(Color.GREEN);
 				txt_delay_text.setText(R.string.in_time);
-			}
-			else if (delay < 0)
-			{
-				if (delay < -2)
-				{
+			} else if (delay < 0) {
+				if (delay < -2) {
 					txt_delay.setTextColor(Color.CYAN);
-				}
-				else
-				{
+				} else {
 					txt_delay.setTextColor(Color.GREEN);
 				}
 				txt_delay_text.setText(R.string.advance);
-			}
-			else
-			{
-				if (delay < 2)
-				{
+			} else {
+				if (delay < 2) {
 					txt_delay.setTextColor(Color.GREEN);
-				}
-				else if (delay < 4)
-				{
-					txt_delay.setTextColor(mainActivity.getResources()
-							.getColor(R.color.sasa_orange));
-				}
-				else
-				{
+				} else if (delay < 4) {
+					txt_delay.setTextColor(mainActivity.getResources().getColor(R.color.sasa_orange));
+				} else {
 					txt_delay.setTextColor(Color.RED);
 				}
 				txt_delay_text.setText(R.string.delay);
 
 			}
 
-		}
-		else
-		{
+		} else {
 			txt_delay.setText("");
 			txt_delay_text.setText(R.string.no_realtime);
 		}
-		return ret;
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (itemUpdateBroadcastReceiver != null)
+			getActivity().unregisterReceiver(itemUpdateBroadcastReceiver);
 	}
 }

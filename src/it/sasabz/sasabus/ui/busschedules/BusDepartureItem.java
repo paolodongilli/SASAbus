@@ -114,4 +114,9 @@ public class BusDepartureItem
       return this.isRealtime;
    }
 
+   public void setDelay(int delay)
+   {
+	   this.delay = delay;
+   }
+
 }

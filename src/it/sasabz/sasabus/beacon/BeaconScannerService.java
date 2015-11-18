@@ -1,13 +1,13 @@
 package it.sasabz.sasabus.beacon;
 
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.IBinder;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.beacon.busstop.BusStopBeaconHandler;
-import it.sasabz.sasabus.beacon.survey.SurveyBeaconHandler;
 import it.sasabz.sasabus.beacon.survey.action.NotificationAction;
+import it.sasabz.sasabus.bus.trip.TripNotificationAction;
 
 public class BeaconScannerService extends Service {
 
@@ -23,15 +23,15 @@ public class BeaconScannerService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		SasaApplication application = (SasaApplication) getApplication();
-		mBeaconObserver = new BeaconObserver(application, new SurveyBeaconHandler(application, new NotificationAction(application)),
+		mBeaconObserver = new BeaconObserver(application, new BusBeaconHandler(application, new NotificationAction(application), new TripNotificationAction(application)),
 				new BusStopBeaconHandler(application));
 		mBeaconObserver.startListening();
 	}
 	
 	@Override
 	public void onDestroy(){
-		super.onDestroy();
 		mBeaconObserver.stopListening();
+		super.onDestroy();
 		sendBroadcast(new Intent(this, BluetoothStateChangeReceiver.class));
 	}
 

@@ -42,6 +42,7 @@ import android.content.ServiceConnection;
 import android.os.RemoteException;
 import android.util.Log;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.config.ConfigManager;
 
 public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
@@ -50,7 +51,7 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	private BeaconManager mBeaconManager;
 	private Region mRegionSurvey;
 	private Region mRegionBusStop;
-	private IBeaconHandler mBeaconHandlerSurvey;
+	private BusBeaconHandler mBeaconHandlerBus;
 	private IBeaconHandler mBeaconHandlerBusStop;
 	private ConfigManager mConfigManager;
 
@@ -59,9 +60,9 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	@SuppressWarnings("unused") // need the reference
 	private RegionBootstrap mRegionBusstopBootstrap;
 
-	public BeaconObserver(SasaApplication application, IBeaconHandler beaconHandlerSurvey, IBeaconHandler beaconHandlerBusStop) {
+	public BeaconObserver(SasaApplication application, BusBeaconHandler beaconHandlerBus, IBeaconHandler beaconHandlerBusStop) {
 		mApplication = application;
-		mBeaconHandlerSurvey = beaconHandlerSurvey;
+		mBeaconHandlerBus = beaconHandlerBus;
 		mBeaconHandlerBusStop = beaconHandlerBusStop;
 		mConfigManager = mApplication.getConfigManager();
 	}
@@ -81,8 +82,8 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 			mBeaconManager.setForegroundBetweenScanPeriod(
 					mConfigManager.getValue("beacon_backgroundBetweenScanPeriod", 0));
 
-			mRegionSurvey = new Region(mBeaconHandlerSurvey.getIdentifier(),
-					Identifier.parse(mBeaconHandlerSurvey.getUUid()), null, null);
+			mRegionSurvey = new Region(mBeaconHandlerBus.getIdentifier(),
+					Identifier.parse(mBeaconHandlerBus.getUUid()), null, null);
 			mRegionBootstrap = new RegionBootstrap(this, mRegionSurvey);
 			
 
@@ -99,8 +100,8 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 			@Override
 			public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
 				Log.d(SasaApplication.TAG, "Beaconsize " + beacons.size()+" region"+region.getUniqueId());
-				if (region.getUniqueId().equals(mBeaconHandlerSurvey.getIdentifier())) {
-					mBeaconHandlerSurvey.beaconsInRange(beacons);
+				if (region.getUniqueId().equals(mBeaconHandlerBus.getIdentifier())) {
+					mBeaconHandlerBus.beaconsInRange(beacons);
 				}
 				
 				if (region.getUniqueId().equals(mBeaconHandlerBusStop.getIdentifier())) {
@@ -116,8 +117,8 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	private void startRangingBeacon(Region region) {
 		try {
 			Log.d("NORM","startRanging");
-			if (region.getUniqueId().equals(mBeaconHandlerSurvey.getIdentifier())) {
-				mBeaconHandlerSurvey.clearBeacons();
+			if (region.getUniqueId().equals(mBeaconHandlerBus.getIdentifier())) {
+				mBeaconHandlerBus.clearBeacons();
 				mBeaconManager.startRangingBeaconsInRegion(mRegionSurvey);
 			}
 			
@@ -137,8 +138,8 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	private void stopRangingBeacon(Region region) {
 		try {
 			Log.d("NORM","stopRanging");
-			if (region.getUniqueId().equals(mBeaconHandlerSurvey.getIdentifier())) {
-				mBeaconHandlerSurvey.inspectBeacons();
+			if (region.getUniqueId().equals(mBeaconHandlerBus.getIdentifier())) {
+				mBeaconHandlerBus.inspectBeacons();
 				mBeaconManager.stopRangingBeaconsInRegion(mRegionSurvey);
 			}
 			
@@ -182,10 +183,11 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	}
 
 	public void stopListening() {
+		Log.wtf("", "stopListening");
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			mBeaconManager.unbind(this);
 			mBeaconHandlerBusStop.clearBeacons();
-			mBeaconHandlerSurvey.clearBeacons();
+			mBeaconHandlerBus.clearBeacons();
 		}
 		
 	}

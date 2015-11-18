@@ -25,15 +25,22 @@
 package it.sasabz.sasabus;
 
 import it.sasabz.sasabus.beacon.BeaconObserver;
+import it.sasabz.sasabus.beacon.BeaconScannerService;
 import it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
+import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
 import it.sasabz.sasabus.beacon.busstop.BusStopBeaconHandler;
-import it.sasabz.sasabus.beacon.survey.SurveyBeaconHandler;
+import it.sasabz.sasabus.beacon.busstop.BusStopBeaconInfo;
 import it.sasabz.sasabus.beacon.survey.action.NotificationAction;
 import it.sasabz.sasabus.config.ConfigManager;
+import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
 import it.sasabz.sasabus.tracker.ITracker;
 import it.sasabz.sasabus.tracker.googleanalytics.GoogleTracker;
 import it.sasabz.sasabus.ui.AbstractSasaActivity;
+
+import java.util.HashMap;
+
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -48,13 +55,19 @@ public class SasaApplication extends Application {
 	private ITracker mTracker;
 	private SharedPreferenceManager mPreferenceManager;
 	private ConfigManager mConfigManager;
-	private BeaconObserver mBeaconObserver;
+	private AndroidOpenDataLocalStorage opendataStorage;
+//	private static HashMap<String, BusBeaconInfo> mBusBeaconMap;
 	
 	private AbstractSasaActivity mActivity = null;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		try {
+			this.opendataStorage = new AndroidOpenDataLocalStorage(this.getApplicationContext());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mPreferenceManager = new SharedPreferenceManager(this.getApplicationContext());
 		mConfigManager = ConfigManager.getInstance(this.getApplicationContext());
 		mTracker = new GoogleTracker(this);
@@ -124,5 +137,17 @@ public class SasaApplication extends Application {
 	 */
 	public static String getAndroidId(Context context) {
 		return Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+	}
+
+/*	public static HashMap<String, BusBeaconInfo> getBusBeaconMap() {
+		return mBusBeaconMap;
+	}
+
+	public static void setBusBeaconMap(HashMap<String, BusBeaconInfo> mBusBeaconMap) {
+		SasaApplication.mBusBeaconMap = mBusBeaconMap;
+	}*/
+
+	public AndroidOpenDataLocalStorage getOpenDataStorage() {
+		return opendataStorage;
 	}
 }

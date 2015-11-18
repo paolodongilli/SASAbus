@@ -27,7 +27,10 @@ package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
+import it.sasabz.sasabus.bus.trip.CurentTrip;
 import it.sasabz.sasabus.logic.DeparturesThread;
+import it.sasabz.sasabus.logic.TripThread;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.routing.DateButton;
@@ -39,8 +42,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +77,7 @@ public class BusSchedulesFragment extends SherlockFragment
    BusLine                        lastBusLine;
 
    String                         currentArea;
+   
 
    static BusLineGroupException[] busLineGroupExceptions = new BusLineGroupException[] { new BusLineGroupException(201,
                                                                                                                    new String[] { OTHER }),
@@ -125,6 +131,20 @@ public class BusSchedulesFragment extends SherlockFragment
          
          SasaApplication application = (SasaApplication) this.getActivity().getApplication();
          application.getTracker().track("BusSchedules");
+         
+         if(((SasaApplication) getActivity().getApplication()).getSharedPreferenceManager().hasCurrentTrip()){
+             CurentTrip curentTrip = ((SasaApplication) getActivity().getApplication()).
+            		 getSharedPreferenceManager().getCurrentTrip();
+        	 String beaconLine = curentTrip.getBusDepartureItem().getBusStopOrLineName();
+        	 int spinnerPosition = ((ArrayAdapter<String>) spinnerBusLine.getAdapter()).getPosition(beaconLine);
+             spinnerBusLine.setSelection(spinnerPosition);
+             
+             BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(BusSchedulesFragment.this.getActivity(),
+                     BusScheduleDetailsFragment.class.getName());
+             fragmentToShow.setData(beaconLine, curentTrip);
+             FragmentManager fragmentManager = BusSchedulesFragment.this.getActivity().getSupportFragmentManager();
+             fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
+         }
 
          return view;
       }
@@ -148,6 +168,7 @@ public class BusSchedulesFragment extends SherlockFragment
                                                                   android.R.layout.simple_spinner_item,
                                                                   areas);
       adapterArea.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+      this.spinnerArea.setAdapter(adapterArea);
 
       this.spinnerArea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
       {
@@ -155,29 +176,38 @@ public class BusSchedulesFragment extends SherlockFragment
          public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
          {
             int index = arg2;
-            switch (index)
-            {
-               case 0:
-                  BusSchedulesFragment.this.currentArea = null;
-               break;
-               case 1:
-                  BusSchedulesFragment.this.currentArea = BZ;
-               break;
-               case 2:
-                  BusSchedulesFragment.this.currentArea = ME;
-               break;
-               case 3:
-                  BusSchedulesFragment.this.currentArea = OTHER;
-               break;
-            }
-            try
-            {
-               BusSchedulesFragment.this.addEntriesToSpinnerBusline(view);
-            }
-            catch (IOException e)
-            {
-               BusSchedulesFragment.this.mainActivity.handleApplicationException(e);
-            }
+            int preIndex = 0;
+            if(currentArea == BZ)
+            	preIndex = 1;
+            else if(currentArea == ME)
+            	preIndex = 2;
+            else if(currentArea == OTHER)
+            	preIndex = 3;
+            if(preIndex != index){
+	            switch (index)
+	            {
+	               case 0:
+	                  BusSchedulesFragment.this.currentArea = null;
+	               break;
+	               case 1:
+	                  BusSchedulesFragment.this.currentArea = BZ;
+	               break;
+	               case 2:
+	                  BusSchedulesFragment.this.currentArea = ME;
+	               break;
+	               case 3:
+	                  BusSchedulesFragment.this.currentArea = OTHER;
+	               break;
+	            }
+	            try
+	            {
+	               BusSchedulesFragment.this.addEntriesToSpinnerBusline(view);
+	            }
+	            catch (IOException e)
+	            {
+	               BusSchedulesFragment.this.mainActivity.handleApplicationException(e);
+	            }
+	         }
          }
 
          @Override
@@ -187,7 +217,6 @@ public class BusSchedulesFragment extends SherlockFragment
          }
       });
 
-      this.spinnerArea.setAdapter(adapterArea);
 
    }
 

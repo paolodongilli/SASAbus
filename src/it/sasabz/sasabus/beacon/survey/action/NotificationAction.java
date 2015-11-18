@@ -39,8 +39,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
 import it.sasabz.sasabus.beacon.survey.ISurveyAction;
-import it.sasabz.sasabus.beacon.survey.SurveyBeaconInfo;
 import it.sasabz.sasabus.gson.IApiCallback;
 import it.sasabz.sasabus.gson.survey.model.SurveyDefinitionResult;
 import it.sasabz.sasabus.gson.survey.model.SurveyDefinitionResult.Data;
@@ -59,7 +59,7 @@ public class NotificationAction implements ISurveyAction {
 	}
 
 	@Override
-	public void triggerSurvey(final SurveyBeaconInfo beaconInfo) {
+	public void triggerSurvey(final BusBeaconInfo beaconInfo) {
 		SurveyApiService.getInstance(mSasaApplication).getSurveyDefinition(new IApiCallback<SurveyDefinitionResult>() {
 
 			@Override
@@ -97,7 +97,7 @@ public class NotificationAction implements ISurveyAction {
 		});
 	}
 
-	private Intent getSurveyIntent(SurveyBeaconInfo beaconInfo, String question, String infoText, Class<?> className,
+	private Intent getSurveyIntent(BusBeaconInfo beaconInfo, String question, String infoText, Class<?> className,
 			boolean answer) {
 		Intent surveyNoIntent = new Intent(mSasaApplication, className);
 		surveyNoIntent.putExtra("infoText", infoText);
@@ -112,7 +112,7 @@ public class NotificationAction implements ISurveyAction {
 	}
 
 	private void showSurveyAlert(final AbstractSasaActivity activity, final String firstQuestion, final String infoText,
-			final SurveyBeaconInfo beaconInfo) {
+			final BusBeaconInfo beaconInfo) {
 		try {
 			activity.runOnUiThread(new Runnable() {
 				public void run() {
@@ -138,7 +138,7 @@ public class NotificationAction implements ISurveyAction {
 		}
 	}
 
-	private void showNotification(String firstQuestion, String infoText, SurveyBeaconInfo beaconInfo) {
+	private void showNotification(String firstQuestion, String infoText, BusBeaconInfo beaconInfo) {
 
 		int now = (int) Calendar.getInstance().getTimeInMillis();
 		PendingIntent pIntentNo = PendingIntent.getActivity(mSasaApplication, now,

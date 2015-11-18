@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.altbeacon.beacon.Beacon;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
@@ -39,7 +38,7 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 
 	private SasaApplication mApplication;
 	private SharedPreferenceManager mSharedPreferenceManager;
-	
+
 	public BusStopBeaconHandler(SasaApplication beaconApplication) {
 		mApplication = beaconApplication;
 		mSharedPreferenceManager = mApplication.getSharedPreferenceManager();
@@ -50,6 +49,7 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 		mSharedPreferenceManager.setCurrentBusStop(major);
 		Intent intent = new Intent(mApplication.getApplicationContext().getString(R.string.station_beacon_uid));
 		mApplication.getApplicationContext().sendBroadcast(intent);
+
 	}
 
 	@Override
@@ -82,22 +82,20 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void beaconsInRange(Collection<Beacon> beacons) {
-		 Beacon nearestBeacon = null;
-		 for(Beacon beacon : beacons) {
-			 if (nearestBeacon == null ||
-		         (beacon.getDistance() > 0 &&
-		          beacon.getDistance() < nearestBeacon.getDistance())) {
-				 	nearestBeacon = beacon;
-			 }
+		Beacon nearestBeacon = null;
+		for (Beacon beacon : beacons) {
+			if (nearestBeacon == null
+					|| (beacon.getDistance() > 0 && beacon.getDistance() < nearestBeacon.getDistance())) {
+				nearestBeacon = beacon;
+			}
 		}
-		
-		 if (nearestBeacon != null) {
-			 String uuid = nearestBeacon.getId1().toString();
-			 int major = nearestBeacon.getId2().toInt();
-			 int minor = nearestBeacon.getId3().toInt();
-			 this.beaconInRange(uuid, major, minor);
-			 
-		 }
+		if (nearestBeacon != null) {
+			String uuid = nearestBeacon.getId1().toString();
+			int major = nearestBeacon.getId2().toInt();
+			int minor = nearestBeacon.getId3().toInt();
+			this.beaconInRange(uuid, major, minor);
+
+		}
 	}
 
 }
