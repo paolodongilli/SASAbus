@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SASAbus.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.sasabz.sasabus.bus.trip;
+package it.sasabz.sasabus.beacon.bus.trip;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -53,13 +53,14 @@ public class TripNotificationAction {
 	private SasaApplication mSasaApplication;
 	private static final int[] BIG_VIEW_ROW_IDS = { R.id.notification_busstop_row0, R.id.notification_busstop_row1,
 			R.id.notification_busstop_row2, R.id.notification_busstop_row3, R.id.notification_busstop_row4,
-			R.id.notification_busstop_row5 };
+			R.id.notification_busstop_row5, R.id.notification_busstop_row6,R.id.notification_busstop_row7 };
 	private static final int[] BIG_VIEW_ROUTE_IMAGE_IDS = { R.id.image_route0, R.id.image_route1, R.id.image_route2,
-			R.id.image_route3, R.id.image_route4, R.id.image_route5 };
+			R.id.image_route3, R.id.image_route4, R.id.image_route5, R.id.image_route6, R.id.image_route7 };
 	private static final int[] BIG_VIEW_TIME_TEXT_IDS = { R.id.txt_time0, R.id.txt_time1, R.id.txt_time2,
-			R.id.txt_time3, R.id.txt_time4, R.id.txt_time5 };
+			R.id.txt_time3, R.id.txt_time4, R.id.txt_time5, R.id.txt_time6, R.id.txt_time7 };
 	private static final int[] BIG_VIEW_BUS_STOP_TEXT_IDS = { R.id.txt_busstopname0, R.id.txt_busstopname1,
-			R.id.txt_busstopname2, R.id.txt_busstopname3, R.id.txt_busstopname4, R.id.txt_busstopname5 };
+			R.id.txt_busstopname2, R.id.txt_busstopname3, R.id.txt_busstopname4, R.id.txt_busstopname5,
+			R.id.txt_busstopname6, R.id.txt_busstopname7 };
 
 	public TripNotificationAction(SasaApplication sasaApplication) {
 		this.mSasaApplication = sasaApplication;
@@ -75,14 +76,14 @@ public class TripNotificationAction {
 		PendingIntent pendingIntent = PendingIntent.getActivity(mSasaApplication, 0, intent, Intent.FILL_IN_DATA);
 
 		Notification notification = new NotificationCompat.Builder(mSasaApplication)
-				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.icon).setContentIntent(pendingIntent)
+				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.ic_notification).setContentIntent(pendingIntent)
 				.setOngoing(true).build();
 		NotificationManager notificationManager = (NotificationManager) mSasaApplication
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		notification.bigContentView = getBigNotificationView(curentTrip);
 
-		notificationManager.notify(1, notification);
+		notificationManager.notify(2, notification);
 
 		mSasaApplication.sendBroadcast(new Intent(BusDepartureItem.class.getName()));
 		}catch(Exception e){
@@ -137,24 +138,23 @@ public class TripNotificationAction {
 
 			}
 
-			if (busDepartureItem.getDeparture_index() == 9999) {
-				remoteViews.setTextViewText(R.id.txt_busstopname, busDepartureItem.getDestinationName());
-				remoteViews.setViewVisibility(R.id.txt_time, View.GONE);
-			} else {
-				BusTripBusStopTime element = busDepartureItem.getStopTimes()[busDepartureItem.getDeparture_index()];
-
-				remoteViews.setTextViewText(R.id.txt_time,
-						DeparturesThread.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
-
-				String busStationName = "";
-				try {
-					busStationName = getBusStationNameUsingAppLanguage(mSasaApplication.getOpenDataStorage()
-							.getBusStations().findBusStop(element.getBusStop()).getBusStation());
-				} catch (Exception exxooo) {
-					System.out.println("Do nothing");
-				}
-				remoteViews.setTextViewText(R.id.txt_busstopname, busStationName);
+			int index = busDepartureItem.getDeparture_index();
+			if (index == 9999) {
+				index = busDepartureItem.getStopTimes().length - 1;
 			}
+			BusTripBusStopTime element = busDepartureItem.getStopTimes()[index];
+
+			remoteViews.setTextViewText(R.id.txt_time,
+					DeparturesThread.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
+
+			String busStationName = "";
+			try {
+				busStationName = getBusStationNameUsingAppLanguage(mSasaApplication.getOpenDataStorage()
+						.getBusStations().findBusStop(element.getBusStop()).getBusStation());
+			} catch (Exception exxooo) {
+				System.out.println("Do nothing");
+			}
+			remoteViews.setTextViewText(R.id.txt_busstopname, busStationName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -208,48 +208,48 @@ public class TripNotificationAction {
 
 			}
 
-			if (busDepartureItem.getDeparture_index() == 9999) {
-				remoteViews.setTextViewText(R.id.txt_busstopname, busDepartureItem.getDestinationName());
-				remoteViews.setViewVisibility(R.id.txt_time, View.GONE);
-			} else {
-				int departureIndex = busDepartureItem.getDelay_index();
-				if (departureIndex > 0)
-					departureIndex--;
-				for (int i = 0; i < BIG_VIEW_ROW_IDS.length - 1; i++)
-					if (departureIndex + i < busDepartureItem.getStopTimes().length - 1) {
-						
-						if(i == BIG_VIEW_ROW_IDS.length - 2 && departureIndex + i == busDepartureItem.getStopTimes().length - 2)
-							remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
-						
-						BusTripBusStopTime element = busDepartureItem.getStopTimes()[departureIndex + i];
-						if(departureIndex + i == 0)
-							remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.ab_punkt);
-						else if (busDepartureItem.getDelay_index() == departureIndex + i) {
-							remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.middle_bus);
-						} else {
-							if (busDepartureItem.getDelay_index() > departureIndex + i) {
-								remoteViews.setTextColor(BIG_VIEW_BUS_STOP_TEXT_IDS[i], Color.GRAY);
-								remoteViews.setTextColor(BIG_VIEW_TIME_TEXT_IDS[i], Color.GRAY);
-							}
-							remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.middle_punkt);
-						}
-
-						remoteViews.setTextViewText(BIG_VIEW_TIME_TEXT_IDS[i], DeparturesThread
-								.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
-
-						String busStationName = "";
-						try {
-							busStationName = getBusStationNameUsingAppLanguage(mSasaApplication.getOpenDataStorage()
-									.getBusStations().findBusStop(element.getBusStop()).getBusStation());
-						} catch (Exception exxooo) {
-							System.out.println("Do nothing");
-						}
-						remoteViews.setTextViewText(BIG_VIEW_BUS_STOP_TEXT_IDS[i], busStationName);
-					} else{
-						remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
-						remoteViews.setViewVisibility(BIG_VIEW_ROW_IDS[i], View.GONE);
-					}
+			int departureIndex = busDepartureItem.getDelay_index();
+			if (departureIndex == 9999) {
+				departureIndex = busDepartureItem.getStopTimes().length - 1;
 			}
+			if (departureIndex > 0)
+				departureIndex--;
+			remoteViews.setViewVisibility(R.id.image_route_points, View.VISIBLE);
+			for (int i = 0; i < BIG_VIEW_ROW_IDS.length - 1; i++)
+				if (departureIndex + i < busDepartureItem.getStopTimes().length - 1) {
+					remoteViews.setViewVisibility(BIG_VIEW_ROW_IDS[i], View.VISIBLE);
+
+					if (i == BIG_VIEW_ROW_IDS.length - 2 && departureIndex + i == busDepartureItem.getStopTimes().length - 2)
+						remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
+
+					BusTripBusStopTime element = busDepartureItem.getStopTimes()[departureIndex + i];
+					if (departureIndex + i == 0)
+						remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.ab_punkt);
+					else if (busDepartureItem.getDelay_index() == departureIndex + i) {
+						remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.middle_bus);
+					} else {
+						if (busDepartureItem.getDelay_index() > departureIndex + i) {
+							remoteViews.setTextColor(BIG_VIEW_BUS_STOP_TEXT_IDS[i], Color.GRAY);
+							remoteViews.setTextColor(BIG_VIEW_TIME_TEXT_IDS[i], Color.GRAY);
+						}
+						remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.middle_punkt);
+					}
+
+					remoteViews.setTextViewText(BIG_VIEW_TIME_TEXT_IDS[i], DeparturesThread
+							.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
+
+					String busStationName = "";
+					try {
+						busStationName = getBusStationNameUsingAppLanguage(mSasaApplication.getOpenDataStorage()
+								.getBusStations().findBusStop(element.getBusStop()).getBusStation());
+					} catch (Exception exxooo) {
+						System.out.println("Do nothing");
+					}
+					remoteViews.setTextViewText(BIG_VIEW_BUS_STOP_TEXT_IDS[i], busStationName);
+				} else {
+					remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
+					remoteViews.setViewVisibility(BIG_VIEW_ROW_IDS[i], View.GONE);
+				}
 			BusTripBusStopTime element = busDepartureItem.getStopTimes()[busDepartureItem.getStopTimes().length - 1];
 
 			remoteViews.setTextViewText(BIG_VIEW_TIME_TEXT_IDS[BIG_VIEW_TIME_TEXT_IDS.length - 1], DeparturesThread

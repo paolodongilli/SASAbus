@@ -3,8 +3,7 @@ package it.sasabz.sasabus.preferences;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
-import it.sasabz.sasabus.bus.trip.CurentTrip;
-import it.sasabz.sasabus.bus.trip.TripNotificationAction;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.config.ConfigManager;
 
 import java.util.Date;
@@ -15,8 +14,8 @@ import com.google.gson.Gson;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.TriggerEvent;
 import android.util.Log;
+
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
@@ -179,7 +178,7 @@ public class SharedPreferenceManager {
 				BusBeaconHandler.mTripNotificationAction.showNotification();
 			} else{
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				notificationManager.cancel(1);
+				notificationManager.cancel(2);
 			}
 		}
 	}
@@ -227,7 +226,11 @@ public class SharedPreferenceManager {
 		if (this.sharedPreferences.getString(PREF_BUS_BEACON_MAP, null) != null) {
 			Type type = new TypeToken<HashMap<String, BusBeaconInfo>>() {
 			}.getType();
-			mBusBeaconMap = new Gson().fromJson(sharedPreferences.getString(PREF_BUS_BEACON_MAP, null), type);
+			try {
+				mBusBeaconMap = new Gson().fromJson(sharedPreferences.getString(PREF_BUS_BEACON_MAP, null), type);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 
 		if (this.sharedPreferences.getLong(PREF_BUS_BEACON_MAP_LAST, -999) != -999) {

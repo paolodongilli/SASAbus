@@ -39,6 +39,11 @@
         <item name="android:textSize">35sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="delay_notification_big">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
      <style name="delay_notification">
         <item name="android:textSize">25sp</item>

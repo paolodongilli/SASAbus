@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
 
 public class BluetoothStateChangeReceiver extends BroadcastReceiver {
@@ -21,8 +22,9 @@ public class BluetoothStateChangeReceiver extends BroadcastReceiver {
 			} else {
 				BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 				if (!mBluetoothAdapter.isEnabled()) {
+					BusBeaconHandler.mBusBeaconMap.clear();
 					NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-					notificationManager.cancel(1);
+					notificationManager.cancel(2);
 					context.stopService(new Intent(context, BeaconScannerService.class));
 					SharedPreferenceManager mSharedPreferenceManager = new SharedPreferenceManager(context);
 					mSharedPreferenceManager.setCurrentTrip(null);

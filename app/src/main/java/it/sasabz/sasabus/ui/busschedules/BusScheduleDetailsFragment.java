@@ -27,9 +27,7 @@ package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
-import it.sasabz.sasabus.beacon.BeaconScannerService;
-import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
-import it.sasabz.sasabus.bus.trip.CurentTrip;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.logic.BusStationArrayAdapter;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
 import it.sasabz.sasabus.ui.MainActivity;
@@ -39,7 +37,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

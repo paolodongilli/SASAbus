@@ -12,4 +12,5 @@
     
     <color name="dark_text_grey">#545454</color>
     <color name="sasa_orange">#F58220</color>
+    <color name="notification_text">#ffffff</color>
 </resources>

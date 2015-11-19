@@ -76,6 +76,7 @@ import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.opendata.client.RemoteVersionDateReady;
 import it.sasabz.sasabus.opendata.client.SASAbusOpenDataDownloadCallback;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
+import it.sasabz.sasabus.preferences.SharedPreferenceManager;
 import it.sasabz.sasabus.ui.survey.SurveyActivity;
 
 /**
@@ -400,7 +401,8 @@ public class MainActivity extends AbstractSasaActivity {
 	}
 
 	void initUI() {
-		if(((SasaApplication)getApplication()).getSharedPreferenceManager().hasCurrentTrip())
+		SharedPreferenceManager preferenceManager = ((SasaApplication)getApplication()).getSharedPreferenceManager();
+		if(preferenceManager.hasCurrentTrip())
 			this.showFragment(1, true);
 		else
 			this.showFragment(0, true);

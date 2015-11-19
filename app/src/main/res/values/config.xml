@@ -24,39 +24,5 @@
 -->
 <resources>
 
-    <string name="opendata_server_url">http://opensasa.info/SASAplandata/getData.php</string>
-    <string name="maptiles_server_url">http://opensasa.info/files/maptiles</string>
-    <string name="newsserverjson">http://www.sasabz.it/android/android_json.php</string>
-    <string name="bus_api_url">http://realtime.opensasa.info/</string>
-    <string name="survey_api_url">http://survey.opensasa.info/</string>
-<!--   <string name="survey_api_url">http://survey.opensasa.info/</string> -->
-    <string name="survey_api_user">api</string>
-    <string name="survey_api_password">uewrwdf#eersasde</string> <!-- Beacon -->
-    <string name="beacon_layout">m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25</string>
-    <string name="beacon_region">sasaBeaconRegion</string>
-    <string name="beacon_uid">E923B236-F2B7-4A83-BB74-CFB7FA44CAB8</string>
-    <string name="beacon_locatingTimeout">40000</string>
-    <string name="beacon_backgroundScanPeriod">3000</string>
-    <string name="beacon_foregroundScanPeriod">3000</string>
-    <string name="beacon_backgroundBetweenScanPeriod">0</string>
-    <string name="beacon_foregroundBetweenScanPeriod">0</string>
-    <string name="beacon_minTripDistance">300</string>
-    <string name="beacon_secondsInBus">60</string>
-    <string name="beacon_lastSeenTreshold">10</string>
-    <string name="beacon_lastFixTreshold">10</string>
-    <string name="beacon_accuracyTreshold">40</string>
-    <!--
- DEBUG ONLY 
-    <string name="beacon_minTripDistance">-1</string>
-    <string name="beacon_secondsInBus">0</string>
-	<string name="beacon_lastSeenTreshold">10</string>
-    <string name="beacon_lastFixTreshold">10</string>
-    <string name="beacon_accuracyTreshold">1000</string>
-    -->
-    <!-- Station Beacon -->
-    <string name="station_beacon_region">sasaBeaconStationRegion</string>
-    <string name="station_beacon_uid">8F771FCA-E25A-4A7F-AF4E-1745A7BE89EF</string>
-    <string name="station_busStopValidityMiliSeconds">30000</string> <!-- Google Analytics -->
-    <string name="google_tracking_id">UA-67699326-1</string>
 
 </resources>

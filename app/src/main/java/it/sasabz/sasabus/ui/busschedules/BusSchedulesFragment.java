@@ -27,10 +27,8 @@ package it.sasabz.sasabus.ui.busschedules;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
-import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
-import it.sasabz.sasabus.bus.trip.CurentTrip;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.logic.DeparturesThread;
-import it.sasabz.sasabus.logic.TripThread;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.routing.DateButton;
@@ -42,10 +40,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import android.content.BroadcastReceiver;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

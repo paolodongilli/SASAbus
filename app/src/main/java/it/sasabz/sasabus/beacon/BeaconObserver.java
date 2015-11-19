@@ -118,7 +118,6 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 		try {
 			Log.d("NORM","startRanging");
 			if (region.getUniqueId().equals(mBeaconHandlerBus.getIdentifier())) {
-				mBeaconHandlerBus.clearBeacons();
 				mBeaconManager.startRangingBeaconsInRegion(mRegionSurvey);
 			}
 			

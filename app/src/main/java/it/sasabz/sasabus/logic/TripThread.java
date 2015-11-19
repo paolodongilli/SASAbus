@@ -25,6 +25,8 @@
 
 package it.sasabz.sasabus.logic;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,13 +34,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
-import android.util.Log;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
-import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
-import it.sasabz.sasabus.bus.trip.CurentTrip;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
-import it.sasabz.sasabus.data.realtime.PositionsResponse;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature.Properties;
 import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
@@ -174,18 +173,6 @@ public class TripThread implements Runnable
       return delayMinute;
    }
 
-   static boolean busStationContainsStop(BusStation busStation, int stopId)
-   {
-      for (BusStop busStop : busStation.getBusStops())
-      {
-         if (busStop.getORT_NR() == stopId)
-         {
-            return true;
-         }
-      }
-      return false;
-   }
-
    BusLineVariantTrip findBusTrip(HashMap<String, Void> uniqueLineVariants)
                                                                                                                     throws IOException
    {
@@ -200,10 +187,12 @@ public class TripThread implements Runnable
       BusTripStartVariant[] variants = mApplication.getOpenDataStorage().getBusTripStarts(busLineId,
                                                                                                   dayType);
       for (BusTripStartVariant busTripStartVariant : variants)
-      {
+      {            ArrayList<Integer> ints = new ArrayList<>();
+
          BusTripStartTime[] times = busTripStartVariant.getTriplist();
          for (BusTripStartTime busTripStartTime : times)
          {
+            ints.add(busTripStartTime.getId());
             if (busTripStartTime.getId() == tripId)
             {
                uniqueLineVariants.put(String.valueOf(busLineId)
@@ -217,6 +206,7 @@ public class TripThread implements Runnable
                return busLineVariantTrip;
             }
          }
+         Collections.sort(ints);
       }
       return null;
    }

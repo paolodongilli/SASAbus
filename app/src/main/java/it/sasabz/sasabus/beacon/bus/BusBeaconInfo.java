@@ -27,6 +27,8 @@ package it.sasabz.sasabus.beacon.bus;
 import java.util.Date;
 
 import android.location.Location;
+
+import it.sasabz.sasabus.gson.bus.model.BusInformationResult;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 
 public class BusBeaconInfo {
@@ -42,7 +44,7 @@ public class BusBeaconInfo {
 	private String lineName;
 	private Integer lineId;
 	private Date lastSeen;
-	private int startBusstationId;
+	private int startBusstationId = -1;
 	private int stopBusstationId;
 
 	public BusBeaconInfo(String uuid, int major, int minor, long time, Integer nearestStartStation) {
@@ -65,7 +67,7 @@ public class BusBeaconInfo {
 		this.tripId = tripId;
 		this.lineName = lineName;
 		this.lineId = lineId;
-		this.setNearestStartStation(nearestStartStation);
+		this.nearestStartStation = nearestStartStation;
 		seen();
 	}
 
@@ -181,9 +183,5 @@ public class BusBeaconInfo {
 
 	public Integer getNearestStartStation() {
 		return nearestStartStation;
-	}
-
-	public void setNearestStartStation(Integer nearestStartStation) {
-		this.nearestStartStation = nearestStartStation;
 	}
 }

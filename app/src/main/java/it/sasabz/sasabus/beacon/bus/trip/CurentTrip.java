@@ -1,10 +1,9 @@
-package it.sasabz.sasabus.bus.trip;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package it.sasabz.sasabus.beacon.bus.trip;
 
 import android.util.Log;
+
+import java.util.Date;
+
 import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature.Properties;
@@ -71,8 +70,8 @@ public class CurentTrip {
 			for (BusStop bs : busstops)
 				if (busDepartureItem.getStopTimes()[i].getBusStop() == bs.getORT_NR()) {
 					Date now = new Date();
-					busDepartureItem.setDelay(busDepartureItem.getStopTimes()[i].getSeconds() - now.getHours() * 3600
-							- now.getMinutes() * 60 - now.getSeconds());
+					busDepartureItem.setDelay((now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
+					- busDepartureItem.getStopTimes()[i].getSeconds()) / 60);
 					return;
 				}
 		}

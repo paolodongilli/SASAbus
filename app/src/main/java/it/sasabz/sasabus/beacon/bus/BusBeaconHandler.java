@@ -38,12 +38,13 @@ import org.altbeacon.beacon.Beacon;
 import android.location.Location;
 import android.util.Log;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.BeaconScannerService;
 import it.sasabz.sasabus.beacon.IBeaconHandler;
 import it.sasabz.sasabus.beacon.survey.IBeaconSuitableCallback;
 import it.sasabz.sasabus.beacon.survey.ISurveyAction;
 import it.sasabz.sasabus.beacon.survey.ISurveyLocationCallback;
 import it.sasabz.sasabus.beacon.survey.SurveyLocationHandler;
-import it.sasabz.sasabus.bus.trip.TripNotificationAction;
+import it.sasabz.sasabus.beacon.bus.trip.TripNotificationAction;
 import it.sasabz.sasabus.gson.IApiCallback;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
@@ -58,7 +59,8 @@ public class BusBeaconHandler implements IBeaconHandler {
 	private SharedPreferenceManager mSharedPreferenceManager;
 	private ISurveyAction mSurveyAction;
 	public static TripNotificationAction mTripNotificationAction;
-	HashMap<String, BusBeaconInfo> mBusBeaconMap;
+	private boolean isAlive = false;
+	public static HashMap<String, BusBeaconInfo> mBusBeaconMap;
 
 	public BusBeaconHandler(SasaApplication beaconApplication, ISurveyAction surveyAction,
 			TripNotificationAction tripNotificationAction) {
@@ -80,7 +82,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 			Log.d(SasaApplication.TAG, "reputkey: " + key);
 			beaconInfo.seen();
 			Log.d(SasaApplication.TAG, "Beacon has been seen for " + beaconInfo.getSeenSeconds());
-			if (beaconInfo.getTripId() == null && this.mApplication.isOnline())
+			if (beaconInfo.getTripId() == null && this.mApplication.isOnline() || beaconInfo.getStartBusstationId() == -1)
 				getBusInformation(major, beaconInfo);
 		} else {
 			beaconInfo = new BusBeaconInfo(uuid, major, minor, Calendar.getInstance().getTimeInMillis(),
@@ -92,23 +94,26 @@ public class BusBeaconHandler implements IBeaconHandler {
 		}
 	}
 
-	private void getBusInformation(int major, final BusBeaconInfo beaconInfo) {
+	private void getBusInformation(final int major, final BusBeaconInfo beaconInfo) {
 		BusApiService.getInstance(mApplication).getBusInformation(major, new IApiCallback<BusInformationResult>() {
 
 			@Override
 			public void onSuccess(BusInformationResult result) {
-				if (result.hasFeatures()) {
-					Feature busInformation = result.getFirstFeature();
-					beaconInfo.setBusInformation(busInformation);
+				if (BeaconScannerService.isAlive)
+					if (result.hasFeatures()) {
+						Feature busInformation = result.getFirstFeature();
+						beaconInfo.setBusInformation(busInformation);
 
-					if (busInformation != null && busInformation.getProperties() != null) {
-						beaconInfo.setStartBusstationId(busInformation.getProperties().getNextStopNumber());
+						Log.d("beaconInfoSeen", "" + beaconInfo.getSeenSeconds());
+						if (busInformation != null && busInformation.getProperties() != null
+								&& beaconInfo.getSeenSeconds() > 20) {
+							beaconInfo.setStartBusstationId(result.getLastFeature().getProperties().getNextStopNumber());
+						}
+						Log.d(SasaApplication.TAG, "Got location from bus information: "
+								+ beaconInfo.getLocation().getLongitude() + " / " + beaconInfo.getLocation().getLatitude());
+					} else {
+						handleNoBusInformation();
 					}
-					Log.d(SasaApplication.TAG, "Got location from bus information: "
-							+ beaconInfo.getLocation().getLongitude() + " / " + beaconInfo.getLocation().getLatitude());
-				} else {
-					handleNoBusInformation();
-				}
 			}
 
 			@Override
@@ -176,16 +181,6 @@ public class BusBeaconHandler implements IBeaconHandler {
 					});
 				}
 			}
-		Iterator<Entry<String, BusBeaconInfo>> iterator = mBusBeaconMap.entrySet().iterator();
-
-		while (iterator.hasNext()) {
-			Map.Entry<String, BusBeaconInfo> pair = (Map.Entry<String, BusBeaconInfo>) iterator.next();
-			final BusBeaconInfo beaconInfo = pair.getValue();
-			if (beaconInfo.getLastSeen().getTime()
-					+ mApplication.getConfigManager().getValue("beacon_lastSeenTreshold", 10) < Calendar.getInstance()
-							.getTimeInMillis())
-				mBusBeaconMap.remove(pair.getKey());
-		}
 	}
 
 	/**
@@ -266,57 +261,53 @@ public class BusBeaconHandler implements IBeaconHandler {
 	 * @param callback
 	 */
 	private void isBeaconCurrentTrip(final BusBeaconInfo beaconInfo) {
-		if (beaconInfo.getLastSeen().getTime()
-				+ mApplication.getConfigManager().getValue("beacon_lastSeenTreshold", 10) > Calendar.getInstance()
-						.getTimeInMillis()
-				|| true) {
+		if (beaconInfo.getStartBusstationId() != -1
+				|| beaconInfo.getNearestStartStation() != null
+				&& (mSharedPreferenceManager.getCurrentBusStop() == null
+				|| !(getBusStopName(mSharedPreferenceManager.getCurrentBusStop())
+				.equals(getBusStopName(beaconInfo.getNearestStartStation())))))
 			BusApiService.getInstance(mApplication).getBusInformation(beaconInfo.getMajor(),
 					new IApiCallback<BusInformationResult>() {
 
 						@Override
 						public void onSuccess(BusInformationResult result) {
-							if (result.hasFeatures()) {
+							if (BeaconScannerService.isAlive && result.hasFeatures()) {
 								Feature busInformation = result.getLastFeature();
 								Location busLocation = new Location("BusInfo");
 
 								if (busInformation != null && busInformation.getProperties() != null) {
-									beaconInfo.setStopBusstationId(busInformation.getProperties().getNextStopNumber());
-									beaconInfo.setTripId(busInformation.getProperties().getFrtFid());
+									if(beaconInfo.getTripId() != busInformation.getProperties().getFrtFid()) {
+										if(mSharedPreferenceManager.getCurrentTrip() == null)
+											beaconInfo.setStartBusstationId(busInformation.getProperties().getNextStopNumber());
+										beaconInfo.setLineId(busInformation.getProperties().getLineNumber());
+										beaconInfo.setLineName(busInformation.getProperties().getLineName());
+										beaconInfo.setTripId(busInformation.getProperties().getFrtFid());
+									}
 								}
 								busLocation.setLongitude(busInformation.getGeometry().getCoordinates().get(0));
 								busLocation.setLatitude(busInformation.getGeometry().getCoordinates().get(1));
 								Log.d(SasaApplication.TAG, "Got location from bus information: "
 										+ busLocation.getLongitude() + " / " + busLocation.getLatitude());
-								checkTrip(busLocation, busInformation);
+								if (busInformation != null && busInformation.getProperties() != null) {
+									if (busInformation.getProperties().getNextStopNumber() != beaconInfo.getStartBusstationId()) {
+										SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+										SimpleDateFormat HHmm = new SimpleDateFormat("HH:mm");
+										Date date = new Date();
+										final String day = yyyyMMdd.format(date);
+										int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
+										new Thread(new TripThread(beaconInfo.getLineId(), getBeaconLine(beaconInfo.getLineId()),
+												beaconInfo.getTripId(), day, seconds, mApplication, busInformation)).start();
+									}
+								}
+
 							}
 						}
 
 						@Override
 						public void onFailure(Exception e) {
-						}
 
-						private void checkTrip(Location busLocation, Feature feature) {
-							float tripDistance = beaconInfo.getLocation().distanceTo(busLocation);
-							Log.d(SasaApplication.TAG, "Trip distance: " + tripDistance + "m");
-							if (tripDistance > mApplication.getConfigManager().getValue("beacon_minTripDistance", 400)
-									|| beaconInfo.getNearestStartStation() != null
-											&& (mSharedPreferenceManager.getCurrentBusStop() != null
-													&& beaconInfo.getNearestStartStation() == null
-													|| mSharedPreferenceManager.getCurrentBusStop() == null
-															&& beaconInfo.getNearestStartStation() != null
-											|| !mSharedPreferenceManager.getCurrentBusStop()
-													.equals(beaconInfo.getNearestStartStation()))) {
-								SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
-								SimpleDateFormat HHmm = new SimpleDateFormat("HH:mm");
-								Date date = new Date();
-								final String day = yyyyMMdd.format(date);
-								int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
-								new Thread(new TripThread(beaconInfo.getLineId(), getBeaconLine(beaconInfo.getLineId()),
-										beaconInfo.getTripId(), day, seconds, mApplication, feature)).start();
-							}
 						}
 					});
-		}
 	}
 
 	@Override
@@ -344,10 +335,8 @@ public class BusBeaconHandler implements IBeaconHandler {
 			}
 			Log.d(SasaApplication.TAG, "beaconssize: " + in);
 			Log.d(SasaApplication.TAG,
-					firstSeenBusBeaconInfo == null ? "beacon: null" : "beacon: " + firstSeenBusBeaconInfo.toString());
+					firstSeenBusBeaconInfo == null ? "beacon: null" : "beacon: " + firstSeenBusBeaconInfo.getMajor());
 			if (firstSeenBusBeaconInfo != null) {
-				if (firstSeenBusBeaconInfo.getNearestStartStation() == null)
-					firstSeenBusBeaconInfo.setNearestStartStation(mSharedPreferenceManager.getCurrentBusStop());
 				if (this.mApplication.isOnline())
 					isBeaconCurrentTrip(firstSeenBusBeaconInfo);
 				else if(mSharedPreferenceManager.hasCurrentTrip()){
@@ -365,6 +354,17 @@ public class BusBeaconHandler implements IBeaconHandler {
 					
 			} else if (mSharedPreferenceManager.hasCurrentTrip())
 				mSharedPreferenceManager.setCurrentTrip(null);
+			Iterator<Entry<String, BusBeaconInfo>> iterator = mBusBeaconMap.entrySet().iterator();
+
+			while (iterator.hasNext()) {
+				Map.Entry<String, BusBeaconInfo> pair = (Map.Entry<String, BusBeaconInfo>) iterator.next();
+				final BusBeaconInfo beaconInfo = pair.getValue();
+				if (beaconInfo.getLastSeen().getTime()
+						+ mApplication.getConfigManager().getValue("beacon_lastSeenTresholdd", 10000) < Calendar.getInstance()
+						.getTimeInMillis()) {
+					mBusBeaconMap.remove(pair.getKey());
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -398,5 +398,16 @@ public class BusBeaconHandler implements IBeaconHandler {
 	@Override
 	public boolean isHandlerEnabled() {
 		return true;
+	}
+
+	private String getBusStopName(int busStopId){
+		try {
+			if (mApplication.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
+				return mApplication.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation().findName_it();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

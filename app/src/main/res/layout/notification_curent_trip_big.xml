@@ -1,7 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:tag="base" >
+    android:layout_height="wrap_content" >
 
     <FrameLayout
         android:id="@+id/icon_group"
@@ -33,13 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginLeft="64dp"
+        android:layout_marginLeft="50dp"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -50,7 +50,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="5&apos;"
-                android:textAppearance="@style/delay_notification" />
+                android:textAppearance="@style/delay_notification_big" />
 
             <TextView
                 android:id="@+id/txt_delay_text"
@@ -58,9 +58,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
-                android:paddingLeft="5dp"
+                android:paddingLeft="7dp"
                 android:singleLine="true"
-                android:text="vorhanden" />
+                android:text="vorhanden"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/notification_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,19 +74,20 @@
 
             <ImageView
                 android:id="@+id/image_route0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ab_punkt" />
 
             <TextView
                 android:id="@+id/txt_time0"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_busstopname0"
@@ -93,7 +96,8 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -105,19 +109,20 @@
 
             <ImageView
                 android:id="@+id/image_route1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/middle_bus" />
 
             <TextView
                 android:id="@+id/txt_time1"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_busstopname1"
@@ -126,7 +131,8 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -137,19 +143,20 @@
 
             <ImageView
                 android:id="@+id/image_route2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/middle_punkt" />
 
             <TextView
                 android:id="@+id/txt_time2"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_busstopname2"
@@ -158,7 +165,8 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -169,19 +177,20 @@
 
             <ImageView
                 android:id="@+id/image_route3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/middle_punkt" />
 
             <TextView
                 android:id="@+id/txt_time3"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_busstopname3"
@@ -190,7 +199,8 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -201,19 +211,20 @@
 
             <ImageView
                 android:id="@+id/image_route4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/middle_punkt" />
 
             <TextView
                 android:id="@+id/txt_time4"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/txt_busstopname4"
@@ -222,15 +233,9 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/image_route_points"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/middle_punkte" />
 
         <LinearLayout
             android:id="@+id/notification_busstop_row5"
@@ -240,19 +245,20 @@
 
             <ImageView
                 android:id="@+id/image_route5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/an_punkt" />
+                android:src="@drawable/middle_punkt" />
 
             <TextView
                 android:id="@+id/txt_time5"
-                android:layout_width="50sp"
+                android:layout_width="45sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/txt_busstopname5"
@@ -261,7 +267,84 @@
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notification_busstop_row6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/image_route6"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/middle_punkt" />
+
+            <TextView
+                android:id="@+id/txt_time6"
+                android:layout_width="45sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/notification_text"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/txt_busstopname6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_route_points"
+            android:layout_width="23sp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/middle_punkte" />
+
+        <LinearLayout
+            android:layout_marginBottom="5dp"
+            android:id="@+id/notification_busstop_row7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/image_route7"
+                android:layout_width="23sp"
+                android:layout_height="23sp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/an_punkt" />
+
+            <TextView
+                android:id="@+id/txt_time7"
+                android:layout_width="45sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/notification_text"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/txt_busstopname7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/notification_text"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
