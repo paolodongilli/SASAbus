@@ -57,9 +57,9 @@
     <!-- ActionBarDrawer -->
     <string name="drawer_open_close">Unbenutzt</string>
     <!-- BusStationAdvancedInputText -->
-    <string name="NearbyDialog_title">Haltestellen in der Umgebung</string>
+    <string name="NearbyDialog_title">Haltestellen in der Nähe</string>
     <string name="NearbyDialog_searching">GPS sucht aktuelle Position ...</string>
-    <string name="SelectFromMap_title">Haltestelle aus der Karte auswählen</string>
+    <string name="SelectFromMap_title">Haltestelle auf der Karte auswählen</string>
     <string name="SelectFromMap_select_stop">Haltestelle auswählen</string>
     <string name="more">Mehr</string>
     <string name="nearby_button">Haltestellen in der Nähe</string>
@@ -73,7 +73,7 @@
     <string name="FavouriteDialog_delete_favourite_yes">Ja</string>
     <string name="FavouriteDialog_delete_favourite_cancel">Abbrechen</string>
     <string name="delete">Löschen</string>
-    <string name="nearest_bus_stations">Haltestellen in der Umgebung</string>
+    <string name="nearest_bus_stations">Haltestellen in der Nähe</string>
     <string name="deselect_all">Auswahl aufheben</string>
     <!-- route -->
     <string name="date">Datum:</string>
