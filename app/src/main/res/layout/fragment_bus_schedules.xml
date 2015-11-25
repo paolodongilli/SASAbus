@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
     android:focusable="true"
+    android:clickable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:padding="@dimen/activity_padding" >
