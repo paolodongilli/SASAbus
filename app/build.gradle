@@ -17,13 +17,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors{
+        playstore{
+
+        }
+        fdroid{
+
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.google.android.gms:play-services:7.0.0'
+    playstoreCompile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'org.altbeacon:android-beacon-library:2.7.1'
