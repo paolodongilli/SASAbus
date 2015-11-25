@@ -76,7 +76,7 @@ public class TripNotificationAction {
 		PendingIntent pendingIntent = PendingIntent.getActivity(mSasaApplication, 0, intent, Intent.FILL_IN_DATA);
 
 		Notification notification = new NotificationCompat.Builder(mSasaApplication)
-				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.ic_notification).setContentIntent(pendingIntent)
+				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.icon).setContentIntent(pendingIntent)
 				.setOngoing(true).build();
 		NotificationManager notificationManager = (NotificationManager) mSasaApplication
 				.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -15,11 +15,13 @@ public class CurentTrip {
 	private BusDepartureItem busDepartureItem;
 	private int color = 0;
 	private int tripId = 0;
+	private int busId = 0;
 
-	public CurentTrip(BusDepartureItem busDepartureItem, int color, int tripId) {
+	public CurentTrip(BusDepartureItem busDepartureItem, int color, int tripId, int busId) {
 		this.busDepartureItem = busDepartureItem;
 		this.color = color;
 		this.tripId = tripId;
+		this.busId = busId;
 	}
 
 	public BusDepartureItem getBusDepartureItem() {
@@ -75,5 +77,9 @@ public class CurentTrip {
 					return;
 				}
 		}
+	}
+
+	public int getBusId() {
+		return busId;
 	}
 }

@@ -57,12 +57,14 @@ public class TripThread implements Runnable
    String           yyyyMMdd;
    int              seconds;
    int				tripId;
+   int              busId;
    SasaApplication  mApplication;
    Feature			feature;
 
    public TripThread(int busLineId,
 		                   String busLineName,
 		                   int tripId,
+                           int busId,
                            String yyyyMMdd,
                            int seconds,
                            SasaApplication application,
@@ -76,6 +78,7 @@ public class TripThread implements Runnable
       this.seconds = seconds;
       this.feature = currentFeature;
       this.mApplication = application;
+      this.busId = busId;
    }
 
    @Override
@@ -150,7 +153,7 @@ public class TripThread implements Runnable
                                                       departure_index,
                                                       delaySecondsRoundedToMin / 60,
                                                       delayStopFoundIndex,
-                                                      isRealtime), color, properties.getFrtFid());
+                                                      isRealtime), color, properties.getFrtFid(), busId);
          mApplication.getSharedPreferenceManager().setCurrentTrip(curentTrip);
 
         

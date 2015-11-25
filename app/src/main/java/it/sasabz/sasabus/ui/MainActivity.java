@@ -558,7 +558,10 @@ public class MainActivity extends AbstractSasaActivity {
 
 		this.getSupportActionBar().setHomeButtonEnabled(true);
 
-		this.mDrawerList.setItemChecked(0, true);
+		if(((SasaApplication)getApplication()).getSharedPreferenceManager().hasCurrentTrip())
+			this.mDrawerList.setItemChecked(1, true);
+		else
+			this.mDrawerList.setItemChecked(0, true);
 
 	}
 
