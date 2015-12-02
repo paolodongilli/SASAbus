@@ -25,18 +25,6 @@
 
 package it.sasabz.sasabus.ui;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -45,6 +33,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -62,12 +51,27 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import bz.davide.dmxmljson.json.HTTPAsyncJSONDownloader;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
@@ -77,6 +81,8 @@ import it.sasabz.sasabus.opendata.client.RemoteVersionDateReady;
 import it.sasabz.sasabus.opendata.client.SASAbusOpenDataDownloadCallback;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
+import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
+import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
 import it.sasabz.sasabus.ui.survey.SurveyActivity;
 
 /**
@@ -97,6 +103,10 @@ public class MainActivity extends AbstractSasaActivity {
 	private TypedArray mNavigationIcons;
 	private String[] mFragments;
 
+	private boolean beaconBusVisible = true;
+	BroadcastReceiver beaconBusstopReceiver = null;
+
+
 	AlertDialog firstTimeDialog;
 
 	final static String FORCE_UPDATE_FOREGROUND = "FORCE_UPDATE_FOREGROUND";
@@ -112,6 +122,42 @@ public class MainActivity extends AbstractSasaActivity {
 
 		try {
 			super.onCreate(savedInstanceState);
+			beaconBusstopReceiver = new BroadcastReceiver() {
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					Log.e("on","receive");
+					ArrayAdapter arrayAdapter = BusBeaconHandler.getDepartureAdapter(MainActivity.this);
+					List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
+					for (int i = 0; i < mNavigationTitles.length; i++) {
+						drawerItems.add(new DrawerItem(mNavigationTitles[i], mNavigationIcons.getDrawable(i),
+								mFragments[i]));
+					}
+					int selectedItem = mDrawerList.getCheckedItemPosition();
+					if(beaconBusVisible && !(arrayAdapter instanceof BusSchedulesDepartureAdapter)){
+						Log.e("on","receive netVisible"+selectedItem);
+						beaconBusVisible = false;
+						drawerItems.remove(3);
+						Adapter drawerAdapter = new NavigationDrawerAdapter(MainActivity.this, R.layout.drawer_layout_item, drawerItems);
+						mDrawerList.setAdapter((ListAdapter) drawerAdapter);
+						if(selectedItem != 3)
+							if(selectedItem > 3)
+								mDrawerList.setItemChecked(selectedItem - 1, true);
+							else
+								mDrawerList.setItemChecked(selectedItem, true);
+					}else if(!beaconBusVisible && arrayAdapter instanceof BusSchedulesDepartureAdapter){
+						Log.e("on","receive Visible"+selectedItem);
+						beaconBusVisible = true;
+						Adapter drawerAdapter = new NavigationDrawerAdapter(MainActivity.this, R.layout.drawer_layout_item, drawerItems);
+						mDrawerList.setAdapter((ListAdapter) drawerAdapter);
+						if(selectedItem == -1)
+							mDrawerList.setItemChecked(selectedItem + 1, true);
+						else if(selectedItem > 2)
+							mDrawerList.setItemChecked(selectedItem + 1, true);
+						else
+							mDrawerList.setItemChecked(selectedItem, true);
+					}
+				}
+			};
 			this.addNavigationDrawer(savedInstanceState);
 			this.mainLocationManager = new MainLocationManager(this);
 			this.checkFirstTime();
@@ -526,11 +572,13 @@ public class MainActivity extends AbstractSasaActivity {
 			drawerItems.add(new DrawerItem(this.mNavigationTitles[i], this.mNavigationIcons.getDrawable(i),
 					this.mFragments[i]));
 		}
-		this.mNavigationIcons.recycle();
+
+		Adapter drawerAdapter = new NavigationDrawerAdapter(MainActivity.this, R.layout.drawer_layout_item, drawerItems);
+		mDrawerList.setAdapter((ListAdapter) drawerAdapter);
+		beaconBusstopReceiver.onReceive(this,null);
+//		this.mNavigationIcons.recycle();
 
 		// Add adater to navigation drawer
-		Adapter drawerAdapter = new NavigationDrawerAdapter(this, R.layout.drawer_layout_item, drawerItems);
-		this.mDrawerList.setAdapter((ListAdapter) drawerAdapter);
 		this.mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// Add toggle to actionbar
@@ -633,8 +681,10 @@ public class MainActivity extends AbstractSasaActivity {
 		}
 	}
 
-	private void showFragment(final int position, boolean firstTime) {
+	private void showFragment(int position, boolean firstTime) {
 
+		if(position > 2 && !beaconBusVisible)
+			position++;
 		SherlockFragment fragmentToShow = (SherlockFragment) SherlockFragment.instantiate(MainActivity.this,
 				this.mFragments[position]);
 
@@ -697,6 +747,18 @@ public class MainActivity extends AbstractSasaActivity {
 		} else {
 			return busStation.findName_it();
 		}
+	}
+
+	@Override
+	public void onStart(){
+		super.onStart();
+		registerReceiver(beaconBusstopReceiver, new IntentFilter(BusDepartureItem.class.getName()));
+	}
+
+	@Override
+	public void onStop(){
+		super.onStop();
+		unregisterReceiver(beaconBusstopReceiver);
 	}
 
 	public static String getHomeFragment() {

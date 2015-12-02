@@ -169,4 +169,7 @@
     <string name="survey_required_fields">Bitte füllen Sie eines dieser Felder aus</string>
     <string name="email_invalid">Ungültige E-Mail-Adresse</string>
     <string name="phone_invalid">Ungültige Telefonnummer</string>
+
+    <string name="beacon_bus">Beacon Bus</string>
+    <string name="visible_buses">Busse in der Nähe</string>
 </resources>

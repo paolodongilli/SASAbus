@@ -24,7 +24,15 @@
  */
 package it.sasabz.sasabus.beacon.bus;
 
-import java.io.IOException;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+
+import org.altbeacon.beacon.Beacon;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,19 +43,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.altbeacon.beacon.Beacon;
-
-import android.content.Intent;
-import android.location.Location;
-import android.util.Log;
 import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.beacon.BeaconScannerService;
 import it.sasabz.sasabus.beacon.IBeaconHandler;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
+import it.sasabz.sasabus.beacon.bus.trip.TripNotificationAction;
 import it.sasabz.sasabus.beacon.survey.IBeaconSuitableCallback;
 import it.sasabz.sasabus.beacon.survey.ISurveyAction;
 import it.sasabz.sasabus.beacon.survey.ISurveyLocationCallback;
 import it.sasabz.sasabus.beacon.survey.SurveyLocationHandler;
-import it.sasabz.sasabus.beacon.bus.trip.TripNotificationAction;
+import it.sasabz.sasabus.data.trips.FinishedTrip;
+import it.sasabz.sasabus.data.trips.TripsSQLiteOpenHelper;
 import it.sasabz.sasabus.gson.IApiCallback;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
@@ -55,6 +61,8 @@ import it.sasabz.sasabus.gson.bus.service.BusApiService;
 import it.sasabz.sasabus.logic.TripThread;
 import it.sasabz.sasabus.opendata.client.model.BusLine;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
+import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
+import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
 
 public class BusBeaconHandler implements IBeaconHandler {
 
@@ -67,7 +75,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 	private boolean created = false;
 
 	public BusBeaconHandler(SasaApplication beaconApplication, ISurveyAction surveyAction,
-			TripNotificationAction tripNotificationAction) {
+							TripNotificationAction tripNotificationAction) {
 		mApplication = beaconApplication;
 		mSharedPreferenceManager = mApplication.getSharedPreferenceManager();
 		mBusBeaconMap = mSharedPreferenceManager.getBusBeaconMap();
@@ -77,12 +85,15 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
-		if(major == 385)
-			major = 410;
 		final String key = uuid + "_" + major;
 		final BusBeaconInfo beaconInfo;
 		if (mBusBeaconMap.keySet().contains(key)) {
 			beaconInfo = mBusBeaconMap.get(key);
+
+			if (beaconInfo.getLastSeen().getTime()
+					+ 10000 < Calendar.getInstance()
+					.getTimeInMillis())
+				mApplication.sendBroadcast(new Intent(BusDepartureItem.class.getName()));
 			beaconInfo.seen();
 			mBusBeaconMap.put(key, beaconInfo);
 			Log.d(SasaApplication.TAG, "reputkey: " + key);
@@ -107,13 +118,30 @@ public class BusBeaconHandler implements IBeaconHandler {
 			public void onSuccess(BusInformationResult result) {
 				if (BeaconScannerService.isAlive)
 					if (result.hasFeatures()) {
-						Feature busInformation = result.getFirstFeature();
+						final Feature busInformation = result.getFirstFeature();
 						beaconInfo.setBusInformation(busInformation);
 
 						Log.d("beaconInfoSeen", "" + beaconInfo.getSeenSeconds());
 						if (busInformation != null && busInformation.getProperties() != null
 								&& beaconInfo.getSeenSeconds() > 20) {
 							beaconInfo.setStartBusstationId(result.getLastFeature().getProperties().getNextStopNumber());
+						}else{
+							SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+							SimpleDateFormat HHmm = new SimpleDateFormat("HH:mm");
+							Date date = new Date();
+							final String day = yyyyMMdd.format(date);
+							int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
+							final TripThread tripThread = new TripThread(beaconInfo.getLineId(), getBeaconLine(beaconInfo.getLineId()),
+									beaconInfo.getTripId(), beaconInfo.getMajor(), day, seconds, mApplication, busInformation);
+							tripThread.setPostExecute(new Runnable(){
+								public void run(){
+									if(beaconInfo.getBusDepartureItem() == null) {
+										beaconInfo.setBusDepartureItem(tripThread.getBusDepartureItem());
+										mApplication.sendBroadcast(new Intent(BusDepartureItem.class.getName()));
+									}
+								}
+							});
+							new Thread(tripThread).start();
 						}
 						Log.d(SasaApplication.TAG, "Got location from bus information: "
 								+ beaconInfo.getLocation().getLongitude() + " / " + beaconInfo.getLocation().getLatitude());
@@ -199,6 +227,14 @@ public class BusBeaconHandler implements IBeaconHandler {
 						}
 					}
 					beaconsInRange(new ArrayList<Beacon>());
+					synchronized (this) {
+						try {
+							this.wait(30000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					beaconsInRange(new ArrayList<Beacon>());
 				}
 
 			}.start();
@@ -207,34 +243,55 @@ public class BusBeaconHandler implements IBeaconHandler {
 	}
 
 	private void deleteUnvisibleBeacons() {
-		synchronized (mBusBeaconMap) {
-			Iterator<Entry<String, BusBeaconInfo>> iterator = mBusBeaconMap.entrySet().iterator();
+		try {
+			synchronized (mBusBeaconMap) {
+				Iterator<Entry<String, BusBeaconInfo>> iterator = mBusBeaconMap.entrySet().iterator();
 
-			while (iterator.hasNext()) {
-				Entry<String, BusBeaconInfo> pair = (Entry<String, BusBeaconInfo>) iterator.next();
-				final BusBeaconInfo beaconInfo = pair.getValue();
-				if (beaconInfo.getLastSeen().getTime()
-						+ mApplication.getConfigManager().getValue("beacon_lastSeenTresholdd", 10000) < Calendar.getInstance()
-						.getTimeInMillis()) {
-					mBusBeaconMap.remove(pair.getKey());
-					if (mSharedPreferenceManager.hasCurrentTrip() &&
-							mSharedPreferenceManager.getCurrentTrip().getBusId() == pair.getValue().getMajor())
-						mSharedPreferenceManager.setCurrentTrip(null);
+				while (iterator.hasNext()) {
+					Map.Entry<String, BusBeaconInfo> pair = (Map.Entry<String, BusBeaconInfo>) iterator.next();
+					final BusBeaconInfo beaconInfo = pair.getValue();
+					if (beaconInfo.getLastSeen().getTime()
+							+ mApplication.getConfigManager().getValue("beacon_buslastSeenTreshold", 30000) < Calendar.getInstance()
+							.getTimeInMillis()) {
+						mBusBeaconMap.remove(pair.getKey());
+						mApplication.sendBroadcast(new Intent(BusDepartureItem.class.getName()));
+						if (mSharedPreferenceManager.hasCurrentTrip() &&
+								mSharedPreferenceManager.getCurrentTrip().getBusId() == pair.getValue().getMajor()) {
+							if (beaconInfo.getSeenSeconds() > mApplication.getConfigManager()
+									.getValue("beacon_secondsInBus", 120)) {
+								TripsSQLiteOpenHelper.getInstance(mApplication).addTrip(new FinishedTrip(beaconInfo.getStartBusstationId(), beaconInfo.getStopBusstationId(),
+										beaconInfo.getLineId(), beaconInfo.getTripId(), mSharedPreferenceManager.getCurrentTrip().getTagesart_nr(), beaconInfo.getStartDate(),
+										beaconInfo.getLastSeen()));
+							}
+							mSharedPreferenceManager.setCurrentTrip(null);
+						}
+					} else if (beaconInfo.getLastSeen().getTime()
+							+ 10000 < Calendar.getInstance()
+							.getTimeInMillis()) {
+						mApplication.sendBroadcast(new Intent(BusDepartureItem.class.getName()));
+						if(mSharedPreferenceManager.hasCurrentTrip() &&
+								mSharedPreferenceManager.getCurrentTrip().getBusId() == pair.getValue().getMajor()) {
+							NotificationManager notificationManager = (NotificationManager) mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+							notificationManager.cancel(2);
+						}
+					}
 				}
 			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
 	/**
 	 * Checks if the given beacon is suitable for a survey
-	 * 
+	 *
 	 * @param beaconInfo
 	 * @param callback
 	 */
 	private void isBeaconSuitableForSurvey(final BusBeaconInfo beaconInfo, final IBeaconSuitableCallback callback) {
 		if (beaconInfo.getLastSeen().getTime()
 				+ mApplication.getConfigManager().getValue("beacon_lastSeenTreshold", 10) < Calendar.getInstance()
-						.getTimeInMillis()) {
+				.getTimeInMillis()) {
 			BusApiService.getInstance(mApplication).getBusInformation(beaconInfo.getMajor(),
 					new IApiCallback<BusInformationResult>() {
 
@@ -266,18 +323,18 @@ public class BusBeaconHandler implements IBeaconHandler {
 							SurveyLocationHandler handler = new SurveyLocationHandler(mApplication,
 									new ISurveyLocationCallback() {
 
-								@Override
-								public void onSuccess(Location location) {
-									Log.d(SasaApplication.TAG, "Got location from system: " + location.getLongitude()
-											+ " / " + location.getLatitude());
-									checkTrip(location);
-								}
+										@Override
+										public void onSuccess(Location location) {
+											Log.d(SasaApplication.TAG, "Got location from system: " + location.getLongitude()
+													+ " / " + location.getLatitude());
+											checkTrip(location);
+										}
 
-								@Override
-								public void onFailure() {
-									callback.onFailure();
-								}
-							});
+										@Override
+										public void onFailure() {
+											callback.onFailure();
+										}
+									});
 							handler.locate();
 						}
 
@@ -286,7 +343,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 							Log.d(SasaApplication.TAG, "Trip distance: " + tripDistance + "m");
 							if (tripDistance > mApplication.getConfigManager().getValue("beacon_minTripDistance", 400)
 									&& beaconInfo.getSeenSeconds() > mApplication.getConfigManager()
-											.getValue("beacon_secondsInBus", 120)) {
+									.getValue("beacon_secondsInBus", 120)) {
 								callback.onSuccess();
 							} else {
 								callback.onFailure();
@@ -298,7 +355,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	/**
 	 * Checks if the given beacon is suitable for a survey
-	 * 
+	 *
 	 * @param beaconInfo
 	 * @param callback
 	 */
@@ -315,6 +372,8 @@ public class BusBeaconHandler implements IBeaconHandler {
 						public void onSuccess(BusInformationResult result) {
 							if (BeaconScannerService.isAlive && result.hasFeatures()) {
 								Feature busInformation = result.getLastFeature();
+
+								beaconInfo.setStopBusstationId(result.getFirstFeature().getProperties().getNextStopNumber());
 								Location busLocation = new Location("BusInfo");
 
 								if (busInformation != null && busInformation.getProperties() != null) {
@@ -337,8 +396,18 @@ public class BusBeaconHandler implements IBeaconHandler {
 										Date date = new Date();
 										final String day = yyyyMMdd.format(date);
 										int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
-										new Thread(new TripThread(beaconInfo.getLineId(), getBeaconLine(beaconInfo.getLineId()),
-												beaconInfo.getTripId(), beaconInfo.getMajor(), day, seconds, mApplication, busInformation)).start();
+										final Feature.Properties properties = busInformation.getProperties();
+										final int color = 0xff000000 | properties.getLiColorRed() << 16 | properties.getLiColorGreen() << 8 | properties.getLineColorBlue();
+										final TripThread tripThread = new TripThread(beaconInfo.getLineId(), getBeaconLine(beaconInfo.getLineId()),
+												beaconInfo.getTripId(), beaconInfo.getMajor(), day, seconds, mApplication, busInformation);
+										tripThread.setPostExecute(new Runnable(){
+											public void run(){
+												CurentTrip curentTrip = new CurentTrip(tripThread.getBusDepartureItem(),
+														color, properties.getFrtFid(), beaconInfo.getMajor(), tripThread.getDayType());
+												mApplication.getSharedPreferenceManager().setCurrentTrip(curentTrip);
+											}
+										});
+										new Thread(tripThread).start();
 									}
 								}
 
@@ -354,64 +423,71 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void beaconsInRange(Collection<Beacon> beacons) {
-		try {
-			String versionDate = mApplication.getOpenDataStorage().getVersionDateIfExists();
-
-			if (versionDate != null) {
-				created = true;
-				int i = 0;
-				synchronized (mBusBeaconMap) {
-					for (Beacon beacon : beacons) {
-						String uuid = beacon.getId1().toString();
-						int major = beacon.getId2().toInt();
-						int minor = beacon.getId3().toInt();
-						this.beaconInRange(uuid, major, minor);
-						Log.d(SasaApplication.TAG, "Beacon [" + i + "] " + uuid + " | " + major + " | " + minor + " |  :  "
-								+ beacon.getDistance() + "m ");
-						i++;
-					}
-				}
-				deleteUnvisibleBeacons();
-				try {
-					BusBeaconInfo firstSeenBusBeaconInfo = null;
-					Iterator<Entry<String, BusBeaconInfo>> busIterator = mBusBeaconMap.entrySet().iterator();
-					int in = 0;
-					while (busIterator.hasNext()) {
-						in++;
-						BusBeaconInfo beaconInfo = busIterator.next().getValue();
-						if (firstSeenBusBeaconInfo == null
-								|| beaconInfo.getStartDate().before(firstSeenBusBeaconInfo.getStartDate()))
-							firstSeenBusBeaconInfo = beaconInfo;
-					}
-					Log.d(SasaApplication.TAG, "beaconssize: " + in);
-					Log.d(SasaApplication.TAG,
-							firstSeenBusBeaconInfo == null ? "beacon: null" : "beacon: " + firstSeenBusBeaconInfo.getMajor());
-					if (firstSeenBusBeaconInfo != null) {
-						if (this.mApplication.isOnline())
-							isBeaconCurrentTrip(firstSeenBusBeaconInfo);
-						else if (mSharedPreferenceManager.hasCurrentTrip()) {
-							Integer busstop = mSharedPreferenceManager.getCurrentBusStop();
-							if (busstop != null)
-								mSharedPreferenceManager.getCurrentTrip().calculateDelay(busstop, mApplication);
-							SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
-							SimpleDateFormat HHmm = new SimpleDateFormat("HH:mm");
-							Date date = new Date();
-							final String day = yyyyMMdd.format(date);
-							int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
-							new Thread(new TripThread(firstSeenBusBeaconInfo.getLineId(), getBeaconLine(firstSeenBusBeaconInfo.getLineId()),
-									firstSeenBusBeaconInfo.getTripId(), firstSeenBusBeaconInfo.getMajor(), day, seconds, mApplication, mSharedPreferenceManager.getCurrentTrip().getVirtualFeature())).start();
-						}
-
-					} else if (mSharedPreferenceManager.hasCurrentTrip())
-						mSharedPreferenceManager.setCurrentTrip(null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				mSharedPreferenceManager.setBusBeaconMap(mBusBeaconMap);
+		created = true;
+		int i = 0;
+		synchronized (mBusBeaconMap) {
+			for (Beacon beacon : beacons) {
+				String uuid = beacon.getId1().toString();
+				int major = beacon.getId2().toInt();
+				int minor = beacon.getId3().toInt();
+				this.beaconInRange(uuid, major, minor);
+				Log.d(SasaApplication.TAG, "Beacon [" + i + "] " + uuid + " | " + major + " | " + minor + " |  :  "
+						+ beacon.getDistance() + "m ");
+				i++;
 			}
+		}
+		deleteUnvisibleBeacons();
+		try {
+			BusBeaconInfo firstSeenBusBeaconInfo = null;
+			Iterator<Map.Entry<String, BusBeaconInfo>> busIterator = mBusBeaconMap.entrySet().iterator();
+			int in = 0;
+			while (busIterator.hasNext()) {
+				in++;
+				BusBeaconInfo beaconInfo = busIterator.next().getValue();
+				if (firstSeenBusBeaconInfo == null
+						|| beaconInfo.getStartDate().before(firstSeenBusBeaconInfo.getStartDate()))
+					firstSeenBusBeaconInfo = beaconInfo;
+			}
+			Log.d(SasaApplication.TAG, "beaconssize: " + in);
+			Log.d(SasaApplication.TAG,
+					firstSeenBusBeaconInfo == null ? "beacon: null" : "beacon: " + firstSeenBusBeaconInfo.getMajor());
+			if (firstSeenBusBeaconInfo != null) {
+				if((firstSeenBusBeaconInfo.getLastSeen().getTime()
+						+ 10000 > Calendar.getInstance()
+						.getTimeInMillis())) {
+					if (this.mApplication.isOnline())
+						isBeaconCurrentTrip(firstSeenBusBeaconInfo);
+					else if (mSharedPreferenceManager.hasCurrentTrip()) {
+						Integer busstop = mSharedPreferenceManager.getCurrentBusStop();
+						if (busstop != null)
+							mSharedPreferenceManager.getCurrentTrip().calculateDelay(busstop, mApplication);
+						SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+						SimpleDateFormat HHmm = new SimpleDateFormat("HH:mm");
+						Date date = new Date();
+						final String day = yyyyMMdd.format(date);
+						int seconds = (date.getHours() * 60 + date.getMinutes()) * 60;
+						Feature feature = mSharedPreferenceManager.getCurrentTrip().getVirtualFeature();
+						final Feature.Properties properties = feature.getProperties();
+						final int color = 0xff000000 | properties.getLiColorRed() << 16 | properties.getLiColorGreen() << 8 | properties.getLineColorBlue();
+						final TripThread tripThread = new TripThread(firstSeenBusBeaconInfo.getLineId(), getBeaconLine(firstSeenBusBeaconInfo.getLineId()),
+								firstSeenBusBeaconInfo.getTripId(), firstSeenBusBeaconInfo.getMajor(), day, seconds, mApplication, feature);
+						final BusBeaconInfo beaconInfo = firstSeenBusBeaconInfo;
+						tripThread.setPostExecute(new Runnable(){
+							public void run(){
+								CurentTrip curentTrip = new CurentTrip(tripThread.getBusDepartureItem(),
+										color, properties.getFrtFid(), beaconInfo.getMajor(), tripThread.getDayType());
+								mApplication.getSharedPreferenceManager().setCurrentTrip(curentTrip);
+							}
+						});
+						new Thread(tripThread).start();
+					}
+				}
+			} /*else if (mSharedPreferenceManager.hasCurrentTrip())
+				mSharedPreferenceManager.setCurrentTrip(null);*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		mSharedPreferenceManager.setBusBeaconMap(mBusBeaconMap);
 	}
 
 	@Override
@@ -445,10 +521,28 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	private String getBusStopName(int busStopId){
 		try {
-				return mApplication.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation().findName_it();
+			return mApplication.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation().findName_it();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	public static ArrayAdapter<? extends Object> getDepartureAdapter(Context context){
+		if(mBusBeaconMap != null){
+			ArrayList<BusDepartureItem> departureItems = new ArrayList<BusDepartureItem>();
+			Iterator<Entry<String, BusBeaconInfo>> iterator = mBusBeaconMap.entrySet().iterator();
+
+			while (iterator.hasNext()) {
+				Entry<String, BusBeaconInfo> pair = (Entry<String, BusBeaconInfo>) iterator.next();
+				final BusBeaconInfo beaconInfo = pair.getValue();
+				if(beaconInfo.getBusDepartureItem() != null && beaconInfo.getLastSeen().getTime()
+						+ 10000 > Calendar.getInstance().getTimeInMillis())
+					departureItems.add(beaconInfo.getBusDepartureItem());
+			}
+			if(!departureItems.isEmpty())
+				return new BusSchedulesDepartureAdapter(context, departureItems);
+		}
+		return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1);
 	}
 }

@@ -25,8 +25,6 @@
 
 package it.sasabz.sasabus.logic;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,14 +34,12 @@ import java.util.HashMap;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
-import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature.Properties;
 import it.sasabz.sasabus.opendata.client.logic.BusTripCalculator;
 import it.sasabz.sasabus.opendata.client.model.BusDayType;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
-import it.sasabz.sasabus.opendata.client.model.BusStop;
 import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
 import it.sasabz.sasabus.opendata.client.model.BusTripStartTime;
 import it.sasabz.sasabus.opendata.client.model.BusTripStartVariant;
@@ -60,15 +56,18 @@ public class TripThread implements Runnable
    int              busId;
    SasaApplication  mApplication;
    Feature			feature;
+   BusDepartureItem busDepartureItem;
+   Runnable         postExecute;
+   int              dayType;
 
    public TripThread(int busLineId,
-		                   String busLineName,
-		                   int tripId,
-                           int busId,
-                           String yyyyMMdd,
-                           int seconds,
-                           SasaApplication application,
-                           Feature currentFeature)
+                     String busLineName,
+                     int tripId,
+                     int busId,
+                     String yyyyMMdd,
+                     int seconds,
+                     SasaApplication application,
+                     Feature currentFeature)
    {
       super();
       this.tripId = tripId;
@@ -94,9 +93,9 @@ public class TripThread implements Runnable
          BusLineVariantTrip busLineVariantTrip = this.findBusTrip(uniqueLineVariants);
 
          BusTripBusStopTime[] stopTimes = BusTripCalculator.calculateBusStopTimes(busLineVariantTrip.busLineId,
-                                                                                  busLineVariantTrip.variant.getVariantId(),
-                                                                                  busLineVariantTrip.busTripStartTime,
-                                                                                  openDataStorage);
+                 busLineVariantTrip.variant.getVariantId(),
+                 busLineVariantTrip.busTripStartTime,
+                 openDataStorage);
 
          String destinationBusStationName = getBusStationNameUsingAppLanguage(openDataStorage.getBusStations().findBusStop(stopTimes[stopTimes.length - 1].getBusStop()).getBusStation());
 
@@ -112,14 +111,14 @@ public class TripThread implements Runnable
          long daySecondsFromMidnight = SASAbusTimeUtils.getDaySeconds();
 
          boolean gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 120000;
-         
+
          if (properties != null)
          {
             for (int i = 0; i < stopTimes.length - 1; i++)
             {
                BusTripBusStopTime stop = stopTimes[i];
                if (gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay() - 120 && stop.getBusStop() == properties.getNextStopNumber()
-            		   || !gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay())
+                       || !gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay())
                {
                   departure_index = i;
                   delayStopFoundIndex = i;
@@ -144,25 +143,26 @@ public class TripThread implements Runnable
 
          BusTripBusStopTime stop = stopTimes[0];
 
-         int color = 0xff000000 | properties.getLiColorRed() << 16 | properties.getLiColorGreen() << 8 | properties.getLineColorBlue();
          String lineName = mApplication.getOpenDataStorage().getBusLines().findBusLine(busLineVariantTrip.busLineId).getShortName();
-         CurentTrip curentTrip = new CurentTrip(new BusDepartureItem(formatSeconds(stop.getSeconds()), lineName,
-                                                      destinationBusStationName,
-                                                      stopTimes,
-                                                      departure_index,
-                                                      departure_index,
-                                                      delaySecondsRoundedToMin / 60,
-                                                      delayStopFoundIndex,
-                                                      isRealtime), color, properties.getFrtFid(), busId);
-         mApplication.getSharedPreferenceManager().setCurrentTrip(curentTrip);
 
-        
+         busDepartureItem = new BusDepartureItem(formatSeconds(stop.getSeconds()), lineName,
+                 destinationBusStationName,
+                 stopTimes,
+                 departure_index,
+                 departure_index,
+                 delaySecondsRoundedToMin / 60,
+                 delayStopFoundIndex,
+                 isRealtime);
+
+         postExecute.run();
+
+
 
 
       }
       catch (Exception exxx)
       {
-    	  exxx.printStackTrace();
+         exxx.printStackTrace();
       }
    }
 
@@ -177,7 +177,7 @@ public class TripThread implements Runnable
    }
 
    BusLineVariantTrip findBusTrip(HashMap<String, Void> uniqueLineVariants)
-                                                                                                                    throws IOException
+           throws IOException
    {
       BusDayType calendarDay = mApplication.getOpenDataStorage().getBusDayTypeList().findBusDayTypeByDay(this.yyyyMMdd);
       if (calendarDay == null)
@@ -185,10 +185,10 @@ public class TripThread implements Runnable
          // This day isn't in the calendar!
          return null;
       }
-      int dayType = calendarDay.getDayTypeId();
+      dayType = calendarDay.getDayTypeId();
 
       BusTripStartVariant[] variants = mApplication.getOpenDataStorage().getBusTripStarts(busLineId,
-                                                                                                  dayType);
+              dayType);
       for (BusTripStartVariant busTripStartVariant : variants)
       {            ArrayList<Integer> ints = new ArrayList<>();
 
@@ -199,9 +199,9 @@ public class TripThread implements Runnable
             if (busTripStartTime.getId() == tripId)
             {
                uniqueLineVariants.put(String.valueOf(busLineId)
-                                            + ":"
-                                            + String.valueOf(busTripStartVariant.getVariantId()),
-                                      null);
+                               + ":"
+                               + String.valueOf(busTripStartVariant.getVariantId()),
+                       null);
                BusLineVariantTrip busLineVariantTrip = new BusLineVariantTrip();
                busLineVariantTrip.busLineId = busLineId;
                busLineVariantTrip.variant = busTripStartVariant;
@@ -248,12 +248,24 @@ public class TripThread implements Runnable
       ret = ret.substring(ret.length() - 2);
       return ret;
    }
-   
-	public String getBusStationNameUsingAppLanguage(BusStation busStation) {
-		if (mApplication.getApplicationContext().getString(R.string.bus_station_name_language).equals("de")) {
-			return busStation.findName_de();
-		} else {
-			return busStation.findName_it();
-		}
-	}
+
+   public String getBusStationNameUsingAppLanguage(BusStation busStation) {
+      if (mApplication.getApplicationContext().getString(R.string.bus_station_name_language).equals("de")) {
+         return busStation.findName_de();
+      } else {
+         return busStation.findName_it();
+      }
+   }
+
+   public BusDepartureItem getBusDepartureItem(){
+      return busDepartureItem;
+   }
+
+   public void setPostExecute(Runnable postExecute) {
+      this.postExecute = postExecute;
+   }
+
+   public int getDayType(){
+      return dayType;
+   }
 }

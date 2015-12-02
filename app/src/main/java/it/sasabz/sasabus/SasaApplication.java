@@ -24,30 +24,22 @@
  */
 package it.sasabz.sasabus;
 
-import it.sasabz.sasabus.beacon.BeaconObserver;
-import it.sasabz.sasabus.beacon.BeaconScannerService;
-import it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver;
-import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
-import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
-import it.sasabz.sasabus.beacon.busstop.BusStopBeaconHandler;
-import it.sasabz.sasabus.beacon.busstop.BusStopBeaconInfo;
-import it.sasabz.sasabus.beacon.survey.action.NotificationAction;
-import it.sasabz.sasabus.config.ConfigManager;
-import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
-import it.sasabz.sasabus.preferences.SharedPreferenceManager;
-import it.sasabz.sasabus.tracker.ITracker;
-import it.sasabz.sasabus.tracker.googleanalytics.GoogleTracker;
-import it.sasabz.sasabus.ui.AbstractSasaActivity;
-
-import java.util.HashMap;
-
 import android.app.Application;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings.Secure;
+import android.util.Log;
+
+import it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver;
+import it.sasabz.sasabus.config.ConfigManager;
+import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
+import it.sasabz.sasabus.data.trips.TripsSQLiteOpenHelper;
+import it.sasabz.sasabus.preferences.SharedPreferenceManager;
+import it.sasabz.sasabus.tracker.ITracker;
+import it.sasabz.sasabus.tracker.googleanalytics.GoogleTracker;
+import it.sasabz.sasabus.ui.AbstractSasaActivity;
 
 public class SasaApplication extends Application {
 
@@ -63,6 +55,7 @@ public class SasaApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Log.e("all trips", TripsSQLiteOpenHelper.getInstance(this).getFinishedTrips().toString());
 		try {
 			this.opendataStorage = new AndroidOpenDataLocalStorage(this.getApplicationContext());
 		} catch (Exception e) {
@@ -150,4 +143,5 @@ public class SasaApplication extends Application {
 	public AndroidOpenDataLocalStorage getOpenDataStorage() {
 		return opendataStorage;
 	}
+
 }

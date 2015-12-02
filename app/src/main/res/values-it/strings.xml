@@ -168,4 +168,7 @@
     <string name="survey_required_fields">Uno dei due campi è obligatorio</string>
     <string name="email_invalid">Indirizzo E-Mail non valido</string>
     <string name="phone_invalid">Numero di telefono non valido</string>
+
+    <string name="beacon_bus">Beacon Bus</string>
+    <string name="visible_buses">Autobus vicine</string>
 </resources>

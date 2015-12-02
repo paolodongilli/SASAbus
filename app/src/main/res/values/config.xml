@@ -43,6 +43,7 @@
     <string name="beacon_minTripDistance">300</string>
     <string name="beacon_secondsInBus">60</string>
     <string name="beacon_lastSeenTreshold">10</string>
+    <string name="beacon_buslastSeenTreshold">30000</string>
     <string name="beacon_lastFixTreshold">10</string>
     <string name="beacon_accuracyTreshold">40</string>
     <!--

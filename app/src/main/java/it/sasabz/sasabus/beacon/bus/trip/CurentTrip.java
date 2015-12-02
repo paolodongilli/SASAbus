@@ -1,7 +1,5 @@
 package it.sasabz.sasabus.beacon.bus.trip;
 
-import android.util.Log;
-
 import java.util.Date;
 
 import it.sasabz.sasabus.SasaApplication;
@@ -16,12 +14,14 @@ public class CurentTrip {
 	private int color = 0;
 	private int tripId = 0;
 	private int busId = 0;
+	private int tagesart_nr;
 
-	public CurentTrip(BusDepartureItem busDepartureItem, int color, int tripId, int busId) {
+	public CurentTrip(BusDepartureItem busDepartureItem, int color, int tripId, int busId, int tagesart_nr) {
 		this.busDepartureItem = busDepartureItem;
 		this.color = color;
 		this.tripId = tripId;
 		this.busId = busId;
+		this.tagesart_nr = tagesart_nr;
 	}
 
 	public BusDepartureItem getBusDepartureItem() {
@@ -77,6 +77,10 @@ public class CurentTrip {
 					return;
 				}
 		}
+	}
+
+	public int getTagesart_nr() {
+		return tagesart_nr;
 	}
 
 	public int getBusId() {

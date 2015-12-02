@@ -24,16 +24,17 @@
  */
 package it.sasabz.sasabus.beacon.bus;
 
-import java.util.Date;
-
 import android.location.Location;
 
-import it.sasabz.sasabus.gson.bus.model.BusInformationResult;
+import java.util.Date;
+
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
+import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 
 public class BusBeaconInfo {
 
 	private Integer nearestStartStation;
+	private BusDepartureItem busDepartureItem;
 	private String uuid;
 	private int minor;
 	private int major;
@@ -52,7 +53,7 @@ public class BusBeaconInfo {
 	}
 
 	public BusBeaconInfo(String uuid, int major, int minor, Double longitude, Double latitude, long time, Integer tripId,
-			String lineName, Integer lineId, Integer nearestStartStation) {
+						 String lineName, Integer lineId, Integer nearestStartStation) {
 		this.uuid = uuid;
 		this.minor = minor;
 		this.major = major;
@@ -136,7 +137,7 @@ public class BusBeaconInfo {
 	public void setLineName(String lineName) {
 		this.lineName = lineName;
 	}
-	
+
 	public Date getLastSeen() {
 		return this.lastSeen;
 	}
@@ -156,7 +157,7 @@ public class BusBeaconInfo {
 	public void setStopBusstationId(int stopBusstationId) {
 		this.stopBusstationId = stopBusstationId;
 	}
-	
+
 	public int getStopBusstationId() {
 		return this.stopBusstationId;
 	}
@@ -184,4 +185,13 @@ public class BusBeaconInfo {
 	public Integer getNearestStartStation() {
 		return nearestStartStation;
 	}
+
+	public BusDepartureItem getBusDepartureItem() {
+		return busDepartureItem;
+	}
+
+	public void setBusDepartureItem(BusDepartureItem busDepartureItem) {
+		this.busDepartureItem = busDepartureItem;
+	}
+
 }
