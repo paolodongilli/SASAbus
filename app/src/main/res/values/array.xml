@@ -37,6 +37,7 @@
         <item>@string/bus_lines</item>
         <item>@string/search_route</item>
         <item>@string/beacon_bus</item>
+<!--        <item>My Trips</item> -->
         <item>@string/news</item>
         <item>@string/menu_map</item>
         <item>@string/menu_park</item> 
@@ -48,9 +49,10 @@
         <item>@drawable/ic_action_bus</item>
         <item>@drawable/ic_action_search</item>
         <item>@drawable/ic_action_bluetooth_beacon</item>
+<!--        <item>@drawable/ic_action_search</item> -->
         <item>@drawable/ic_navigation_news</item>
         <item>@drawable/ic_action_map</item>
-        <item>@drawable/park</item> 
+        <item>@drawable/park</item>
         <item>@drawable/ic_settings</item>
         <item>@drawable/about</item>
     </string-array>
@@ -59,13 +61,14 @@
         <item>it.sasabz.sasabus.ui.busschedules.BusSchedulesFragment</item>
         <item>it.sasabz.sasabus.ui.routing.SearchFragment</item>
         <item>it.sasabz.sasabus.ui.beaconbus.BeaconBusSchedulesFragment</item>
-        <item>it.sasabz.sasabus.ui.news.NewsFragment</item>
+        <item>it.sasabz.sasabus.ui.trips.MyTripsFragment</item>
+<!--        <item>it.sasabz.sasabus.ui.news.NewsFragment</item> -->
         <item>it.sasabz.sasabus.ui.map.MapFragment</item>
         <item>it.sasabz.sasabus.ui.ParkingsFragment</item>
         <item>it.sasabz.sasabus.ui.SettingsFragment</item>
         <item>it.sasabz.sasabus.ui.AboutFragment</item>
     </string-array>
-    
+
     <string-array name="survey_recurring_descriptions">
         <item>@string/settings_survey_daily</item>
         <item>@string/settings_survey_weekly</item>

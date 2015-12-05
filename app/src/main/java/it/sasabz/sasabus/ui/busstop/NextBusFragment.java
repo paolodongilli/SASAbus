@@ -273,7 +273,6 @@ public class NextBusFragment extends SherlockFragment
             if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
                 Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
                 if (busStopId != null) {
-                    Log.e("plapla", ""+(mainActivity.getVisibleFragment() instanceof NextBusFragment));
                     if(mainActivity.getVisibleFragment() instanceof NextBusFragment)
                         application.getSharedPreferenceManager().setCurrentBusStopSeen();
                     return this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());

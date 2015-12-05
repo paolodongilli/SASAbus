@@ -85,6 +85,8 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
+		if(major == 385)
+			major = 410;
 		final String key = uuid + "_" + major;
 		final BusBeaconInfo beaconInfo;
 		if (mBusBeaconMap.keySet().contains(key)) {

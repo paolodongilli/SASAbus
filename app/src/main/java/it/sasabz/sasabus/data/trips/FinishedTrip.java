@@ -1,5 +1,8 @@
 package it.sasabz.sasabus.data.trips;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -13,6 +16,7 @@ public class FinishedTrip {
     private int tagesart;
     private Date startTime;
     private Date finishTime;
+    private String duration;
 
     public FinishedTrip(int startOrt, int finishOrt, int lineId, int tripId, int tagesart, Date startTime, Date finishTime) {
         this.startOrt = startOrt;
@@ -83,5 +87,14 @@ public class FinishedTrip {
     public String toString(){
         return startOrt + ";" + finishOrt + ";" + lineId + ";" + tripId + ";" + tagesart + ";"
                 +startTime + ";"+ finishTime;
+    }
+
+    public String getDuration() {
+        long secDif = (finishTime.getTime() - startTime.getTime()) / 1000;
+        long houres = secDif / 3600;
+        long minutes = (secDif / 3600) % 60;
+        long seconds = secDif % 60;
+        return houres + ":" + (minutes < 10?"0":"") + minutes + ":" +
+                (seconds < 10?"0":"") + seconds;
     }
 }

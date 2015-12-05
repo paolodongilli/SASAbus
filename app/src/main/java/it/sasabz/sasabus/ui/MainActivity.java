@@ -126,7 +126,6 @@ public class MainActivity extends AbstractSasaActivity {
 			beaconBusstopReceiver = new BroadcastReceiver() {
 				@Override
 				public void onReceive(Context context, Intent intent) {
-					Log.e("on","receive");
 					ArrayAdapter arrayAdapter = BusBeaconHandler.getDepartureAdapter(MainActivity.this);
 					List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
 					for (int i = 0; i < mNavigationTitles.length; i++) {
@@ -135,7 +134,6 @@ public class MainActivity extends AbstractSasaActivity {
 					}
 					int selectedItem = mDrawerList.getCheckedItemPosition();
 					if(beaconBusVisible && !(arrayAdapter instanceof BusSchedulesDepartureAdapter)){
-						Log.e("on","receive netVisible"+selectedItem);
 						beaconBusVisible = false;
 						drawerItems.remove(3);
 						Adapter drawerAdapter = new NavigationDrawerAdapter(MainActivity.this, R.layout.drawer_layout_item, drawerItems);
@@ -146,7 +144,6 @@ public class MainActivity extends AbstractSasaActivity {
 							else
 								mDrawerList.setItemChecked(selectedItem, true);
 					}else if(!beaconBusVisible && arrayAdapter instanceof BusSchedulesDepartureAdapter){
-						Log.e("on","receive Visible"+selectedItem);
 						beaconBusVisible = true;
 						Adapter drawerAdapter = new NavigationDrawerAdapter(MainActivity.this, R.layout.drawer_layout_item, drawerItems);
 						mDrawerList.setAdapter((ListAdapter) drawerAdapter);
