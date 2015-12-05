@@ -114,6 +114,7 @@
     
     <string name="laststop">Richtung: %1$s</string>
     <string name="next_departures">Nächste Abfahrten</string>
+    <string name="show_next_departures">Nächste Abfahrten anzeigen</string>
     <string name="txt_delay">versp.</string>
     <string name="txt_advance">verfr.</string>
 

@@ -26,7 +26,7 @@
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/ic_bluetoot_beacon_sasa" />
+                android:src="@drawable/ic_bluetooth_beacon_sasa" />
 
             <TextView
                 android:id="@+id/textview_arrives_in"

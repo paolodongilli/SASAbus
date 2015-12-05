@@ -32,6 +32,8 @@ public class SharedPreferenceManager {
 	private final static String PREF_SURVEY_RECURRING = "PREF_SURVEY_RECURRING";
 	private final static String PREF_SURVEY_LASTOCCURRENCE = "PREF_SURVEY_LASTOCCURRENCE";
 	private final static String PREF_BEACON_CURRENT_BUS_STOP = "PREF_BEACON_CURRENT_BUS_STOP";
+	private final static String PREF_BEACON_CURRENT_BUS_STOP_SEEN = "PREF_BEACON_CURRENT_BUS_STOP_SEEN";
+	private final static String PREF_BEACON_CURRENT_BUS_STOP_START = "PREF_BEACON_CURRENT_BUS_STOP_START";
 	private final static String PREF_BEACON_CURRENT_BUS_STOP_LAST = "PREF_BEACON_CURRENT_BUS_STOP_LAST";
 	private final static String PREF_BEACON_CURRENT_TRIP_LAST = "PREF_BEACON_CURRENT_TRIP_LAST";
 	private final static String PREF_BEACON_CURRENT_TRIP = "PREF_BEACON_CURRENT_TRIP";
@@ -134,10 +136,28 @@ public class SharedPreferenceManager {
 		if (busStopId == null) {
 			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_BUS_STOP).commit();
 			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_BUS_STOP_LAST).commit();
+			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_BUS_STOP_SEEN).commit();
+			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_BUS_STOP_START).commit();
 		} else {
+			if(!busStopId.equals(getCurrentBusStop())){
+				this.sharedPreferences.edit().putBoolean(PREF_BEACON_CURRENT_BUS_STOP_SEEN, false).commit();
+				this.sharedPreferences.edit().putLong(PREF_BEACON_CURRENT_BUS_STOP_START, (new Date()).getTime()).commit();
+			}
 			this.sharedPreferences.edit().putInt(PREF_BEACON_CURRENT_BUS_STOP, busStopId).commit();
 			this.sharedPreferences.edit().putLong(PREF_BEACON_CURRENT_BUS_STOP_LAST, (new Date()).getTime()).commit();
 		}
+	}
+
+	public void setCurrentBusStopSeen() {
+		this.sharedPreferences.edit().putBoolean(PREF_BEACON_CURRENT_BUS_STOP_SEEN, true).commit();
+	}
+
+	public boolean itsCurrentBusStopSeen(){
+		return getCurrentBusStop() != null && this.sharedPreferences.getBoolean(PREF_BEACON_CURRENT_BUS_STOP_SEEN, false);
+	}
+
+	public long getCurrentBusStopDetectStart(){
+		return this.sharedPreferences.getLong(PREF_BEACON_CURRENT_BUS_STOP_START,Long.MAX_VALUE);
 	}
 
 	/**

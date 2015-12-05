@@ -141,7 +141,7 @@ public class TripThread implements Runnable
             }
          }
 
-         BusTripBusStopTime stop = stopTimes[0];
+         BusTripBusStopTime stop = stopTimes[departure_index];
 
          String lineName = mApplication.getOpenDataStorage().getBusLines().findBusLine(busLineVariantTrip.busLineId).getShortName();
 

@@ -47,6 +47,7 @@ import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -626,6 +627,12 @@ public class MainActivity extends AbstractSasaActivity {
 		this.mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
+	public Fragment getVisibleFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		Fragment currentFragment = getSupportFragmentManager().getFragments().get(fragmentManager.getBackStackEntryCount());
+		return currentFragment;
+	}
+
 	class DrawerItem {
 		String navigationTitle;
 		Drawable navigationIcon;
@@ -653,7 +660,7 @@ public class MainActivity extends AbstractSasaActivity {
 		 * this.notifyUserForUpdate(); return; }
 		 */
 
-		if (position == 8) {
+		if (position == 999) {
 			Intent intent = new Intent(this, SurveyActivity.class);
 			startActivity(intent);
 		} else {

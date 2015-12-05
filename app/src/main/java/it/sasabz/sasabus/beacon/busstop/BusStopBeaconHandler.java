@@ -25,14 +25,25 @@
 package it.sasabz.sasabus.beacon.busstop;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.altbeacon.beacon.Beacon;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.beacon.IBeaconHandler;
+import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.preferences.SharedPreferenceManager;
+import it.sasabz.sasabus.ui.MainActivity;
 
 public class BusStopBeaconHandler implements IBeaconHandler {
 
@@ -47,6 +58,29 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
 		mSharedPreferenceManager.setCurrentBusStop(major);
+		if(mSharedPreferenceManager.isBusStopDetectionEnabled() && !mSharedPreferenceManager.hasCurrentTrip()
+		&& !mSharedPreferenceManager.itsCurrentBusStopSeen() && mSharedPreferenceManager.getCurrentBusStopDetectStart()
+				+ 90000 < new Date().getTime()){
+			mSharedPreferenceManager.setCurrentBusStopSeen();
+			Intent intent = new Intent(mApplication, MainActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(mApplication, 0, intent, Intent.FILL_IN_DATA);
+			Notification notification = new NotificationCompat.Builder(mApplication)
+					.setContentTitle(getBeaconBusStop()).setContentText(mApplication.getString(R.string.show_next_departures))
+					.setTicker(getBeaconBusStop()).setSmallIcon(R.drawable.icon)
+					.setAutoCancel(true).setContentIntent(pendingIntent)
+					.build();
+
+			notification.defaults |= Notification.DEFAULT_SOUND;
+			notification.defaults |= Notification.DEFAULT_VIBRATE;
+			notification.ledARGB = Color.argb(255, 255, 166, 0);
+			notification.ledOnMS = 200;
+			notification.ledOffMS = 200;
+			notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+			NotificationManager notificationManager = (NotificationManager) mApplication
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+
+			notificationManager.notify(3, notification);
+		}
 		Intent intent = new Intent(mApplication.getApplicationContext().getString(R.string.station_beacon_uid));
 		mApplication.getApplicationContext().sendBroadcast(intent);
 
@@ -54,7 +88,7 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void clearBeacons() {
-		mSharedPreferenceManager.setCurrentBusStop(null);
+
 	}
 
 	public void removeBeacon(String key) {
@@ -62,7 +96,22 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void inspectBeacons() {
-		clearBeacons();
+		new Thread(){
+			public void run(){
+				synchronized (this){
+					try {
+						this.wait(31000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				if(mSharedPreferenceManager.getCurrentBusStop() == null){
+					NotificationManager notificationManager = (NotificationManager) mApplication
+							.getSystemService(Context.NOTIFICATION_SERVICE);
+					notificationManager.cancel(3);
+				}
+			}
+		}.start();
 	}
 
 	@Override
@@ -97,5 +146,30 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 
 		}
 	}
+
+	private String getBeaconBusStop(){
+		try {
+			if (mApplication.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
+				Integer busStopId = mApplication.getSharedPreferenceManager().getCurrentBusStop();
+				if (busStopId != null) {
+					mSharedPreferenceManager.setCurrentBusStopSeen();
+					return getBusStationNameUsingAppLanguage(mApplication.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+
+	public String getBusStationNameUsingAppLanguage(BusStation busStation) {
+		if (mApplication.getApplicationContext().getString(R.string.bus_station_name_language).equals("de")) {
+			return busStation.findName_de();
+		} else {
+			return busStation.findName_it();
+		}
+	}
+
 
 }

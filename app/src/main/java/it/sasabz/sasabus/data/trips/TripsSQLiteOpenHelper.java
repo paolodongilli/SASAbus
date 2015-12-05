@@ -55,7 +55,6 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 				"SELECT * " +
 				"  FROM trips;", null);
 			DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Log.e("size", c.getCount() + "");
 			while (c.moveToNext()) {
 				ret.add(new FinishedTrip(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), iso8601Format.parse(c.getString(5)), iso8601Format.parse(c.getString(6))));
 			}
@@ -85,7 +84,6 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 			werte.put("tagesart", trip.getTagesart());
 			werte.put("time_start", iso8601Format.format(trip.getStartTime()));
 			werte.put("time_finish", iso8601Format.format(trip.getFinishTime()));
-			Log.e("insert", trip.toString());
 			ret = db.insertOrThrow("trips", null, werte) > 0;
 
 		} catch (Exception e) {

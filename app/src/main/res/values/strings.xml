@@ -117,6 +117,7 @@
 
     <string name="laststop">direction: %1$s</string>
     <string name="next_departures">Next departures</string>
+    <string name="show_next_departures">Show next departures</string>
     <string name="txt_delay">delayed</string>
     <string name="txt_advance">earlier</string>
 

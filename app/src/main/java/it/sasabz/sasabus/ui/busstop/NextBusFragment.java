@@ -75,347 +75,354 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class NextBusFragment extends SherlockFragment
 {
 
-   private ListView            listviewNextBuses;
+    private ListView            listviewNextBuses;
 
-   Button                      currentDate;
-   Button                      currentTime;
-   MainActivity                mainActivity;
+    Button                      currentDate;
+    Button                      currentTime;
+    MainActivity                mainActivity;
 
-   BusStationAdvancedInputText searchInputField;
+    BusStationAdvancedInputText searchInputField;
 
-   BusStation[]                busStations;
+    BusStation[]                busStations;
 
-   BusStation                  busStation;
+    BusStation                  busStation;
 
-   String                      initialBusStationName = "";
-   
-   LinearLayout                searchLines, selectStations;
-   
-   Hashtable<String, Boolean>  lines;
-   
-   ArrayList<BusDepartureItem> departures;
-   
-   BroadcastReceiver           beaconBusstopReceiver;
-   
+    String                      initialBusStationName = "";
 
-   @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-   {
+    LinearLayout                searchLines, selectStations;
 
-      this.mainActivity = (MainActivity) this.getActivity();
+    Hashtable<String, Boolean>  lines;
 
-      View view = inflater.inflate(R.layout.fragment_next_bus, container, false);
+    ArrayList<BusDepartureItem> departures;
 
-      Button selectAll = (Button)view.findViewById(R.id.selectAllLines);
-      Button deselectAll = (Button)view.findViewById(R.id.deSelectAllLines);
-      
-      this.searchLines = (LinearLayout) view.findViewById(R.id.search_lines);
-      
-      this.selectStations = (LinearLayout) view.findViewById(R.id.selectStations);
-      
-      Calendar now = Calendar.getInstance();
-      
-      if (this.initialBusStationName == null || this.initialBusStationName.equals("")) {
-    	  beaconBusstopReceiver = new BroadcastReceiver() {
-			
-			@Override
-			public void onReceive(Context context, Intent intent) {
-		    	setBeaconBusStationName(getBeaconBusStop());;
-			}
-		};
-    	  initialBusStationName = getBeaconBusStop();
-      }
-      
-      this.currentDate = (Button) view.findViewById(R.id.currentDate);
-      DateButton.init(this.currentDate);
+    BroadcastReceiver           beaconBusstopReceiver;
 
-      this.currentTime = (Button) view.findViewById(R.id.currentTime);
-      TimeButton.init(this.currentTime);
 
-      this.listviewNextBuses = (ListView) view.findViewById(R.id.listview_next_buses);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
-      this.listviewNextBuses.setOnItemClickListener(new OnItemClickListener()
-      {
-         @Override
-         public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-         {
-            BusDepartureItem busDepartureItem = (BusDepartureItem) NextBusFragment.this.listviewNextBuses.getAdapter().getItem(position);
+        this.mainActivity = (MainActivity) this.getActivity();
 
-            BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(NextBusFragment.this.getActivity(),
-                                                                                                                  BusScheduleDetailsFragment.class.getName());
-            fragmentToShow.setData(busDepartureItem.getBusStopOrLineName(), busDepartureItem);
-            FragmentManager fragmentManager = NextBusFragment.this.getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
-         }
-      });
+        View view = inflater.inflate(R.layout.fragment_next_bus, container, false);
 
-      this.searchInputField = (BusStationAdvancedInputText) view.findViewById(R.id.searchInputField);
+        Button selectAll = (Button)view.findViewById(R.id.selectAllLines);
+        Button deselectAll = (Button)view.findViewById(R.id.deSelectAllLines);
 
-      try
-      {
-         this.busStations = this.mainActivity.getOpenDataStorage().getBusStations().getList();
+        this.searchLines = (LinearLayout) view.findViewById(R.id.search_lines);
 
-         this.searchInputField.setBusStations(this.busStations);
+        this.selectStations = (LinearLayout) view.findViewById(R.id.selectStations);
 
-         this.searchInputField.setOnChangeListener(new Runnable()
-         {
+        Calendar now = Calendar.getInstance();
+
+        if (this.initialBusStationName == null || this.initialBusStationName.equals("")) {
+            beaconBusstopReceiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    setBeaconBusStationName(getBeaconBusStop());;
+                }
+            };
+            initialBusStationName = getBeaconBusStop();
+        }
+
+        this.currentDate = (Button) view.findViewById(R.id.currentDate);
+        DateButton.init(this.currentDate);
+
+        this.currentTime = (Button) view.findViewById(R.id.currentTime);
+        TimeButton.init(this.currentTime);
+
+        this.listviewNextBuses = (ListView) view.findViewById(R.id.listview_next_buses);
+
+        this.listviewNextBuses.setOnItemClickListener(new OnItemClickListener()
+        {
             @Override
-            public void run()
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
             {
-               try
-               {
-                  NextBusFragment.this.newStationFound();
-               }
-               catch (Exception e)
-               {
-                  NextBusFragment.this.mainActivity.handleApplicationException(e);
-                  e.printStackTrace();
-               }
+                BusDepartureItem busDepartureItem = (BusDepartureItem) NextBusFragment.this.listviewNextBuses.getAdapter().getItem(position);
 
+                BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(NextBusFragment.this.getActivity(),
+                        BusScheduleDetailsFragment.class.getName());
+                fragmentToShow.setData(busDepartureItem.getBusStopOrLineName(), busDepartureItem);
+                FragmentManager fragmentManager = NextBusFragment.this.getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
             }
-         });
+        });
 
-         Button recalculate = (Button) view.findViewById(R.id.recalculateDepartures);
-         recalculate.setOnClickListener(new View.OnClickListener()
-         {
-            @Override
-            public void onClick(View arg0)
+        this.searchInputField = (BusStationAdvancedInputText) view.findViewById(R.id.searchInputField);
+
+        try
+        {
+            this.busStations = this.mainActivity.getOpenDataStorage().getBusStations().getList();
+
+            this.searchInputField.setBusStations(this.busStations);
+
+            this.searchInputField.setOnChangeListener(new Runnable()
             {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        NextBusFragment.this.newStationFound();
+                    }
+                    catch (Exception e)
+                    {
+                        NextBusFragment.this.mainActivity.handleApplicationException(e);
+                        e.printStackTrace();
+                    }
 
-               try
-               {
-                  NextBusFragment.this.calculateDepartures();
-               }
-               catch (Exception e)
-               {
-                  NextBusFragment.this.mainActivity.handleApplicationException(e);
-                  e.printStackTrace();
-               }
+                }
+            });
 
+            Button recalculate = (Button) view.findViewById(R.id.recalculateDepartures);
+            recalculate.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View arg0)
+                {
+
+                    try
+                    {
+                        NextBusFragment.this.calculateDepartures();
+                    }
+                    catch (Exception e)
+                    {
+                        NextBusFragment.this.mainActivity.handleApplicationException(e);
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            selectAll.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Enumeration<String> e = lines.keys();
+                    while(e.hasMoreElements())
+                        lines.put(e.nextElement(), true);
+
+                    final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+                            NextBusFragment.this.mainActivity,
+                            NextBusFragment.this.departures);
+
+                    for(int i = 0; i < searchLines.getChildCount(); i++)
+                        ((CheckBox)searchLines.getChildAt(i)).setChecked(true);
+
+                    NextBusFragment.this.listviewNextBuses.post(new Runnable()
+                    {
+
+                        @Override
+                        public void run()
+                        {
+                            NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+                        }
+                    });
+
+                }
+            });
+
+            deselectAll.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Enumeration<String> e = lines.keys();
+                    while(e.hasMoreElements())
+                        lines.put(e.nextElement(), false);
+                    final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+                            NextBusFragment.this.mainActivity,
+                            new ArrayList<BusDepartureItem>());
+
+                    for(int i = 0; i < searchLines.getChildCount(); i++)
+                        ((CheckBox)searchLines.getChildAt(i)).setChecked(false);
+
+                    NextBusFragment.this.listviewNextBuses.post(new Runnable()
+                    {
+
+                        @Override
+                        public void run()
+                        {
+                            NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+                        }
+                    });
+                }
+            });
+
+            SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+            application.getTracker().track("NextBus");
+
+            return view;
+        }
+        catch (Exception ioxxx)
+        {
+            this.mainActivity.handleApplicationException(ioxxx);
+            throw new RuntimeException(ioxxx);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        this.searchInputField.setInputTextFireChange(this.initialBusStationName);
+    }
+
+    private String getBeaconBusStop(){
+        try {
+            SasaApplication application = (SasaApplication) this.getActivity().getApplication();
+            if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
+                Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
+                if (busStopId != null) {
+                    Log.e("plapla", ""+(mainActivity.getVisibleFragment() instanceof NextBusFragment));
+                    if(mainActivity.getVisibleFragment() instanceof NextBusFragment)
+                        application.getSharedPreferenceManager().setCurrentBusStopSeen();
+                    return this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
+                }
             }
-         });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
-         selectAll.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Enumeration<String> e = lines.keys();
-				while(e.hasMoreElements())
-					lines.put(e.nextElement(), true);
+    public void setInitialBusStationName(String name)
+    {
+        this.initialBusStationName = name;
+    }
 
-					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
-							NextBusFragment.this.mainActivity,
-							NextBusFragment.this.departures);
+    public void setBeaconBusStationName(String name)
+    {
+        if(searchInputField.getText().equals("") || searchInputField.getText().equals(initialBusStationName) && !name.equals(initialBusStationName) && !name.equals(""))
+            try
+            {
+                this.searchInputField.setInputTextFireChange(name);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        if(name != null && !name.equals(initialBusStationName) && !name.equals(""))
+            initialBusStationName = name;
+    }
 
-					for(int i = 0; i < searchLines.getChildCount(); i++)
-						((CheckBox)searchLines.getChildAt(i)).setChecked(true);
-					
-					NextBusFragment.this.listviewNextBuses.post(new Runnable()
-					{
-					
-						@Override
-						public void run()
-						{
-							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
-						}
-					});
+    void newStationFound() throws IOException, ParseException
+    {
+        this.busStation = this.searchInputField.getSelectedBusStation();
 
-			}
-		});
+        if (this.busStation != null)
+        {
+            selectStations.setVisibility(View.VISIBLE);
+            calculateDepartures();
+            searchLines.removeAllViews();
+            this.departures = null;
+            this.lines = new Hashtable<String, Boolean>();
 
-         deselectAll.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Enumeration<String> e = lines.keys();
-				while(e.hasMoreElements())
-					lines.put(e.nextElement(), false);					
-				final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
-						NextBusFragment.this.mainActivity,
-						new ArrayList<BusDepartureItem>());
+            for(Integer i: NextBusFragment.this.busStation.getBusLines()){
+                final String name = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
+                this.lines.put(name, true);
+                CheckBox line = new CheckBox(getActivity());
+                line.setChecked(true);
+                String lineName = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
+                line.setText(lineName);
+                searchLines.addView(line);
+                line.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NextBusFragment.this.lines.put(name, ((CheckBox)v).isChecked());
+                        ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
+                        for(BusDepartureItem item: NextBusFragment.this.departures){
+                            if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
+                                newDeparture.add(item);
+                        }
+                        final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+                                NextBusFragment.this.mainActivity,
+                                newDeparture);
 
-				for(int i = 0; i < searchLines.getChildCount(); i++)
-					((CheckBox)searchLines.getChildAt(i)).setChecked(false);
-				
-				NextBusFragment.this.listviewNextBuses.post(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-						NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
-					}
-				});
-			}
-		});
-         
-         SasaApplication application = (SasaApplication) this.getActivity().getApplication();
-         application.getTracker().track("NextBus");
-         
-         return view;
-      }
-      catch (Exception ioxxx)
-      {
-         this.mainActivity.handleApplicationException(ioxxx);
-         throw new RuntimeException(ioxxx);
-      }
-   }
-  
-   @Override
-   public void onActivityCreated(Bundle savedInstanceState){
-	   super.onActivityCreated(savedInstanceState);
-       this.searchInputField.setInputTextFireChange(this.initialBusStationName);
-   }
-   
-   private String getBeaconBusStop(){
-	   try {
-		   SasaApplication application = (SasaApplication) this.getActivity().getApplication();
-		   if (application.getSharedPreferenceManager().isBusStopDetectionEnabled()) {
-		       Integer busStopId = application.getSharedPreferenceManager().getCurrentBusStop();
-			   if (busStopId != null) {
-				   return this.mainActivity.getBusStationNameUsingAppLanguage(this.mainActivity.getOpenDataStorage().getBusStations().findBusStop(busStopId).getBusStation());
-			   }
-		   }
-	   } catch (Exception e) {
-		   e.printStackTrace();
-	   }
-	   return "";
-   }
+                        NextBusFragment.this.listviewNextBuses.post(new Runnable()
+                        {
 
-   public void setInitialBusStationName(String name)
-   {
-      this.initialBusStationName = name;
-   }
-   
-   public void setBeaconBusStationName(String name)
-   {
-	   if(searchInputField.getText().equals("") || searchInputField.getText().equals(initialBusStationName) && !name.equals(initialBusStationName) && !name.equals(""))
-	      try
-	      {
-	    	  this.searchInputField.setInputTextFireChange(name);
-	      }
-	      catch (Exception e)
-	      {
-	    	  e.printStackTrace();
-	      }
-	   if(name != null && !name.equals(initialBusStationName) && !name.equals(""))
-	    	  initialBusStationName = name;
-   }
+                            @Override
+                            public void run()
+                            {
+                                NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    }
 
-   void newStationFound() throws IOException, ParseException
-   {
-      this.busStation = this.searchInputField.getSelectedBusStation();
+    void calculateDepartures() throws ParseException{
+        SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
 
-      if (this.busStation != null)
-      {
-    	 selectStations.setVisibility(View.VISIBLE);
-         calculateDepartures();
-         searchLines.removeAllViews();
-         this.departures = null;
-         this.lines = new Hashtable<String, Boolean>();
-         
-         for(Integer i: NextBusFragment.this.busStation.getBusLines()){
-        	 final String name = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
-             this.lines.put(name, true);
-        	 CheckBox line = new CheckBox(getActivity());
-        	 line.setChecked(true);
-             String lineName = this.mainActivity.getOpenDataStorage().getBusLines().findBusLine(i).getShortName();
-        	 line.setText(lineName);
-        	 searchLines.addView(line);
-        	 line.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					NextBusFragment.this.lines.put(name, ((CheckBox)v).isChecked());
-					ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
-					for(BusDepartureItem item: NextBusFragment.this.departures){
-						if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
-							newDeparture.add(item);
-					}         
-					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
-							NextBusFragment.this.mainActivity,
+        final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
+        String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
+        int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
+
+        InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        try{
+            inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }catch(Exception e){}
+        ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_list_item_1);
+        loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
+        this.listviewNextBuses.setAdapter(loadingAdapter);
+        final DeparturesThread departuresThread = new DeparturesThread(NextBusFragment.this.busStation.getBusLines(),
+                day,
+                seconds,
+                this.busStation,
+                this.mainActivity,
+                this.listviewNextBuses);
+        new Thread(){
+            public void run(){
+                Thread thread = new Thread(departuresThread);
+                try {
+                    thread.start();
+                    thread.join();
+                    NextBusFragment.this.departures = departuresThread.getDepartures();ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
+                    for(BusDepartureItem item: NextBusFragment.this.departures){
+                        if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
+                            newDeparture.add(item);
+                    }
+                    final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
+                            NextBusFragment.this.mainActivity,
                             newDeparture);
 
-					NextBusFragment.this.listviewNextBuses.post(new Runnable()
-					{
-					
-						@Override
-						public void run()
-						{
-							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
-						}
-					});
-				}
-			});
-         }
-      }
-   }
+                    NextBusFragment.this.listviewNextBuses.post(new Runnable()
+                    {
 
-   void calculateDepartures() throws ParseException{
-	   SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+                        @Override
+                        public void run()
+                        {
+                            NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
+                        }
+                    });
 
-       final String day = yyyyMMdd.format(DatePicker.simpleDateFormat.parse(this.currentDate.getText().toString()));
-       String[] hh_mm = NextBusFragment.this.currentTime.getText().toString().split(":");
-       int seconds = (Integer.parseInt(hh_mm[0]) * 60 + Integer.parseInt(hh_mm[1])) * 60;
+                } catch (InterruptedException exxx) {
+                    exxx.printStackTrace();
+                    NextBusFragment.this.mainActivity.handleApplicationException(exxx);
+                }
+            }
+        }.start();
 
-       InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-       try{
-    	   inputManager.hideSoftInputFromWindow(this.getActivity().getCurrentFocus().getWindowToken(),
-                                            InputMethodManager.HIDE_NOT_ALWAYS);
-       }catch(Exception e){}
-       ArrayAdapter<String> loadingAdapter = new ArrayAdapter<String>(this.getActivity(),
-                                                                      android.R.layout.simple_list_item_1);
-       loadingAdapter.add(this.getString(R.string.NextBusFragment_searching));
-       this.listviewNextBuses.setAdapter(loadingAdapter);
-       final DeparturesThread departuresThread = new DeparturesThread(NextBusFragment.this.busStation.getBusLines(),
-               day,
-               seconds,
-               this.busStation,
-               this.mainActivity,
-               this.listviewNextBuses);
-       new Thread(){
-    	   public void run(){
-    		   Thread thread = new Thread(departuresThread);
-				try {
-					thread.start();
-					thread.join();
-					NextBusFragment.this.departures = departuresThread.getDepartures();ArrayList<BusDepartureItem> newDeparture = new ArrayList<BusDepartureItem>();
-					for(BusDepartureItem item: NextBusFragment.this.departures){
-						if(NextBusFragment.this.lines.get(item.getBusStopOrLineName()))
-							newDeparture.add(item);
-					}         
-					final BusSchedulesDepartureAdapter departuresAdapter = new BusSchedulesDepartureAdapter(
-							NextBusFragment.this.mainActivity,
-                            newDeparture);
+    }
 
-					NextBusFragment.this.listviewNextBuses.post(new Runnable()
-					{
-					
-						@Override
-						public void run()
-						{
-							NextBusFragment.this.listviewNextBuses.setAdapter(departuresAdapter);
-						}
-					});
+    @Override
+    public void onResume(){
+        super.onResume();
+        getActivity().registerReceiver(beaconBusstopReceiver, new IntentFilter(getString(R.string.station_beacon_uid)));
+    }
 
-				} catch (InterruptedException exxx) {
-					exxx.printStackTrace();
-					NextBusFragment.this.mainActivity.handleApplicationException(exxx);
-				}
-    	   }
-       }.start();
+    @Override
+    public void onPause(){
+        super.onPause();
+        try {
+            getActivity().unregisterReceiver(beaconBusstopReceiver);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
-   }
-   
-   @Override
-   public void onStart(){
-	   super.onStart();
-	   getActivity().registerReceiver(beaconBusstopReceiver, new IntentFilter(getString(R.string.station_beacon_uid)));
-   }
-   
-   @Override
-   public void onStop(){
-	   super.onStop();
-	   getActivity().unregisterReceiver(beaconBusstopReceiver);
-   }
-   
 }

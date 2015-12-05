@@ -55,7 +55,6 @@ public class SasaApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.e("all trips", TripsSQLiteOpenHelper.getInstance(this).getFinishedTrips().toString());
 		try {
 			this.opendataStorage = new AndroidOpenDataLocalStorage(this.getApplicationContext());
 		} catch (Exception e) {
