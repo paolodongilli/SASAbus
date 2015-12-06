@@ -92,7 +92,7 @@ public class FinishedTrip {
     public String getDuration() {
         long secDif = (finishTime.getTime() - startTime.getTime()) / 1000;
         long houres = secDif / 3600;
-        long minutes = (secDif / 3600) % 60;
+        long minutes = (secDif / 60) % 3600;
         long seconds = secDif % 60;
         return houres + ":" + (minutes < 10?"0":"") + minutes + ":" +
                 (seconds < 10?"0":"") + seconds;

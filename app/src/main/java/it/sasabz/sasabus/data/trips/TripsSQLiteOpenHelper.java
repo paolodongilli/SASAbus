@@ -52,8 +52,7 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 		try {
 			db = getWritableDatabase();
 			c = db.rawQuery(
-				"SELECT * " +
-				"  FROM trips;", null);
+				"SELECT * FROM trips ORDER BY time_start DESC;", null);
 			DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			while (c.moveToNext()) {
 				ret.add(new FinishedTrip(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), iso8601Format.parse(c.getString(5)), iso8601Format.parse(c.getString(6))));

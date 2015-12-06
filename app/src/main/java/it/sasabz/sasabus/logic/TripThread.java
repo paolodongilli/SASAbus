@@ -104,44 +104,26 @@ public class TripThread implements Runnable
          int delayStopFoundIndex = 9999;
          int delaySecondsRoundedToMin = 0;
 
-         boolean isRealtime = false;
-
-         int departure_index = 9999;
+         int departure_index = stopTimes.length - 1;
 
          long daySecondsFromMidnight = SASAbusTimeUtils.getDaySeconds();
 
+         BusTripBusStopTime stop = null;
+         delaySecondsRoundedToMin = convertDelayToMin(properties.getDelay()) * 60;
          boolean gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 120000;
 
-         if (properties != null)
-         {
             for (int i = 0; i < stopTimes.length - 1; i++)
             {
-               BusTripBusStopTime stop = stopTimes[i];
+               stop = stopTimes[i];
                if (gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay() - 120 && stop.getBusStop() == properties.getNextStopNumber()
                        || !gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay())
                {
                   departure_index = i;
                   delayStopFoundIndex = i;
-                  delaySecondsRoundedToMin = convertDelayToMin(properties.getDelay()) * 60;
-                  isRealtime = true;
                   break;
                }
-            }
-         }
-         else
-         {
-            for (int i = 0; i < stopTimes.length - 1; i++)
-            {
-               BusTripBusStopTime stop = stopTimes[i];
-               if (stop.getSeconds() > daySecondsFromMidnight)
-               {
-                  departure_index = i;
-                  break;
-               }
-            }
          }
 
-         BusTripBusStopTime stop = stopTimes[departure_index];
 
          String lineName = mApplication.getOpenDataStorage().getBusLines().findBusLine(busLineVariantTrip.busLineId).getShortName();
 
@@ -152,7 +134,7 @@ public class TripThread implements Runnable
                  departure_index,
                  delaySecondsRoundedToMin / 60,
                  delayStopFoundIndex,
-                 isRealtime);
+                 true);
 
          postExecute.run();
 

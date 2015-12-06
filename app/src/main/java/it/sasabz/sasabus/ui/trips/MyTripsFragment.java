@@ -29,14 +29,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -77,7 +80,7 @@ import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
 public class MyTripsFragment extends SherlockFragment
 {
 
-    private ListView            listviewNextBuses;
+    private ListView            listView;
 
     MainActivity                mainActivity;
 
@@ -91,7 +94,7 @@ public class MyTripsFragment extends SherlockFragment
         View ret = inflater.inflate(R.layout.fragment_my_trips,
                 container, false);
 
-        final ListView listView = (ListView) ret.findViewById(R.id.triplist);
+        listView = (ListView) ret.findViewById(R.id.triplist);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 mainActivity, android.R.layout.simple_list_item_1);
         List<FinishedTrip> finishedTrips = TripsSQLiteOpenHelper.getInstance(getActivity()).getFinishedTrips();
@@ -102,6 +105,13 @@ public class MyTripsFragment extends SherlockFragment
             FinishedTripsAdapter finishedTripsAdapter = new FinishedTripsAdapter(getActivity(), finishedTrips);
             listView.setAdapter(finishedTripsAdapter);
         }
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        View view = new View(getActivity());
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) (5 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)));
+        view.setLayoutParams(params);
+        listView.addHeaderView(view);
+        listView.addFooterView(view);
         return ret;
     }
 

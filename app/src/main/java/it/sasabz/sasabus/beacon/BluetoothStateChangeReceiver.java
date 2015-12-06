@@ -22,7 +22,8 @@ public class BluetoothStateChangeReceiver extends BroadcastReceiver {
 			} else {
 				BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 				if (!mBluetoothAdapter.isEnabled()) {
-					BusBeaconHandler.mBusBeaconMap.clear();
+					if(BusBeaconHandler.mBusBeaconMap != null)
+						BusBeaconHandler.mBusBeaconMap.clear();
 					NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 					notificationManager.cancel(2);
 					context.stopService(new Intent(context, BeaconScannerService.class));

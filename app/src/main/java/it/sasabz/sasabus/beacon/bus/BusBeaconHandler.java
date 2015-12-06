@@ -85,8 +85,6 @@ public class BusBeaconHandler implements IBeaconHandler {
 
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
-		if(major == 385)
-			major = 410;
 		final String key = uuid + "_" + major;
 		final BusBeaconInfo beaconInfo;
 		if (mBusBeaconMap.keySet().contains(key)) {
@@ -120,7 +118,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 			public void onSuccess(BusInformationResult result) {
 				if (BeaconScannerService.isAlive)
 					if (result.hasFeatures()) {
-						final Feature busInformation = result.getFirstFeature();
+						final Feature busInformation = result.getLastFeature();
 						beaconInfo.setBusInformation(busInformation);
 
 						Log.d("beaconInfoSeen", "" + beaconInfo.getSeenSeconds());
@@ -375,7 +373,7 @@ public class BusBeaconHandler implements IBeaconHandler {
 							if (BeaconScannerService.isAlive && result.hasFeatures()) {
 								Feature busInformation = result.getLastFeature();
 
-								beaconInfo.setStopBusstationId(result.getFirstFeature().getProperties().getNextStopNumber());
+								beaconInfo.setStopBusstationId(busInformation.getProperties().getNextStopNumber());
 								Location busLocation = new Location("BusInfo");
 
 								if (busInformation != null && busInformation.getProperties() != null) {
