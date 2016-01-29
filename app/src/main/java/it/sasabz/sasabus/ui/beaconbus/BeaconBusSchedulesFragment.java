@@ -41,6 +41,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
@@ -103,12 +104,12 @@ public class BeaconBusSchedulesFragment extends SherlockFragment
 
                    @Override
                    public void run() {
-                       BeaconBusSchedulesFragment.this.listviewNextBuses.setAdapter(BusBeaconHandler.getDepartureAdapter(getActivity()));
+                       BeaconBusSchedulesFragment.this.listviewNextBuses.setAdapter(BusBeaconHandler
+                               .getDepartureAdapter((SasaApplication)getActivity().getApplication()));
                    }
                });
            }
        };
-       beaconBusstopReceiver.onReceive(getActivity(),null);
 
        return view;
    }
@@ -121,6 +122,7 @@ public class BeaconBusSchedulesFragment extends SherlockFragment
    @Override
    public void onResume(){
 	   super.onResume();
+       beaconBusstopReceiver.onReceive(getActivity(),null);
        getActivity().registerReceiver(beaconBusstopReceiver, new IntentFilter(BusDepartureItem.class.getName()));
    }
    

@@ -26,49 +26,53 @@ package it.sasabz.sasabus.beacon.bus;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.trip.TripBusStop;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
+import it.sasabz.sasabus.logic.TripThread;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 
-public class BusBeaconInfo {
+public class BusBeaconInfo implements Serializable {
 
-	private Integer nearestStartStation;
-	private BusDepartureItem busDepartureItem;
+	private TripBusStop startRealtimeApiTrackStation;
+	private BusDepartureItem busDepartureItem = null;
+    private Feature lastFeature;
 	private String uuid;
 	private int minor;
 	private int major;
-	private Date startDate;
+	private long startDate;
 	private long seconds;
-	private Location location;
+	private Double latitude;
+	private Double longitude;
+	private long locationTime;
 	private Integer tripId;
 	private String lineName;
 	private Integer lineId;
-	private Date lastSeen;
-	private int startBusstationId = -1;
-	private int stopBusstationId;
+	private long lastSeen;
+	private TripBusStop startBusstation = null;
+	private TripBusStop stopBusstation;
 
-	public BusBeaconInfo(String uuid, int major, int minor, long time, Integer nearestStartStation) {
-		this(uuid, major, minor, null, null, time, null, null, null, nearestStartStation);
+	public BusBeaconInfo(String uuid, int major, int minor, long time) {
+		this(uuid, major, minor, null, null, time, null, null, null, null);
 	}
 
 	public BusBeaconInfo(String uuid, int major, int minor, Double longitude, Double latitude, long time, Integer tripId,
-						 String lineName, Integer lineId, Integer nearestStartStation) {
+						 String lineName, Integer lineId, TripBusStop startRealtimeApiTrackStation) {
 		this.uuid = uuid;
 		this.minor = minor;
 		this.major = major;
 		this.seconds = 0;
-		this.startDate = new Date();
-		this.location = new Location("BusApi");
-		if (longitude != null && latitude != null) {
-			this.location.setLongitude(longitude);
-			this.location.setLongitude(latitude);
-		}
-		this.location.setTime(time);
+		this.startDate = new Date().getTime();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.locationTime = time;
 		this.tripId = tripId;
 		this.lineName = lineName;
 		this.lineId = lineId;
-		this.nearestStartStation = nearestStartStation;
+		this.startRealtimeApiTrackStation = startRealtimeApiTrackStation;
 		seen();
 	}
 
@@ -101,25 +105,33 @@ public class BusBeaconInfo {
 	}
 
 	public Location getLocation() {
-		return this.location;
+		Location location = new Location("BusApi");
+		if (longitude != null && latitude != null) {
+			location.setLongitude(longitude);
+			location.setLongitude(latitude);
+		}
+		location.setTime(locationTime);
+		return location;
 	}
 
 	public void setLocation(Location location) {
-		this.location = location;
+		this.latitude = location.getLatitude();
+		this.longitude = location.getLongitude();
+		this.locationTime = location.getTime();
 	}
 
 	public void setLongitude(double longitude) {
-		this.location.setLongitude(longitude);
+		this.longitude = longitude;
 	}
 
 	public void setLatitude(double latitude) {
-		this.location.setLatitude(latitude);
+		this.latitude = latitude;
 	}
 
 	public void seen() {
 		Date now = new Date();
-		seconds = (now.getTime() - startDate.getTime()) / 1000;
-		lastSeen = now;
+		seconds = (now.getTime() - getStartDate().getTime()) / 1000;
+		lastSeen = now.getTime();
 	}
 
 	public Integer getTripId() {
@@ -139,7 +151,7 @@ public class BusBeaconInfo {
 	}
 
 	public Date getLastSeen() {
-		return this.lastSeen;
+		return new Date(this.lastSeen);
 	}
 
 	/**
@@ -154,24 +166,24 @@ public class BusBeaconInfo {
 		setLineId(busInformation.getProperties().getLineNumber());
 	}
 
-	public void setStopBusstationId(int stopBusstationId) {
-		this.stopBusstationId = stopBusstationId;
+	public void setStopBusstation(TripBusStop stopBusstation) {
+		this.stopBusstation = stopBusstation;
 	}
 
-	public int getStopBusstationId() {
-		return this.stopBusstationId;
+	public TripBusStop getStopBusstation() {
+		return this.stopBusstation;
 	}
 
-	public void setStartBusstationId(int stopBusstationId) {
-		this.startBusstationId = stopBusstationId;
+	public void setStartBusstation(TripBusStop startBusstation) {
+		this.startBusstation = startBusstation;
 	}
 
 	public Date getStartDate(){
-		return startDate;
+		return new Date(startDate);
 	}
 
-	public int getStartBusstationId() {
-		return this.startBusstationId;
+	public TripBusStop getStartBusstation() {
+		return startBusstation;
 	}
 
 	public Integer getLineId() {
@@ -182,8 +194,8 @@ public class BusBeaconInfo {
 		this.lineId = lineId;
 	}
 
-	public Integer getNearestStartStation() {
-		return nearestStartStation;
+	public TripBusStop getStartRealtimeApiTrackStation() {
+		return startRealtimeApiTrackStation;
 	}
 
 	public BusDepartureItem getBusDepartureItem() {
@@ -193,5 +205,20 @@ public class BusBeaconInfo {
 	public void setBusDepartureItem(BusDepartureItem busDepartureItem) {
 		this.busDepartureItem = busDepartureItem;
 	}
+
+	public void setLastFeature(Feature lastFeature, SasaApplication mApplication) {
+		this.lastFeature = lastFeature;
+		final TripThread tripThread = new TripThread(this, mApplication, lastFeature);
+		this.busDepartureItem = tripThread.getBusDepartureItem();
+	}
+
+    public Feature getLastFeature(){
+        return lastFeature;
+    }
+
+	public void setStartRealtimeApiTrackStation(TripBusStop startRealtimeApiTrackStation) {
+		this.startRealtimeApiTrackStation = startRealtimeApiTrackStation;
+	}
+
 
 }

@@ -36,6 +36,7 @@
     <string name="beacon_region">sasaBeaconRegion</string>
     <string name="beacon_uid">E923B236-F2B7-4A83-BB74-CFB7FA44CAB8</string>
     <string name="beacon_locatingTimeout">40000</string>
+    <string name="beacon_locatingBusStopTimeout">20000</string>
     <string name="beacon_backgroundScanPeriod">3000</string>
     <string name="beacon_foregroundScanPeriod">3000</string>
     <string name="beacon_backgroundBetweenScanPeriod">0</string>
@@ -56,7 +57,7 @@
     -->
     <!-- Station Beacon -->
     <string name="station_beacon_region">sasaBeaconStationRegion</string>
-    <string name="station_beacon_uid">8F771FCA-E25A-4A7F-AF4E-1745A7BE89EF</string>
+    <string name="station_beacon_uid">8F771FCA-E25A-4A7F-AF4E-1745A7BE89E1</string>
     <string name="station_busStopValidityMiliSeconds">30000</string> <!-- Google Analytics -->
     <string name="google_tracking_id">UA-67699326-1</string>
 

@@ -57,8 +57,8 @@ public class BusScheduleDetailsFragment extends SherlockFragment {
 		this.item = item;
 	}
 
-	public void setData(String busLineShortName, CurentTrip curentTrip) {
-		setData(busLineShortName, curentTrip.getBusDepartureItem());
+	public void setData(String busLineShortName, CurentTrip curentTrip, SasaApplication mApplication) {
+		setData(busLineShortName, curentTrip.getBeaconInfo().getBusDepartureItem());
 		itemUpdateBroadcastReceiver = new BroadcastReceiver() {
 
 			@Override
@@ -67,7 +67,7 @@ public class BusScheduleDetailsFragment extends SherlockFragment {
 						.getSharedPreferenceManager();
 				if (mSharedPreferenceManager.hasCurrentTrip()) {
 					BusScheduleDetailsFragment.this.item = mSharedPreferenceManager.getCurrentTrip()
-							.getBusDepartureItem();
+							.getBeaconInfo().getBusDepartureItem();
 					setupView(getView());
 				}
 			}

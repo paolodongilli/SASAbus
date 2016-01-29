@@ -24,14 +24,13 @@
  */
 package it.sasabz.sasabus.gson.bus.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-
-import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 
 public class BusInformationResult extends AbstractBusResult {
 
@@ -78,7 +77,7 @@ public class BusInformationResult extends AbstractBusResult {
 		return feature;
 	}
 
-	public static class Feature {
+	public static class Feature implements Serializable {
 		@SerializedName("type")
 		public String type;
 		@SerializedName("geometry")
@@ -98,7 +97,7 @@ public class BusInformationResult extends AbstractBusResult {
 			return this.properties;
 		}
 
-		public static class Geometry {
+		public static class Geometry implements Serializable {
 
 			@SerializedName("type")
 			public String type;
@@ -114,7 +113,7 @@ public class BusInformationResult extends AbstractBusResult {
 			}
 		}
 
-		public static class Properties {
+		public static class Properties implements Serializable{
 
 			@SerializedName("frt_fid")
 			public int frtFid;
@@ -150,6 +149,24 @@ public class BusInformationResult extends AbstractBusResult {
 			public String lineColorHex;
 			@SerializedName("hexcolor2")
 			public String lineColorHexWithoutHash;
+
+			public Properties(){
+
+			}
+
+			public Properties(int frtFid, int delay, int lineNumber, String lineName,
+							  int color, int nextStopNumber){
+				this.frtFid = frtFid;
+				this.delay = delay;
+				this.lineNumber = lineNumber;
+				this.lineName = lineName;
+				this.liColorRed = (color >> 16) & 0xFF;
+				this.liColorGreen = (color >> 8) & 0xFF;
+				this.lineColorBlue = color & 0xFF;
+				this.nextStopNumber = nextStopNumber;
+				this.gpsDate = new Date();
+				this.insertDate = new Date();
+			}
 
 			public int getFrtFid() {
 				return frtFid;

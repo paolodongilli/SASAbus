@@ -131,13 +131,13 @@ public class BusSchedulesFragment extends SherlockFragment
          if(((SasaApplication) getActivity().getApplication()).getSharedPreferenceManager().hasCurrentTrip()){
              CurentTrip curentTrip = ((SasaApplication) getActivity().getApplication()).
             		 getSharedPreferenceManager().getCurrentTrip();
-        	 String beaconLine = curentTrip.getBusDepartureItem().getBusStopOrLineName();
+        	 String beaconLine = curentTrip.getBeaconInfo().getBusDepartureItem().getBusStopOrLineName();
         	 int spinnerPosition = ((ArrayAdapter<String>) spinnerBusLine.getAdapter()).getPosition(beaconLine);
              spinnerBusLine.setSelection(spinnerPosition);
              
              BusScheduleDetailsFragment fragmentToShow = (BusScheduleDetailsFragment) SherlockFragment.instantiate(BusSchedulesFragment.this.getActivity(),
                      BusScheduleDetailsFragment.class.getName());
-             fragmentToShow.setData(beaconLine, curentTrip);
+             fragmentToShow.setData(beaconLine, curentTrip, (SasaApplication) getActivity().getApplication());
              FragmentManager fragmentManager = BusSchedulesFragment.this.getActivity().getSupportFragmentManager();
              fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(null).commit();
          }

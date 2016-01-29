@@ -24,6 +24,8 @@
  */
 package it.sasabz.sasabus.gson.bus.service;
 
+import android.util.Log;
+
 import java.util.List;
 
 import org.apache.http.HttpResponse;

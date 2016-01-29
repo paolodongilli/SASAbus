@@ -29,8 +29,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 import it.sasabz.sasabus.beacon.BluetoothStateChangeReceiver;
 import it.sasabz.sasabus.config.ConfigManager;
@@ -48,13 +53,36 @@ public class SasaApplication extends Application {
 	private SharedPreferenceManager mPreferenceManager;
 	private ConfigManager mConfigManager;
 	private AndroidOpenDataLocalStorage opendataStorage;
-//	private static HashMap<String, BusBeaconInfo> mBusBeaconMap;
+	public Thread.UncaughtExceptionHandler defaultHandler = null;
 	
 	private AbstractSasaActivity mActivity = null;
+
+	public SasaApplication(){
+//		defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+/*		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread thread, Throwable tr) {
+				PrintStream printStream = null;
+				try {
+					printStream = new PrintStream(new File(Environment.getExternalStorageDirectory() + "/sasabusERR.txt"));
+					Log.e("file", "" + new File(Environment.getExternalStorageDirectory() + "/sasabusERR.txt"));
+					tr.printStackTrace(printStream);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						printStream.close();
+					} catch (Exception e) {
+					}
+				}
+				defaultHandler.uncaughtException(thread, tr);
+			}
+		});*/
 		try {
 			this.opendataStorage = new AndroidOpenDataLocalStorage(this.getApplicationContext());
 		} catch (Exception e) {
@@ -141,6 +169,14 @@ public class SasaApplication extends Application {
 
 	public AndroidOpenDataLocalStorage getOpenDataStorage() {
 		return opendataStorage;
+	}
+
+	public void onTerminate(){
+		try {
+			super.onTerminate();
+		}catch(Throwable tr){
+			tr.printStackTrace();
+		}
 	}
 
 }

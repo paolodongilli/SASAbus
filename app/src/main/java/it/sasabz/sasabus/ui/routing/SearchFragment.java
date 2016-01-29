@@ -30,10 +30,13 @@ import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.opendata.client.model.BusStation;
 import it.sasabz.sasabus.ui.MainActivity;
 import it.sasabz.sasabus.ui.searchinputfield.BusStationAdvancedInputText;
+import it.sasabz.sasabus.ui.trips.MyTripsFragment;
 
 import java.io.IOException;
 
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,6 +61,8 @@ public class SearchFragment extends SherlockFragment
    Button              buttonSearch;
 
    MainActivity        mainActivity;
+
+   View                showTrips;
 
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -103,6 +108,28 @@ public class SearchFragment extends SherlockFragment
          public void onClick(View arg0)
          {
             SearchFragment.this.autocompletetextviewDeparture.swapText(SearchFragment.this.autoCompleteTextViewArrival);
+         }
+      });
+
+      this.showTrips = view.findViewById(R.id.button_my_trips);
+      this.showTrips.setOnClickListener(new OnClickListener() {
+         long lastClick = 0;
+         int clickCount = 0;
+         @Override
+         public void onClick(View v) {
+            if(System.currentTimeMillis() - lastClick > 1000)
+               clickCount = 0;
+            if(++clickCount == 7){
+               SherlockFragment fragmentToShow = (SherlockFragment) SherlockFragment.instantiate(mainActivity,
+                       MyTripsFragment.class.getName());
+               FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+               fragmentManager.beginTransaction().add(R.id.content_frame, fragmentToShow).addToBackStack(MainActivity.HOME_FRAGMENT)
+                          .commit();
+
+               mainActivity.getSupportActionBar().setTitle("My Trips");
+               clickCount = 0;
+            }
+            lastClick = System.currentTimeMillis();
          }
       });
 

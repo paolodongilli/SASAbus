@@ -34,6 +34,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -66,7 +67,8 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 			PendingIntent pendingIntent = PendingIntent.getActivity(mApplication, 0, intent, Intent.FILL_IN_DATA);
 			Notification notification = new NotificationCompat.Builder(mApplication)
 					.setContentTitle(getBeaconBusStop()).setContentText(mApplication.getString(R.string.show_next_departures))
-					.setTicker(getBeaconBusStop()).setSmallIcon(R.drawable.icon)
+					.setTicker(getBeaconBusStop()).setSmallIcon(R.drawable.ic_notification)
+					.setLargeIcon(BitmapFactory.decodeResource(mApplication.getResources(),R.drawable.icon))
 					.setAutoCancel(true).setContentIntent(pendingIntent)
 					.build();
 
@@ -133,8 +135,7 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 	public void beaconsInRange(Collection<Beacon> beacons) {
 		Beacon nearestBeacon = null;
 		for (Beacon beacon : beacons) {
-			if (nearestBeacon == null
-					|| (beacon.getDistance() > 0 && beacon.getDistance() < nearestBeacon.getDistance())) {
+			if ((beacon.getDistance() > 0 && beacon.getDistance() < nearestBeacon.getDistance())) {
 				nearestBeacon = beacon;
 			}
 		}

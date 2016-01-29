@@ -25,7 +25,10 @@
 
 package it.sasabz.sasabus.logic;
 
+import android.util.Log;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,6 +37,8 @@ import java.util.HashMap;
 
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
+import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
+import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.data.AndroidOpenDataLocalStorage;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature;
 import it.sasabz.sasabus.gson.bus.model.BusInformationResult.Feature.Properties;
@@ -45,46 +50,87 @@ import it.sasabz.sasabus.opendata.client.model.BusTripStartTime;
 import it.sasabz.sasabus.opendata.client.model.BusTripStartVariant;
 import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 
-public class TripThread implements Runnable
-{
+public class TripThread {
 
-   int              busLineId;
-   String           busLineName;
-   String           yyyyMMdd;
-   int              seconds;
-   int				tripId;
-   int              busId;
-   SasaApplication  mApplication;
-   Feature			feature;
-   BusDepartureItem busDepartureItem;
-   Runnable         postExecute;
-   int              dayType;
+   BusBeaconInfo beaconInfo;
+   SasaApplication mApplication;
+   Feature feature;
 
-   public TripThread(int busLineId,
-                     String busLineName,
-                     int tripId,
-                     int busId,
-                     String yyyyMMdd,
-                     int seconds,
+   public TripThread(BusBeaconInfo beaconInfo,
                      SasaApplication application,
-                     Feature currentFeature)
-   {
+                     Feature currentFeature) {
       super();
-      this.tripId = tripId;
-      this.busLineId = busLineId;
-      this.busLineName = busLineName;
-      this.yyyyMMdd = yyyyMMdd;
-      this.seconds = seconds;
+      this.beaconInfo = beaconInfo;
       this.feature = currentFeature;
       this.mApplication = application;
-      this.busId = busId;
    }
 
-   @Override
-   public void run()
-   {
-      try
-      {
+   static int convertDelayToMin(int delaySeconds) {
+      if (delaySeconds < 0) {
+         delaySeconds -= 59;
+      }
+      int delayMinute = delaySeconds / 60;
+      return delayMinute;
+   }
+
+   BusLineVariantTrip findBusTrip(HashMap<String, Void> uniqueLineVariants)
+           throws IOException {
+
+      BusDayType calendarDay = mApplication.getOpenDataStorage().getBusDayTypeList().findBusDayTypeByDay(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+      if (calendarDay == null) {
+         // This day isn't in the calendar!
+         return null;
+      }
+      int dayType = calendarDay.getDayTypeId();
+
+      BusTripStartVariant[] variants = mApplication.getOpenDataStorage().getBusTripStarts(beaconInfo.getLineId(),
+              dayType);
+      int tripId = beaconInfo.getTripId();
+      for (BusTripStartVariant busTripStartVariant : variants) {
+         ArrayList<Integer> ints = new ArrayList<>();
+
+         BusTripStartTime[] times = busTripStartVariant.getTriplist();
+         for (BusTripStartTime busTripStartTime : times) {
+            ints.add(busTripStartTime.getId());
+            if (busTripStartTime.getId() == tripId) {
+               uniqueLineVariants.put(String.valueOf(beaconInfo.getLineId())
+                               + ":"
+                               + String.valueOf(busTripStartVariant.getVariantId()),
+                       null);
+               BusLineVariantTrip busLineVariantTrip = new BusLineVariantTrip();
+               busLineVariantTrip.busLineId = beaconInfo.getLineId();
+               busLineVariantTrip.variant = busTripStartVariant;
+               busLineVariantTrip.busTripStartTime = busTripStartTime;
+               return busLineVariantTrip;
+            }
+         }
+         Collections.sort(ints);
+      }
+      return null;
+   }
+
+   public static String formatSeconds(long seconds) {
+      long min = seconds / 60 % 60;
+      long hour = seconds / 3600;
+      return "" + twoDigits(hour) + ":" + twoDigits(min);
+   }
+
+   public static String twoDigits(long num) {
+      String ret = "00" + num;
+      ret = ret.substring(ret.length() - 2);
+      return ret;
+   }
+
+   public String getBusStationNameUsingAppLanguage(BusStation busStation) {
+      if (mApplication.getApplicationContext().getString(R.string.bus_station_name_language).equals("de")) {
+         return busStation.findName_de();
+      } else {
+         return busStation.findName_it();
+      }
+   }
+
+   public BusDepartureItem getBusDepartureItem() {
+      try {
 
          AndroidOpenDataLocalStorage openDataStorage = mApplication.getOpenDataStorage();
 
@@ -110,24 +156,32 @@ public class TripThread implements Runnable
 
          BusTripBusStopTime stop = null;
          delaySecondsRoundedToMin = convertDelayToMin(properties.getDelay()) * 60;
-         boolean gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 120000;
+         boolean gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 90000  &&
+                 mApplication.isOnline() ||
+                 Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 30000;
 
-            for (int i = 0; i < stopTimes.length - 1; i++)
-            {
-               stop = stopTimes[i];
-               if (gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay() - 120 && stop.getBusStop() == properties.getNextStopNumber()
-                       || !gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay())
-               {
-                  departure_index = i;
-                  delayStopFoundIndex = i;
-                  break;
-               }
+         CurentTrip curentTrip = mApplication.getSharedPreferenceManager().getCurrentTrip();
+         if (!gpsTimeGood && curentTrip != null && mApplication.getSharedPreferenceManager().getCurrentTrip().getBeaconInfo().getMajor() == beaconInfo.getMajor()) {
+            properties = curentTrip.getVirtualFeature().getProperties();
+            if (curentTrip.getVirtualFeature().getProperties().getGpsDate().getTime() > properties.getGpsDate().getTime()) {
+               gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 60000;
+            }
+         }
+
+         for (int i = 0; i < stopTimes.length - 1; i++) {
+            stop = stopTimes[i];
+            if (gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay() - 120 && stop.getBusStop() == properties.getNextStopNumber()
+                    || !gpsTimeGood && stop.getSeconds() > daySecondsFromMidnight - properties.getDelay()) {
+               departure_index = i;
+               delayStopFoundIndex = i;
+               break;
+            }
          }
 
 
          String lineName = mApplication.getOpenDataStorage().getBusLines().findBusLine(busLineVariantTrip.busLineId).getShortName();
 
-         busDepartureItem = new BusDepartureItem(formatSeconds(stop.getSeconds()), lineName,
+         return new BusDepartureItem(formatSeconds(stop.getSeconds()), lineName,
                  destinationBusStationName,
                  stopTimes,
                  departure_index,
@@ -135,119 +189,9 @@ public class TripThread implements Runnable
                  delaySecondsRoundedToMin / 60,
                  delayStopFoundIndex,
                  true);
-
-         postExecute.run();
-
-
-
-
-      }
-      catch (Exception exxx)
-      {
+      } catch (Exception exxx) {
          exxx.printStackTrace();
       }
-   }
-
-   static int convertDelayToMin(int delaySeconds)
-   {
-      if (delaySeconds < 0)
-      {
-         delaySeconds -= 59;
-      }
-      int delayMinute = delaySeconds / 60;
-      return delayMinute;
-   }
-
-   BusLineVariantTrip findBusTrip(HashMap<String, Void> uniqueLineVariants)
-           throws IOException
-   {
-      BusDayType calendarDay = mApplication.getOpenDataStorage().getBusDayTypeList().findBusDayTypeByDay(this.yyyyMMdd);
-      if (calendarDay == null)
-      {
-         // This day isn't in the calendar!
-         return null;
-      }
-      dayType = calendarDay.getDayTypeId();
-
-      BusTripStartVariant[] variants = mApplication.getOpenDataStorage().getBusTripStarts(busLineId,
-              dayType);
-      for (BusTripStartVariant busTripStartVariant : variants)
-      {            ArrayList<Integer> ints = new ArrayList<>();
-
-         BusTripStartTime[] times = busTripStartVariant.getTriplist();
-         for (BusTripStartTime busTripStartTime : times)
-         {
-            ints.add(busTripStartTime.getId());
-            if (busTripStartTime.getId() == tripId)
-            {
-               uniqueLineVariants.put(String.valueOf(busLineId)
-                               + ":"
-                               + String.valueOf(busTripStartVariant.getVariantId()),
-                       null);
-               BusLineVariantTrip busLineVariantTrip = new BusLineVariantTrip();
-               busLineVariantTrip.busLineId = busLineId;
-               busLineVariantTrip.variant = busTripStartVariant;
-               busLineVariantTrip.busTripStartTime = busTripStartTime;
-               return busLineVariantTrip;
-            }
-         }
-         Collections.sort(ints);
-      }
       return null;
-   }
-
-   public static void sortDeparturesByTime(ArrayList<BusDepartureItem> departures)
-   {
-      Collections.sort(departures, new Comparator<BusDepartureItem>()
-      {
-         @Override
-         public int compare(BusDepartureItem i1, BusDepartureItem i2)
-         {
-            int diff = i1.getTime().compareTo(i2.getTime());
-            if (diff == 0)
-            {
-               i1.getBusStopOrLineName().compareTo(i2.getBusStopOrLineName());
-            }
-            if (diff == 0)
-            {
-               i1.getDestinationName().compareTo(i2.getDestinationName());
-            }
-            return diff;
-         }
-      });
-   }
-
-   public static String formatSeconds(long seconds)
-   {
-      long min = seconds / 60 % 60;
-      long hour = seconds / 3600;
-      return "" + twoDigits(hour) + ":" + twoDigits(min);
-   }
-
-   public static String twoDigits(long num)
-   {
-      String ret = "00" + num;
-      ret = ret.substring(ret.length() - 2);
-      return ret;
-   }
-
-   public String getBusStationNameUsingAppLanguage(BusStation busStation) {
-      if (mApplication.getApplicationContext().getString(R.string.bus_station_name_language).equals("de")) {
-         return busStation.findName_de();
-      } else {
-         return busStation.findName_it();
-      }
-   }
-
-   public BusDepartureItem getBusDepartureItem(){
-      return busDepartureItem;
-   }
-
-   public void setPostExecute(Runnable postExecute) {
-      this.postExecute = postExecute;
-   }
-
-   public int getDayType(){
-      return dayType;
    }
 }

@@ -182,7 +182,6 @@ public class BeaconObserver implements BeaconConsumer, BootstrapNotifier {
 	}
 
 	public void stopListening() {
-		Log.wtf("", "stopListening");
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			mBeaconManager.unbind(this);
 			mBeaconHandlerBusStop.clearBeacons();

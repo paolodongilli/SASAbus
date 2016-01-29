@@ -32,13 +32,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
@@ -50,7 +53,7 @@ import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 
 public class TripNotificationAction {
 
-	private SasaApplication mSasaApplication;
+	public SasaApplication mSasaApplication;
 	private static final int[] BIG_VIEW_ROW_IDS = { R.id.notification_busstop_row0, R.id.notification_busstop_row1,
 			R.id.notification_busstop_row2, R.id.notification_busstop_row3, R.id.notification_busstop_row4,
 			R.id.notification_busstop_row5, R.id.notification_busstop_row6,R.id.notification_busstop_row7 };
@@ -68,7 +71,7 @@ public class TripNotificationAction {
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	public void showNotification() {
-	
+
 		try{
 		CurentTrip curentTrip = mSasaApplication.getSharedPreferenceManager().getCurrentTrip();
 		
@@ -76,8 +79,9 @@ public class TripNotificationAction {
 		PendingIntent pendingIntent = PendingIntent.getActivity(mSasaApplication, 0, intent, Intent.FILL_IN_DATA);
 
 		Notification notification = new NotificationCompat.Builder(mSasaApplication)
-				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.icon).setContentIntent(pendingIntent)
-				.setOngoing(true).build();
+				.setContent(getBaseNotificationView(curentTrip)).setSmallIcon(R.drawable.ic_notification)
+				.setLargeIcon(BitmapFactory.decodeResource(mSasaApplication.getResources(),R.drawable.icon))
+				.setOngoing(true).setContentIntent(pendingIntent).build();
 		NotificationManager notificationManager = (NotificationManager) mSasaApplication
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -92,57 +96,17 @@ public class TripNotificationAction {
 	}
 
 	private RemoteViews getBaseNotificationView(CurentTrip curentTrip) {
-		BusDepartureItem busDepartureItem = curentTrip.getBusDepartureItem();
+		BusDepartureItem busDepartureItem = curentTrip.getBeaconInfo().getBusDepartureItem();
 		RemoteViews remoteViews = new RemoteViews(mSasaApplication.getPackageName(),
 				R.layout.notification_curent_trip_base);
 		try {
-			remoteViews.setTextViewText(R.id.txt_line_name, busDepartureItem.getBusStopOrLineName().split(" ")[0]);
-			DisplayMetrics displayMetrics = mSasaApplication.getResources().getDisplayMetrics();
-			GradientDrawable circularImage = (GradientDrawable) mSasaApplication.getResources()
-					.getDrawable(R.drawable.circle_image);
-			circularImage.setStroke(Math.round(4 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)),
-					curentTrip.getColor());
-
-			int size = Math.round(64 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-			Bitmap circularBitmap = Bitmap.createBitmap(size, size, Config.ARGB_8888);
-			Canvas canvas = new Canvas(circularBitmap);
-			circularImage.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-			circularImage.draw(canvas);
-			remoteViews.setImageViewBitmap(R.id.image_notification_line, circularBitmap);
-			remoteViews.setTextColor(R.id.txt_line_name, curentTrip.getColor());
-			remoteViews.setTextViewText(R.id.txt_delay, busDepartureItem.getDelay());
-			int delay = busDepartureItem.getDelayNumber();
-			if (delay == 0) {
-				remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.in_time));
-			} else if (delay < 0) {
-				if (delay < -2) {
-					remoteViews.setTextColor(R.id.txt_delay, Color.CYAN);
-				} else {
-					remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				}
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.advance));
-			} else {
-				if (delay < 2) {
-					remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				} else if (delay < 4) {
-					remoteViews.setTextColor(R.id.txt_delay,
-							mSasaApplication.getResources().getColor(R.color.sasa_orange));
-				} else {
-					remoteViews.setTextColor(R.id.txt_delay, Color.RED);
-				}
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.delay));
-
-			}
+			setCommonNotification(remoteViews, busDepartureItem, curentTrip);
 
 			int index = busDepartureItem.getDeparture_index();
 			if (index == 9999) {
 				index = busDepartureItem.getStopTimes().length - 1;
 			}
-			BusTripBusStopTime element = busDepartureItem.getStopTimes()[index];
+			BusDepartureItem.MyBusTripBusStopTime element = busDepartureItem.getStopTimes()[index];
 
 			remoteViews.setTextViewText(R.id.txt_time,
 					DeparturesThread.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
@@ -152,7 +116,7 @@ public class TripNotificationAction {
 				busStationName = getBusStationNameUsingAppLanguage(mSasaApplication.getOpenDataStorage()
 						.getBusStations().findBusStop(element.getBusStop()).getBusStation());
 			} catch (Exception exxooo) {
-				System.out.println("Do nothing");
+				exxooo.printStackTrace();
 			}
 			remoteViews.setTextViewText(R.id.txt_busstopname, busStationName);
 		} catch (Exception e) {
@@ -162,51 +126,11 @@ public class TripNotificationAction {
 	}
 
 	private RemoteViews getBigNotificationView(CurentTrip curentTrip) {
-		BusDepartureItem busDepartureItem = curentTrip.getBusDepartureItem();
+		BusDepartureItem busDepartureItem = curentTrip.getBeaconInfo().getBusDepartureItem();
 		RemoteViews remoteViews = new RemoteViews(mSasaApplication.getPackageName(),
 				R.layout.notification_curent_trip_big);
 		try {
-			remoteViews.setTextViewText(R.id.txt_line_name, busDepartureItem.getBusStopOrLineName().split(" ")[0]);
-			DisplayMetrics displayMetrics = mSasaApplication.getResources().getDisplayMetrics();
-			GradientDrawable circularImage = (GradientDrawable) mSasaApplication.getResources()
-					.getDrawable(R.drawable.circle_image);
-			circularImage.setStroke(Math.round(4 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)),
-					curentTrip.getColor());
-
-			int size = Math.round(64 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-			Bitmap circularBitmap = Bitmap.createBitmap(size, size, Config.ARGB_8888);
-			Canvas canvas = new Canvas(circularBitmap);
-			circularImage.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-			circularImage.draw(canvas);
-			remoteViews.setImageViewBitmap(R.id.image_notification_line, circularBitmap);
-			remoteViews.setTextColor(R.id.txt_line_name, curentTrip.getColor());
-			remoteViews.setTextViewText(R.id.txt_delay, busDepartureItem.getDelay());
-			int delay = busDepartureItem.getDelayNumber();
-			if (delay == 0) {
-				remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.in_time));
-			} else if (delay < 0) {
-				if (delay < -2) {
-					remoteViews.setTextColor(R.id.txt_delay, Color.CYAN);
-				} else {
-					remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				}
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.advance));
-			} else {
-				if (delay < 2) {
-					remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
-				} else if (delay < 4) {
-					remoteViews.setTextColor(R.id.txt_delay,
-							mSasaApplication.getResources().getColor(R.color.sasa_orange));
-				} else {
-					remoteViews.setTextColor(R.id.txt_delay, Color.RED);
-				}
-				remoteViews.setTextViewText(R.id.txt_delay_text,
-						mSasaApplication.getResources().getString(R.string.delay));
-
-			}
+			setCommonNotification(remoteViews, busDepartureItem, curentTrip);
 
 			int departureIndex = busDepartureItem.getDelay_index();
 			if (departureIndex == 9999) {
@@ -222,7 +146,7 @@ public class TripNotificationAction {
 					if (i == BIG_VIEW_ROW_IDS.length - 2 && departureIndex + i == busDepartureItem.getStopTimes().length - 2)
 						remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
 
-					BusTripBusStopTime element = busDepartureItem.getStopTimes()[departureIndex + i];
+					BusDepartureItem.MyBusTripBusStopTime element = busDepartureItem.getStopTimes()[departureIndex + i];
 					if (departureIndex + i == 0)
 						remoteViews.setImageViewResource(BIG_VIEW_ROUTE_IMAGE_IDS[i], R.drawable.ab_punkt);
 					else if (busDepartureItem.getDelay_index() == departureIndex + i) {
@@ -250,7 +174,7 @@ public class TripNotificationAction {
 					remoteViews.setViewVisibility(R.id.image_route_points, View.GONE);
 					remoteViews.setViewVisibility(BIG_VIEW_ROW_IDS[i], View.GONE);
 				}
-			BusTripBusStopTime element = busDepartureItem.getStopTimes()[busDepartureItem.getStopTimes().length - 1];
+			BusDepartureItem.MyBusTripBusStopTime element = busDepartureItem.getStopTimes()[busDepartureItem.getStopTimes().length - 1];
 
 			remoteViews.setTextViewText(BIG_VIEW_TIME_TEXT_IDS[BIG_VIEW_TIME_TEXT_IDS.length - 1], DeparturesThread
 					.formatSeconds(element.getSeconds() + busDepartureItem.getDelayNumber() * 60));
@@ -269,7 +193,43 @@ public class TripNotificationAction {
 		return remoteViews;
 	}
 	
-	
+	public void setCommonNotification(RemoteViews remoteViews, BusDepartureItem busDepartureItem, CurentTrip curentTrip){
+		remoteViews.setTextViewText(R.id.txt_line_name, curentTrip.getBeaconInfo().getLineName());
+
+		remoteViews.setImageViewBitmap(R.id.image_notification_line, getNotificationIcon(curentTrip.getColor()));
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+			remoteViews.setTextColor(R.id.txt_line_name, 0xFFFFFFFF);
+		else
+			remoteViews.setTextColor(R.id.txt_line_name, curentTrip.getColor());
+		remoteViews.setTextViewText(R.id.txt_delay, busDepartureItem.getDelay());
+		int delay = busDepartureItem.getDelayNumber();
+		if (delay == 0) {
+			remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
+			remoteViews.setTextViewText(R.id.txt_delay_text,
+					mSasaApplication.getResources().getString(R.string.in_time));
+		} else if (delay < 0) {
+			if (delay < -2) {
+				remoteViews.setTextColor(R.id.txt_delay, Color.CYAN);
+			} else {
+				remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
+			}
+			remoteViews.setTextViewText(R.id.txt_delay_text,
+					mSasaApplication.getResources().getString(R.string.advance));
+		} else {
+			if (delay < 2) {
+				remoteViews.setTextColor(R.id.txt_delay, Color.GREEN);
+			} else if (delay < 4) {
+				remoteViews.setTextColor(R.id.txt_delay,
+						mSasaApplication.getResources().getColor(R.color.sasa_orange));
+			} else {
+				remoteViews.setTextColor(R.id.txt_delay, Color.RED);
+			}
+			remoteViews.setTextViewText(R.id.txt_delay_text,
+					mSasaApplication.getResources().getString(R.string.delay));
+
+		}
+
+	}
 
 	public String getBusStationNameUsingAppLanguage(BusStation busStation) {
 		if (mSasaApplication.getString(R.string.bus_station_name_language).equals("de"))
@@ -277,4 +237,19 @@ public class TripNotificationAction {
 		return busStation.findName_it();
 	}
 
+	public Bitmap getNotificationIcon(int color){
+		DisplayMetrics displayMetrics = mSasaApplication.getResources().getDisplayMetrics();
+		GradientDrawable circularImage = (GradientDrawable) mSasaApplication.getResources()
+				.getDrawable(R.drawable.circle_image);
+		circularImage.setStroke(Math.round(4 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)),
+				color);
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+			circularImage.setColor(color);
+		int size = Math.round(64 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+		Bitmap circularBitmap = Bitmap.createBitmap(size, size, Config.ARGB_8888);
+		Canvas canvas = new Canvas(circularBitmap);
+		circularImage.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		circularImage.draw(canvas);
+		return circularBitmap;
+	}
 }

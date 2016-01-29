@@ -41,6 +41,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -93,7 +94,7 @@ public class MainActivity extends AbstractSasaActivity {
 
 	final String OSM_ZIP_NAME = "osm-tiles.zip";
 
-	private static final String HOME_FRAGMENT = "HOME_FRAGMENT";
+	public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
 
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -126,7 +127,7 @@ public class MainActivity extends AbstractSasaActivity {
 			beaconBusstopReceiver = new BroadcastReceiver() {
 				@Override
 				public void onReceive(Context context, Intent intent) {
-					ArrayAdapter arrayAdapter = BusBeaconHandler.getDepartureAdapter(MainActivity.this);
+					ArrayAdapter arrayAdapter = BusBeaconHandler.getDepartureAdapter((SasaApplication)getApplication());
 					List<DrawerItem> drawerItems = new ArrayList<DrawerItem>();
 					for (int i = 0; i < mNavigationTitles.length; i++) {
 						drawerItems.add(new DrawerItem(mNavigationTitles[i], mNavigationIcons.getDrawable(i),
@@ -159,6 +160,7 @@ public class MainActivity extends AbstractSasaActivity {
 			this.addNavigationDrawer(savedInstanceState);
 			this.mainLocationManager = new MainLocationManager(this);
 			this.checkFirstTime();
+			registerReceiver(beaconBusstopReceiver, new IntentFilter(BusDepartureItem.class.getName()));
 		} catch (Exception ioxxx) {
 			this.handleApplicationException(ioxxx);
 			throw new RuntimeException(ioxxx);
@@ -230,7 +232,8 @@ public class MainActivity extends AbstractSasaActivity {
 	private void notifyUserForUpdate() {
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-		mBuilder.setSmallIcon(R.drawable.icon);
+		mBuilder.setSmallIcon(R.drawable.ic_notification);
+		mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon));
 		mBuilder.setContentTitle(this.getString(R.string.update_opendata_dialog_title));
 		mBuilder.setContentText(this.getString(R.string.update_opendata_notification_message));
 		mBuilder.setAutoCancel(true);
@@ -367,7 +370,8 @@ public class MainActivity extends AbstractSasaActivity {
 					try {
 
 						NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this);
-						mBuilder.setSmallIcon(R.drawable.icon);
+						mBuilder.setSmallIcon(R.drawable.ic_notification);
+						mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon));
 						mBuilder.setContentTitle("SASAbus download map");
 						mBuilder.setAutoCancel(true);
 						PendingIntent pintent = PendingIntent.getActivity(MainActivity.this.getApplicationContext(), 0,
@@ -756,12 +760,11 @@ public class MainActivity extends AbstractSasaActivity {
 	@Override
 	public void onStart(){
 		super.onStart();
-		registerReceiver(beaconBusstopReceiver, new IntentFilter(BusDepartureItem.class.getName()));
 	}
 
 	@Override
-	public void onStop(){
-		super.onStop();
+	public void onDestroy(){
+		super.onDestroy();
 		unregisterReceiver(beaconBusstopReceiver);
 	}
 

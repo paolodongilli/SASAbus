@@ -25,15 +25,19 @@
 
 package it.sasabz.sasabus.ui.busschedules;
 
+import android.util.Log;
+
+import java.io.Serializable;
+
 import it.sasabz.sasabus.opendata.client.model.BusTripBusStopTime;
 
-public class BusDepartureItem
+public class BusDepartureItem implements Serializable
 {
    private String       time;
    private String       busStopOrLineName;
    private String       destinationName;
 
-   BusTripBusStopTime[] stopTimes;
+   MyBusTripBusStopTime[] stopTimes;
    int                  selected_index;
    int                  departure_index;
 
@@ -56,7 +60,9 @@ public class BusDepartureItem
       this.time = time;
       this.busStopOrLineName = busStopOrLineName;
       this.destinationName = destinationName;
-      this.stopTimes = stopTimes;
+      this.stopTimes = new MyBusTripBusStopTime[stopTimes.length];
+      for(int i = 0; i < stopTimes.length; i++)
+         this.stopTimes[i] = new MyBusTripBusStopTime(stopTimes[i]);
       this.selected_index = selected_index;
       this.delay = delay;
       this.delay_index = delay_index;
@@ -79,7 +85,7 @@ public class BusDepartureItem
       return this.destinationName;
    }
 
-   public BusTripBusStopTime[] getStopTimes()
+   public MyBusTripBusStopTime[] getStopTimes()
    {
       return this.stopTimes;
    }
@@ -117,6 +123,33 @@ public class BusDepartureItem
    public void setDelay(int delay)
    {
 	   this.delay = delay;
+   }
+
+   public static class MyBusTripBusStopTime implements Serializable{
+      int busStop;
+      int seconds;
+
+      public MyBusTripBusStopTime(BusTripBusStopTime busTripBusStopTime) {
+         busStop = busTripBusStopTime.getBusStop();
+         seconds = busTripBusStopTime.getSeconds();
+      }
+
+      public int getSeconds() {
+         return this.seconds;
+      }
+
+      public int getBusStop() {
+         return this.busStop;
+      }
+
+      public void setBusStop(int busStop) {
+         this.busStop = busStop;
+      }
+
+      public void setSeconds(int seconds) {
+         this.seconds = seconds;
+      }
+
    }
 
 }

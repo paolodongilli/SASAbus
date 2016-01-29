@@ -37,6 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:text="11:14"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -58,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:text="rit."
+                android:textColor="#000"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </LinearLayout>
@@ -77,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3 BZ"
+            android:textColor="#000"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
@@ -85,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="per Stazione 1"
+            android:textColor="#000"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>

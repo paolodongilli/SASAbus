@@ -34,6 +34,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -106,8 +107,8 @@ public class NotificationAction implements ISurveyAction {
 		surveyNoIntent.putExtra("frtId", beaconInfo.getTripId());
 		surveyNoIntent.putExtra("busId", beaconInfo.getMajor());
 		surveyNoIntent.putExtra("tripDuration", beaconInfo.getSeenSeconds());
-		surveyNoIntent.putExtra("startBusstopId", beaconInfo.getStartBusstationId());
-		surveyNoIntent.putExtra("stopBusstopId", beaconInfo.getStopBusstationId());
+		surveyNoIntent.putExtra("startBusstopId", beaconInfo.getStartBusstation().getBusStopId());
+		surveyNoIntent.putExtra("stopBusstopId", beaconInfo.getStopBusstation().getBusStopId());
 		return surveyNoIntent;
 	}
 
@@ -121,7 +122,7 @@ public class NotificationAction implements ISurveyAction {
 									new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							SurveyApiService.getInstance(activity).commitSurvey("y", beaconInfo.getMajor(),
-									beaconInfo.getTripId(), beaconInfo.getSeenSeconds(), beaconInfo.getStartBusstationId(), beaconInfo.getStopBusstationId());
+									beaconInfo.getTripId(), beaconInfo.getSeenSeconds(), beaconInfo.getStartBusstation().getBusStopId(), beaconInfo.getStopBusstation().getBusStopId());
 							dialog.dismiss();
 						}
 					}).setNegativeButton(activity.getString(R.string.survey_answer_no),
@@ -152,13 +153,15 @@ public class NotificationAction implements ISurveyAction {
 		intent.putExtra("frtId", beaconInfo.getTripId());
 		intent.putExtra("busId", beaconInfo.getMajor());
 		intent.putExtra("tripDuration", beaconInfo.getSeenSeconds());
-		intent.putExtra("startBusstopId", beaconInfo.getStartBusstationId());
-		intent.putExtra("stopBusstopId", beaconInfo.getStopBusstationId());
+		intent.putExtra("startBusstopId", beaconInfo.getStartBusstation().getBusStopId());
+		intent.putExtra("stopBusstopId", beaconInfo.getStopBusstation().getBusStopId());
 		PendingIntent yesPendingIntent = PendingIntent.getBroadcast(mSasaApplication, 0, intent, Intent.FILL_IN_DATA);
 
 		Notification notification = new NotificationCompat.Builder(mSasaApplication)
 				.setContentTitle(mSasaApplication.getString(R.string.survey_title)).setContentText(firstQuestion)
-				.setSmallIcon(R.drawable.icon).setContentIntent(pIntentNeutral).setAutoCancel(true)
+				.setSmallIcon(R.drawable.ic_notification)
+				.setLargeIcon(BitmapFactory.decodeResource(mSasaApplication.getResources(),R.drawable.icon))
+				.setContentIntent(pIntentNeutral).setAutoCancel(true)
 				.addAction(R.drawable.ic_no, mSasaApplication.getString(R.string.survey_answer_no), pIntentNo)
 				.addAction(R.drawable.ic_yes, mSasaApplication.getString(R.string.survey_answer_yes), yesPendingIntent)
 				.build();

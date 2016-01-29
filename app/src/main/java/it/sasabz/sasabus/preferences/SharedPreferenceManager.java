@@ -6,6 +6,9 @@ import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
 import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.config.ConfigManager;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -176,7 +179,7 @@ public class SharedPreferenceManager {
 	}
 
 	public void setCurrentTrip(CurentTrip curentTrip) {
-		CurentTrip preTrip = getCurrentTrip();
+		CurentTrip preTrip = readCurrentTrip();
 		boolean update = false;
 		if (preTrip == null) {
 			if (curentTrip != null)
@@ -185,13 +188,25 @@ public class SharedPreferenceManager {
 			update = true;
 		else
 			update = preTrip.checkUpdate(curentTrip);
+
 		if (update) {
 			SharedPreferenceManager.curentTrip = curentTrip;
+			ObjectOutputStream out = null;
+			try {
+				out = new ObjectOutputStream(context.openFileOutput(PREF_BEACON_CURRENT_TRIP, Context.MODE_PRIVATE));
+				out.writeObject(curentTrip);
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally {
+				try{
+					out.close();
+				}catch(Exception e){
+
+				}
+			}
 			if (curentTrip == null) {
-				this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_TRIP).commit();
 				this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_TRIP_LAST).commit();
 			} else {
-				this.sharedPreferences.edit().putString(PREF_BEACON_CURRENT_TRIP, new Gson().toJson(curentTrip)).commit();
 				this.sharedPreferences.edit().putLong(PREF_BEACON_CURRENT_TRIP_LAST, new Date().getTime()).commit();
 			}
 			if (curentTrip != null) {
@@ -200,70 +215,91 @@ public class SharedPreferenceManager {
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 				notificationManager.cancel(2);
 			}
-		}
+		} else
+			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_TRIP_LAST).commit();
 	}
 
 	public CurentTrip getCurrentTrip() {
 		if(curentTrip != null)
 			return curentTrip;
-		CurentTrip currentTrip = null;
+		curentTrip = readCurrentTrip();
+		return curentTrip;
+	}
+
+	public CurentTrip readCurrentTrip(){
 		Long currentTripTimeStamp = null;
-		if (this.sharedPreferences.getString(PREF_BEACON_CURRENT_TRIP, null) != null) {
-			currentTrip = new Gson().fromJson(sharedPreferences.getString(PREF_BEACON_CURRENT_TRIP, null), CurentTrip.class);
-		}
 
 		if (this.sharedPreferences.getLong(PREF_BEACON_CURRENT_TRIP_LAST, -999) != -999) {
 			currentTripTimeStamp = this.sharedPreferences.getLong(PREF_BEACON_CURRENT_TRIP_LAST, -999);
 		}
 
-		if (currentTripTimeStamp != null && currentTrip != null) {
+		if (currentTripTimeStamp != null) {
 			Long nowTimeStamp = (new Date()).getTime();
 			Long difference = nowTimeStamp - currentTripTimeStamp;
-			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busStopValiditySeconds", 30000);
+			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 60000);
 			;
 			if (difference < configuredMilisecons) {
-				return currentTrip;
-			} else {
-				return null;
+				ObjectInputStream in = null;
+				try {
+					in = new ObjectInputStream(context.openFileInput(PREF_BEACON_CURRENT_TRIP));
+					return (CurentTrip) in.readObject();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						in.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		return null;
 	}
 
 	public void setBusBeaconMap(HashMap<String, BusBeaconInfo> mBusBeaconMap) {
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(context.openFileOutput(PREF_BUS_BEACON_MAP, Context.MODE_PRIVATE));
+			out.writeObject(mBusBeaconMap);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			try{
+				out.close();
+			}catch(Exception e){
+
+			}
+		}
 		if (mBusBeaconMap == null) {
-			this.sharedPreferences.edit().remove(PREF_BUS_BEACON_MAP).commit();
 			this.sharedPreferences.edit().remove(PREF_BUS_BEACON_MAP_LAST).commit();
 		} else {
-			this.sharedPreferences.edit().putString(PREF_BUS_BEACON_MAP, new Gson().toJson(mBusBeaconMap)).commit();
 			this.sharedPreferences.edit().putLong(PREF_BUS_BEACON_MAP_LAST, (new Date()).getTime()).commit();
 		}
 	}
 
 	public HashMap<String, BusBeaconInfo> getBusBeaconMap() {
-		HashMap<String, BusBeaconInfo> mBusBeaconMap = null;
 		Long currentTripTimeStamp = null;
-		if (this.sharedPreferences.getString(PREF_BUS_BEACON_MAP, null) != null) {
-			Type type = new TypeToken<HashMap<String, BusBeaconInfo>>() {
-			}.getType();
-			try {
-				mBusBeaconMap = new Gson().fromJson(sharedPreferences.getString(PREF_BUS_BEACON_MAP, null), type);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-		}
 
 		if (this.sharedPreferences.getLong(PREF_BUS_BEACON_MAP_LAST, -999) != -999) {
 			currentTripTimeStamp = this.sharedPreferences.getLong(PREF_BUS_BEACON_MAP_LAST, -999);
 		}
 
-		if (currentTripTimeStamp != null && mBusBeaconMap != null) {
+		if (currentTripTimeStamp != null) {
 			Long nowTimeStamp = (new Date()).getTime();
 			Long difference = nowTimeStamp - currentTripTimeStamp;
-			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busStopValiditySeconds", 30000);
+			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 60000);
 			;
 			if (difference < configuredMilisecons) {
-				return mBusBeaconMap;
+				ObjectInputStream in = null;
+				try{
+					in = new ObjectInputStream(context.openFileInput(PREF_BUS_BEACON_MAP));
+					return (HashMap<String, BusBeaconInfo>)in.readObject();
+				}catch(Exception e){
+					e.printStackTrace();
+				} finally {
+					try{ in.close(); }catch(Exception e){e.printStackTrace();}
+				}
 			} else {
 				this.setCurrentTrip(null);
 				return new HashMap<String, BusBeaconInfo>();

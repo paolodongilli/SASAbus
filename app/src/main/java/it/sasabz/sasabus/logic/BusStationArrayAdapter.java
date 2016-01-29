@@ -37,7 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BusStationArrayAdapter extends ArrayAdapter<BusTripBusStopTime>
+public class BusStationArrayAdapter extends ArrayAdapter<BusDepartureItem.MyBusTripBusStopTime>
 {
 	private final MainActivity context;
 	private final BusDepartureItem item;
@@ -61,7 +61,7 @@ public class BusStationArrayAdapter extends ArrayAdapter<BusTripBusStopTime>
 		ImageView imageView = (ImageView) superView
 				.findViewById(R.id.image_route);
 
-		BusTripBusStopTime element = this.getItem(position);
+		BusDepartureItem.MyBusTripBusStopTime element = this.getItem(position);
 
 		/*
 		 * The conditions to find out what image do we need for displaying

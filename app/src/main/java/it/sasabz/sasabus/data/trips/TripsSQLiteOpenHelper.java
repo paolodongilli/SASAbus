@@ -16,10 +16,11 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 
 	static TripsSQLiteOpenHelper instance = null;
 	private static final String DATENBANK_NAME = "sasabusTrips.db";
-	private static final int DATENBANK_VERSION = 1;
+	private static final int DATENBANK_VERSION = 2;
 
-	private static String CREATE_TRIPS = "CREATE TABLE trips( "
-			+ "  busstop_start INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+	private static String CREATE_TRIPS = "CREATE OR REPLACE TABLE trips( "
+			+ "  tid INTEGER PRIMARY KEY AUTOINCREMENT,"
+			+ "  busstop_start INTEGER NOT NULL, "
 			+ "  busstop_finish INTEGER NOT NULL, "
 			+ "  lid INTEGER NOT NULL,"
 			+ "  fid INTEGER NOT NULL,"
@@ -38,7 +39,8 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//TODO
+		if(oldVersion == 1 && newVersion == 2)
+			db.execSQL(CREATE_TRIPS);
 	}
 
 	public void onCreate(SQLiteDatabase db) {
@@ -55,7 +57,7 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 				"SELECT * FROM trips ORDER BY time_start DESC;", null);
 			DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			while (c.moveToNext()) {
-				ret.add(new FinishedTrip(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), iso8601Format.parse(c.getString(5)), iso8601Format.parse(c.getString(6))));
+				ret.add(new FinishedTrip(c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5), iso8601Format.parse(c.getString(6)), iso8601Format.parse(c.getString(7))));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

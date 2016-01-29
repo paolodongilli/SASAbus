@@ -106,12 +106,14 @@ public class MyTripsFragment extends SherlockFragment
             listView.setAdapter(finishedTripsAdapter);
         }
         DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
-        View view = new View(getActivity());
+        View headerView = new View(getActivity());
+        View footerView = new View(getActivity());
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 (int) (5 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)));
-        view.setLayoutParams(params);
-        listView.addHeaderView(view);
-        listView.addFooterView(view);
+        headerView.setLayoutParams(params);
+        footerView.setLayoutParams(params);
+        listView.addHeaderView(headerView);
+        listView.addFooterView(footerView);
         return ret;
     }
 
