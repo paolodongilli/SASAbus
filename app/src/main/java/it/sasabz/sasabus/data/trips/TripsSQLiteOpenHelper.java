@@ -18,7 +18,7 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 	private static final String DATENBANK_NAME = "sasabusTrips.db";
 	private static final int DATENBANK_VERSION = 2;
 
-	private static String CREATE_TRIPS = "CREATE OR REPLACE TABLE trips( "
+	private static String CREATE_TRIPS = "CREATE TABLE trips( "
 			+ "  tid INTEGER PRIMARY KEY AUTOINCREMENT,"
 			+ "  busstop_start INTEGER NOT NULL, "
 			+ "  busstop_finish INTEGER NOT NULL, "
@@ -39,8 +39,10 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion == 1 && newVersion == 2)
-			db.execSQL(CREATE_TRIPS);
+		if(oldVersion == 1 && newVersion == 2){
+			db.execSQL("DROP TABLE trips;");
+			onCreate(db);
+		}
 	}
 
 	public void onCreate(SQLiteDatabase db) {
@@ -75,6 +77,7 @@ public class TripsSQLiteOpenHelper extends SQLiteOpenHelper
 		// Es wird versucht, Fach in die Datenbank aufzunehmen
 		SQLiteDatabase db = null;
 		try {
+			Log.d("addTrip", ""+trip.toString());
 			DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			db = getWritableDatabase();
 			ContentValues werte = new ContentValues(7);

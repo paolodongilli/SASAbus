@@ -5,6 +5,8 @@ import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.beacon.bus.BusBeaconInfo;
 import it.sasabz.sasabus.beacon.bus.trip.CurentTrip;
 import it.sasabz.sasabus.config.ConfigManager;
+import it.sasabz.sasabus.gson.bus.model.BusInformationResult;
+import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
@@ -30,6 +32,7 @@ public class SharedPreferenceManager {
 	private Context context;
 	
 	private static CurentTrip curentTrip = null;
+	public final long CURENT_TRIP_TIMEOUT;
 
 	private final String SHAREDPREFERENCESNAME = "sasabus";
 	private final static String PREF_SURVEY_RECURRING = "PREF_SURVEY_RECURRING";
@@ -38,7 +41,6 @@ public class SharedPreferenceManager {
 	private final static String PREF_BEACON_CURRENT_BUS_STOP_SEEN = "PREF_BEACON_CURRENT_BUS_STOP_SEEN";
 	private final static String PREF_BEACON_CURRENT_BUS_STOP_START = "PREF_BEACON_CURRENT_BUS_STOP_START";
 	private final static String PREF_BEACON_CURRENT_BUS_STOP_LAST = "PREF_BEACON_CURRENT_BUS_STOP_LAST";
-	private final static String PREF_BEACON_CURRENT_TRIP_LAST = "PREF_BEACON_CURRENT_TRIP_LAST";
 	private final static String PREF_BEACON_CURRENT_TRIP = "PREF_BEACON_CURRENT_TRIP";
 	private final static String PREF_BUS_BEACON_MAP = "PREF_BUS_BEACON_MAP";
 	private final static String PREF_BUS_BEACON_MAP_LAST = "PREF_BUS_BEACON_MAP_LAST";
@@ -47,6 +49,7 @@ public class SharedPreferenceManager {
 	public SharedPreferenceManager(Context context) {
 		this.context = context;
 		this.sharedPreferences = context.getSharedPreferences(SHAREDPREFERENCESNAME, Context.MODE_PRIVATE);
+		CURENT_TRIP_TIMEOUT = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 20000);
 	}
 
 	/**
@@ -179,54 +182,31 @@ public class SharedPreferenceManager {
 	}
 
 	public void setCurrentTrip(CurentTrip curentTrip) {
-		CurentTrip preTrip = readCurrentTrip();
-		boolean update = false;
-		if (preTrip == null) {
-			if (curentTrip != null)
-				update = true;
-		} else if (curentTrip == null)
-			update = true;
-		else
-			update = preTrip.checkUpdate(curentTrip);
-
-		if (update) {
+		if(curentTrip == null){
+			SharedPreferenceManager.curentTrip = null;
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManager.cancel(2);
+		} else if(curentTrip.checkUpdate()){
+			curentTrip.setOldDepartureItem(curentTrip.getBeaconInfo().getBusDepartureItem());
 			SharedPreferenceManager.curentTrip = curentTrip;
-			ObjectOutputStream out = null;
+			BusBeaconHandler.mTripNotificationAction.showNotification();
+		}
+		ObjectOutputStream out = null;
+		try {
+			out = new ObjectOutputStream(context.openFileOutput(PREF_BEACON_CURRENT_TRIP, Context.MODE_PRIVATE));
+			out.writeObject(curentTrip);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				out = new ObjectOutputStream(context.openFileOutput(PREF_BEACON_CURRENT_TRIP, Context.MODE_PRIVATE));
-				out.writeObject(curentTrip);
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally {
-				try{
-					out.close();
-				}catch(Exception e){
+				out.close();
+			} catch (Exception e) {
 
-				}
 			}
-			if (curentTrip == null) {
-				this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_TRIP_LAST).commit();
-			} else {
-				this.sharedPreferences.edit().putLong(PREF_BEACON_CURRENT_TRIP_LAST, new Date().getTime()).commit();
-			}
-			if (curentTrip != null) {
-				BusBeaconHandler.mTripNotificationAction.showNotification();
-			} else{
-				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				notificationManager.cancel(2);
-			}
-		} else
-			this.sharedPreferences.edit().remove(PREF_BEACON_CURRENT_TRIP_LAST).commit();
+		}
 	}
 
-	public CurentTrip getCurrentTrip() {
-		if(curentTrip != null)
-			return curentTrip;
-		curentTrip = readCurrentTrip();
-		return curentTrip;
-	}
-
-	public CurentTrip readCurrentTrip(){
+/*	public CurentTrip readCurrentTrip(){
 		Long currentTripTimeStamp = null;
 
 		if (this.sharedPreferences.getLong(PREF_BEACON_CURRENT_TRIP_LAST, -999) != -999) {
@@ -236,9 +216,7 @@ public class SharedPreferenceManager {
 		if (currentTripTimeStamp != null) {
 			Long nowTimeStamp = (new Date()).getTime();
 			Long difference = nowTimeStamp - currentTripTimeStamp;
-			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 60000);
-			;
-			if (difference < configuredMilisecons) {
+			if (difference < CURENT_TRIP_TIMEOUT) {
 				ObjectInputStream in = null;
 				try {
 					in = new ObjectInputStream(context.openFileInput(PREF_BEACON_CURRENT_TRIP));
@@ -252,6 +230,30 @@ public class SharedPreferenceManager {
 						e.printStackTrace();
 					}
 				}
+			}
+		}
+		return null;
+	}*/
+
+	public CurentTrip getCurrentTrip() {
+		if(curentTrip != null)
+			return curentTrip;
+		curentTrip = readCurentTrip();
+		return curentTrip;
+	}
+
+	public CurentTrip readCurentTrip(){
+		ObjectInputStream in = null;
+		try {
+			in = new ObjectInputStream(context.openFileInput(PREF_BEACON_CURRENT_TRIP));
+			return (CurentTrip) in.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -309,6 +311,10 @@ public class SharedPreferenceManager {
 	}
 
 	public boolean hasCurrentTrip() {
+		return getCurrentTrip() != null && CURENT_TRIP_TIMEOUT > System.currentTimeMillis() - curentTrip.getBeaconInfo().getLastSeen().getTime();
+	}
+
+	public boolean hasCurrentTripWitoutTimeout() {
 		return getCurrentTrip() != null;
 	}
 }

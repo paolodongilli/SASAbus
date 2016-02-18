@@ -51,38 +51,16 @@ public class SasaApplication extends Application {
 	public static final String TAG = "SASA";
 	private ITracker mTracker;
 	private SharedPreferenceManager mPreferenceManager;
+	public static SasaApplication mApplication;
 	private ConfigManager mConfigManager;
 	private AndroidOpenDataLocalStorage opendataStorage;
 	public Thread.UncaughtExceptionHandler defaultHandler = null;
 	
 	private AbstractSasaActivity mActivity = null;
 
-	public SasaApplication(){
-//		defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
-/*		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-			@Override
-			public void uncaughtException(Thread thread, Throwable tr) {
-				PrintStream printStream = null;
-				try {
-					printStream = new PrintStream(new File(Environment.getExternalStorageDirectory() + "/sasabusERR.txt"));
-					Log.e("file", "" + new File(Environment.getExternalStorageDirectory() + "/sasabusERR.txt"));
-					tr.printStackTrace(printStream);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						printStream.close();
-					} catch (Exception e) {
-					}
-				}
-				defaultHandler.uncaughtException(thread, tr);
-			}
-		});*/
 		try {
 			this.opendataStorage = new AndroidOpenDataLocalStorage(this.getApplicationContext());
 		} catch (Exception e) {

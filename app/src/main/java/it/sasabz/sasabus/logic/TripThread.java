@@ -161,7 +161,7 @@ public class TripThread {
                  Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 30000;
 
          CurentTrip curentTrip = mApplication.getSharedPreferenceManager().getCurrentTrip();
-         if (!gpsTimeGood && curentTrip != null && mApplication.getSharedPreferenceManager().getCurrentTrip().getBeaconInfo().getMajor() == beaconInfo.getMajor()) {
+         if (!gpsTimeGood && curentTrip != null && curentTrip.getBeaconInfo().getMajor() == beaconInfo.getMajor()) {
             properties = curentTrip.getVirtualFeature().getProperties();
             if (curentTrip.getVirtualFeature().getProperties().getGpsDate().getTime() > properties.getGpsDate().getTime()) {
                gpsTimeGood = Math.abs(properties.getGpsDate().getTime() - new Date().getTime()) < 60000;

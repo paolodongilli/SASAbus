@@ -219,6 +219,4 @@ public class BusBeaconInfo implements Serializable {
 	public void setStartRealtimeApiTrackStation(TripBusStop startRealtimeApiTrackStation) {
 		this.startRealtimeApiTrackStation = startRealtimeApiTrackStation;
 	}
-
-
 }

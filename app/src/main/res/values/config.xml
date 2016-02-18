@@ -60,5 +60,6 @@
     <string name="station_beacon_uid">8F771FCA-E25A-4A7F-AF4E-1745A7BE89E1</string>
     <string name="station_busStopValidityMiliSeconds">30000</string> <!-- Google Analytics -->
     <string name="google_tracking_id">UA-67699326-1</string>
+    <string name="busBeaconValiditySeconds">20000</string>
 
 </resources>

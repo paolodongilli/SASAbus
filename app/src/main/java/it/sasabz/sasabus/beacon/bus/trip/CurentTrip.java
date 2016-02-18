@@ -17,6 +17,7 @@ public class CurentTrip implements Serializable {
 	private BusBeaconInfo beaconInfo;
 	private int tagesart_nr;
 	private Properties beaconDelay;
+	private BusDepartureItem oldDepartureItem = null;
 
 	public CurentTrip(BusBeaconInfo beaconInfo, SasaApplication mApplication) {
 		this.beaconInfo = beaconInfo;
@@ -42,11 +43,11 @@ public class CurentTrip implements Serializable {
 		return 0xff000000 | properties.getLiColorRed() << 16 | properties.getLiColorGreen() << 8 | properties.getLineColorBlue();
 	}
 
-	public boolean checkUpdate(CurentTrip trip) {
-		Feature.Properties oldProperties = trip.beaconInfo.getLastFeature().properties;
-		Feature.Properties newProperties = this.beaconInfo.getLastFeature().properties;
-		return oldProperties.getFrtFid() != newProperties.getFrtFid() || oldProperties.getDelay() / 60 != newProperties.getDelay() / 60
-				|| oldProperties.getNextStopNumber() != newProperties.getNextStopNumber();
+	public boolean checkUpdate() {
+		BusDepartureItem newDepartureItem = this.beaconInfo.getBusDepartureItem();
+		return oldDepartureItem == null || oldDepartureItem.getStopTimes()[0].getSeconds() != newDepartureItem.getStopTimes()[0].getSeconds() ||
+				oldDepartureItem.getDelayNumber() != newDepartureItem.getDelayNumber() ||
+				oldDepartureItem.getSelectedIndex() != newDepartureItem.getSelectedIndex();
 	}
 
 	public Feature getVirtualFeature() {
@@ -87,6 +88,9 @@ public class CurentTrip implements Serializable {
 		}
 		return false;
 	}
+	public void setOldDepartureItem(BusDepartureItem oldDepartureItem) {
+		this.oldDepartureItem = oldDepartureItem;
+	}
 
 	public int getTagesart_nr() {
 		return tagesart_nr;
@@ -95,4 +99,6 @@ public class CurentTrip implements Serializable {
 	public int getBusId() {
 		return beaconInfo.getMajor();
 	}
+
+
 }

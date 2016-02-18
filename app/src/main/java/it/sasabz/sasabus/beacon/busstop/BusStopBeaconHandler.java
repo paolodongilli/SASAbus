@@ -59,8 +59,8 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 	@Override
 	public void beaconInRange(String uuid, int major, int minor) {
 		mSharedPreferenceManager.setCurrentBusStop(major);
-		if(mSharedPreferenceManager.isBusStopDetectionEnabled() && !mSharedPreferenceManager.hasCurrentTrip()
-		&& !mSharedPreferenceManager.itsCurrentBusStopSeen() && mSharedPreferenceManager.getCurrentBusStopDetectStart()
+		if(mSharedPreferenceManager.isBusStopDetectionEnabled() && !mSharedPreferenceManager.hasCurrentTripWitoutTimeout()
+				&& !mSharedPreferenceManager.itsCurrentBusStopSeen() && mSharedPreferenceManager.getCurrentBusStopDetectStart()
 				+ 90000 < new Date().getTime()){
 			mSharedPreferenceManager.setCurrentBusStopSeen();
 			Intent intent = new Intent(mApplication, MainActivity.class);
@@ -135,7 +135,7 @@ public class BusStopBeaconHandler implements IBeaconHandler {
 	public void beaconsInRange(Collection<Beacon> beacons) {
 		Beacon nearestBeacon = null;
 		for (Beacon beacon : beacons) {
-			if ((beacon.getDistance() > 0 && beacon.getDistance() < nearestBeacon.getDistance())) {
+			if (nearestBeacon == null || (beacon.getDistance() > 0 && beacon.getDistance() < nearestBeacon.getDistance())) {
 				nearestBeacon = beacon;
 			}
 		}

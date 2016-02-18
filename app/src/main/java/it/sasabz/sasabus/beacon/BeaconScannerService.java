@@ -1,15 +1,23 @@
 package it.sasabz.sasabus.beacon;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.Random;
+
+import it.sasabz.android.sasabus.R;
 import it.sasabz.sasabus.SasaApplication;
 import it.sasabz.sasabus.beacon.bus.BusBeaconHandler;
 import it.sasabz.sasabus.beacon.busstop.BusStopBeaconHandler;
 import it.sasabz.sasabus.beacon.survey.action.NotificationAction;
 import it.sasabz.sasabus.beacon.bus.trip.TripNotificationAction;
+import it.sasabz.sasabus.ui.MainActivity;
 
 public class BeaconScannerService extends Service {
 
@@ -39,4 +47,8 @@ public class BeaconScannerService extends Service {
 		sendBroadcast(new Intent(this, BluetoothStateChangeReceiver.class));
 	}
 
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return START_STICKY;
+	}
 }
