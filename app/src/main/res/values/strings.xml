@@ -181,6 +181,9 @@
 
     <string name="beacon_bus">Beacon Bus</string>
     <string name="visible_buses">Buses near you</string>
+
+    <string name="location_service_required">Location Services required</string>
+    <string name="for_beacon_background_scan">for Beacon-detection in background</string>
     <!--
 Previous version
 

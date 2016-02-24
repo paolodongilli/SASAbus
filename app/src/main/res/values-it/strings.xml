@@ -172,4 +172,7 @@
 
     <string name="beacon_bus">Beacon Bus</string>
     <string name="visible_buses">Autobus vicine</string>
+
+    <string name="location_service_required">Geolocalizzazione necessaria</string>
+    <string name="for_beacon_background_scan">per Beacon scansioni in background.</string>
 </resources>

@@ -173,4 +173,7 @@
 
     <string name="beacon_bus">Beacon Bus</string>
     <string name="visible_buses">Busse in der Nähe</string>
+
+    <string name="location_service_required">Standort aktivieren</string>
+    <string name="for_beacon_background_scan">um Beacon-Scans im hintergrund zu erlauben.</string>
 </resources>

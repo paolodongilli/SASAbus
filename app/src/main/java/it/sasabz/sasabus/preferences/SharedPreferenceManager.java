@@ -248,10 +248,10 @@ public class SharedPreferenceManager {
 			in = new ObjectInputStream(context.openFileInput(PREF_BEACON_CURRENT_TRIP));
 			return (CurentTrip) in.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		} finally {
 			try {
-				in.close();
+//				in.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
