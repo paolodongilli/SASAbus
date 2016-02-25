@@ -25,6 +25,7 @@
 package it.sasabz.sasabus;
 
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -32,6 +33,9 @@ import android.net.NetworkInfo;
 import android.os.Environment;
 import android.provider.Settings.Secure;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -66,7 +70,7 @@ public class SasaApplication extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mPreferenceManager = new SharedPreferenceManager(this.getApplicationContext());
+		mPreferenceManager = SharedPreferenceManager.getInstance(this.getApplicationContext());
 		mConfigManager = ConfigManager.getInstance(this.getApplicationContext());
 		mTracker = new GoogleTracker(this);
 		sendBroadcast(new Intent(this, BluetoothStateChangeReceiver.class));
@@ -155,6 +159,24 @@ public class SasaApplication extends Application {
 		}catch(Throwable tr){
 			tr.printStackTrace();
 		}
+	}
+
+	public boolean checkGooglePlayServicesAvailable() {
+		final int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+		if (status == ConnectionResult.SUCCESS) {
+			return true;
+		}
+
+/*		Log.e("TAG", "Google Play Services not available: " + GooglePlayServicesUtil.getErrorString(status));
+
+		if (GooglePlayServicesUtil.isUserRecoverableError(status)) {
+			final Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(status, this, 1);
+			if (errorDialog != null) {
+				errorDialog.show();
+			}
+		}
+*/
+		return false;
 	}
 
 }

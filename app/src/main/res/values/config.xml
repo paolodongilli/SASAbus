@@ -61,5 +61,9 @@
     <string name="station_busStopValidityMiliSeconds">30000</string> <!-- Google Analytics -->
     <string name="google_tracking_id">UA-67699326-1</string>
     <string name="busBeaconValiditySeconds">20000</string>
+    <string name="busBeaconMapValiditySeconds">240000</string>
+    <string name="gcmSenderID"></string>
+    <string name="gcm_service_registration_url">http://gcmtest.opensasa.info/registration.php</string>
+    <string name="gcm_service_cancel_url">http://gcmtest.opensasa.info/unregistration.php</string>
 
 </resources>

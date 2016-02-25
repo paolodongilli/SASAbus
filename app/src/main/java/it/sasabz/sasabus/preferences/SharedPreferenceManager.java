@@ -30,6 +30,8 @@ public class SharedPreferenceManager {
 	// private Context context;
 	private SharedPreferences sharedPreferences;
 	private Context context;
+
+	public static SharedPreferenceManager instance;
 	
 	private static CurentTrip curentTrip = null;
 	public final long CURENT_TRIP_TIMEOUT;
@@ -45,11 +47,18 @@ public class SharedPreferenceManager {
 	private final static String PREF_BUS_BEACON_MAP = "PREF_BUS_BEACON_MAP";
 	private final static String PREF_BUS_BEACON_MAP_LAST = "PREF_BUS_BEACON_MAP_LAST";
 	private final static String PREF_BEACON_DETECTION_ENALBED = "PREF_BEACON_DETECTION_ENALBED";
+	private final static String PREF_GCM_REG_ID = "PREF_GCM_REG_ID";
 
-	public SharedPreferenceManager(Context context) {
+	private SharedPreferenceManager(Context context) {
 		this.context = context;
 		this.sharedPreferences = context.getSharedPreferences(SHAREDPREFERENCESNAME, Context.MODE_PRIVATE);
 		CURENT_TRIP_TIMEOUT = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 20000);
+	}
+
+	public static SharedPreferenceManager getInstance(Context context) {
+		if(instance == null)
+			instance = new SharedPreferenceManager(context);
+		return instance;
 	}
 
 	/**
@@ -189,7 +198,8 @@ public class SharedPreferenceManager {
 		} else if(curentTrip.checkUpdate()){
 			curentTrip.setOldDepartureItem(curentTrip.getBeaconInfo().getBusDepartureItem());
 			SharedPreferenceManager.curentTrip = curentTrip;
-			BusBeaconHandler.mTripNotificationAction.showNotification();
+			if(curentTrip.isNotificationShown())
+				BusBeaconHandler.mTripNotificationAction.showNotification();
 		}
 		ObjectOutputStream out = null;
 		try {
@@ -290,7 +300,7 @@ public class SharedPreferenceManager {
 		if (currentTripTimeStamp != null) {
 			Long nowTimeStamp = (new Date()).getTime();
 			Long difference = nowTimeStamp - currentTripTimeStamp;
-			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busBeaconValiditySeconds", 60000);
+			Integer configuredMilisecons = ConfigManager.getInstance(context).getValue("busBeaconMapValiditySeconds", 240000);
 			;
 			if (difference < configuredMilisecons) {
 				ObjectInputStream in = null;
@@ -316,5 +326,16 @@ public class SharedPreferenceManager {
 
 	public boolean hasCurrentTripWitoutTimeout() {
 		return getCurrentTrip() != null;
+	}
+
+	public String getGcmRegId() {
+		return this.sharedPreferences.getString(PREF_GCM_REG_ID, null);
+	}
+
+	public void setGcmRegId(String gcmRegId) {
+		if(gcmRegId == null)
+			this.sharedPreferences.edit().remove(PREF_GCM_REG_ID).commit();
+		else
+			this.sharedPreferences.edit().putString(PREF_GCM_REG_ID, gcmRegId).commit();
 	}
 }

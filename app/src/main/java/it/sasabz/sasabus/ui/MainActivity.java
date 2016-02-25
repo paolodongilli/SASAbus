@@ -87,6 +87,8 @@ import it.sasabz.sasabus.ui.busschedules.BusDepartureItem;
 import it.sasabz.sasabus.ui.busschedules.BusSchedulesDepartureAdapter;
 import it.sasabz.sasabus.ui.survey.SurveyActivity;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 /**
  * Main Activity that holds all the tabs
  */
@@ -650,6 +652,25 @@ public class MainActivity extends AbstractSasaActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			MainActivity.this.selectItem(position);
+			new Thread() {
+				public void run() {
+					try {
+						SasaApplication mApplication = ((SasaApplication)getApplication());
+							GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+							String gcmRegId = mApplication.getSharedPreferenceManager().getGcmRegId();
+							if (gcmRegId == null && mApplication.checkGooglePlayServicesAvailable()) {
+									try {
+										gcmRegId = gcm.register(mApplication.getConfigManager().getValue("gcmSenderID",""));
+										mApplication.getSharedPreferenceManager().setGcmRegId(gcmRegId);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+							}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
 		}
 	}
 
