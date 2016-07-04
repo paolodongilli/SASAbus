@@ -11,13 +11,13 @@ import java.util.List;
 import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
 
-public class MapView {
+public class RealtimeMapView {
 
-    private final String TAG = "MapView";
+    private final String TAG = "RealtimeMapView";
 
     private WebView webView;
 
-    public MapView(Context context, WebView webView) {
+    public RealtimeMapView(Context context, WebView webView) {
         this.webView = webView;
         this.webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -33,7 +33,7 @@ public class MapView {
         JSInterface bridge = new JSInterface(context);
 
         this.webView.addJavascriptInterface(bridge, "Android");
-        this.webView.loadUrl("file:///android_asset/map/index.html");
+        this.webView.loadUrl("file:///android_asset/map/realtime.html");
     }
 
     public void setMarkers(RealtimeResponse realtimeResponse, List<Integer> filterList) {
