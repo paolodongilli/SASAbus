@@ -48,15 +48,13 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,7 +83,7 @@ import it.sasabz.android.sasabus.util.Preconditions;
 import it.sasabz.android.sasabus.util.SettingsUtils;
 import it.sasabz.android.sasabus.util.Utils;
 import it.sasabz.android.sasabus.util.map.MapDownloadHelper;
-import it.sasabz.android.sasabus.util.map.MapView;
+import it.sasabz.android.sasabus.util.map.RealtimeMapView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -213,7 +211,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
      */
     private boolean mFilterOpen;
 
-    private MapView mapView;
+    private RealtimeMapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +276,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
 
         WebView webView = (WebView) findViewById(R.id.webview);
 
-        mapView = new MapView(this, webView);
+        mapView = new RealtimeMapView(this, webView);
 
         parseData();
     }
@@ -419,14 +417,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
 
         hideSnackbar();
 
-        Map<Integer, Marker> updatedMarkers = new HashMap<>();
-
-        for (RealtimeBus bus : mBusData) {
-/*            if (marker != null && marker.isInfoWindowShown()) {
-                updateBottomSheet(marker);
-            }*/
-        }
-
         if (mBusBeaconId != 0) {
             showBusInfo(mBusBeaconId);
         }
@@ -503,6 +493,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
 
                         return realtimeResponse;
                     })
+                    .delay(500, TimeUnit.MILLISECONDS) // Delay is needed to make sure map is loaded.
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
         }

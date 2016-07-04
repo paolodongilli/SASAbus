@@ -1,16 +1,14 @@
 package it.sasabz.android.sasabus.ui.busstop;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -20,43 +18,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import it.sasabz.android.sasabus.Config;
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.beacon.BusStopBeacon;
-import it.sasabz.android.sasabus.beacon.BusStopBeaconHandler;
-import it.sasabz.android.sasabus.model.ClusterMarker;
-import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
-import it.sasabz.android.sasabus.realm.busstop.BusStop;
-import it.sasabz.android.sasabus.realm.user.FavoriteBusStop;
-import it.sasabz.android.sasabus.ui.BaseActivity;
-import it.sasabz.android.sasabus.ui.widget.NestedSwipeRefreshLayout;
-import it.sasabz.android.sasabus.ui.widget.adapter.TabsAdapter;
-import it.sasabz.android.sasabus.util.AnalyticsHelper;
-import it.sasabz.android.sasabus.util.AnimUtils;
-import it.sasabz.android.sasabus.util.DeviceUtils;
-import it.sasabz.android.sasabus.util.SettingsUtils;
-import it.sasabz.android.sasabus.util.Utils;
-import it.sasabz.android.sasabus.util.recycler.BusStopListAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.ClusterManager;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -68,6 +38,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import it.sasabz.android.sasabus.Config;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.beacon.BusStopBeacon;
+import it.sasabz.android.sasabus.beacon.BusStopBeaconHandler;
+import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
+import it.sasabz.android.sasabus.realm.busstop.BusStop;
+import it.sasabz.android.sasabus.realm.user.FavoriteBusStop;
+import it.sasabz.android.sasabus.ui.BaseActivity;
+import it.sasabz.android.sasabus.ui.widget.NestedSwipeRefreshLayout;
+import it.sasabz.android.sasabus.ui.widget.adapter.TabsAdapter;
+import it.sasabz.android.sasabus.util.AnalyticsHelper;
+import it.sasabz.android.sasabus.util.DeviceUtils;
+import it.sasabz.android.sasabus.util.Utils;
+import it.sasabz.android.sasabus.util.map.BusStopsMapView;
+import it.sasabz.android.sasabus.util.recycler.BusStopListAdapter;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -131,10 +116,6 @@ public class BusStopActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (mListFragment != null) {
                     mListFragment.search(s.toString());
-                }
-
-                if (mMapFragment != null) {
-                    mMapFragment.search(s.toString());
                 }
             }
 
@@ -276,10 +257,6 @@ public class BusStopActivity extends BaseActivity {
 
             if (mListFragment != null) {
                 mListFragment.search("");
-            }
-
-            if (mMapFragment != null) {
-                mMapFragment.search("");
             }
 
             mSearchText.setText("");
@@ -522,142 +499,33 @@ public class BusStopActivity extends BaseActivity {
         }
     }
 
-    public static class MapFragment extends RxFragment implements OnMapReadyCallback,
-            ClusterManager.OnClusterItemInfoWindowClickListener<ClusterMarker>,
-            ClusterManager.OnClusterItemClickListener<ClusterMarker> {
+    /**
+     * Displays all the bus stops on map
+     */
+    public static class MapFragment extends RxFragment {
 
         private View view;
 
-        private ClusterManager<ClusterMarker> mClusterManager;
-        private ClusterMarker mClickedClusterItem;
-
-        private ArrayList<BusStop> mItems = new ArrayList<>();
-        private ArrayList<ClusterMarker> mClusterItems = new ArrayList<>();
-
-        private Bundle mSavedInstanceState;
-
-        private GoogleMap mGoogleMap;
-
-        static final String BUNDLE_CLUSTER_LIST = "BUNDLE_CLUSTER_LIST";
+        private BusStopsMapView mapView;
 
         final Realm realm = Realm.getInstance(BusStopRealmHelper.CONFIG);
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            mSavedInstanceState = savedInstanceState;
+            view = inflater.inflate(R.layout.fragment_bus_stop_map, container, false);
 
-            if (view != null) {
-                ViewManager parent = (ViewManager) view.getParent();
+            WebView webView = (WebView) view.findViewById(R.id.googlemap);
 
-                if (parent != null) parent.removeView(view);
-            }
-
-            try {
-                view = inflater.inflate(R.layout.fragment_bus_stop_map, container, false);
-            } catch (InflateException e) {
-                Utils.handleException(e);
-            }
-
-            mItems = new ArrayList<>();
+            mapView = new BusStopsMapView(getActivity(), webView);
 
             return view;
         }
 
         @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
+        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
 
-            mSavedInstanceState = savedInstanceState;
-
-            new Handler().postDelayed(() -> {
-                int mGplayStatus = MapsInitializer.initialize(getActivity());
-
-                if (mGplayStatus == 0) {
-                    SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                            .findFragmentById(R.id.googlemap);
-
-                    if (mapFragment != null) {
-                        mapFragment.getMapAsync(this);
-                    }
-                }
-            }, 250);
-        }
-
-        @Override
-        public void onMapReady(GoogleMap map) {
-            mGoogleMap = map;
-
-            mClusterManager = new ClusterManager<>(getActivity(), map);
-            mClusterManager.setOnClusterItemInfoWindowClickListener(this);
-            mClusterManager.setOnClusterItemClickListener(this);
-
-            if (mSavedInstanceState != null) {
-                double lat = mSavedInstanceState.getDouble("CAMERA_LAT");
-                double lng = mSavedInstanceState.getDouble("CAMERA_LNG");
-                float zoom = mSavedInstanceState.getFloat("CAMERA_ZOOM");
-
-                if (lat == 0 && lng == 0 && zoom == 0) {
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.58, 11.25), 10));
-                } else {
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), zoom));
-                }
-            } else {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.58, 11.25), 10));
-            }
-
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                map.setMyLocationEnabled(true);
-            }
-
-            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            map.setOnCameraChangeListener(mClusterManager);
-            map.setOnMarkerClickListener(mClusterManager);
-            map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-            map.setOnInfoWindowClickListener(mClusterManager);
-
-            if (mSavedInstanceState != null) {
-                mClusterItems = mSavedInstanceState.getParcelableArrayList(BUNDLE_CLUSTER_LIST);
-
-                if (mClusterItems != null) {
-                    mClusterManager.addItems(mClusterItems);
-
-                    mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ItemAdapter());
-                    mClusterManager.cluster();
-                }
-            } else {
-                new Handler().postDelayed(this::parseData, Config.BUS_STOP_FRAGMENTS_POST_DELAY);
-            }
-        }
-
-        @Override
-        public boolean onClusterItemClick(ClusterMarker item) {
-            mClickedClusterItem = item;
-            return false;
-        }
-
-        @Override
-        public void onClusterItemInfoWindowClick(ClusterMarker item) {
-            Intent intent = new Intent(getActivity(), BusStopDetailActivity.class);
-            intent.putExtra(Config.EXTRA_STATION_ID,
-                    Integer.parseInt(item.getSnippet().split(":")[1]));
-            getActivity().startActivityForResult(intent, INTENT_DISPLAY_FAVORITES);
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle outState) {
-            super.onSaveInstanceState(outState);
-
-            outState.putParcelableArrayList(BUNDLE_CLUSTER_LIST, mClusterItems);
-
-            if (mClusterManager != null) {
-                mClusterManager.clearItems();
-            }
-
-            if (mGoogleMap != null) {
-                outState.putDouble("CAMERA_LAT", mGoogleMap.getCameraPosition().target.latitude);
-                outState.putDouble("CAMERA_LNG", mGoogleMap.getCameraPosition().target.longitude);
-                outState.putFloat("CAMERA_ZOOM", mGoogleMap.getCameraPosition().zoom);
-            }
+            parseData();
         }
 
         @Override
@@ -672,87 +540,18 @@ public class BusStopActivity extends BaseActivity {
                     .compose(bindToLifecycle())
                     .filter(RealmResults::isLoaded)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(stations -> {
-                        mItems.addAll(stations);
+                    .subscribe(busStops -> {
+                        List<BusStop> list = new ArrayList<>();
 
-                        for (BusStop station : stations) {
-                            if (station.getNameDe() == null && station.getMunicDe() == null)
+                        for (BusStop busStop : busStops) {
+                            if (busStop.getNameDe() == null && busStop.getMunicDe() == null)
                                 continue;
 
-                            ClusterMarker tempItem = new ClusterMarker(station.getLat(), station.getLng(),
-                                    station.getName(getActivity()), station.getMunic(getActivity()) + ":" + station.getId());
-
-                            mClusterItems.add(tempItem);
-                            mClusterManager.addItem(tempItem);
+                            list.add(busStop);
                         }
 
-                        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ItemAdapter());
-                        mClusterManager.cluster();
+                        mapView.setMarkers(list);
                     });
-        }
-
-        private void search(String string) {
-            string = string.toLowerCase().replace(" ", "");
-
-            mClusterItems.clear();
-            mClusterManager.clearItems();
-
-            if (string.isEmpty()) {
-                isSearching = false;
-                parseData();
-            } else {
-                for (BusStop station : mItems) {
-                    if (station.getNameDe() == null && station.getMunicDe() == null) continue;
-
-                    String nameDe = station.getNameDe().toLowerCase().replace(" ", "");
-                    String municDe = station.getMunicDe().toLowerCase().replace(" ", "");
-
-                    String nameIt = station.getNameIt().toLowerCase().replace(" ", "");
-                    String municIt = station.getMunicIt().toLowerCase().replace(" ", "");
-
-                    if (nameDe.contains(string) ||
-                            municDe.contains(string) ||
-                            nameIt.contains(string) ||
-                            municIt.contains(string) ||
-                            String.valueOf(station.getId()).contains(string)) {
-                        ClusterMarker tempItem = new ClusterMarker(station.getLat(), station.getLng(),
-                                station.getName(getActivity()), station.getMunic(getActivity()) + ":" + station.getId());
-
-                        mClusterItems.add(tempItem);
-                        mClusterManager.addItem(tempItem);
-                    }
-                }
-
-                mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ItemAdapter());
-                mClusterManager.cluster();
-
-                isSearching = true;
-            }
-        }
-
-        public class ItemAdapter implements GoogleMap.InfoWindowAdapter {
-
-            private final View view;
-
-            ItemAdapter() {
-                view = getActivity().getLayoutInflater().inflate(R.layout.include_bus_stop_infowindow, null);
-            }
-
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                TextView title = (TextView) view.findViewById(R.id.stations_popup_title);
-                title.setText(mClickedClusterItem.getTitle());
-
-                TextView snippet = (TextView) view.findViewById(R.id.stations_popup_snippet);
-                snippet.setText(mClickedClusterItem.getSnippet().split(":")[0]);
-
-                return view;
-            }
         }
     }
 }
