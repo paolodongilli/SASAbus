@@ -1,0 +1,95 @@
+{
+  "project_info": {
+    "project_number": "327395536490",
+    "firebase_url": "https://sasabusit-apis.firebaseio.com",
+    "project_id": "sasabusit-apis",
+    "storage_bucket": "sasabusit-apis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327395536490:android:42e1d2079dd7ffce",
+        "android_client_info": {
+          "package_name": "it.sasabz.android.sasabus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327395536490-tkgikint0albi0lb1nslko26tt1n94s2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "7249219400D223CC9CF548CC1526DC13EBBB9ADD"
+          }
+        },
+        {
+          "client_id": "327395536490-pb5v0svluk0utvudj46iu7ud8tv9gcjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "F827D61E55FD213E5274D2279A2B451F0A626951"
+          }
+        },
+        {
+          "client_id": "327395536490-hdr8rul6k6h679k9dvd4v53r1mej73u5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "1C5331CBE893B49D989E29C23BCB8BED23F35355"
+          }
+        },
+        {
+          "client_id": "327395536490-t1fjmat8dhihnu57mssts9hp199fnnfr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "009F0ECDBA2B5B8203070430F4D1770BD424A0E7"
+          }
+        },
+        {
+          "client_id": "327395536490-jnql3fm0l99okde1tc6i8huc31upmesc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "465C9E99D005F462E986EE4208F9A433BCC1D82D"
+          }
+        },
+        {
+          "client_id": "327395536490-os77r07scara3epc01bf3ir7fud81t43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.sasabz.android.sasabus",
+            "certificate_hash": "311658444273CAC7FC8B1CD7A10A28078A2AB065"
+          }
+        },
+        {
+          "client_id": "327395536490-1c76hv6ni0hcs7f6tpkt9opludho8t84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHFxQlXT9K-SvwXcKoyOpie0gjPoVSMUM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327395536490-1c76hv6ni0hcs7f6tpkt9opludho8t84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
