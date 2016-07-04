@@ -37,12 +37,9 @@ import rx.schedulers.Schedulers;
  */
 public class LinesAllFragment extends RxFragment {
 
-    @BindView(R.id.refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    @BindView(R.id.error_wifi)
-    RelativeLayout mErrorWifi;
-    @BindView(R.id.error_general)
-    RelativeLayout mErrorGeneral;
+    @BindView(R.id.refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.error_wifi) RelativeLayout mErrorWifi;
+    @BindView(R.id.error_general) RelativeLayout mErrorGeneral;
 
     private final ArrayList<Line> mItems = new ArrayList<>();
     private LinesAllAdapter mAdapter;
