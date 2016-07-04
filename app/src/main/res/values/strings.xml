@@ -203,7 +203,6 @@
     <string name="bottom_sheet_variant">Variant #%d</string>
     <string name="bottom_sheet_vehicle_id">Bus #%d</string>
     <string name="bottom_sheet_current_stop">Now at %s</string>
-    <string name="bottom_sheet_departure">Departs in %d\'</string>
     <string name="bottom_sheet_line">LINE</string>
     <string name="bottom_sheet_vehicle">VEHICLE</string>
     <string name="bottom_sheet_course">COURSE</string>
@@ -218,7 +217,7 @@
     <string name="bus_details_not_available">Not available</string>
     <string name="bus_details_manufacturer">Manufacturer</string>
     <string name="bus_details_model">Model</string>
-    <string name="bus_detail_license">License plate</string>
+    <string name="bus_detail_id" translatable="false">ID</string>
     <string name="bus_details_fuel">Fuel</string>
     <string name="bus_details_color">Color</string>
 

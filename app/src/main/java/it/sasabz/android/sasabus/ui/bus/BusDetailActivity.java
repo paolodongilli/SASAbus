@@ -64,7 +64,7 @@ public class BusDetailActivity extends AppCompatActivity {
      */
     private TextView mManufacturer;
     private TextView mModel;
-    private TextView mLicense;
+    private TextView mId;
     private TextView mFuel;
     private TextView mColor;
 
@@ -143,7 +143,7 @@ public class BusDetailActivity extends AppCompatActivity {
 
         mManufacturer = (TextView) findViewById(R.id.bus_details_manufacturer);
         mModel = (TextView) findViewById(R.id.bus_detail_model);
-        mLicense = (TextView) findViewById(R.id.bus_detail_license);
+        mId = (TextView) findViewById(R.id.bus_detail_id);
         mFuel = (TextView) findViewById(R.id.bus_detail_fuel);
         mColor = (TextView) findViewById(R.id.bus_detail_color);
 
@@ -169,7 +169,7 @@ public class BusDetailActivity extends AppCompatActivity {
 
                 mManufacturer.setText(savedInstanceState.getCharSequence("MANUFACTURER"));
                 mModel.setText(savedInstanceState.getCharSequence("MODEL"));
-                mLicense.setText(savedInstanceState.getCharSequence("LICENSE") + " #" + mVehicle);
+                mId.setText(mVehicle);
                 mFuel.setText(savedInstanceState.getCharSequence("FUEL"));
                 mColor.setText(savedInstanceState.getCharSequence("COLOR"));
             }
@@ -186,7 +186,6 @@ public class BusDetailActivity extends AppCompatActivity {
 
         outState.putCharSequence("MANUFACTURER", mManufacturer.getText());
         outState.putCharSequence("MODEL", mModel.getText());
-        outState.putCharSequence("LICENSE", mLicense.getText());
         outState.putCharSequence("FUEL", mFuel.getText());
         outState.putCharSequence("COLOR", mColor.getText());
         outState.putInt("GROUP", mGroup);
@@ -261,7 +260,7 @@ public class BusDetailActivity extends AppCompatActivity {
 
             mManufacturer.setText(v.getVendor());
             mModel.setText(v.getModel());
-            mLicense.setText(v.getLicensePlate() + " #" + mVehicle);
+            mId.setText(String.valueOf(mVehicle));
             mFuel.setText(v.getFuel());
             mColor.setText(v.getColor());
         } else {
