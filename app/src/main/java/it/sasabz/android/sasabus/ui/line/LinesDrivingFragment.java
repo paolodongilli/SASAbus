@@ -134,18 +134,16 @@ public class LinesDrivingFragment extends RxFragment implements AdapterView.OnIt
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        LineDriving item = mItems.get(position);
+        LineDriving line = mItems.get(position);
 
-        String lines = SettingsUtils.getFavoriteLines(getActivity());
-
-        if (lines != null && lines.contains(String.valueOf(item.getId()))) {
-            UserRealmHelper.removeFavoriteLine(item.getId());
+        if (UserRealmHelper.hasFavoriteLine(line.getId())) {
+            UserRealmHelper.removeFavoriteLine(line.getId());
             Snackbar.make(((BaseActivity) getActivity()).getMainContent(), getString(R.string.line_favorites_remove,
-                    item.getName()), Snackbar.LENGTH_SHORT).show();
+                    line.getName()), Snackbar.LENGTH_SHORT).show();
         } else {
-            UserRealmHelper.addFavoriteLine(item.getId());
+            UserRealmHelper.addFavoriteLine(line.getId());
             Snackbar.make(((BaseActivity) getActivity()).getMainContent(), getString(R.string.line_favorites_add,
-                    item.getName()), Snackbar.LENGTH_SHORT).show();
+                    line.getName()), Snackbar.LENGTH_SHORT).show();
         }
 
         ((LinesActivity) getActivity()).invalidateFavorites();
