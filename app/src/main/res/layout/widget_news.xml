@@ -53,32 +53,11 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/test1"
+            android:id="@+id/widget_news_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/test2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-
-        <TextView
-            android:id="@+id/test3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="14sp"/>
 

@@ -6,9 +6,18 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.model.News;
+import it.sasabz.android.sasabus.network.rest.RestClient;
+import it.sasabz.android.sasabus.network.rest.api.NewsApi;
+import it.sasabz.android.sasabus.network.rest.response.NewsResponse;
+import it.sasabz.android.sasabus.util.Utils;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * An app widget provider (widgets on the home screen pages) for the news delivered from Sasa SpA-AG.
@@ -22,24 +31,43 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         for (int widgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_news);
 
-            views.setTextViewText(R.id.test1, Html.fromHtml("<b>Bozen:</b> Umleitung der Linien 7A und 7B"));
-            views.setTextViewText(R.id.test2, Html.fromHtml("<b>Bozen:</b> Umleitung der Linien 10A und 10B"));
-            views.setTextViewText(R.id.test3, Html.fromHtml("<b>Bozen:</b> Umleitung der Linien 5, 6 und 9"));
+            NewsApi newsApi = RestClient.ADAPTER.create(NewsApi.class);
+            newsApi.getNews(context.getResources().getConfiguration().locale.toString())
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<NewsResponse>() {
+                        @Override
+                        public void onCompleted() {
+                        }
 
-            Intent intent = new Intent(context, NewsWidgetProvider.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                        @Override
+                        public void onError(Throwable e) {
+                            Utils.handleException(e);
+                        }
 
-            // update all widgets
-            // intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+                        @Override
+                        public void onNext(NewsResponse newsResponse) {
+                            String list = "";
 
-            // update this widget only
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                            for (News news : newsResponse.news) {
+                                list += String.format("<b>%s</b>: %s<br>", news.getZone(), news.getTitle());
+                            }
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                            views.setTextViewText(R.id.widget_news_list, Html.fromHtml(list));
 
-            views.setOnClickPendingIntent(R.id.widget_news_refresh, pendingIntent);
-            appWidgetManager.updateAppWidget(widgetId, views);
+                            Intent intent = new Intent(context, NewsWidgetProvider.class);
+                            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+                            // update this widget only
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            views.setOnClickPendingIntent(R.id.widget_news_refresh, pendingIntent);
+                            appWidgetManager.updateAppWidget(widgetId, views);
+                        }
+                    });
         }
     }
 }
