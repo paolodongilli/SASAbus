@@ -28,30 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import it.sasabz.android.sasabus.Config;
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.model.BusStop;
-import it.sasabz.android.sasabus.model.route.RouteRecent;
-import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
-import it.sasabz.android.sasabus.realm.UserRealmHelper;
-import it.sasabz.android.sasabus.realm.user.RecentRoute;
-import it.sasabz.android.sasabus.ui.BaseActivity;
-import it.sasabz.android.sasabus.ui.widget.RecyclerItemClickListener;
-import it.sasabz.android.sasabus.ui.widget.RecyclerItemDivider;
-import it.sasabz.android.sasabus.util.AnalyticsHelper;
-import it.sasabz.android.sasabus.util.LogUtils;
-import it.sasabz.android.sasabus.util.Utils;
-import it.sasabz.android.sasabus.util.recycler.RecentAdapter;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +41,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import it.sasabz.android.sasabus.Config;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.model.BusStop;
+import it.sasabz.android.sasabus.model.route.RouteRecent;
+import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
+import it.sasabz.android.sasabus.realm.UserRealmHelper;
+import it.sasabz.android.sasabus.realm.user.RecentRoute;
+import it.sasabz.android.sasabus.ui.BaseActivity;
+import it.sasabz.android.sasabus.ui.widget.RecyclerItemClickListener;
+import it.sasabz.android.sasabus.ui.widget.RecyclerItemDivider;
+import it.sasabz.android.sasabus.util.AnalyticsHelper;
+import it.sasabz.android.sasabus.util.recycler.RecentAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -82,8 +70,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
     private static final int ACTION_PICK_DEPARTURE = 1;
     private static final int ACTION_PICK_ARRIVAL = 2;
-    private static final int ACTION_PICK_DEPARTURE_PLACES = 3;
-    private static final int ACTION_PICK_ARRIVAL_PLACES = 4;
 
     private static final int DEFAULT_WALK_TIME = 5;
     private static final int DEFAULT_RESULTS_COUNT = 5;
@@ -96,9 +82,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     @BindView(R.id.route_text_results) TextView results;
     @BindView(R.id.route_text_walk) TextView walk;
     @BindView(R.id.route_text_recent_card) CardView recentCard;
-
-    private Place mDeparturePlace;
-    private Place mArrivalPlace;
 
     private BusStop mDepartureBusStop;
     private BusStop mArrivalBusStop;
@@ -135,12 +118,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         arrival.setOnClickListener(this);
         results.setOnClickListener(this);
         walk.setOnClickListener(this);
-
-        ImageView placesDeparture = (ImageView) findViewById(R.id.route_departure_places);
-        ImageView placesArrival = (ImageView) findViewById(R.id.route_arrival_places);
-
-        placesDeparture.setOnClickListener(this);
-        placesArrival.setOnClickListener(this);
 
         ImageView departureMap = (ImageView) findViewById(R.id.route_departure_map);
         ImageView arrivalMap = (ImageView) findViewById(R.id.route_arrival_map);
@@ -292,7 +269,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     if (mDepartureBusStop != null) {
                         departure.setText(mDepartureBusStop.getName(this));
                         departure.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-                        mDeparturePlace = null;
                     }
                 }
                 break;
@@ -303,39 +279,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     if (mArrivalBusStop != null) {
                         arrival.setText(mArrivalBusStop.getName(this));
                         arrival.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-                        mArrivalPlace = null;
                     }
-                }
-                break;
-            case ACTION_PICK_DEPARTURE_PLACES:
-                if (resultCode == Activity.RESULT_OK) {
-                    Place place = PlaceAutocomplete.getPlace(this, data);
-                    place.getId();
-
-                    mDeparturePlace = place;
-
-                    departure.setText(place.getName());
-                    departure.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-
-                    mDepartureBusStop = null;
-                } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                    Status status = PlaceAutocomplete.getStatus(this, data);
-                    LogUtils.e(TAG, "PlacesAPI: " + status.getStatusMessage());
-                }
-                break;
-            case ACTION_PICK_ARRIVAL_PLACES:
-                if (resultCode == Activity.RESULT_OK) {
-                    Place place = PlaceAutocomplete.getPlace(this, data);
-
-                    mArrivalPlace = place;
-
-                    arrival.setText(place.getName());
-                    arrival.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-
-                    mArrivalBusStop = null;
-                } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                    Status status = PlaceAutocomplete.getStatus(this, data);
-                    LogUtils.e(TAG, "PlacesAPI: " + status.getStatusMessage());
                 }
                 break;
         }
@@ -355,12 +299,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.route_departure_places:
-                showPlacesPopup(ACTION_PICK_DEPARTURE_PLACES);
-                break;
-            case R.id.route_arrival_places:
-                showPlacesPopup(ACTION_PICK_ARRIVAL_PLACES);
-                break;
             case R.id.route_text_departure:
                 int[] location = new int[2];
                 departure.getLocationOnScreen(location);
@@ -428,8 +366,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_route_enter_departure), Toast.LENGTH_SHORT).show();
                 } else if (arrival.getText().equals(getString(R.string.route_arrival))) {
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_route_enter_arrival), Toast.LENGTH_SHORT).show();
-                } else if (mDepartureBusStop != null && mArrivalBusStop != null && mDepartureBusStop.getId() == mArrivalBusStop.getId() ||
-                        mDeparturePlace != null && mArrivalPlace != null && mDeparturePlace.getId().equals(mArrivalPlace.getId())) {
+                } else if (mDepartureBusStop != null && mArrivalBusStop != null && mDepartureBusStop.getId() == mArrivalBusStop.getId()) {
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_route_station_match), Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(this, RouteResultActivity.class);
@@ -441,14 +378,7 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                     intent.putExtra(Config.EXTRA_DEPARTURE_ID, mDepartureBusStop != null ? mDepartureBusStop.getId() : null);
                     intent.putExtra(Config.EXTRA_ARRIVAL_ID, mArrivalBusStop != null ? mArrivalBusStop.getId() : null);
 
-                    intent.putExtra("fromPlace", mDeparturePlace != null ? mDeparturePlace.getId() : null);
-                    intent.putExtra("fromLatLng", mDeparturePlace != null ? mDeparturePlace.getLatLng() : null);
-
-                    intent.putExtra("toPlace", mArrivalPlace != null ? mArrivalPlace.getId() : null);
-                    intent.putExtra("toLatLng", mArrivalPlace != null ? mArrivalPlace.getLatLng() : null);
-
-                    if (mDepartureBusStop != null && mArrivalBusStop != null &&
-                            mDeparturePlace == null && mArrivalPlace == null) {
+                    if (mDepartureBusStop != null && mArrivalBusStop != null) {
                         UserRealmHelper.insertRecent(mDepartureBusStop.getId(),
                                 mArrivalBusStop.getId());
                     }
@@ -471,11 +401,9 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
 
             departure.setText(mDepartureBusStop.getName());
             departure.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-            mDeparturePlace = null;
 
             arrival.setText(mArrivalBusStop.getName());
             arrival.setTextColor(ContextCompat.getColor(this, R.color.text_default));
-            mArrivalPlace = null;
         } else {
             onListItemSelect(childView, position);
         }
@@ -486,28 +414,6 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         onListItemSelect(childView, position);
     }
 
-
-
-    private void showPlacesPopup(int requestCode) {
-        try {
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                    .setBoundsBias(new LatLngBounds(
-                            new LatLng(46.3711, 11.0510),
-                            new LatLng(46.7257, 11.4240)))
-                    .build(this);
-
-            startActivityForResult(intent, requestCode);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            GoogleApiAvailability api = GoogleApiAvailability.getInstance();
-            int googleStatus = api.isGooglePlayServicesAvailable(this);
-
-            if (googleStatus != ConnectionResult.SUCCESS) {
-                api.showErrorDialogFragment(this, googleStatus, 100);
-            }
-
-            Utils.handleException(e);
-        }
-    }
 
     private void loadRecent() {
         mRealm.where(RecentRoute.class).findAllAsync().asObservable()

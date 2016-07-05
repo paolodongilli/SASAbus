@@ -34,8 +34,8 @@
                     android:layout_marginLeft="@dimen/card_margin_full_width"
                     android:layout_marginRight="@dimen/card_margin_full_width"
                     android:layout_marginStart="@dimen/card_margin_full_width"
-                    card_view:cardCornerRadius="0dp"
-                    card_view:cardBackgroundColor="@color/card_background">
+                    card_view:cardBackgroundColor="@color/card_background"
+                    card_view:cardCornerRadius="0dp">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -46,7 +46,8 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:layout_marginRight="48dp" android:layout_marginEnd="48dp">
+                            android:layout_marginEnd="48dp"
+                            android:layout_marginRight="48dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -62,29 +63,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="48dp"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginRight="96dp"
-                                android:layout_marginEnd="96dp"
+                                android:layout_marginEnd="56dp"
                                 android:layout_marginLeft="56dp"
+                                android:layout_marginRight="56dp"
                                 android:layout_marginStart="56dp"
                                 android:background="?android:attr/selectableItemBackground"
                                 android:clickable="true"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:text="@string/route_departure"
                                 android:textColor="@color/text_primary"
-                                android:textSize="18sp" android:maxLines="1"/>
-
-                            <ImageView
-                                android:id="@+id/route_departure_places"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="end|center_vertical"
-                                android:layout_marginEnd="56dp"
-                                android:layout_marginRight="56dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:src="@drawable/ic_add_location_white_48dp"
-                                android:tint="@color/icon_grey"/>
+                                android:textSize="18sp"/>
 
                             <ImageView
                                 android:id="@+id/route_departure_map"
@@ -102,8 +93,9 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:layout_marginTop="48dp"
-                            android:layout_marginRight="48dp" android:layout_marginEnd="48dp">
+                            android:layout_marginEnd="48dp"
+                            android:layout_marginRight="48dp"
+                            android:layout_marginTop="48dp">
 
                             <ImageView
                                 android:id="@+id/route_arrival_image_arrow"
@@ -119,29 +111,19 @@
                                 android:id="@+id/route_text_arrival"
                                 android:layout_width="match_parent"
                                 android:layout_height="48dp"
-                                android:layout_marginEnd="96dp"
+                                android:layout_marginEnd="56dp"
                                 android:layout_marginLeft="56dp"
-                                android:layout_marginRight="96dp"
+                                android:layout_marginRight="56dp"
                                 android:layout_marginStart="56dp"
                                 android:background="?android:attr/selectableItemBackground"
                                 android:clickable="true"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:text="@string/route_arrival"
                                 android:textColor="@color/text_primary"
-                                android:textSize="18sp" android:maxLines="1"/>
-
-                            <ImageView
-                                android:id="@+id/route_arrival_places"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="end|center_vertical"
-                                android:layout_marginEnd="56dp"
-                                android:layout_marginRight="56dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:src="@drawable/ic_add_location_white_48dp"
-                                android:tint="@color/icon_grey"/>
+                                android:textSize="18sp"/>
 
                             <ImageView
                                 android:id="@+id/route_arrival_map"
@@ -201,9 +183,9 @@
                                 android:id="@+id/route_time_set"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="end|center_vertical"
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginRight="16dp"
-                                android:layout_gravity="end|center_vertical"
                                 android:src="@drawable/ic_query_builder_white_48dp"
                                 android:tint="@color/accent"/>
 
@@ -217,9 +199,9 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginStart="16dp"
-                                android:layout_gravity="center_vertical"
                                 android:src="@drawable/ic_reorder_white_48dp"
                                 android:tint="@color/icon_grey"/>
 
@@ -227,17 +209,18 @@
                                 android:id="@+id/route_text_results"
                                 android:layout_width="230dp"
                                 android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="56dp"
                                 android:layout_marginStart="56dp"
                                 android:background="?android:attr/selectableItemBackground"
                                 android:clickable="true"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
-                                android:layout_gravity="center_vertical"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:text="@string/route_result_default"
                                 android:textColor="@color/text_default"
-                                android:textSize="18sp" android:maxLines="1"/>
+                                android:textSize="18sp"/>
 
                         </FrameLayout>
 
@@ -249,9 +232,9 @@
                             <ImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginStart="16dp"
-                                android:layout_gravity="center_vertical"
                                 android:src="@drawable/ic_directions_walk_white_48dp"
                                 android:tint="@color/icon_grey"/>
 
@@ -259,17 +242,18 @@
                                 android:id="@+id/route_text_walk"
                                 android:layout_width="230dp"
                                 android:layout_height="48dp"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="56dp"
                                 android:layout_marginStart="56dp"
                                 android:background="?android:attr/selectableItemBackground"
                                 android:clickable="true"
                                 android:ellipsize="end"
                                 android:gravity="center_vertical"
-                                android:layout_gravity="center_vertical"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:text="@string/route_walk_default"
                                 android:textColor="@color/text_default"
-                                android:textSize="18sp" android:maxLines="1"/>
+                                android:textSize="18sp"/>
 
                         </FrameLayout>
 
@@ -277,16 +261,17 @@
                             android:id="@+id/route_swap"
                             android:layout_width="48dp"
                             android:layout_height="96dp"
-                            android:background="?android:attr/selectableItemBackground"
                             android:layout_gravity="end|top"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:paddingBottom="26dp"
+                            android:paddingEnd="6dp"
                             android:paddingLeft="6dp"
                             android:paddingRight="6dp"
+                            android:paddingStart="6dp"
                             android:paddingTop="26dp"
-                            android:paddingBottom="26dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_swap_vert_white_48dp"
-                            android:tint="@color/accent" android:paddingStart="6dp"
-                            android:paddingEnd="6dp"/>
+                            android:tint="@color/accent"/>
 
                     </FrameLayout>
 

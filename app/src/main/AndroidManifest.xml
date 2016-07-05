@@ -266,10 +266,6 @@
             android:value="43bd23092db55b7c1f303c7f6e5bd3091649f644"/>
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="ADD-API-KEY"/>
-
-        <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
