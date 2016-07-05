@@ -182,28 +182,10 @@
 
                     </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="72dp"
-                        android:layout_marginStart="72dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/divider_light"/>
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="72dp"
                         android:layout_marginTop="8dp">
-
-                        <ImageView
-                            android:id="@+id/bus_details_card_icon2"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginStart="16dp"
-                            android:src="@drawable/ic_license"
-                            android:tint="@color/primary"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -216,11 +198,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/bus_detail_license"
+                                android:text="@string/bus_detail_id"
                                 android:textColor="@color/text_default"/>
 
                             <TextView
-                                android:id="@+id/bus_detail_license"
+                                android:id="@+id/bus_detail_id"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_primary"/>

@@ -34,7 +34,7 @@ public final class Buses {
             "Irisbus 491E.12.22 CityClass",
             "NL 313",
             "NG 313",
-            "M 240 LS/3P",
+            "M 240 LS/3P"
     };
 
     private static final String[] FUEL_IT = {
@@ -76,101 +76,101 @@ public final class Buses {
     private static final SparseArray<Bus> BUSES = new SparseArray<>();
     
     static {
-        BUSES.put(438, new Bus("ES???TJ", 0, 0, 1, 0, 3));
-        BUSES.put(437, new Bus("ES???TJ", 0, 0, 1, 0, 3));
-        BUSES.put(436, new Bus("ES800TJ", 0, 1, 1, 0, 2));
-        BUSES.put(435, new Bus("ES805TJ", 0, 1, 1, 0, 2));
-        BUSES.put(434, new Bus("ES804TJ", 0, 1, 1, 0, 2));
-        BUSES.put(433, new Bus("ES801TJ", 0, 1, 1, 0, 2));
-        BUSES.put(432, new Bus("ER345VP", 1, 2, 0, 2, 1));
-        BUSES.put(431, new Bus("ER344VP", 1, 2, 0, 2, 1));
-        BUSES.put(430, new Bus("ER346VP", 1, 2, 0, 2, 1));
-        BUSES.put(429, new Bus("ER342VP", 1, 2, 0, 2, 1));
-        BUSES.put(428, new Bus("ER343VP", 1, 2, 0, 2, 1));
-        BUSES.put(427, new Bus("EP9??LW", 2, 3, 1, 0, 5));
-        BUSES.put(426, new Bus("EP9??LW", 2, 3, 1, 0, 5));
-        BUSES.put(425, new Bus("EP9??LW", 2, 3, 1, 0, -1));
-        BUSES.put(424, new Bus("EP9??LW", 2, 3, 1, 0, -1));
-        BUSES.put(423, new Bus("EP9??LW", 2, 3, 1, 0, 5));
-        BUSES.put(422, new Bus("EP9??LW", 2, 3, 1, 0, 5));
-        BUSES.put(421, new Bus("EP9??LW", 2, 3, 1, 0, 5));
-        BUSES.put(419, new Bus("EP605LW", 1, 4, 1, 0, 9));
-        BUSES.put(418, new Bus("EP604LW", 1, 4, 1, 0, 9));
-        BUSES.put(417, new Bus("EP603LW", 1, 4, 1, 0, 9));
-        BUSES.put(416, new Bus("EP602LW", 1, 4, 1, 0, 9));
-        BUSES.put(415, new Bus("EP601LW", 1, 4, 1, 0, 9));
-        BUSES.put(414, new Bus("EP600LW", 1, 4, 1, 0, 9));
-        BUSES.put(413, new Bus("EP694LW", 0, 1, 1, 0, 2));
-        BUSES.put(412, new Bus("EP693LW", 0, 1, 1, 0, 2));
-        BUSES.put(411, new Bus("EP692LW", 0, 1, 1, 0, 2));
-        BUSES.put(410, new Bus("EP691LW", 0, 1, 1, 0, 2));
-        BUSES.put(409, new Bus("EP690LW", 0, 1, 1, 0, 2));
-        BUSES.put(408, new Bus("EP689LW", 0, 1, 1, 0, 2));
-        BUSES.put(407, new Bus("EP688LW", 0, 1, 1, 0, 2));
-        BUSES.put(406, new Bus("EP687LW", 0, 1, 1, 0, 2));
-        BUSES.put(405, new Bus("EP686LW", 0, 1, 1, 0, 2));
-        BUSES.put(398, new Bus("EN844YH", 1, 5, 1, 0, 10));
-        BUSES.put(397, new Bus("EN845YH", 1, 5, 1, 0, 10));
-        BUSES.put(396, new Bus("EN846YH", 1, 5, 1, 0, 10));
-        BUSES.put(395, new Bus("EN847YH", 1, 5, 1, 0, 10));
-        BUSES.put(394, new Bus("E??????", 1, 5, 1, 0, 10));
-        BUSES.put(393, new Bus("E??????", 1, 5, 1, 0, 10));
-        BUSES.put(382, new Bus("DP006RY", 2, 11, 1, 1, 14));
-        BUSES.put(381, new Bus("DP803BR", 2, 12, 2, 1, 19));
-        BUSES.put(372, new Bus("DD506YH", 2, 12, 2, 1, 13));
-        BUSES.put(371, new Bus("DD505YH", 2, 12, 2, 1, 13));
-        BUSES.put(369, new Bus("CZ298ND", 4, 15, 2, 1, 7));
-        BUSES.put(364, new Bus("CZ110ND", 2, 6, 2, 1, 11));
-        BUSES.put(363, new Bus("CZ109ND", 2, 6, 2, 1, 11));
-        BUSES.put(362, new Bus("CZ108ND", 2, 6, 2, 1, 11));
-        BUSES.put(361, new Bus("CZ107ND", 2, 6, 2, 1, 11));
-        BUSES.put(360, new Bus("CZ106ND", 2, 6, 2, 1, 11));
-        BUSES.put(359, new Bus("CZ105ND", 2, 6, 2, 1, 11));
-        BUSES.put(358, new Bus("CZ104ND", 2, 6, 2, 1, 11));
-        BUSES.put(357, new Bus("CZ103ND", 2, 6, 2, 1, 11));
-        BUSES.put(356, new Bus("CZ102ND", 2, 6, 2, 1, 11));
-        BUSES.put(355, new Bus("CZ101ND", 2, 6, 2, 1, 11));
-        BUSES.put(354, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(353, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(352, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(351, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(350, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(349, new Bus("CX?????", 4, 9, 2, 1, -1));
-        BUSES.put(348, new Bus("CV278MW", 2, 6, 2, 1, 11));
-        BUSES.put(347, new Bus("CV282MW", 2, 6, 2, 1, 11));
-        BUSES.put(346, new Bus("CV281MW", 2, 6, 2, 1, 11));
-        BUSES.put(345, new Bus("CV280MW", 2, 6, 2, 1, 11));
-        BUSES.put(344, new Bus("CV279MW", 2, 6, 2, 1, 11));
-        BUSES.put(343, new Bus("CV???MW", 2, 6, 2, 1, 11));
-        BUSES.put(342, new Bus("CV???MW", 2, 6, 2, 1, 11));
-        BUSES.put(337, new Bus("???????", 2, 6, 2, 1, 11));
-        BUSES.put(334, new Bus("???????", 2, 6, 2, 1, 11));
-        BUSES.put(333, new Bus("???????", 2, 6, 2, 1, 11));
-        BUSES.put(331, new Bus("???????", 2, 6, 2, 1, 11));
-        BUSES.put(330, new Bus("???????", 2, 6, 2, 1, 11));
-        BUSES.put(328, new Bus("BZ???AB", 3, 7, 2, 1, 12));
-        BUSES.put(327, new Bus("BZ???AB", 3, 7, 2, 1, 12));
-        BUSES.put(326, new Bus("BZ125AB", 3, 7, 2, 1, 12));
-        BUSES.put(325, new Bus("BZ124AB", 3, 7, 2, 1, 12));
-        BUSES.put(324, new Bus("BZ123AB", 3, 7, 2, 1, 12));
-        BUSES.put(323, new Bus("BZ122AB", 3, 7, 2, 1, 12));
-        BUSES.put(322, new Bus("BZ121AB", 3, 7, 2, 1, 12));
-        BUSES.put(321, new Bus("BZ120AB", 3, 7, 2, 1, 12));
-        BUSES.put(317, new Bus("BP794TR", 3, 7, 2, 1, 12));
-        BUSES.put(316, new Bus("BP711TR", 3, 7, 2, 1, 12));
-        BUSES.put(315, new Bus("BP710TR", 3, 7, 2, 1, 12));
-        BUSES.put(314, new Bus("BP709TR", 3, 7, 2, 1, 12));
-        BUSES.put(313, new Bus("BP708TR", 3, 7, 2, 1, 12));
-        BUSES.put(308, new Bus("BM247PE", 3, 7, 2, 1, 12));
-        BUSES.put(306, new Bus("BM924PD", 3, 7, 2, 1, 12));
-        BUSES.put(305, new Bus("BM923PD", 3, 7, 2, 1, 12));
-        BUSES.put(304, new Bus("BM922PD", 3, 7, 2, 1, 12));
-        BUSES.put(303, new Bus("BM196PC", 3, 7, 2, 1, 12));
-        BUSES.put(302, new Bus("BM195PC", 3, 7, 2, 1, 12));
-        BUSES.put(301, new Bus("BM194PC", 3, 7, 2, 1, 12));
-        BUSES.put(300, new Bus("BM193PC", 3, 7, 2, 1, 12));
-        BUSES.put(45, new Bus("BZ478AB", 4, 17, 1, 1, -1));
-        BUSES.put(44, new Bus("BW144TJ", 4, 17, 1, 1, -1));
+        BUSES.put(438, new Bus(0, 0, 1, 0, 3));
+        BUSES.put(437, new Bus(0, 0, 1, 0, 3));
+        BUSES.put(436, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(435, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(434, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(433, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(432, new Bus(1, 2, 0, 2, 1));
+        BUSES.put(431, new Bus(1, 2, 0, 2, 1));
+        BUSES.put(430, new Bus(1, 2, 0, 2, 1));
+        BUSES.put(429, new Bus(1, 2, 0, 2, 1));
+        BUSES.put(428, new Bus(1, 2, 0, 2, 1));
+        BUSES.put(427, new Bus(2, 3, 1, 0, 5));
+        BUSES.put(426, new Bus(2, 3, 1, 0, 5));
+        BUSES.put(425, new Bus(2, 3, 1, 0, -1));
+        BUSES.put(424, new Bus(2, 3, 1, 0, -1));
+        BUSES.put(423, new Bus(2, 3, 1, 0, 5));
+        BUSES.put(422, new Bus(2, 3, 1, 0, 5));
+        BUSES.put(421, new Bus(2, 3, 1, 0, 5));
+        BUSES.put(419, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(418, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(417, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(416, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(415, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(414, new Bus(1, 4, 1, 0, 9));
+        BUSES.put(413, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(412, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(411, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(410, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(409, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(408, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(407, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(406, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(405, new Bus(0, 1, 1, 0, 2));
+        BUSES.put(398, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(397, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(396, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(395, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(394, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(393, new Bus(1, 5, 1, 0, 10));
+        BUSES.put(382, new Bus(2, 11, 1, 1, 14));
+        BUSES.put(381, new Bus(2, 12, 2, 1, 19));
+        BUSES.put(372, new Bus(2, 12, 2, 1, 13));
+        BUSES.put(371, new Bus(2, 12, 2, 1, 13));
+        BUSES.put(369, new Bus(4, 15, 2, 1, 7));
+        BUSES.put(364, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(363, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(362, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(361, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(360, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(359, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(358, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(357, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(356, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(355, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(354, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(353, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(352, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(351, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(350, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(349, new Bus(4, 9, 2, 1, -1));
+        BUSES.put(348, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(347, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(346, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(345, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(344, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(343, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(342, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(337, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(334, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(333, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(331, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(330, new Bus(2, 6, 2, 1, 11));
+        BUSES.put(328, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(327, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(326, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(325, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(324, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(323, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(322, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(321, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(317, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(316, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(315, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(314, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(313, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(308, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(306, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(305, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(304, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(303, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(302, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(301, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(300, new Bus(3, 7, 2, 1, 12));
+        BUSES.put(45, new Bus(4, 17, 1, 1, -1));
+        BUSES.put(44, new Bus(4, 17, 1, 1, -1));
     }
 
     private Buses() {
@@ -190,7 +190,6 @@ public final class Buses {
         switch (locale) {
             case "de":
                 return new Vehicle(
-                        bus.getLicensePlate(),
                         VENDORS[bus.getVendor()],
                         MODELS[bus.getModel()],
                         FUEL_DE[bus.getFuel()],
@@ -199,7 +198,6 @@ public final class Buses {
                 );
             case "en":
                 return new Vehicle(
-                        bus.getLicensePlate(),
                         VENDORS[bus.getVendor()],
                         MODELS[bus.getModel()],
                         FUEL_EN[bus.getFuel()],
@@ -208,7 +206,6 @@ public final class Buses {
                 );
             default:
                 return new Vehicle(
-                        bus.getLicensePlate(),
                         VENDORS[bus.getVendor()],
                         MODELS[bus.getModel()],
                         FUEL_IT[bus.getFuel()],
@@ -220,26 +217,20 @@ public final class Buses {
 
     private static final class Bus {
 
-        private final String licensePlate;
         private final int vendor;
         private final int model;
         private final int fuel;
         private final int color;
         private final int group;
 
-        private Bus(String licensePlate, int vendor, int model, int fuel, int color, int group) {
-            this.licensePlate = licensePlate;
+        private Bus(int vendor, int model, int fuel, int color, int group) {
             this.vendor = vendor;
             this.model = model;
             this.fuel = fuel;
             this.color = color;
             this.group = group;
         }
-
-        public String getLicensePlate() {
-            return licensePlate;
-        }
-
+        
         public int getVendor() {
             return vendor;
         }

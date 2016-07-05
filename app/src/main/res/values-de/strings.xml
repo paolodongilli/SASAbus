@@ -64,7 +64,6 @@
     <string name="parking_detail_slots_total">Plätze insgesamt</string>
     <string name="parking_detail_current_free">freie Plätze</string>
     <string name="parking_detail_station_distance">m vom Parkplatz entfernt</string>
-    <string name="bus_detail_license">Nummernschild</string>
     <string name="bus_details">Busdetails</string>
     <string name="bus_details_color">Farbe</string>
     <string name="bus_details_fuel">Treibstoff</string>
@@ -242,7 +241,6 @@
     <string name="intro_beacons_text">Aktivere Bluetooth, um Informationen über Busse und
         Haltestellen in der Nähe zu erhalten. Die App kann deine Fahrten aufzeichnen und speichern.
     </string>
-    <string name="bottom_sheet_departure">Fährt in %d\' ab</string>
     <string name="intro_realtime_data_text">SasaBus informiert dich über Abfahrten, Verspätungen,
         Fahrtverläufe und Haltestellen der Stadtbusse in Bozen und Meran.
     </string>

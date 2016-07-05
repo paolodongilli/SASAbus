@@ -63,7 +63,6 @@
     <string name="parking_detail_current_free">posti liberi</string>
     <string name="parking_detail_slots_total">posti in totale</string>
     <string name="parking_detail_station_distance">m dal parcheggio</string>
-    <string name="bus_detail_license">Targa</string>
     <string name="bus_details">Dettagli autobus</string>
     <string name="bus_details_color">Colore</string>
     <string name="bus_details_fuel">Carburante</string>
@@ -236,7 +235,6 @@
     <string name="intro_beacons_text">Attiva Bluetooth per ottenere informazioni su autobus e
         fermate in vicinanza. L\'app registrerà e salverà i tuoi viaggi.
     </string>
-    <string name="bottom_sheet_departure">Parte in %d\'</string>
     <string name="intro_realtime_data_text">SasaBus ti informa su partenze, ritardi, percorsi e
         fermate degli autbous urbani in Bolzano e Merano.
     </string>

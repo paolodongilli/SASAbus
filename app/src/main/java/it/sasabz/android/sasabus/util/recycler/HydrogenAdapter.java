@@ -23,6 +23,7 @@ import it.sasabz.android.sasabus.util.Preconditions;
 
 /**
  * @author Alex Lardschneider
+ * @author David Dejori
  */
 public class HydrogenAdapter extends RecyclerView.Adapter<HydrogenAdapter.ViewHolder> {
 
@@ -47,8 +48,7 @@ public class HydrogenAdapter extends RecyclerView.Adapter<HydrogenAdapter.ViewHo
         Vehicle vehicle = Buses.getBus(mContext, bus.vehicle);
         Preconditions.checkNotNull(vehicle, "vehicle == null");
 
-        holder.licensePlate.setText(vehicle.getLicensePlate());
-        holder.id.setText(mContext.getString(R.string.bus_id, bus.vehicle));
+        holder.id.setText(String.valueOf(bus.vehicle));
 
         holder.line.setText(bus.lineName.equals("null") ? mContext.getString(R.string.bus_not_in_service_short) :
                 mContext.getString(R.string.line) + ' ' + bus.lineName);
@@ -64,7 +64,6 @@ public class HydrogenAdapter extends RecyclerView.Adapter<HydrogenAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.list_item_lines_all_card) CardView cardView;
-        @BindView(R.id.list_lines_hydrogen_license) TextView licensePlate;
         @BindView(R.id.list_lines_hydrogen_id) TextView id;
         @BindView(R.id.list_lines_hydrogen_line) TextView line;
         @BindView(R.id.list_lines_hydrogen_bus_stop) TextView busStop;
