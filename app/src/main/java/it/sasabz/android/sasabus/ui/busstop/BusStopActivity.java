@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -539,6 +540,7 @@ public class BusStopActivity extends BaseActivity {
             realm.where(BusStop.class).findAllAsync().asObservable()
                     .compose(bindToLifecycle())
                     .filter(RealmResults::isLoaded)
+                    .delay(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(busStops -> {
                         List<BusStop> list = new ArrayList<>();

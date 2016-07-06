@@ -73,7 +73,7 @@ public class RouteMapPickerActivity extends AppCompatActivity {
 
     private void parseData() {
         mRealm.where(SadBusStop.class).findAllAsync().asObservable()
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(busStops -> {
                     mapView.setMarkers(busStops);

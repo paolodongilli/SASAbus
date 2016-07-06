@@ -202,7 +202,7 @@ public class TripDetailActivity extends AppCompatActivity implements View.OnClic
         new Handler().postDelayed(() -> {
             mDistance = parseMapDataAndDistance(mTrip);
             parseVehicleData();
-        }, 500);
+        }, 1000);
     }
 
     private float parseMapDataAndDistance(Trip trip) {

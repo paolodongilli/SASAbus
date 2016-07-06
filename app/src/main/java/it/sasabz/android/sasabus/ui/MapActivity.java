@@ -489,7 +489,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
 
                         return realtimeResponse;
                     })
-                    .delay(500, TimeUnit.MILLISECONDS) // Delay is needed to make sure map is loaded.
+                    .delay(1, TimeUnit.SECONDS) // Delay is needed to make sure map is loaded.
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
         }
