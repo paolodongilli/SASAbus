@@ -166,10 +166,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <fragment
+                    <WebView
                         android:id="@+id/googlemap"
-                        android:name="it.sasabz.android.sasabus.ui.widget.NestedMapFragment"
-                        class="it.sasabz.android.sasabus.ui.widget.NestedMapFragment"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"/>
 

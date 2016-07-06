@@ -1,22 +1,18 @@
 package it.sasabz.android.sasabus.ui.trips;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -24,31 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import it.sasabz.android.sasabus.Config;
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.model.Buses;
-import it.sasabz.android.sasabus.model.Vehicle;
-import it.sasabz.android.sasabus.model.line.Lines;
-import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
-import it.sasabz.android.sasabus.realm.busstop.BusStop;
-import it.sasabz.android.sasabus.realm.user.Trip;
-import it.sasabz.android.sasabus.ui.bus.BusDetailActivity;
-import it.sasabz.android.sasabus.ui.busstop.BusStopDetailActivity;
-import it.sasabz.android.sasabus.ui.widget.NestedMapFragment;
-import it.sasabz.android.sasabus.util.AnalyticsHelper;
-import it.sasabz.android.sasabus.util.SettingsUtils;
-import it.sasabz.android.sasabus.util.Utils;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +31,18 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import it.sasabz.android.sasabus.Config;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.model.Buses;
+import it.sasabz.android.sasabus.model.Vehicle;
+import it.sasabz.android.sasabus.model.line.Lines;
+import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
+import it.sasabz.android.sasabus.realm.busstop.BusStop;
+import it.sasabz.android.sasabus.realm.user.Trip;
+import it.sasabz.android.sasabus.ui.bus.BusDetailActivity;
+import it.sasabz.android.sasabus.util.AnalyticsHelper;
+import it.sasabz.android.sasabus.util.Utils;
+import it.sasabz.android.sasabus.util.map.TripDetailsMapView;
 import it.sasabz.android.sasabus.util.recycler.TripAdapter;
 
 /**
@@ -71,13 +55,9 @@ import it.sasabz.android.sasabus.util.recycler.TripAdapter;
  *
  * @author Alex Lardschneider
  */
-public class TripDetailActivity extends AppCompatActivity implements OnMapReadyCallback,
-        View.OnClickListener {
+public class TripDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "TripDetailActivity";
-
-    private NestedMapFragment mMapFragment;
-    private GoogleMap mGoogleMap;
 
     @BindView(R.id.trip_detail_start_station) TextView mStartStation;
     @BindView(R.id.trip_detail_start_time) TextView mStartTime;
@@ -129,6 +109,8 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
             160  // 99
     };
 
+    private TripDetailsMapView mapView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,64 +138,9 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
         mVehicleLoading.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.primary_amber),
                 PorterDuff.Mode.SRC_ATOP);
 
-        int googleStatus = MapsInitializer.initialize(getApplicationContext());
-        if (googleStatus == 0) {
-            mMapFragment = (NestedMapFragment) getSupportFragmentManager().findFragmentById(R.id.googlemap);
-            mMapFragment.getMapAsync(this);
-            mMapFragment.setListener(() -> mScrollView.requestDisallowInterceptTouchEvent(true));
-        }
-    }
+        WebView webView = (WebView) findViewById(R.id.googlemap);
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(46.58, 11.25), 10));
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mGoogleMap.setMyLocationEnabled(true);
-        }
-
-        mGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-                View view = inflater.inflate(R.layout.include_bus_stop_infowindow, null);
-
-                TextView title = (TextView) view.findViewById(R.id.stations_popup_title);
-                title.setText(marker.getTitle());
-
-                TextView snippet = (TextView) view.findViewById(R.id.stations_popup_snippet);
-                snippet.setText(marker.getSnippet().split(":")[0]);
-
-                return view;
-            }
-        });
-
-        mGoogleMap.setOnInfoWindowClickListener(marker -> {
-            Intent intent = new Intent(getApplication(), BusStopDetailActivity.class);
-            intent.putExtra(Config.EXTRA_STATION_ID, Integer.parseInt(marker.getSnippet().split(":")[1]));
-            startActivity(intent);
-        });
-
-        mGoogleMap.setOnMarkerClickListener(marker -> {
-            Projection projection = mGoogleMap.getProjection();
-            Point markerPoint = projection.toScreenLocation(marker.getPosition());
-
-            if (mMapFragment.getView() == null) return false;
-            markerPoint.offset(0, -(mMapFragment.getView().getHeight() / 4));
-            LatLng newLatLng = projection.fromScreenLocation(markerPoint);
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLng), 350, null);
-            marker.showInfoWindow();
-
-            return true;
-        });
+        mapView = new TripDetailsMapView(this, webView);
 
         parseData();
     }
@@ -273,58 +200,32 @@ public class TripDetailActivity extends AppCompatActivity implements OnMapReadyC
             mDuration.setText(timeDifference + "'");
         }
 
-        mGoogleMap.setOnMapLoadedCallback(() -> {
+        new Handler().postDelayed(() -> {
             mDistance = parseMapDataAndDistance(mTrip);
             parseVehicleData();
-        });
+        }, 500);
     }
 
     private float parseMapDataAndDistance(Trip trip) {
-        List<Marker> markers = new ArrayList<>();
-
         String[] tripList = trip.getPath().split(",");
+
+        List<BusStop> busStops = new ArrayList<>();
 
         float distance = 0F;
         for (int i = 0; i < tripList.length; i++) {
-            BusStop station = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i]));
+            BusStop busStop = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i]));
 
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                    .title(station.getName(this))
-                    .snippet(station.getMunic(this) + ":" + station.getId())
-                    .position(new LatLng(station.getLat(), station.getLng())));
-
-            markers.add(marker);
+            busStops.add(busStop);
 
             if (i >= 1) {
                 BusStop station1 = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i - 1]));
 
-                mGoogleMap.addPolyline(new PolylineOptions()
-                        .add(new LatLng(station1.getLat(), station1.getLng()))
-                        .add(marker.getPosition())
-                        .color(Color.parseColor("#F44336"))
-                        .width(5));
-
-
-                distance += getDistance(marker.getPosition(), new LatLng(station1.getLat(), station1.getLng()));
+                distance += getDistance(new LatLng(busStop.getLat(), busStop.getLng()),
+                        new LatLng(station1.getLat(), station1.getLng()));
             }
         }
 
-        runOnUiThread(() -> {
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (int i = 0; i < markers.size(); i++) {
-                builder.include(markers.get(i).getPosition());
-            }
-
-            LatLngBounds bounds = builder.build();
-
-            try {
-                assert mMapFragment.getView() != null;
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, mMapFragment.getView().getHeight() / 4);
-                mGoogleMap.animateCamera(cu);
-            } catch (IllegalStateException | NullPointerException e) {
-                Utils.handleException(e);
-            }
-        });
+        mapView.setMarkers(busStops);
 
         if (distance < 1000) {
             mDistanceText.setText(Math.round(distance) + " m");
