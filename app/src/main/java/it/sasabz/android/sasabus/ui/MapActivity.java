@@ -47,7 +47,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -480,13 +479,10 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
                                 group = bus1.getGroup();
                             }
 
-                            LatLng position = new LatLng(bus.latitude, bus.longitude);
-
                             String currentStopName = BusStopRealmHelper.getNameFromId(bus.busStop);
                             String lastStopName = BusStopRealmHelper.getNameFromId(bus.destination);
 
                             bus.group = group;
-                            bus.position = position;
                             bus.currentStopName = currentStopName;
                             bus.lastStopName = lastStopName;
                         }

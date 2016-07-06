@@ -3,7 +3,6 @@ package it.sasabz.android.sasabus.network.rest.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -65,8 +64,6 @@ public final class RealtimeBus implements Parcelable {
 
     public String lastStopName;
 
-    public LatLng position;
-
     private RealtimeBus(Parcel in) {
         lineName = in.readString();
         lineId = in.readInt();
@@ -87,7 +84,6 @@ public final class RealtimeBus implements Parcelable {
         group = in.readInt();
         currentStopName = in.readString();
         lastStopName = in.readString();
-        position = in.readParcelable(LatLng.class.getClassLoader());
     }
 
     @Override
@@ -111,7 +107,6 @@ public final class RealtimeBus implements Parcelable {
         dest.writeInt(group);
         dest.writeString(currentStopName);
         dest.writeString(lastStopName);
-        dest.writeParcelable(position, flags);
     }
 
     public static final Creator<RealtimeBus> CREATOR = new Creator<RealtimeBus>() {
