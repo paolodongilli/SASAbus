@@ -6,11 +6,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import java.util.List;
-
-import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.PathResponse;
-import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.realm.busstop.BusStop;
 
@@ -44,24 +40,18 @@ public class LinePathMapView {
 
         for (int stop : pathResponse.path) {
             BusStop busStop = BusStopRealmHelper.getBusStopFromId(stop);
-            data.append(busStop.getId())
-                    .append('#')
-                    .append(busStop.getFamily())
-                    .append('#')
-                    .append(busStop.getLat())
-                    .append('#')
-                    .append(busStop.getLng())
-                    .append('#')
-                    .append(busStop.getMunic(webView.getContext()))
-                    .append('#')
-                    .append(busStop.getName(webView.getContext()))
-                    .append('=');
+            data.append(busStop.getId()).append('#')
+                    .append(busStop.getFamily()).append('#')
+                    .append(busStop.getLat()).append('#')
+                    .append(busStop.getLng()).append('#')
+                    .append(busStop.getName(webView.getContext())).append('#')
+                    .append(busStop.getMunic(webView.getContext())).append('=');
         }
 
         if (data.length() > 0) {
             data.deleteCharAt(data.length() - 1);
         }
 
-        webView.loadUrl("javascript:setMarkers(\"" + data.toString() + ");");
+        webView.loadUrl("javascript:setMarkers(\"" + data.toString() + "\");");
     }
 }

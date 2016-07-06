@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
+import java.util.concurrent.TimeUnit;
+
 import it.sasabz.android.sasabus.Config;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.network.NetUtils;
@@ -97,6 +99,7 @@ public class LinePathActivity extends RxAppCompatActivity {
         pathsApi.getPath(mLineId)
                 .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.newThread())
+                .delay(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PathResponse>() {
                     @Override

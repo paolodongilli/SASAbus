@@ -27,28 +27,23 @@
             color: #FF9800;
             font-size: 16px;
         }
+
     </style>
 
 </head>
 
 <body>
 
-<noscript>
-    <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-    </div>
-</noscript>
+    <noscript>
+        <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+            Your web browser must have JavaScript enabled
+            in order for this application to display correctly.
+        </div>
+    </noscript>
 
-<div id="map"></div>
+    <div id="map"></div>
 
-<script type="text/javascript">
-
-        DataMarker = L.Marker.extend({
-           options: {
-              stopId: 0
-           }
-        });
+    <script type="text/javascript">
 
         var busDetails = Android.getBusDetailsString();
         var map = L.map('map').setView([46.58, 11.25], 10);
@@ -70,22 +65,15 @@
             for (i = 0; i < stops.length; i++) {
                 var stopData = stops[i].split("#");
 
-                var marker = L.VectorMarkers.icon({
-                    icon: 'ion-android-bus',
-                    markerColor: "#4CAF50"
-                });
-
                 var html = "<center>" +
-                            "<b>" + stopData[5] + "</b><br>" +
-                            stopData[6] + "<br>" +
-                            "<b><span class=\"button\" onclick=\"onBusStopDetailsClick(" + stopData[1] + ");\">" + busDetails + "</span><br><br></b>" +
+                            "<b>" + stopData[4] + "</b><br>" +
+                            stopData[5] + "<br><br>" +
+                            "<b><span class=\"button\" onclick=\"onBusStopDetailsClick(" + stopData[0] + ");\">" + busDetails + "</span></b><br>" +
                             "</center>"
 
-                var marker = new DataMarker([stopData[2], stopData[3]], {
-                    stopId: stopData[0]
-                })
-                .addTo(map)
-                .bindPopup(html);
+                var marker = new L.Marker([stopData[2], stopData[3]])
+                    .addTo(map)
+                    .bindPopup(html);
             }
         }
 

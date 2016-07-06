@@ -36,7 +36,6 @@ import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.realm.UserRealmHelper;
 import it.sasabz.android.sasabus.ui.BaseActivity;
-import it.sasabz.android.sasabus.util.SettingsUtils;
 import it.sasabz.android.sasabus.util.list.LinesDrivingAdapter;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
