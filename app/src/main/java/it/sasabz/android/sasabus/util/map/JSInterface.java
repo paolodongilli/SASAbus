@@ -13,6 +13,7 @@ import it.sasabz.android.sasabus.ui.bus.BusDetailActivity;
 import it.sasabz.android.sasabus.ui.busstop.BusStopDetailActivity;
 import it.sasabz.android.sasabus.ui.line.LineCourseActivity;
 import it.sasabz.android.sasabus.ui.line.LineDetailActivity;
+import it.sasabz.android.sasabus.ui.route.RouteMapPickerActivity;
 import it.sasabz.android.sasabus.util.LogUtils;
 
 import static it.sasabz.android.sasabus.ui.busstop.BusStopActivity.INTENT_DISPLAY_FAVORITES;
@@ -91,5 +92,15 @@ class JSInterface {
     @JavascriptInterface
     public String getBusStopDetailsString() {
         return context.getString(R.string.station_details).toUpperCase();
+    }
+
+    @JavascriptInterface
+    public void onBusStopSelectClick(int id) {
+        ((RouteMapPickerActivity) context).selectBusStop(id);
+    }
+
+    @JavascriptInterface
+    public String getSelectString() {
+        return context.getString(R.string.station_select).toUpperCase();
     }
 }
