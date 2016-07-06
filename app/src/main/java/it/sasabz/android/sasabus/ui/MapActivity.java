@@ -529,48 +529,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
             LogUtils.e(TAG, "vehicle == null");
             return;
         }
-/*
-        for (Marker marker : mMarkers.values()) {
-            String[] snippet = marker.getSnippet().split("#");
-
-            int bus = Integer.parseInt(snippet[2]);
-
-            if (bus == vehicle) {
-                if (!marker.isVisible()) {
-                    marker.setVisible(true);
-
-                    mFilter.add(Integer.parseInt(snippet[1]));
-                    ((Checkable) findViewById(Integer.parseInt(snippet[1]) * 100)).setChecked(true);
-
-                    findViewById(Lines.checkBoxesId[1] * 100).setEnabled(true);
-                    ((Checkable) findViewById(Lines.checkBoxesId[1] * 100)).setChecked(false);
-
-                    for (int j = 0; j < mFilter.size(); j++) {
-                        if (mFilter.get(j) == Lines.checkBoxesId[1]) {
-                            mFilter.remove(j);
-                            break;
-                        }
-                    }
-                }
-
-*//*                Projection projection = mGoogleMap.getProjection();
-                Point markerPoint = projection.toScreenLocation(marker.getPosition());
-
-                markerPoint.offset(0, 0);
-                LatLng newLatLng = projection.fromScreenLocation(markerPoint);
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(newLatLng), 350, null);*//*
-
-                marker.showInfoWindow();
-                updateBottomSheet(marker);
-
-                if (behavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
-                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-
-                mBusBeaconId = 0;
-                return;
-            }
-        }*/
 
         LogUtils.e(TAG, "Vehicle " + vehicle + " not on map");
 
