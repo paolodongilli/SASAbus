@@ -5,10 +5,18 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import it.sasabz.android.sasabus.Config;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.model.BusStop;
@@ -22,16 +30,6 @@ import it.sasabz.android.sasabus.network.rest.model.Route;
 import it.sasabz.android.sasabus.util.AnalyticsHelper;
 import it.sasabz.android.sasabus.util.Utils;
 import it.sasabz.android.sasabus.util.list.RouteResultsAdapter;
-import com.google.android.gms.maps.model.LatLng;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -41,7 +39,7 @@ import rx.schedulers.Schedulers;
  *
  * @author Alex Lardschneider
  */
-public class RouteResultActivity extends RxAppCompatActivity implements AdapterView.OnItemClickListener {
+public class RouteResultActivity extends RxAppCompatActivity {
 
     private static final String TAG = "RouteResultActivity";
 
@@ -95,7 +93,6 @@ public class RouteResultActivity extends RxAppCompatActivity implements AdapterV
 
         ListView listview = (ListView) findViewById(R.id.route_listView);
         listview.setAdapter(mAdapter);
-        listview.setOnItemClickListener(this);
 
         String departure = departureId != 0 ? String.valueOf(departureId) : fromPlace;
         String arrival = arrivalId != 0 ? String.valueOf(arrivalId) : toPlace;
@@ -148,13 +145,6 @@ public class RouteResultActivity extends RxAppCompatActivity implements AdapterV
         outState.putInt(Config.BUNDLE_ERROR_GENERAL, errorGeneral.getVisibility());
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, RouteDetailsActivity.class);
-        intent.putExtra(Config.EXTRA_STATION, mItems.get(position));
-        startActivity(intent);
-    }
-
     private void parseData(String from, String to, String date, String time, int walk, int results) {
         if (!NetUtils.isOnline(this)) {
             if (mAdapter != null) {
@@ -193,15 +183,9 @@ public class RouteResultActivity extends RxAppCompatActivity implements AdapterV
                         for (Leg leg : route.legs) {
                             if (leg.app.id == 3) {
                                 legs.add(new RouteLeg(-1, 3, leg.app.vehicle, null, null, null,
-                                        null, null, null, null));
+                                        null, null, null));
 
                                 continue;
-                            }
-
-                            List<LatLng> coords = new ArrayList<>();
-
-                            for (List<Double> doubles : leg.path) {
-                                coords.add(new LatLng(doubles.get(0), doubles.get(1)));
                             }
 
                             BusStop departure = new BusStop(0, leg.departure.name,
@@ -213,7 +197,7 @@ public class RouteResultActivity extends RxAppCompatActivity implements AdapterV
                             legs.add(new RouteLeg(leg.duration, leg.app.id, leg.app.vehicle,
                                     leg.app.id == 4 ? null : leg.app.line, leg.app.legend,
                                     departure, leg.departure.time,
-                                    arrival, leg.arrival.time, coords));
+                                    arrival, leg.arrival.time));
                         }
 
                         routes.add(new RouteResult(route.changes, route.departure, route.arrival,

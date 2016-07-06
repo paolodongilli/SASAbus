@@ -4,9 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import it.sasabz.android.sasabus.model.BusStop;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.List;
 
 public class RouteLeg implements Parcelable {
     private final int duration;
@@ -18,11 +15,10 @@ public class RouteLeg implements Parcelable {
     private final String departureTime;
     private final BusStop arrival;
     private final String arrivalTime;
-    private final List<LatLng> coords;
 
     public RouteLeg(int duration, int id, String vehicle, String line, String legend,
                     BusStop departure, String departureTime, BusStop arrival,
-                    String arrivalTime, List<LatLng> coords) {
+                    String arrivalTime) {
         this.duration = duration;
         this.id = id;
         this.vehicle = vehicle;
@@ -32,7 +28,6 @@ public class RouteLeg implements Parcelable {
         this.departureTime = departureTime;
         this.arrival = arrival;
         this.arrivalTime = arrivalTime;
-        this.coords = coords;
     }
 
     private RouteLeg(Parcel in) {
@@ -45,7 +40,6 @@ public class RouteLeg implements Parcelable {
         departureTime = in.readString();
         arrival = in.readParcelable(BusStop.class.getClassLoader());
         arrivalTime = in.readString();
-        coords = in.readArrayList(LatLng.class.getClassLoader());
     }
 
     @Override
@@ -64,7 +58,6 @@ public class RouteLeg implements Parcelable {
         dest.writeString(departureTime);
         dest.writeParcelable(arrival, 0);
         dest.writeString(arrivalTime);
-        dest.writeList(coords);
     }
 
     public int getDuration() {
@@ -101,10 +94,6 @@ public class RouteLeg implements Parcelable {
 
     public CharSequence getArrivalTime() {
         return arrivalTime;
-    }
-
-    public Iterable<LatLng> getCoords() {
-        return coords;
     }
 
     public static final Creator<RouteLeg> CREATOR = new Creator<RouteLeg>() {

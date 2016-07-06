@@ -20,7 +20,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,8 +219,8 @@ public class TripDetailActivity extends AppCompatActivity implements View.OnClic
             if (i >= 1) {
                 BusStop station1 = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i - 1]));
 
-                distance += getDistance(new LatLng(busStop.getLat(), busStop.getLng()),
-                        new LatLng(station1.getLat(), station1.getLng()));
+                distance += getDistance(busStop.getLat(), busStop.getLng(),
+                        station1.getLat(), station1.getLng());
             }
         }
 
@@ -287,14 +286,14 @@ public class TripDetailActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private float getDistance(LatLng start, LatLng stop) {
+    private float getDistance(double lat1, double lng1, double lat2, double lng2) {
         Location l1 = new Location("start");
-        l1.setLatitude(start.latitude);
-        l1.setLongitude(start.longitude);
+        l1.setLatitude(lat1);
+        l1.setLongitude(lng1);
 
         Location l2 = new Location("stop");
-        l2.setLatitude(stop.latitude);
-        l2.setLongitude(stop.longitude);
+        l2.setLatitude(lat2);
+        l2.setLongitude(lng2);
 
         return l1.distanceTo(l2);
     }

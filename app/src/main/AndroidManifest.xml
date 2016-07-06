@@ -157,12 +157,6 @@
             android:theme="@style/AppTheme.Green"/>
 
         <activity
-            android:name="it.sasabz.android.sasabus.ui.route.RouteDetailsActivity"
-            android:label="@string/route_details"
-            android:parentActivityName="it.sasabz.android.sasabus.ui.route.RouteResultActivity"
-            android:theme="@style/AppTheme.Green"/>
-
-        <activity
             android:name="it.sasabz.android.sasabus.ui.route.SearchActivity"
             android:exported="false"
             android:label="@string/title_search"
