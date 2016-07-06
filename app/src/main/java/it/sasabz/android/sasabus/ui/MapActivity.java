@@ -504,19 +504,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
      */
     private void updateFilterMarkers() {
         mapView.filter(mFilter);
-
-/*        for (Marker marker : mMarkers.values()) {
-            int lineId = Integer.parseInt(marker.getSnippet().split("#")[1]);
-            boolean visible = mFilter.contains(lineId);
-
-            if (!visible && marker.isInfoWindowShown()) {
-                if (behavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                }
-            }
-
-            marker.setVisible(visible);
-        }*/
     }
 
     /**
