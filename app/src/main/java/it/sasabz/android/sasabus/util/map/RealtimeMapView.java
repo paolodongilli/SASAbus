@@ -40,17 +40,17 @@ public class RealtimeMapView {
         StringBuilder data = new StringBuilder();
 
         for (RealtimeBus bus : realtimeResponse.buses) {
-            data.append(bus.lineName).append("#")
-                    .append(bus.trip).append("#")
-                    .append(bus.lineId).append("#")
-                    .append(bus.vehicle).append("#")
-                    .append(bus.latitude).append("#")
-                    .append(bus.longitude).append("#")
-                    .append(bus.currentStopName).append("#")
-                    .append(bus.lastStopName).append("#")
-                    .append(bus.delayMin).append("#")
-                    .append(bus.busStop).append("#")
-                    .append(bus.colorHex).append("=");
+            data.append(bus.lineName).append('#')
+                    .append(bus.trip).append('#')
+                    .append(bus.lineId).append('#')
+                    .append(bus.vehicle).append('#')
+                    .append(bus.latitude).append('#')
+                    .append(bus.longitude).append('#')
+                    .append(bus.currentStopName).append('#')
+                    .append(bus.lastStopName).append('#')
+                    .append(bus.delayMin).append('#')
+                    .append(bus.busStop).append('#')
+                    .append(bus.colorHex).append('=');
         }
 
         if (data.length() > 0) {
