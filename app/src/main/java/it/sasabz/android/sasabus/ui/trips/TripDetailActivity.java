@@ -179,9 +179,9 @@ public class TripDetailActivity extends AppCompatActivity implements View.OnClic
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ITALY);
 
         mStartStation.setText(BusStopRealmHelper
-                .getNameFromId(mTrip.getOrigin()));
+                .getName(mTrip.getOrigin()));
         mStopStation.setText(BusStopRealmHelper
-                .getNameFromId(mTrip.getDestination()));
+                .getName(mTrip.getDestination()));
 
         mStartTime.setText(sdf.format(startDate));
         mStopTime.setText(sdf.format(stopDate));
@@ -212,12 +212,12 @@ public class TripDetailActivity extends AppCompatActivity implements View.OnClic
 
         float distance = 0F;
         for (int i = 0; i < tripList.length; i++) {
-            BusStop busStop = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i]));
+            BusStop busStop = BusStopRealmHelper.getBusStop(Integer.parseInt(tripList[i]));
 
             busStops.add(busStop);
 
             if (i >= 1) {
-                BusStop station1 = BusStopRealmHelper.getBusStopFromId(Integer.parseInt(tripList[i - 1]));
+                BusStop station1 = BusStopRealmHelper.getBusStop(Integer.parseInt(tripList[i - 1]));
 
                 distance += getDistance(busStop.getLat(), busStop.getLng(),
                         station1.getLat(), station1.getLng());

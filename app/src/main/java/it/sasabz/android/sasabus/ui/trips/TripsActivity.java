@@ -4,15 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.view.View;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -24,7 +19,6 @@ import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.realm.user.TripToDelete;
 import it.sasabz.android.sasabus.ui.BaseActivity;
 import it.sasabz.android.sasabus.util.AnalyticsHelper;
-import it.sasabz.android.sasabus.util.AnimUtils;
 import it.sasabz.android.sasabus.util.DeviceUtils;
 import it.sasabz.android.sasabus.util.Utils;
 import it.sasabz.android.sasabus.util.recycler.TripAdapter;
@@ -153,8 +147,8 @@ public class TripsActivity extends BaseActivity {
 
                     for (it.sasabz.android.sasabus.realm.user.Trip realmTrip : trips) {
                         Trip trip = new Trip(realmTrip);
-                        trip.setOrigin(BusStopRealmHelper.getNameFromId(realmTrip.getOrigin()));
-                        trip.setDestination(BusStopRealmHelper.getNameFromId(realmTrip.getDestination()));
+                        trip.setOrigin(BusStopRealmHelper.getName(realmTrip.getOrigin()));
+                        trip.setDestination(BusStopRealmHelper.getName(realmTrip.getDestination()));
 
                         list.add(trip);
                     }

@@ -39,7 +39,7 @@ public class LinePathMapView {
         StringBuilder data = new StringBuilder();
 
         for (int stop : pathResponse.path) {
-            BusStop busStop = BusStopRealmHelper.getBusStopFromId(stop);
+            BusStop busStop = BusStopRealmHelper.getBusStop(stop);
             data.append(busStop.getId()).append('#')
                     .append(busStop.getFamily()).append('#')
                     .append(busStop.getLat()).append('#')

@@ -115,13 +115,13 @@ public class BusStopDetailActivity extends RxAppCompatActivity implements View.O
 
         Intent intent = getIntent();
         mBusStopId = intent.getExtras().getInt(Config.EXTRA_STATION_ID);
-        mBusStopGroup = BusStopRealmHelper.getBusStopGroupFromId(mBusStopId);
+        mBusStopGroup = BusStopRealmHelper.getBusStopGroup(mBusStopId);
 
         mCollapsingToolbar.setExpandedTitleTextAppearance(R.style.CollapsingToolbar);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.primary_amber, R.color.primary_red, R.color.primary_green, R.color.primary_indigo);
         mSwipeRefreshLayout.setOnRefreshListener(() -> parseData(mBusStopGroup, mBusStopId));
 
-        busStop = BusStopRealmHelper.getBusStopFromId(mBusStopId);
+        busStop = BusStopRealmHelper.getBusStop(mBusStopId);
 
         AnalyticsHelper.sendScreenView(TAG);
         AnalyticsHelper.sendEvent(SCREEN_LABEL, "Bus stop " + mBusStopId);
@@ -312,7 +312,7 @@ public class BusStopDetailActivity extends RxAppCompatActivity implements View.O
             public void call(Subscriber<? super List<BusStopDetail>> subscriber) {
                 List<BusStopDetail> items = new ArrayList<>();
 
-                String stop = BusStopRealmHelper.getMunicFromId(stationId);
+                String stop = BusStopRealmHelper.getMunic(stationId);
                 String lines = ApiUtils.implode(", ",
                         API.getPassingLines(BusStopDetailActivity.this, mBusStopGroup), getString(R.string.station_no_lines));
 
@@ -335,7 +335,7 @@ public class BusStopDetailActivity extends RxAppCompatActivity implements View.O
                     String departure = ApiUtils.getTime(trip.getSecondsAtUserStop());
 
                     String lastStationName = BusStopRealmHelper
-                            .getNameFromId(trip.getPath().get(trip.getPath().size() - 1).getId());
+                            .getName(trip.getPath().get(trip.getPath().size() - 1).getId());
 
                     items.add(new BusStopDetail(trip.getLine(), trip.getTrip(), line, departure,
                             lastStationName, Config.BUS_STOP_DETAILS_OPERATION_RUNNING, null));

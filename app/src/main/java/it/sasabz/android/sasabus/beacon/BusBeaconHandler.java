@@ -18,10 +18,8 @@ import it.sasabz.android.sasabus.model.line.Lines;
 import it.sasabz.android.sasabus.network.NetUtils;
 import it.sasabz.android.sasabus.network.rest.RestClient;
 import it.sasabz.android.sasabus.network.rest.api.RealtimeApi;
-import it.sasabz.android.sasabus.network.rest.api.TripsApi;
 import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
-import it.sasabz.android.sasabus.network.rest.response.TripsResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.util.HashUtils;
 import it.sasabz.android.sasabus.util.IllegalTripException;
@@ -242,7 +240,7 @@ class BusBeaconHandler {
                         beacon.setBusStops(bus.path);
 
                         String destination = BusStopRealmHelper
-                                .getNameFromId(bus.path.get(bus.path.size() - 1));
+                                .getName(bus.path.get(bus.path.size() - 1));
 
                         String title = mContext.getString(R.string.notification_bus_title,
                                 Lines.lidToName(bus.lineId), destination);

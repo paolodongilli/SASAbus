@@ -283,7 +283,7 @@ public final class BusStopBeaconHandler {
                 String departure = ApiUtils.getTime(trip.getSecondsAtStation(beacon.getId()));
 
                 String lastStationName = BusStopRealmHelper
-                        .getNameFromId(trip.getPath().get(trip.getPath().size() - 1).getId());
+                        .getName(trip.getPath().get(trip.getPath().size() - 1).getId());
 
                 items.add(new BusStopDetail(trip.getLine(), trip.getTrip(), line, departure,
                         lastStationName, Config.BUS_STOP_DETAILS_NO_DELAY, null));

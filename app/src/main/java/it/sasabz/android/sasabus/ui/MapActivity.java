@@ -480,8 +480,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
                                 group = bus1.getGroup();
                             }
 
-                            String currentStopName = BusStopRealmHelper.getNameFromId(bus.busStop);
-                            String lastStopName = BusStopRealmHelper.getNameFromId(bus.destination);
+                            String currentStopName = BusStopRealmHelper.getName(bus.busStop);
+                            String lastStopName = BusStopRealmHelper.getName(bus.destination);
 
                             bus.group = group;
                             bus.currentStopName = currentStopName;

@@ -88,7 +88,7 @@ public final class NotificationUtils {
     public static void busStop(Context context, int busStopId, List<BusStopDetail> items) {
         Preconditions.checkNotNull(context, "busStop() context == null");
 
-        String stationName = BusStopRealmHelper.getNameFromId(busStopId);
+        String stationName = BusStopRealmHelper.getName(busStopId);
 
         String contentText = context.getString(items.isEmpty() ?
                 R.string.notification_bus_stop_sub_click : R.string.notification_bus_stop_sub_pull);

@@ -89,7 +89,7 @@ public class PlannedTripsViewActivity extends AppCompatActivity {
         line.setText(getString(R.string.line_format, Utils.arrayToString(lines, ", ")));
 
         TextView stop = (TextView) findViewById(R.id.planned_trips_view_stop);
-        stop.setText(BusStopRealmHelper.getNameFromId(plannedTrip.getBusStop()));
+        stop.setText(BusStopRealmHelper.getName(plannedTrip.getBusStop()));
 
         List<PlannedTripNotification> items = new ArrayList<>();
         ListAdapter adapter = new PlannedTripsNotificationAdapter(this, items);

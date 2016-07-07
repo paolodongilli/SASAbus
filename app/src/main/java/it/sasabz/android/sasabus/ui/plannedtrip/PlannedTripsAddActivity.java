@@ -185,8 +185,8 @@ public class PlannedTripsAddActivity extends AppCompatActivity implements View.O
 
             mBusStopId = savedInstanceState.getInt(BUNDLE_BUS_STOP);
 
-            mSelectBusStopText.setText(BusStopRealmHelper.getNameFromId(mBusStopId) +
-                    " (" + BusStopRealmHelper.getMunicFromId(mBusStopId) + ')');
+            mSelectBusStopText.setText(BusStopRealmHelper.getName(mBusStopId) +
+                    " (" + BusStopRealmHelper.getMunic(mBusStopId) + ')');
             mSelectBusStopText.setTextColor(ContextCompat.getColor(this, R.color.text_default));
 
             mNotifications = savedInstanceState.getParcelableArrayList(BUNDLE_LIST_NOTIFICATIONS);
@@ -453,8 +453,8 @@ public class PlannedTripsAddActivity extends AppCompatActivity implements View.O
 
             List<SimpleBusStop> busStops = new ArrayList<>();
             for (Integer busStop : API.getBusStopsOfLines(this, stops)) {
-                busStops.add(new SimpleBusStop(busStop, BusStopRealmHelper.getNameFromId(busStop) +
-                        " (" + BusStopRealmHelper.getMunicFromId(busStop) + ')'));
+                busStops.add(new SimpleBusStop(busStop, BusStopRealmHelper.getName(busStop) +
+                        " (" + BusStopRealmHelper.getMunic(busStop) + ')'));
             }
 
             Collections.sort(busStops, (lhs, rhs) -> lhs.getName().compareTo(rhs.getName()));
@@ -469,8 +469,8 @@ public class PlannedTripsAddActivity extends AppCompatActivity implements View.O
                     .setItems(busStopNames, (dialog, which) -> {
                         mBusStopId = busStops.get(which).getId();
 
-                        mSelectBusStopText.setText(BusStopRealmHelper.getNameFromId(mBusStopId) +
-                                " (" + BusStopRealmHelper.getMunicFromId(mBusStopId) + ')');
+                        mSelectBusStopText.setText(BusStopRealmHelper.getName(mBusStopId) +
+                                " (" + BusStopRealmHelper.getMunic(mBusStopId) + ')');
                         mSelectBusStopText.setTextColor(ContextCompat.getColor(this, R.color.text_default));
                     })
                     .create()
