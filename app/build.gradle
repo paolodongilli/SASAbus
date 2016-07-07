@@ -107,10 +107,6 @@ dependencies {
         transitive = true;
     }
 
-    compile('com.google.maps.android:android-maps-utils:0.4+') {
-        transitive = false
-    }
-
     // ButterKnife
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
