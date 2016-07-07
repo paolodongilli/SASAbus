@@ -223,6 +223,21 @@ public final class BusStopRealmHelper {
         return resultIds;
     }
 
+    public static BusStop getBusStopOrNull(int id) {
+        Realm realm = Realm.getInstance(CONFIG);
+        BusStop busStop = realm.where(BusStop.class).equalTo("id", id).findFirst();
+
+        if (busStop == null) {
+            return null;
+        }
+
+        busStop = realm.copyFromRealm(busStop);
+
+        realm.close();
+
+        return busStop;
+    }
+
     public static int getBusStopGroupFromId(int id) {
         Realm realm = Realm.getInstance(CONFIG);
         BusStop busStop = realm.where(BusStop.class).equalTo("id", id).findFirst();

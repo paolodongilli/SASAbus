@@ -73,6 +73,7 @@ import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.realm.UserRealmHelper;
+import it.sasabz.android.sasabus.realm.busstop.BusStop;
 import it.sasabz.android.sasabus.ui.busstop.BusStopDetailActivity;
 import it.sasabz.android.sasabus.ui.widget.OffsetNestedSwipeRefreshLayout;
 import it.sasabz.android.sasabus.util.AnalyticsHelper;
@@ -532,12 +533,14 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
 
         Collections.sort(list, (lhs, rhs) -> (int) (lhs.getDistance() - rhs.getDistance()));
 
-        BusStopBeacon beaconInfo = list.get(0);
+        for (BusStopBeacon beacon : list) {
+            BusStop busStop = BusStopRealmHelper
+                    .getBusStopOrNull(beacon.getId());
 
-        String stationName = BusStopRealmHelper
-                .getNameFromId(beaconInfo.getId());
-
-        showStationSnackbar(beaconInfo.getId(), stationName);
+            if (busStop != null) {
+                showStationSnackbar(beacon.getId(), busStop.getName(this));
+            }
+        }
     }
 
 
