@@ -1,4 +1,4 @@
-package it.sasabz.android.sasabus.appwidget;
+package it.sasabz.android.sasabus.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;

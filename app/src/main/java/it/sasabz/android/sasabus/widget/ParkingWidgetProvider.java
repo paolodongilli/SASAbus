@@ -1,4 +1,4 @@
-package it.sasabz.android.sasabus.appwidget;
+package it.sasabz.android.sasabus.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import it.sasabz.android.sasabus.R;
@@ -20,11 +19,11 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * An app widget provider (widgets on the home screen pages) for the news delivered from Sasa SpA-AG.
+ * An app widget provider (widgets on the home screen pages) for a parking house/area.
  *
  * @author David Dejori
  */
-public class NewsWidgetProvider extends AppWidgetProvider {
+public class ParkingWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -55,16 +54,11 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
                             views.setTextViewText(R.id.widget_news_list, Html.fromHtml(list));
 
-                            Intent intent = new Intent(context, NewsWidgetProvider.class);
+                            Intent intent = new Intent(context, ParkingWidgetProvider.class);
                             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-
-                            // update this widget only
                             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
-                                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                            views.setOnClickPendingIntent(R.id.widget_news_refresh, pendingIntent);
+                            views.setOnClickPendingIntent(R.id.widget_news_refresh, PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
                             appWidgetManager.updateAppWidget(widgetId, views);
                         }
                     });

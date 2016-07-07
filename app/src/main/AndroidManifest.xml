@@ -236,7 +236,15 @@
         <!-- Widget -->
 
         <activity
-            android:name="it.sasabz.android.sasabus.appwidget.WidgetConfigureActivity"
+            android:name="it.sasabz.android.sasabus.widget.WidgetConfigureActivity"
+            android:theme="@style/Theme.WidgetActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="it.sasabz.android.sasabus.ui.parking.ParkingConfigureActivity"
             android:theme="@style/Theme.WidgetActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
@@ -351,17 +359,27 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.appwidget.NewsWidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.widget.NewsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/simple_widget_info"/>
+                android:resource="@xml/widget_provider_news"/>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.appwidget.WidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.widget.ParkingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_parking"/>
+        </receiver>
+
+        <receiver android:name="it.sasabz.android.sasabus.widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
