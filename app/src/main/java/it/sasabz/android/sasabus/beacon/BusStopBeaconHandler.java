@@ -27,6 +27,7 @@ import it.sasabz.android.sasabus.provider.ApiUtils;
 import it.sasabz.android.sasabus.provider.PlanData;
 import it.sasabz.android.sasabus.provider.model.Trip;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
+import it.sasabz.android.sasabus.realm.UserRealmHelper;
 import it.sasabz.android.sasabus.ui.MapActivity;
 import it.sasabz.android.sasabus.util.LogUtils;
 import it.sasabz.android.sasabus.util.NotificationUtils;
@@ -38,7 +39,7 @@ import rx.schedulers.Schedulers;
 /**
  * Class which handles bus stop beacons.
  * Any bus stop beacon in range will be added to {@link #mBeaconMap}.
- *
+ * <p>
  * Shows a notification when a bus beacon is in range for more than {@link #BEACON_NOTIFICATION_TIME_DELTA}
  * and the distance is smaller than {@link #BEACON_NOTIFICATION_DISTANCE}.
  *
@@ -239,7 +240,8 @@ public final class BusStopBeaconHandler {
 
             LogUtils.e(TAG, "Added beacon " + major);
 
-            //AnalyticsHelper.sendEvent(SCREEN_LABEL, "Beacon: " + major);
+            UserRealmHelper.addBeacon(beacon,
+                    it.sasabz.android.sasabus.realm.user.Beacon.TYPE_BUS_STOP);
         }
     }
 
@@ -283,7 +285,7 @@ public final class BusStopBeaconHandler {
                 String departure = ApiUtils.getTime(trip.getSecondsAtStation(beacon.getId()));
 
                 String lastStationName = BusStopRealmHelper
-                        .getNameFromId(trip.getPath().get(trip.getPath().size() - 1).getId());
+                        .getName(trip.getPath().get(trip.getPath().size() - 1).getId());
 
                 items.add(new BusStopDetail(trip.getLine(), trip.getTrip(), line, departure,
                         lastStationName, Config.BUS_STOP_DETAILS_NO_DELAY, null));

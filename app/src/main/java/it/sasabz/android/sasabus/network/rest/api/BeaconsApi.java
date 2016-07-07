@@ -11,5 +11,5 @@ import rx.Observable;
 public interface BeaconsApi {
 
     @POST(Endpoint.BEACONS)
-    Observable<Void> postScannedBeacons(@Body List<ScannedBeacon> beacon);
+    Observable<Void> send(@Body List<ScannedBeacon> beacon);
 }

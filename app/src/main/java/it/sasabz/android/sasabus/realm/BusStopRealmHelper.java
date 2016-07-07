@@ -2,6 +2,7 @@ package it.sasabz.android.sasabus.realm;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,13 +28,6 @@ public final class BusStopRealmHelper {
     private static final String DB_NAME = "busstops.realm";
 
     public static RealmConfiguration CONFIG;
-
-    /**
-     * Reference to hold a realm instance. Will be loaded on app start in a background thread
-     * and never closed, so further calls to {@link Realm#getInstance(RealmConfiguration)} are
-     * almost instant.
-     */
-    private static Realm sRealm;
 
     @SuppressLint("StaticFieldLeak")
     private static Context sContext;
@@ -77,13 +71,10 @@ public final class BusStopRealmHelper {
             Realm.deleteRealm(CONFIG);
         }
 
-        // Load realm on bg thread and keep it open.
-        new Thread(() -> {
-            sRealm = Realm.getInstance(CONFIG);
-        }).start();
+        Realm.getInstance(CONFIG).close();
     }
 
-    public static String getNameFromId(int id) {
+    public static String getName(int id) {
         String locale = sContext.getResources().getConfiguration().locale.toString();
 
         Realm realm = Realm.getInstance(CONFIG);
@@ -91,7 +82,7 @@ public final class BusStopRealmHelper {
 
         if (busStop == null) {
             LogUtils.e(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getNameFromId SASA station = 0"));
+            Utils.handleException(new Throwable("getName SASA station = 0"));
 
             return sContext.getString(R.string.unknown);
         }
@@ -102,7 +93,7 @@ public final class BusStopRealmHelper {
         return name;
     }
 
-    public static String getNameFromSadId(int id) {
+    public static String getSadName(int id) {
         String locale = sContext.getResources().getConfiguration().locale.toString();
 
         Realm realm = Realm.getInstance(CONFIG);
@@ -110,7 +101,7 @@ public final class BusStopRealmHelper {
 
         if (busStop == null) {
             LogUtils.e(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getNameFromSadId SAD station = 0"));
+            Utils.handleException(new Throwable("getSadName SAD station = 0"));
 
             return sContext.getString(R.string.unknown);
         }
@@ -121,7 +112,7 @@ public final class BusStopRealmHelper {
         return name;
     }
 
-    public static String getMunicFromId(int id) {
+    public static String getMunic(int id) {
         String locale = sContext.getResources().getConfiguration().locale.toString();
 
         Realm realm = Realm.getInstance(CONFIG);
@@ -129,7 +120,7 @@ public final class BusStopRealmHelper {
 
         if (busStop == null) {
             LogUtils.e(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getMunicFromId SASA station = 0"));
+            Utils.handleException(new Throwable("getMunic SASA station = 0"));
 
             return sContext.getString(R.string.unknown);
         }
@@ -140,7 +131,7 @@ public final class BusStopRealmHelper {
         return name;
     }
 
-    public static String getMunicFromSadId(int id) {
+    public static String getSadMunic(int id) {
         String locale = sContext.getResources().getConfiguration().locale.toString();
 
         Realm realm = Realm.getInstance(CONFIG);
@@ -148,7 +139,7 @@ public final class BusStopRealmHelper {
 
         if (busStop == null) {
             LogUtils.e(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getMunicFromSadId SAD station = 0"));
+            Utils.handleException(new Throwable("getSadMunic SAD station = 0"));
 
             return sContext.getString(R.string.unknown);
         }
@@ -159,13 +150,13 @@ public final class BusStopRealmHelper {
         return name;
     }
 
-    public static BusStop getBusStopFromId(int id) {
+    public static BusStop getBusStop(int id) {
         Realm realm = Realm.getInstance(CONFIG);
         BusStop busStop = realm.where(BusStop.class).equalTo("id", id).findFirst();
 
         if (busStop == null) {
             AnalyticsHelper.sendEvent(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getBusStopFromId SASA station = 0"));
+            Utils.handleException(new Throwable("getBusStop SASA station = 0"));
 
             busStop = new BusStop(id, String.valueOf(id), String.valueOf(id), 0, 0, 0);
         } else {
@@ -177,13 +168,29 @@ public final class BusStopRealmHelper {
         return busStop;
     }
 
-    public static SadBusStop getSadBusStopFromId(int id) {
+    @Nullable
+    public static BusStop getBusStopOrNull(int id) {
+        Realm realm = Realm.getInstance(CONFIG);
+        BusStop busStop = realm.where(BusStop.class).equalTo("id", id).findFirst();
+
+        if (busStop == null) {
+            return null;
+        }
+
+        busStop = realm.copyFromRealm(busStop);
+
+        realm.close();
+
+        return busStop;
+    }
+
+    public static SadBusStop getSadBusStop(int id) {
         Realm realm = Realm.getInstance(CONFIG);
         SadBusStop busStop = realm.where(SadBusStop.class).equalTo("id", id).findFirst();
 
         if (busStop == null) {
             AnalyticsHelper.sendEvent(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getSadBusStopFromId SASA station = 0"));
+            Utils.handleException(new Throwable("getSadBusStop SASA station = 0"));
 
             busStop = new SadBusStop(id, String.valueOf(id), String.valueOf(id), 0, 0);
         } else {
@@ -223,7 +230,7 @@ public final class BusStopRealmHelper {
         return resultIds;
     }
 
-    public static int getBusStopGroupFromId(int id) {
+    public static int getBusStopGroup(int id) {
         Realm realm = Realm.getInstance(CONFIG);
         BusStop busStop = realm.where(BusStop.class).equalTo("id", id).findFirst();
 
@@ -231,7 +238,7 @@ public final class BusStopRealmHelper {
 
         if (busStop == null) {
             AnalyticsHelper.sendEvent(TAG, "Missing SASA station: " + id);
-            Utils.handleException(new Throwable("getBusStopGroupFromId SASA station = 0"));
+            Utils.handleException(new Throwable("getBusStopGroup SASA station = 0"));
 
             result = 0;
         } else {

@@ -378,8 +378,8 @@ public class LineCourseActivity extends RxAppCompatActivity {
                 boolean isActive = allBlack;
 
                 for (BusStop stop : path) {
-                    String stationString = BusStopRealmHelper.getNameFromId(stop.getId());
-                    String municString = BusStopRealmHelper.getMunicFromId(stop.getId());
+                    String stationString = BusStopRealmHelper.getName(stop.getId());
+                    String municString = BusStopRealmHelper.getMunic(stop.getId());
 
                     boolean dot = false;
 

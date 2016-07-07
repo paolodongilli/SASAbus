@@ -236,15 +236,7 @@
         <!-- Widget -->
 
         <activity
-            android:name="it.sasabz.android.sasabus.widget.WidgetConfigureActivity"
-            android:theme="@style/Theme.WidgetActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="it.sasabz.android.sasabus.ui.parking.ParkingConfigureActivity"
+            android:name="it.sasabz.android.sasabus.appwidget.WidgetConfigureActivity"
             android:theme="@style/Theme.WidgetActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
@@ -267,8 +259,6 @@
 
         <service android:name="it.sasabz.android.sasabus.beacon.BeaconService"/>
 
-        <service android:name="com.google.android.gms.analytics.CampaignTrackingService"/>
-
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"
             android:enabled="true"
@@ -281,31 +271,11 @@
             android:enabled="true"
             android:exported="false"/>
 
-        <service
-            android:name="com.google.android.gms.analytics.AnalyticsService"
-            android:enabled="true"
-            android:exported="false"/>
-
         <service android:name="it.sasabz.android.sasabus.sync.SyncService"/>
 
         <service
             android:name="it.sasabz.android.sasabus.sync.SyncJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-
-        <!-- GCM Services -->
-
-        <service android:name="it.sasabz.android.sasabus.fcm.FcmService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service android:name="it.sasabz.android.sasabus.fcm.InstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
 
 
         <!-- Receivers -->
@@ -335,22 +305,6 @@
         </receiver>
 
         <receiver
-            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
             android:name="it.sasabz.android.sasabus.receiver.LocationReceiver"
             android:enabled="true"
             android:exported="true">
@@ -359,27 +313,17 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.widget.NewsWidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.NewsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_news"/>
+                android:resource="@xml/simple_widget_info"/>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.widget.ParkingWidgetProvider">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_parking"/>
-        </receiver>
-
-        <receiver android:name="it.sasabz.android.sasabus.widget.WidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

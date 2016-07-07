@@ -176,7 +176,7 @@ public class LinesDrivingFragment extends RxFragment implements AdapterView.OnIt
                     List<RealtimeBus> list = realtimeResponse.buses;
 
                     for (RealtimeBus bus : list) {
-                        bus.currentStopName = BusStopRealmHelper.getNameFromId(bus.busStop);
+                        bus.currentStopName = BusStopRealmHelper.getName(bus.busStop);
                     }
 
                     return realtimeResponse;

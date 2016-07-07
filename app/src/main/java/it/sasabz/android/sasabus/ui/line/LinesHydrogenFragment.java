@@ -125,7 +125,7 @@ public class LinesHydrogenFragment extends RxFragment {
                 .map(realtimeResponse -> {
                     for (RealtimeBus bus : realtimeResponse.buses) {
                         bus.currentStopName = bus.busStop == 0 ? getString(R.string.bus_depot) :
-                                BusStopRealmHelper.getNameFromId(bus.busStop);
+                                BusStopRealmHelper.getName(bus.busStop);
                     }
                     return realtimeResponse;
                 })

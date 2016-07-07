@@ -396,8 +396,8 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
         if (mActionMode == null) {
             RouteRecent item = mItems.get(position);
 
-            mDepartureBusStop = new BusStop(BusStopRealmHelper.getSadBusStopFromId(item.getOriginId()));
-            mArrivalBusStop = new BusStop(BusStopRealmHelper.getSadBusStopFromId(item.getDestinationId()));
+            mDepartureBusStop = new BusStop(BusStopRealmHelper.getSadBusStop(item.getOriginId()));
+            mArrivalBusStop = new BusStop(BusStopRealmHelper.getSadBusStop(item.getDestinationId()));
 
             departure.setText(mDepartureBusStop.getName());
             departure.setTextColor(ContextCompat.getColor(this, R.color.text_default));
@@ -429,16 +429,16 @@ public class RouteActivity extends BaseActivity implements View.OnClickListener,
                                 recent.getDepartureId(), null, recent.getArrivalId(), null);
 
                         routeRecent.setOriginName(BusStopRealmHelper
-                                .getNameFromSadId(recent.getDepartureId()));
+                                .getSadName(recent.getDepartureId()));
 
                         routeRecent.setOriginMunic(BusStopRealmHelper
-                                .getMunicFromSadId(recent.getDepartureId()));
+                                .getSadMunic(recent.getDepartureId()));
 
                         routeRecent.setDestinationName(BusStopRealmHelper
-                                .getNameFromSadId(recent.getArrivalId()));
+                                .getSadName(recent.getArrivalId()));
 
                         routeRecent.setDestinationMunic(BusStopRealmHelper
-                                .getMunicFromSadId(recent.getArrivalId()));
+                                .getSadMunic(recent.getArrivalId()));
 
                         route.add(routeRecent);
                     }

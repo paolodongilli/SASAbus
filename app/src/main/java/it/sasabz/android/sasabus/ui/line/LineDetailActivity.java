@@ -330,14 +330,14 @@ public class LineDetailActivity extends RxAppCompatActivity implements OnClickLi
                         for (RealtimeBus bus : list) {
                             int lastStationID = bus.destination;
 
-                            String lastStationName = BusStopRealmHelper.getNameFromId(lastStationID);
+                            String lastStationName = BusStopRealmHelper.getName(lastStationID);
 
                             List<BusStop> path = Trips.getPath(LineDetailActivity.this, bus.trip);
 
                             if (path != null && !path.isEmpty()) {
                                 String lastTime = path.get(path.size() - 1).getTime();
 
-                                String stationName = BusStopRealmHelper.getNameFromId(bus.busStop);
+                                String stationName = BusStopRealmHelper.getName(bus.busStop);
 
                                 items.add(new LineDetail(stationName, bus.delayMin, lastStationName,
                                         lastTime, null, bus.vehicle, busId == bus.trip));

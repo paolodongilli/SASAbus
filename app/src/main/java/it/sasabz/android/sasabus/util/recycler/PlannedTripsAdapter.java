@@ -76,7 +76,7 @@ public class PlannedTripsAdapter extends RecyclerView.Adapter<PlannedTripsAdapte
         holder.title.setText(item.getTitle());
         holder.time.setText(FORMAT.format(date));
         holder.line.setText(sb.toString());
-        holder.stop.setText(BusStopRealmHelper.getNameFromId(item.getBusStop()));
+        holder.stop.setText(BusStopRealmHelper.getName(item.getBusStop()));
     }
 
     @Override

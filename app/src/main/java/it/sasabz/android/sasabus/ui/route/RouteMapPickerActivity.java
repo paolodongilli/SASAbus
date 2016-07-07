@@ -54,7 +54,7 @@ public class RouteMapPickerActivity extends AppCompatActivity {
 
     public void selectBusStop(int id) {
         SadBusStop station = BusStopRealmHelper
-                .getSadBusStopFromId(id);
+                .getSadBusStop(id);
 
         Parcelable busStop = new BusStop(station);
         Intent intent = new Intent();

@@ -3,10 +3,11 @@ package it.sasabz.android.sasabus.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import it.sasabz.android.sasabus.BuildConfig;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import it.sasabz.android.sasabus.BuildConfig;
 
 /**
  * Centralized Analytics interface to ensure proper initialization and
@@ -79,7 +80,9 @@ public final class AnalyticsHelper {
     public static void prepareAnalytics(Context applicationContext) {
         sAppContext = applicationContext.getApplicationContext();
 
-        initializeAnalyticsTracker(sAppContext);
+        if (!BuildConfig.FLAVOR.equals("fdroid")) {
+            initializeAnalyticsTracker(sAppContext);
+        }
     }
 
     /**
