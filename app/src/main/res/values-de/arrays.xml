@@ -29,10 +29,10 @@
     </string-array>
 
     <string-array name="settings_survey_interval_readable">
-        <item>Every time</item>
-        <item>Once a day</item>
-        <item>Once a week</item>
-        <item>Once a month</item>
+        <item>Jedes Mal</item>
+        <item>Einmal pro Tag</item>
+        <item>Einmal pro Woche</item>
+        <item>Einmal pro Monat</item>
     </string-array>
 
 </resources>
