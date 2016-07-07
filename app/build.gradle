@@ -62,6 +62,15 @@ android {
     retrolambda {
         jdk '/Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home'
     }
+
+    productFlavors {
+        playStore {
+
+        }
+        fdroid {
+
+        }
+    }
 }
 
 dependencies {
@@ -75,8 +84,8 @@ dependencies {
     compile 'com.android.support:customtabs:23.4.0'
 
     // Play services & Firebase
-    compile 'com.google.android.gms:play-services-analytics:9.0.2'
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
+    playStoreCompile 'com.google.android.gms:play-services-analytics:9.0.2'
+    playStoreCompile 'com.google.firebase:firebase-messaging:9.0.2'
 
     // Beacon
     compile 'org.altbeacon:android-beacon-library:2.7.1'
