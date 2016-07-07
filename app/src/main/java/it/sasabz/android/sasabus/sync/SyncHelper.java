@@ -28,14 +28,17 @@ import it.sasabz.android.sasabus.Config;
 import it.sasabz.android.sasabus.beacon.survey.SurveyActivity;
 import it.sasabz.android.sasabus.network.NetUtils;
 import it.sasabz.android.sasabus.network.rest.RestClient;
+import it.sasabz.android.sasabus.network.rest.api.BeaconsApi;
 import it.sasabz.android.sasabus.network.rest.api.CloudApi;
 import it.sasabz.android.sasabus.network.rest.api.SurveyApi;
 import it.sasabz.android.sasabus.network.rest.api.ValidityApi;
 import it.sasabz.android.sasabus.network.rest.model.CloudPlannedTrip;
 import it.sasabz.android.sasabus.network.rest.model.CloudTrip;
+import it.sasabz.android.sasabus.network.rest.model.ScannedBeacon;
 import it.sasabz.android.sasabus.network.rest.response.CloudResponseGet;
 import it.sasabz.android.sasabus.network.rest.response.ValidityResponse;
 import it.sasabz.android.sasabus.provider.PlanData;
+import it.sasabz.android.sasabus.realm.user.Beacon;
 import it.sasabz.android.sasabus.realm.user.PlannedTrip;
 import it.sasabz.android.sasabus.realm.user.Survey;
 import it.sasabz.android.sasabus.realm.user.Trip;
@@ -92,7 +95,7 @@ public class SyncHelper {
      * Main method which is responsible for the data sync. Each sync operation is split into
      * individual parts, so they can be executed without affecting other operations, e.g. by
      * throwing an {@link Exception}.
-     *
+     * <p>
      * Individual operations will make network calls, so never call this method on the main thread
      * or you'll risk blocking it or crashing the app. If you want to perform the sync process
      * asynchronously, call {@link #performSyncAsync()} which will call this method wrapped in
@@ -119,6 +122,7 @@ public class SyncHelper {
         final int OP_PLANNED_TRIP_DATA_SYNC = 1;
         final int OP_PLAN_DATA_SYNC = 2;
         final int OP_SURVEY_SYNC = 3;
+        final int OP_BEACON_SYNC = 4;
 
         int[] opsToPerform = {
                 OP_TRIP_DATA_SYNC,
@@ -141,6 +145,9 @@ public class SyncHelper {
                         break;
                     case OP_SURVEY_SYNC:
                         dataChanged |= doSurveySync();
+                        break;
+                    case OP_BEACON_SYNC:
+                        dataChanged |= doBeaconSync();
                         break;
                     default:
                         throw new IllegalStateException("Unknown operation " + op);
@@ -169,7 +176,7 @@ public class SyncHelper {
      * All the trips which are on the server but not saved locally will be downloaded.
      *
      * @return {@code true} if at least one trip was downloaded or uploaded, {@code false}
-     *          otherwise.
+     * otherwise.
      * @throws IOException if contacting the server failed.
      */
     private boolean doTripSync() throws Exception {
@@ -233,7 +240,7 @@ public class SyncHelper {
      * All the planned trips which are on the server but not saved locally will be downloaded.
      *
      * @return {@code true} if at least one planned trip was downloaded or uploaded, {@code false}
-     *          otherwise.
+     * otherwise.
      * @throws IOException if contacting the server failed.
      */
     private boolean doPlannedTripSync() throws IOException {
@@ -298,7 +305,7 @@ public class SyncHelper {
      * attempt to download it.
      *
      * @return {@code true} if the plan data download attempt has been made (does not mean that
-     *         it was successful), {@code false} if the data is up to date.
+     * it was successful), {@code false} if the data is up to date.
      * @throws IOException if there is an error checking for a plan data update.
      */
     private boolean doPlanDataSync() throws IOException {
@@ -401,9 +408,59 @@ public class SyncHelper {
     }
 
     /**
+     * Syncs all the tracked beacons. If a user is near a bus or bus stop beacon, it automatically
+     * gets inserted into the database. On app sync, the beacon data like UUID, major and minor
+     * get sent to the server which then can be used to perform statistics.
+     *
+     * @return {@code true} if one or more beacons have been uploaded, {@code false} otherwise.
+     */
+    private boolean doBeaconSync() {
+        LogUtils.e(TAG, "Starting beacon sync");
+
+        RealmResults<Beacon> result = realm.where(Beacon.class).findAll();
+
+        if (result.isEmpty()) {
+            LogUtils.e(TAG, "No beacons to upload");
+            return false;
+        }
+
+        int size = result.size();
+
+        LogUtils.e(TAG, "Uploading " + size + " beacons");
+
+        boolean[] dataChanged = {false};
+
+        List<ScannedBeacon> beacons = new ArrayList<>();
+        for (Beacon beacon : result) {
+            ScannedBeacon scannedBeacon = new ScannedBeacon();
+
+            scannedBeacon.type = beacon.getType();
+            scannedBeacon.major = beacon.getMajor();
+            scannedBeacon.minor = beacon.getMinor();
+            scannedBeacon.timestamp = beacon.getTimeStamp();
+
+            beacons.add(scannedBeacon);
+        }
+
+        BeaconsApi beaconsApi = RestClient.ADAPTER.create(BeaconsApi.class);
+        beaconsApi.send(beacons)
+                .subscribe(aVoid -> {
+                    realm.beginTransaction();
+                    result.deleteAllFromRealm();
+                    realm.commitTransaction();
+
+                    dataChanged[0] |= true;
+                });
+
+        LogUtils.e(TAG, "Uploaded " + size + " beacons");
+
+        return dataChanged[0];
+    }
+
+    /**
      * Schedules a sync by using {@link AlarmManager}. The sync will run at night where most
      * people leave their phones plugged in and the phone is on idle.
-     *
+     * <p>
      * Sync will run between {@code 01:00} and {05:00} to prevent overloading the server.
      * The time will be determined by {@link java.util.Random#next(int)}.
      * <p>
@@ -453,7 +510,7 @@ public class SyncHelper {
      * Check if a given {@link List} contains a {@link Trip} with a given {@link Trip#hash}.
      *
      * @param trips all the trips
-     * @param hash     the hash to search for
+     * @param hash  the hash to search for
      * @return a boolean value indicating whether the list containsTrip the uuid.
      */
     private static boolean containsTrip(Iterable<Trip> trips, String hash) {
@@ -469,7 +526,7 @@ public class SyncHelper {
      * {@link PlannedTrip#hash}.
      *
      * @param trips all the trips
-     * @param hash     the hash to search for
+     * @param hash  the hash to search for
      * @return a boolean value indicating whether the list containsTrip the uuid.
      */
     private static boolean containsPTrip(Iterable<PlannedTrip> trips, String hash) {

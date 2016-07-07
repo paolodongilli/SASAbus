@@ -9,13 +9,14 @@ import io.realm.annotations.RealmModule;
  * @author Alex Lardschneider
  */
 @RealmModule(classes = {
-        RecentRoute.class,
-        FavoriteLine.class,
+        Beacon.class,
         FavoriteBusStop.class,
-        PlannedTrip.class,
-        Trip.class,
-        Survey.class,
+        FavoriteLine.class,
         FilterLine.class,
+        PlannedTrip.class,
+        RecentRoute.class,
+        Survey.class,
+        Trip.class,
         TripToDelete.class
 })
 public class UserDataModule {

@@ -4,9 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import io.realm.DynamicRealm;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 import it.sasabz.android.sasabus.beacon.BusBeacon;
 import it.sasabz.android.sasabus.model.line.Lines;
 import it.sasabz.android.sasabus.network.rest.model.CloudTrip;
+import it.sasabz.android.sasabus.realm.user.Beacon;
 import it.sasabz.android.sasabus.realm.user.FavoriteBusStop;
 import it.sasabz.android.sasabus.realm.user.FavoriteLine;
 import it.sasabz.android.sasabus.realm.user.FilterLine;
@@ -17,16 +27,6 @@ import it.sasabz.android.sasabus.util.LogUtils;
 import it.sasabz.android.sasabus.util.SettingsUtils;
 import it.sasabz.android.sasabus.util.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import io.realm.DynamicRealm;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
-
 public final class UserRealmHelper {
 
     private static final String TAG = "UserRealmHelper";
@@ -36,13 +36,6 @@ public final class UserRealmHelper {
      */
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "default.realm";
-
-    /**
-     * Reference to hold a realm instance. Will be loaded on app start in a background thread
-     * and never closed, so further calls to {@link Realm#getInstance(RealmConfiguration)} are
-     * almost instant.
-     */
-    private static Realm sRealm;
 
     @SuppressLint("StaticFieldLeak")
     private static Context sContext;
@@ -67,13 +60,6 @@ public final class UserRealmHelper {
                 .build();
 
         Realm.setDefaultConfiguration(config);
-
-        //Realm.deleteRealm(config);
-
-        // Load realm on bg thread and keep it open.
-        new Thread(() -> {
-            sRealm = Realm.getDefaultInstance();
-        }).start();
     }
 
     private static class Migration implements RealmMigration {
@@ -387,5 +373,33 @@ public final class UserRealmHelper {
         }
 
         return lines;
+    }
+
+
+    // ======================================= BEACONS =============================================
+
+    public static void addBeacon(org.altbeacon.beacon.Beacon beacon, String type) {
+        Realm realm = Realm.getDefaultInstance();
+
+        int major = beacon.getId2().toInt();
+        int minor = beacon.getId3().toInt();
+
+        if (major == 1 && minor != 1) {
+            major = beacon.getId3().toInt();
+            minor = beacon.getId2().toInt();
+        }
+
+        realm.beginTransaction();
+
+        Beacon realmObject = realm.createObject(Beacon.class);
+        realmObject.setType(type);
+        realmObject.setMajor(major);
+        realmObject.setMinor(minor);
+        realmObject.setTimeStamp((int) (System.currentTimeMillis() / 1000));
+
+        realm.commitTransaction();
+        realm.close();
+
+        LogUtils.w(TAG, "Added beacon " + major + " to realm");
     }
 }

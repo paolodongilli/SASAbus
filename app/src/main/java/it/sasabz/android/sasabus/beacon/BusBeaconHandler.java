@@ -21,6 +21,7 @@ import it.sasabz.android.sasabus.network.rest.api.RealtimeApi;
 import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
+import it.sasabz.android.sasabus.realm.UserRealmHelper;
 import it.sasabz.android.sasabus.util.HashUtils;
 import it.sasabz.android.sasabus.util.IllegalTripException;
 import it.sasabz.android.sasabus.util.LogUtils;
@@ -104,6 +105,8 @@ class BusBeaconHandler {
             mBeaconMap.put(major, busBeacon);
 
             LogUtils.e(TAG, "Added beacon " + major);
+
+            UserRealmHelper.addBeacon(beacon, it.sasabz.android.sasabus.realm.user.Beacon.TYPE_BUS);
 
             if (NetUtils.isOnline(mContext) && beacon.getDistance() <= MAX_BEACON_DISTANCE) {
                 getBusInformation(busBeacon);
