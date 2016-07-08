@@ -1,4 +1,4 @@
-package it.sasabz.android.sasabus.widget;
+package it.sasabz.android.sasabus.appwidget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

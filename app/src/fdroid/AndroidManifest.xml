@@ -320,7 +320,17 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/simple_widget_info"/>
+                android:resource="@xml/widget_provider_news"/>
+        </receiver>
+
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.ParkingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_parking"/>
         </receiver>
 
         <receiver android:name="it.sasabz.android.sasabus.appwidget.WidgetProvider">

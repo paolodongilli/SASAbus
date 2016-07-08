@@ -236,7 +236,7 @@
         <!-- Widget -->
 
         <activity
-            android:name="it.sasabz.android.sasabus.widget.WidgetConfigureActivity"
+            android:name="it.sasabz.android.sasabus.appwidget.WidgetConfigureActivity"
             android:theme="@style/Theme.WidgetActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
@@ -359,7 +359,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.widget.NewsWidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.NewsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -369,7 +369,7 @@
                 android:resource="@xml/widget_provider_news"/>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.widget.ParkingWidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.ParkingWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -379,7 +379,7 @@
                 android:resource="@xml/widget_provider_parking"/>
         </receiver>
 
-        <receiver android:name="it.sasabz.android.sasabus.widget.WidgetProvider">
+        <receiver android:name="it.sasabz.android.sasabus.appwidget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
