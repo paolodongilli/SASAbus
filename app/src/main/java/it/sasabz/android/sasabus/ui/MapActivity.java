@@ -48,7 +48,6 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -266,13 +265,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
             BusStopBeaconHandler.getInstance(getApplicationContext()).setBeaconNearbyListener(this);
         }
 
-        MapDownloadHelper mapDownloadHelper = new MapDownloadHelper(this);
-
-        try {
-            mapDownloadHelper.checkMapFirstTime();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new MapDownloadHelper(this).checkMapFirstTime();
 
         WebView webView = (WebView) findViewById(R.id.webview);
 
