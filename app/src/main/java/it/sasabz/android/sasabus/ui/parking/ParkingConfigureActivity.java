@@ -18,12 +18,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import it.sasabz.android.sasabus.Config;
 import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.appwidget.ParkingWidgetProvider;
 import it.sasabz.android.sasabus.model.Parking;
 import it.sasabz.android.sasabus.network.NetUtils;
 import it.sasabz.android.sasabus.network.rest.RestClient;
 import it.sasabz.android.sasabus.network.rest.api.ParkingApi;
 import it.sasabz.android.sasabus.network.rest.response.ParkingResponse;
 import it.sasabz.android.sasabus.util.AnalyticsHelper;
+import it.sasabz.android.sasabus.util.SettingsUtils;
 import it.sasabz.android.sasabus.util.Utils;
 import it.sasabz.android.sasabus.util.recycler.ParkingConfigureAdapter;
 import rx.Subscriber;
@@ -52,12 +54,6 @@ public class ParkingConfigureActivity extends AppCompatActivity {
 
             RemoteViews views = new RemoteViews(ParkingConfigureActivity.this.getPackageName(), R.layout.widget_parking);
             appWidgetManager.updateAppWidget(mAppWidgetId, views);
-
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-
-            finish();
         }
     };
 
@@ -81,7 +77,7 @@ public class ParkingConfigureActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
-        mAdapter = new ParkingConfigureAdapter(this, mItems, mOnClickListener, mAppWidgetId);
+        mAdapter = new ParkingConfigureAdapter(this, mItems, mAppWidgetId);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
