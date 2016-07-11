@@ -45,7 +45,7 @@ public class ParkingConfigureActivity extends AppCompatActivity {
     private final ArrayList<Parking> mItems = new ArrayList<>();
     private ParkingConfigureAdapter mAdapter;
 
-    View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(ParkingConfigureActivity.this);
@@ -56,6 +56,7 @@ public class ParkingConfigureActivity extends AppCompatActivity {
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             setResult(RESULT_OK, resultValue);
+
             finish();
         }
     };
@@ -80,7 +81,7 @@ public class ParkingConfigureActivity extends AppCompatActivity {
             mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
-        mAdapter = new ParkingConfigureAdapter(this, mItems, mOnClickListener);
+        mAdapter = new ParkingConfigureAdapter(this, mItems, mOnClickListener, mAppWidgetId);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

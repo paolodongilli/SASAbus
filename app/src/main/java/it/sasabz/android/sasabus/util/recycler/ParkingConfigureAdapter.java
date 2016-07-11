@@ -1,5 +1,6 @@
 package it.sasabz.android.sasabus.util.recycler;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -15,7 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import it.sasabz.android.sasabus.R;
 import it.sasabz.android.sasabus.model.Parking;
+import it.sasabz.android.sasabus.ui.parking.ParkingConfigureActivity;
 import it.sasabz.android.sasabus.ui.parking.ParkingDetailActivity;
+import it.sasabz.android.sasabus.util.SettingsUtils;
 
 /**
  * @author David Dejori
@@ -25,11 +28,13 @@ public class ParkingConfigureAdapter extends RecyclerView.Adapter<ParkingConfigu
     private final Context mContext;
     private final List<Parking> mItems;
     private final View.OnClickListener mOnClickListener;
+    private final int mAppWidgetId;
 
-    public ParkingConfigureAdapter(Context context, List<Parking> items, View.OnClickListener mOnClickListener) {
+    public ParkingConfigureAdapter(Context context, List<Parking> items, View.OnClickListener mOnClickListener, int mAppWidgetId) {
         mContext = context;
         mItems = items;
         this.mOnClickListener = mOnClickListener;
+        this.mAppWidgetId = mAppWidgetId;
     }
 
     @Override
@@ -72,14 +77,9 @@ public class ParkingConfigureAdapter extends RecyclerView.Adapter<ParkingConfigu
 
             Parking item = mItems.get(position);
 
-            Intent intent = new Intent(mContext, ParkingDetailActivity.class);
-            intent.putExtra("name", item.getName());
-            intent.putExtra("address", item.getAddress());
-            intent.putExtra("phone", item.getPhone());
-            intent.putExtra("lat", item.getLat());
-            intent.putExtra("lon", item.getLng());
-            intent.putExtra("currentFree", item.getFreeSlots());
-            intent.putExtra("total", item.getTotalSlots());
+            SettingsUtils.setWidgetParking(mContext, item.getId());
+
+            AppWidgetManager.getInstance(mContext).notifyAppWidgetViewDataChanged(mAppWidgetId, R.id.widget_parking_slots);
         }
     }
 }
