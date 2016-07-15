@@ -260,17 +260,6 @@ public final class SettingsUtils {
     }
 
     /**
-     * Determines if the app should automatically switch between day and night mode
-     * depending on the time.
-     *
-     * @param context Context to be used to lookup the {@link SharedPreferences}.
-     * @return a boolean value.
-     */
-    public static int getNightMode(Context context) {
-        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_NIGHT_MODE, "-1"));
-    }
-
-    /**
      * Returns the interval in millis which the app should reload.
      * Depends on {@link #isMapAutoEnabled(Context)}.
      *

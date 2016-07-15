@@ -59,11 +59,6 @@ public class AppApplication extends Application {
         // If the user didn't select anything, use the default system language.
         Utils.changeLanguage(this);
 
-        // Set up the day/night theme if the user has chosen to enable it in the settings.
-        // Defaults to {@link AppCompatDelegate#MODE_NIGHT_FOLLOW_SYSTEM}
-        //noinspection WrongConstant,ResourceType
-        AppCompatDelegate.setDefaultNightMode(SettingsUtils.getNightMode(this));
-
         // Setup google analytics. Tracking is only done after the user accepted the terms
         // of use and privacy policy and has tracking enabled in the settings,
         // which defaults to true.
