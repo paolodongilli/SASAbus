@@ -58,7 +58,6 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 
-                            views.setOnClickPendingIntent(R.id.widget_news_refresh, PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
                             appWidgetManager.updateAppWidget(widgetId, views);
                         }
                     });
