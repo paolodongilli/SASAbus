@@ -500,6 +500,7 @@
     <string name="intro_tutorial_swipe_btn">GOT IT</string>
 
     <string name="transition_morph_view" translatable="false">morph_view_transition</string>
-    <string name="about_status" translatable="false">Status</string>
+    <string name="about_traffic_light_city">Status for %s</string>
+    <string name="about_traffic_light_loading">Loading…</string>
 
 </resources>

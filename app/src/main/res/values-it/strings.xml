@@ -367,5 +367,7 @@
     <string name="timetable_extract">Estrago orari…</string>
     <string name="trips_none_title"><![CDATA[I tuoi viaggi appariranno qui. Accendi Bluetooth per registrare i viaggi.<br><a href="">Aiuto</a>]]></string>
     <string name="trips_none_subtitle"><![CDATA[I tuoi viaggi appariranno qui. Accendi Bluetooth per registrare i viaggi.<br><a href="">Aiuto</a>]]></string>
+    <string name="about_traffic_light_loading">Carico…</string>
+    <string name="about_traffic_light_city">Status per %s</string>
 
 </resources>
