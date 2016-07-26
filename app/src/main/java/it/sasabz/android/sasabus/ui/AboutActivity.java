@@ -133,7 +133,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         statusCity = (TextView) findViewById(R.id.about_traffic_light_city);
 
         statusCity.setText(String.format(getResources().getString(R.string.about_traffic_light_city),
-                SettingsUtils.getTrafficLightCity(AboutActivity.this).equals("BZ")
+                SettingsUtils.getTrafficLightCity(AboutActivity.this).equals("bz")
                         ? getResources().getString(R.string.bolzano)
                         : getResources().getString(R.string.merano)));
 
@@ -187,7 +187,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onError(Throwable e) {
                         status.setText(R.string.error_general);
-                        Log.e("DAVID", "E", e);
                     }
 
                     @Override
