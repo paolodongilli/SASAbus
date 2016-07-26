@@ -199,13 +199,7 @@ public final class BusStopBeaconHandler {
      */
     void updateBeacons(Iterable<Beacon> beacons) {
         for (Beacon beacon : beacons) {
-            int major = beacon.getId2().toInt();
-
-            if (major == 1 && beacon.getId3().toInt() != 1) {
-                major = beacon.getId3().toInt();
-            }
-
-            validateBeacon(beacon, major);
+            validateBeacon(beacon, beacon.getId2().toInt());
         }
 
         if (mActivity != null) {

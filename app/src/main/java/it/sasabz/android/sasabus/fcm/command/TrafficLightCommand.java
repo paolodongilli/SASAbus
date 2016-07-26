@@ -13,72 +13,41 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import it.sasabz.android.sasabus.BuildConfig;
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.receiver.NotificationReceiver;
-import it.sasabz.android.sasabus.ui.MapActivity;
-import it.sasabz.android.sasabus.util.LogUtils;
-import it.sasabz.android.sasabus.util.Utils;
-
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
+
+import it.sasabz.android.sasabus.BuildConfig;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.receiver.NotificationReceiver;
+import it.sasabz.android.sasabus.ui.MapActivity;
+import it.sasabz.android.sasabus.util.LogUtils;
+import it.sasabz.android.sasabus.util.SettingsUtils;
+import it.sasabz.android.sasabus.util.Utils;
 
 /**
- * General purpose command which can display a highly customizable notification. The notification
- * can be targeted to only very specific devices by using {@link NotificationCommandModel#audience}
- * and {@link NotificationCommandModel#minVersion}.
- * <p>
+ * Command to display the current traffic severity level for BZ and ME. There are three types of
+ * levels: green, yellow and red. Thus the name "traffic light".
+ *
  * A expiry time can also be specified. If the notification command arrives after the specified time,
  * either because the device was offline or not reachable by GCM, it will ignored. The notification
  * will be hidden after the expiry time.
- * <p>
+ *
  * An invalid notification will be ignored.
  *
- * @author Alex Lardschneider
  * @author David Dejori
  */
-public class NotificationCommand implements FcmCommand {
+public class TrafficLightCommand extends NotificationCommand implements FcmCommand {
 
-    private static final String TAG = "NotificationCommand";
+    private static final String TAG = "TrafficLightCommand";
 
-    public static class NotificationCommandModel {
-
-        int id;
-        int minVersion;
-        int maxVersion;
-        int expiry;
-        int issuedAt;
-
-        String color;
-        String audience;
-        String url;
-
-        @SerializedName("package")
-        String packageName;
-
-        String titleIt;
-        String titleDe;
-
-        String messageIt;
-        String messageDe;
-
-        String dialogTitleIt;
-        String dialogTitleDe;
-
-        String dialogTextIt;
-        String dialogTextDe;
-
-        String dialogYesIt;
-        String dialogYesDe;
-
-        String dialogNoIt;
-        String dialogNoDe;
+    private static class TraficLightCommandModel extends NotificationCommand.NotificationCommandModel {
+        String city;
     }
 
     @Override
@@ -97,10 +66,10 @@ public class NotificationCommand implements FcmCommand {
         }
 
         Gson gson = new Gson();
-        NotificationCommandModel command;
+        TraficLightCommandModel command;
 
         try {
-            command = gson.fromJson(json.toString(), NotificationCommandModel.class);
+            command = gson.fromJson(json.toString(), TraficLightCommandModel.class);
 
             if (command == null) {
                 LogUtils.e(TAG, "Failed to parse command (gson returned null).");
@@ -126,6 +95,7 @@ public class NotificationCommand implements FcmCommand {
             LogUtils.w(TAG, "Min version code: " + command.minVersion);
             LogUtils.w(TAG, "Max version code: " + command.maxVersion);
             LogUtils.w(TAG, "Color: " + command.color);
+            LogUtils.w(TAG, "City: " + command.city);
         } catch (Exception e) {
             Utils.handleException(e);
 
@@ -137,7 +107,7 @@ public class NotificationCommand implements FcmCommand {
         processCommand(context, command);
     }
 
-    private void processCommand(Context context, NotificationCommandModel command) {
+    private void processCommand(Context context, TraficLightCommandModel command) {
         String locale = context.getResources().getConfiguration().locale.toString();
 
         String title;
@@ -168,7 +138,7 @@ public class NotificationCommand implements FcmCommand {
         // Check package
         if (!TextUtils.isEmpty(command.packageName) && !command.packageName.equals(BuildConfig.APPLICATION_ID)) {
             LogUtils.w(TAG, "Skipping command because of wrong package name, is "
-                    + command.packageName + ", should be " + BuildConfig.APPLICATION_ID);
+                    + BuildConfig.APPLICATION_ID + ", should be " + command.packageName);
             return;
         }
 
@@ -228,16 +198,19 @@ public class NotificationCommand implements FcmCommand {
             LogUtils.i(TAG, "Message is still valid (expiry is in the future: " + expiry + ')');
         }
 
+        // check city
+        if (!command.city.equals(SettingsUtils.getTrafficLightCity(context))) {
+            LogUtils.w(TAG, "City is wrong, is " + command.city + " but setting is " + SettingsUtils.getTrafficLightCity(context));
+            return;
+        }
+
         // decide the intent that will be fired when the user clicks the notification
         Intent intent;
         if (TextUtils.isEmpty(dialogTitle) || TextUtils.isEmpty(dialogText)) {
             // notification leads directly to the URL, no dialog
-            if (TextUtils.isEmpty(command.url)) {
-                intent = new Intent(context, MapActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            } else {
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(command.url));
-            }
+            intent = TextUtils.isEmpty(command.url)
+                    ? new Intent(context, MapActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    : new Intent(Intent.ACTION_VIEW, Uri.parse(command.url));
         } else {
             // use a dialog
             intent = new Intent(context, MapActivity.class).setFlags(
@@ -275,7 +248,7 @@ public class NotificationCommand implements FcmCommand {
 
         Notification notification = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_info_outline_white_24dp)
+                .setSmallIcon(R.drawable.ic_traffic_white_48dp)
                 .setTicker(notificationMessage)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationMessage)
