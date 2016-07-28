@@ -13,13 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
-import it.sasabz.android.sasabus.BuildConfig;
-import it.sasabz.android.sasabus.R;
-import it.sasabz.android.sasabus.receiver.NotificationReceiver;
-import it.sasabz.android.sasabus.ui.MapActivity;
-import it.sasabz.android.sasabus.util.LogUtils;
-import it.sasabz.android.sasabus.util.Utils;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -28,6 +21,13 @@ import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.Map;
+
+import it.sasabz.android.sasabus.BuildConfig;
+import it.sasabz.android.sasabus.R;
+import it.sasabz.android.sasabus.receiver.NotificationReceiver;
+import it.sasabz.android.sasabus.ui.MapActivity;
+import it.sasabz.android.sasabus.util.LogUtils;
+import it.sasabz.android.sasabus.util.Utils;
 
 /**
  * General purpose command which can display a highly customizable notification. The notification
@@ -47,7 +47,7 @@ public class NotificationCommand implements FcmCommand {
 
     private static final String TAG = "NotificationCommand";
 
-    public static class NotificationCommandModel {
+    static class NotificationCommandModel {
 
         int id;
         int minVersion;
@@ -130,6 +130,12 @@ public class NotificationCommand implements FcmCommand {
             Utils.handleException(e);
 
             LogUtils.e(TAG, "Failed to parse GCM notification command.");
+            return;
+        }
+
+        // Do not show this notification on fdroid build as it doesn't support FCM.
+        if (data.get("flavor").equals(BuildConfig.FLAVOR) && Utils.isFDroid()) {
+            LogUtils.e(TAG, "Fdroid is not supported.");
             return;
         }
 

@@ -2,9 +2,6 @@ package it.sasabz.android.sasabus;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
-import android.os.StrictMode;
-import android.support.v7.app.AppCompatDelegate;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -36,24 +33,6 @@ public class AppApplication extends Application {
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
-
-        // We want to be alerted when the app does heavy work on the UI thread like access
-        // disk or network by using StrictMode.
-        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            new StrictMode.ThreadPolicy.Builder().detectAll().build();
-
-            new StrictMode.VmPolicy.Builder()
-                    .detectActivityLeaks()
-                    .detectCleartextNetwork()
-                    .detectFileUriExposure()
-                    .detectLeakedClosableObjects()
-                    .detectLeakedRegistrationObjects()
-                    .detectLeakedSqlLiteObjects()
-                    .penaltyDeathOnCleartextNetwork()
-                    .penaltyLog()
-                    .build();
-        }
-
 
         // Change the language to the one the user selected in the app settings.
         // If the user didn't select anything, use the default system language.
