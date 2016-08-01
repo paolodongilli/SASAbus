@@ -25,6 +25,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,8 +64,10 @@ import it.sasabz.android.sasabus.model.line.Lines;
 import it.sasabz.android.sasabus.network.NetUtils;
 import it.sasabz.android.sasabus.network.rest.RestClient;
 import it.sasabz.android.sasabus.network.rest.api.RealtimeApi;
+import it.sasabz.android.sasabus.network.rest.api.TrafficLightApi;
 import it.sasabz.android.sasabus.network.rest.model.RealtimeBus;
 import it.sasabz.android.sasabus.network.rest.response.RealtimeResponse;
+import it.sasabz.android.sasabus.network.rest.response.TrafficLightResponse;
 import it.sasabz.android.sasabus.realm.BusStopRealmHelper;
 import it.sasabz.android.sasabus.realm.UserRealmHelper;
 import it.sasabz.android.sasabus.ui.busstop.BusStopDetailActivity;
@@ -127,7 +130,8 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
      * Special type of swipe refresh layout which does not refresh when scrolled, as scrolling the
      * map will trigger the refresh.
      */
-    @BindView(R.id.refresh) OffsetNestedSwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.refresh)
+    OffsetNestedSwipeRefreshLayout mSwipeRefreshLayout;
 
     /**
      * Various views for the filter.
@@ -472,6 +476,29 @@ public class MapActivity extends BaseActivity implements View.OnClickListener,
                     .delay(1, TimeUnit.SECONDS) // Delay is needed to make sure map is loaded.
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
+
+            TrafficLightApi trafficLightApi = RestClient.ADAPTER.create(TrafficLightApi.class);
+            trafficLightApi.trafficLight(locale(), SettingsUtils.getTrafficLightCity(MapActivity.this))
+                    .compose(bindToLifecycle())
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<TrafficLightResponse>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("TEIS", "LOL_SEGA", e);
+                        }
+
+                        @Override
+                        public void onNext(TrafficLightResponse trafficLightResponse) {
+                            mFabFilterTop.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#" + trafficLightResponse.color)));
+                            mFabFilterBottom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#" + trafficLightResponse.color)));
+                            mFabFilterBg.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#" + trafficLightResponse.color)));
+                        }
+                    });
         }
     }
 
