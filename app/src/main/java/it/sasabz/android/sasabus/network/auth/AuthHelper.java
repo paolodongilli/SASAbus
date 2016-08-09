@@ -2,10 +2,14 @@ package it.sasabz.android.sasabus.network.auth;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,6 +41,9 @@ public final class AuthHelper {
 
     private static final String PREF_AUTH_TOKEN = "pref_auth_token";
     private static final String PREF_USER_ID = "pref_user_id";
+
+    public static final String INTENT_BROADCAST_LOGOUT =
+            "it.sasabz.android.sasabus.INTENT_BROADCAST_LOGOUT";
 
     public static void init(Context context) {
         sContext = context;
@@ -71,25 +78,77 @@ public final class AuthHelper {
 
                 clearCredentials();
 
-                // TODO: 28/07/16 Redirect to login once that has been added.
-                //activity.finish();
-                //activity.startActivity(new Intent(activity, LoginActivity.class));
+                activity.finish();
+                activity.startActivity(new Intent(activity, LoginActivity.class));
             }
         }
+    }
+
+
+    // ======================================== LOGOUT =============================================
+
+    public static void logout(Activity activity) {
+        if (!isTokenValid()) {
+            LogUtils.e(TAG, "Cannot log out a user which is not logged in");
+            return;
+        }
+
+        clearCredentials();
+
+        LogUtils.e(TAG, "Logged out user");
+
+        activity.finish();
+
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        activity.startActivity(intent);
+    }
+
+    private static BroadcastReceiver getLogoutReceiver(Activity activity) {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Timber.e("Got logout broadcast");
+                logout(activity);
+            }
+        };
+    }
+
+    public static BroadcastReceiver registerLogoutReceiver(Activity activity) {
+        BroadcastReceiver receiver = getLogoutReceiver(activity);
+
+        LocalBroadcastManager.getInstance(activity).registerReceiver(receiver,
+                new IntentFilter(INTENT_BROADCAST_LOGOUT));
+
+        return receiver;
+    }
+
+    public static void unregisterLogoutReceiver(Activity activity, BroadcastReceiver receiver) {
+        if (receiver == null) {
+            LogUtils.e(TAG, "Attempt to unregister a null receiver in class %s",
+                    activity.getClass().getSimpleName());
+            return;
+        }
+
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiver);
     }
 
 
     // ====================================== PREFERENCES ==========================================
 
     @Nullable
-    private static String getUserId(Context context) {
+    public static String getUserId(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PREF_USER_ID, null);
     }
 
+    @SuppressLint("CommitPrefEdits")
     private static void setUserId(Context context, String userId) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(PREF_USER_ID, userId).apply();
+        sp.edit().putString(PREF_USER_ID, userId).commit();
     }
 
     @Nullable
@@ -98,9 +157,10 @@ public final class AuthHelper {
                 .getString(PREF_AUTH_TOKEN, null);
     }
 
+    @SuppressLint("CommitPrefEdits")
     private static void setAuthToken(Context context, String token) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(PREF_AUTH_TOKEN, token).apply();
+        sp.edit().putString(PREF_AUTH_TOKEN, token).commit();
     }
 
 
@@ -108,14 +168,8 @@ public final class AuthHelper {
 
     @Nullable
     public static String getTokenIfValid() {
-        String token = getAuthToken(sContext);
-
-        if (token == null) {
-            return null;
-        }
-
-        if (verifyToken(token)) {
-            return token;
+        if (isTokenValid()) {
+            return getAuthToken(sContext);
         }
 
         return null;
@@ -129,7 +183,7 @@ public final class AuthHelper {
 
             String userId = claims.getBody().getSubject();
 
-            if (TextUtils.isDigitsOnly(userId)) {
+            if (TextUtils.isEmpty(userId)) {
                 LogUtils.e(TAG, "User id is empty");
 
                 clearCredentials();
@@ -154,13 +208,13 @@ public final class AuthHelper {
         }
     }
 
-    public static boolean verifyToken() {
+    public static boolean isTokenValid() {
         String token = getAuthToken(sContext);
 
-        return !TextUtils.isEmpty(token) && verifyToken(token);
+        return !TextUtils.isEmpty(token) && isTokenValid(token);
     }
 
-    private static boolean verifyToken(String token) {
+    private static boolean isTokenValid(String token) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(publicKey)
@@ -204,8 +258,10 @@ public final class AuthHelper {
         }
     }
 
-    private static void clearCredentials() {
+    public static void clearCredentials() {
         setUserId(sContext, null);
         setAuthToken(sContext, null);
+
+        LogUtils.e(TAG, "Cleared credentials");
     }
 }
