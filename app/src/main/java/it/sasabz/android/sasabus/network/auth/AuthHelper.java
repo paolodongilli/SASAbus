@@ -24,6 +24,7 @@ import it.sasabz.android.sasabus.network.auth.jjwt.Claims;
 import it.sasabz.android.sasabus.network.auth.jjwt.Jws;
 import it.sasabz.android.sasabus.network.auth.jjwt.Jwts;
 import it.sasabz.android.sasabus.network.auth.jjwt.SignatureException;
+import it.sasabz.android.sasabus.ui.ecopoints.LoginActivity;
 import it.sasabz.android.sasabus.util.LogUtils;
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -111,7 +112,7 @@ public final class AuthHelper {
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Timber.e("Got logout broadcast");
+                LogUtils.e(TAG, "Got logout broadcast");
                 logout(activity);
             }
         };
@@ -128,7 +129,7 @@ public final class AuthHelper {
 
     public static void unregisterLogoutReceiver(Activity activity, BroadcastReceiver receiver) {
         if (receiver == null) {
-            LogUtils.e(TAG, "Attempt to unregister a null receiver in class %s",
+            LogUtils.e(TAG, "Attempt to unregister a null receiver in class " +
                     activity.getClass().getSimpleName());
             return;
         }

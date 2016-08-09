@@ -63,14 +63,14 @@ android {
         jdk '/Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Contents/Home'
     }
 
-    productFlavors {
+    /*productFlavors {
         playStore {
 
         }
         fdroid {
 
         }
-    }
+    }*/
 }
 
 dependencies {
@@ -84,8 +84,8 @@ dependencies {
     compile 'com.android.support:customtabs:24.1.1'
 
     // Play services & Firebase
-    playStoreCompile 'com.google.android.gms:play-services-analytics:9.4.0'
-    playStoreCompile 'com.google.firebase:firebase-messaging:9.4.0'
+    compile /*playStoreCompile*/ 'com.google.android.gms:play-services-analytics:9.4.0'
+    compile /*playStoreCompile*/ 'com.google.firebase:firebase-messaging:9.4.0'
 
     // Beacon
     compile 'org.altbeacon:android-beacon-library:2.7.1'

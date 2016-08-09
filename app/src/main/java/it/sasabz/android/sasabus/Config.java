@@ -41,6 +41,8 @@ public final class Config {
 
     public static final String EXTRA_LINE = "EXTRA_LINE";
 
+    public static final String EXTRA_BADGE = "com.davale.sasabus.EXTRA_BADGE";
+
     /**
      * Static constant for intent extras which indicate a vehicle id
      */

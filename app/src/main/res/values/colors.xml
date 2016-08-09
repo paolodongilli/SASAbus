@@ -14,6 +14,8 @@
     <color name="primary_red">#F44336</color>
     <color name="primary_red_dark">#D32F2F</color>
 
+    <color name="material_pink_A200">#FF4081</color>
+
     <color name="primary_green">#4CAF50</color>
     <color name="primary_green_dark">#388E3C</color>
 
