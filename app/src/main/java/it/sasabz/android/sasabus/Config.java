@@ -114,12 +114,6 @@ public final class Config {
     public static final String BUNDLE_ERROR_GENERAL = "BUNDLE_ERROR_GENERAL";
 
     /**
-     * Static constant for error news visibility which need to be saved
-     * in {@link android.os.Bundle saved instance} to restore later
-     */
-    public static final String BUNDLE_ERROR_EMPTY_STATE = "BUNDLE_ERROR_EMPTY_STATE";
-
-    /**
      * Integer constant to define a bus stop detail item which has no delay, so the adapter
      * can hide the delay {@link android.widget.TextView}.
      */

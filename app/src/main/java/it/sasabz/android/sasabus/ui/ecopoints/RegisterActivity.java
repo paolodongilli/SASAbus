@@ -187,8 +187,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
-        boolean contains = false;
-
         animateViews(true);
         new Handler().postDelayed(this::tryRegister, 500);
     }
