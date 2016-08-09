@@ -1,0 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.google.gms:google-services:3.0.0'
+        classpath "io.realm:realm-gradle-plugin:1.0.0"
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        mavenLocal()
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+}

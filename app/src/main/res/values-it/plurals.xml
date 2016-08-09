@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <plurals name="route_result_count">
+        <item quantity="one">%d risultato</item>
+        <item quantity="other">%d risultati</item>
+    </plurals>
+
+    <plurals name="route_walk_count">
+        <item quantity="one">%d’ cammino</item>
+        <item quantity="other">%d’ cammino</item>
+    </plurals>
+
+</resources>

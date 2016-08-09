@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">SASAbus</string>
+    <string name="about">Chi siamo</string>
+    <string name="settings">Impostazioni</string>
+    <string name="changelog">Changelog</string>
+    <string name="about_changelog_title">Cambiamenti</string>
+    <string name="about_changelog_subtitle">Versione</string>
+    <string name="settings_general">Lingua</string>
+    <string name="settings_language_title">Lingua</string>
+    <string name="settings_language_sub">Cambia lingua</string>
+    <string name="map">Mappa</string>
+    <string name="route">Percorsi</string>
+    <string name="refresh">Aggiorna</string>
+    <string name="route_arrival">Arrivo</string>
+    <string name="route_departure">Partenza</string>
+    <string name="stations">Fermate</string>
+    <string name="route_results">Autobus trovati</string>
+    <string name="pick_stations">Seleziona una fermata</string>
+    <string name="route_recent">Ricerche recenti</string>
+    <string name="bus_lines">Linee autobus</string>
+    <string name="list_lines_delay">Ritardo</string>
+    <string name="list_lines_station">Fermata</string>
+    <string name="bolzano">Bolzano</string>
+    <string name="merano">Merano</string>
+    <string name="line">Linea</string>
+    <string name="lines_detail">Dettagli linea</string>
+    <string name="monday_long">Lunedì</string>
+    <string name="saturday_long">Sabato</string>
+    <string name="sunday_long">Domenica</string>
+    <string name="friday_long">Venerdì</string>
+    <string name="error_wifi_title">Connessione internet necessaria</string>
+    <string name="error_wifi_sub">per caricare posizioni e dati</string>
+    <string name="error_general_title">Si è verificato un errore</string>
+    <string name="error_general_sub">Riprova in qualche minuto</string>
+    <string name="error_general">Si è verificato un errore</string>
+    <string name="error_wifi">Nessuna connessione internet</string>
+    <string name="additional_info">Ulteriori informazioni:</string>
+    <string name="lines_all">Tutte</string>
+    <string name="lines_driving">In servizio</string>
+    <string name="news">Novità</string>
+    <string name="toast_route_enter_arrival">Prego inserisci la fermate d\'arrivo</string>
+    <string name="toast_route_enter_departure">Prego inserisci la fermata di partenza</string>
+    <string name="toast_route_station_match">Partenza e arrivo non possono coincidere</string>
+    <string name="delete">Rimuovere</string>
+    <string name="station_details">Dettagli fermata</string>
+    <string name="activity_credits">Credits</string>
+    <string name="error_route_title">Nessun risultati</string>
+    <string name="error_route_sub">Nessun percorsi trovati</string>
+    <string name="dialog_route_number_title">Numero di risultati</string>
+    <string name="lines_path">Percorso linea</string>
+    <string name="dialog_route_number_negative">Anulla</string>
+    <string name="route_result_default">3 risultati</string>
+    <string name="parking_navigate">Navigare</string>
+    <string name="parking_call">Chiamare</string>
+    <string name="parking">Parcheggi</string>
+    <string name="parking_detail_current_free">posti liberi</string>
+    <string name="parking_detail_slots_total">posti in totale</string>
+    <string name="parking_detail_station_distance">m dal parcheggio</string>
+    <string name="bus_details">Dettagli autobus</string>
+    <string name="bus_details_color">Colore</string>
+    <string name="bus_details_fuel">Carburante</string>
+    <string name="bus_details_manufacturer">Produttore</string>
+    <string name="bus_details_model">Modello</string>
+    <string name="bus_details_not_available">Non disponibile</string>
+    <string name="station_select">Seleziona</string>
+    <string name="station_no_lines">Nessuna linea</string>
+    <string name="credits_developers">Sviluppatori</string>
+    <string name="dialog_changelog_title">Aggiornamenti</string>
+    <string name="credits_license_title">Licenze open source</string>
+    <string name="unknown">sconosciuto</string>
+    <string name="settings_beacons_enable_title">Attiva beacons</string>
+    <string name="settings_beacons_enable_sub">Ottieni informazioni sugli autobus e le linee
+    </string>
+    <string name="snackbar_bus_not_driving">Autobus non è in servizio</string>
+    <string name="toast_bluetooth_not_available">Bluetooth LE non supportato</string>
+    <string name="snackbar_permission_denied">Nessun diritto</string>
+    <string name="dialog_permission_allow">Permettere</string>
+    <string name="dialog_permission_deny">Rifiutare</string>
+    <string name="notification_expanded_title">Prossime partenze da %1$s</string>
+    <string name="station_tab_list">Lista</string>
+    <string name="dialog_permission_location_sub">Senza il diritto di accedere la sua posizione
+        attuale l\'app non è capace di fornirle la sua posizione sulla mappa. È sicura che vuole
+        vietare questo diritto?
+    </string>
+    <string name="search">Cerca</string>
+    <string name="course_details">Dettagli corso</string>
+    <string name="about_policy_subtitle">Apri nel browser</string>
+    <string name="about_policy_title">Informativa sulla privacy</string>
+    <string name="all">Tutte</string>
+    <string name="map_snackbar_update">Aggiornare</string>
+    <string name="none">Nessune</string>
+    <string name="map_snackbar_view">Apri</string>
+    <string name="station_menu_cancel">Cancella</string>
+    <string name="station_menu_course">Percorso</string>
+    <string name="station_menu_line">Linea</string>
+    <string name="dialog_report_content">Descrivi il tuo problema</string>
+    <string name="dialog_report_screenshot">Aggiungi screenshot</string>
+    <string name="dialog_report_email">La tua email</string>
+    <string name="dialog_report_send">Invia</string>
+    <string name="dialog_report_title">Invia modulo</string>
+    <string name="snackbar_report_success">modulo inviata</string>
+    <string name="snackbar_report_error">Invio della modulo fallito. Prego riprova più tardi.
+    </string>
+    <string name="dialog_report_content_invalid">Per favore compila l\'intero modulo</string>
+    <string name="dialog_report_email_invalid">Email invalida</string>
+    <string name="dialog_report_sending">Mando modulo…</string>
+    <string name="dialog_permission_storage_sub">Senza il diritto di accedere la sua scheda SD l\'
+        app non è capace di selezionare foto dalla galleria. È sicura che vuole vietare questo
+        diritto?
+    </string>
+    <string name="general">Generale</string>
+    <string name="settings_map_auto_interval_sub">Cambia l\'intervallo d\'aggiornamento</string>
+    <string name="settings_map_auto_interval_title">Intervallo d\'aggiornamento</string>
+    <string name="settings_map_auto_sub">Aggiorna posizioni degli autobus sulla mappa</string>
+    <string name="settings_map_auto_title">Aggiornamento automatico</string>
+    <string name="settings_beacons_bus_enabled_sub">Notifiche degli autobus in vicinanza</string>
+    <string name="settings_beacons_bus_enabled_title">Autobus</string>
+    <string name="settings_beacons_station_enabled_sub">Notifiche delle fermate in vicinanza
+    </string>
+    <string name="settings_beacons_station_enabled_title">Fermate</string>
+    <string name="snackbar_retry">Riprova</string>
+    <string name="trips">Viaggi</string>
+    <string name="trip_details">Dettagli viaggio</string>
+    <string name="trip_details_distance">Distanza</string>
+    <string name="trip_details_duration">Durata</string>
+    <string name="trip_details_error">Impossibile caricare i dati</string>
+    <string name="trip_details_from">Da</string>
+    <string name="trip_details_line">Linea</string>
+    <string name="trip_details_to">A</string>
+    <string name="notification_trip_sub">Clicca per vedere dettagli del viaggio</string>
+    <string name="notification_trip_title">Viaggio salvato</string>
+    <string name="line_format">Linea %s</string>
+    <string name="snackbar_timetable_error">Impossibile scaricare gli orari</string>
+    <string name="timetable_download">Scarico orari…</string>
+    <string name="timetable_map_bolzano">Rete Bolzano</string>
+    <string name="timetable_map_merano">Rete Merano</string>
+    <string name="timetables">Orari</string>
+    <string name="timetable_open">Apri orario</string>
+    <string name="timetable_update_action">Scarica</string>
+    <string name="timetable_update_text">Nuovi orari disponibili</string>
+    <string name="trip_details_co2_emission">Il tuo consumo di CO₂ con l\'autobus</string>
+    <string name="trip_details_co2_emission_car">Consumo di CO₂ con la macchina</string>
+    <string name="trip_details_fuel_price">Prezzo gasolio di questo viaggio</string>
+    <string name="about_credits_subtitle">Sviluppatori e biblioteche</string>
+    <string name="changelog_version">Versione</string>
+    <string name="settings_news_push_sub">Notifiche di cambiamenti degli orari</string>
+    <string name="bus_depot">Deposito</string>
+    <string name="bus_not_in_service_short">Fuori servizio</string>
+    <string name="hydrogen_buses">Autobus H₂</string>
+    <string name="credits_alex_sub">Sviluppatore dell\'app</string>
+    <string name="credits_david_sub">Sviluppatore del server</string>
+    <string name="station_nearby_text">Fermate in vicinanza</string>
+    <string name="error_lines_sub">attualmente in servizio</string>
+    <string name="error_lines_title">Nessun autobus</string>
+    <string name="credits_copyright_sub">
+        <![CDATA[© 2015–2016 David Dejori & Alex Lardschneider. Tutti i diritti riservati.\n\nÈ vietato di riprodurre o copiare qualunque parte di questa applicazione, senza il permesso scritto dei proprietari.]]></string>
+    <string name="navigation_drawer_open">Apri finestra di navigazione</string>
+    <string name="navigation_drawer_close">Chiudi finestra di navigazione</string>
+    <string name="search_hint">Cerca fermate</string>
+    <string name="search_label">Fermate</string>
+    <string name="title_search">Cerca</string>
+    <string name="rating_positive1">Sì</string>
+    <string name="rating_negative2">No grazie</string>
+    <string name="rating_negative1">Non proprio</string>
+    <string name="rating_title1">Ti piace SasaBus?</string>
+    <string name="rating_title2">Vuoi valutarlo?</string>
+    <string name="rating_title3">Vuoi darci feedback?</string>
+    <string name="bus_stop_favorites_add">Aggiunto %s alle fermate preferite</string>
+    <string name="bus_stop_favorites_remove">Rimosso %s dalle fermate preferite</string>
+    <string name="favorites">Preferite</string>
+    <string name="line_favorites_add">Aggiunto linea %s alle preferite</string>
+    <string name="line_favorites_remove">Rimosso linea %s dalle preferite</string>
+    <string name="bus_specifications">Specificazioni</string>
+    <string name="intro_permissions">Autorizzazione</string>
+    <string name="intro_permission_text">Con Android 6 l\'app adopera l\'autorizzazione della tua
+        posizione attuale. Ti preghiamo di consentire questo.
+    </string>
+    <string name="notification_bus_sub">Clicca per vedere su mappa</string>
+    <string name="notification_bus_title">Linea %1$s verso %2$s</string>
+    <string name="notification_bus_stop_sub_pull">Trascina per prossime partenze</string>
+    <string name="preferences_menu_appearance_title">Lingua</string>
+    <string name="preferences_menu_map_title">Mappa</string>
+    <string name="preferences_menu_notifications_title">Notifiche</string>
+    <string name="settings_notifications_vibrations">Vibrazione</string>
+    <string name="preferences_menu_advanced_title">Impostazioni avanzate</string>
+    <string name="settings_advanced">Identificazione</string>
+    <string name="settings_data">Dati e Internet</string>
+    <string name="settings_fetch_images_title">Scarica foto delle fermate</string>
+    <string name="settings_fetch_images_sub">Scegli quando scaricare le foto</string>
+    <string name="settings_station_ids_title">Visualizza la ID numerica delle fermate</string>
+    <string name="settings_station_ids_sub">Mostra ID delle fermate</string>
+    <string name="settings_trips_enabled_sub">Notifiche di registrazione percorsi</string>
+    <string name="settings_trips_enabled_title">Viaggi</string>
+    <string name="settings_beacons_station_vibration_sub">Vibra quando una fermata è in vicinanza
+    </string>
+    <string name="error_data_title">Aggiornamento dei dati necessario</string>
+    <string name="error_data_sub">Per favore riavvia l\'app</string>
+    <string name="bus_report">Riporta un problema di questo autobus</string>
+    <string name="dialog_changelog_dont_show_again">Mostra mai più</string>
+    <string name="dialog_report_bus_content">Spiega il problema</string>
+    <string name="dialog_report_bus_photo">Aggiungi foto</string>
+    <string name="done_button">Vai</string>
+    <string name="error_not_tracked_sub">Non esistono dati GPS per questa linea</string>
+    <string name="error_not_tracked_title">Questa linea non è monitorata</string>
+    <string name="intro_offline_data_title">Dati offline</string>
+    <string name="intro_offline_data_update_title">Dati offline</string>
+    <string name="intro_offline_data_update_sub">I dati offline (circa 150 KB) devono essere
+        aggioranti.
+    </string>
+    <string name="intro_offline_data_sub">L\'app scarica tutte le partenze ad ogni fermata e le
+        salva offline. I dati hanno una dimensione di circa 150 KB.
+    </string>
+    <string name="planned_trips">Viaggi previsti</string>
+    <string name="bottom_sheet_delayed">%d\' di ritardo</string>
+    <string name="bottom_sheet_early">%d\' prematuro</string>
+    <string name="bottom_sheet_punctual">Puntuale</string>
+    <string name="lines">Linee</string>
+    <string name="line_current_stop">Adesso: %s</string>
+    <string name="line_heading">Destinazione: %s</string>
+    <string name="station_heading">Destinazione: %s</string>
+    <string name="notification_heading">Destinazione: %s</string>
+    <string name="notification_planned_trip_departs_at_content">Linea %1$s parte alle %2$s</string>
+    <string name="notification_planned_trip_departs_in_content_1">Linea %1$s parte in %2$d\'
+    </string>
+    <string name="notification_planned_trip_departs_in_content_2">Linea %1$s parte in %2$d\‘ con un
+        ritardo di %3$d\’
+    </string>
+    <string name="planned_trips_add_confirm_discard">Sei sicuro di voler scartare questo evento?
+    </string>
+    <string name="planned_trips_add_date">Tempo e data di partenza</string>
+    <string name="planned_trips_add_dialog_add_bus_stop">Seleziona fermata</string>
+    <string name="planned_trips_add_dialog_line">Seletiona linea/e</string>
+    <string name="planned_trips_add_discard">Scarta</string>
+    <string name="planned_trips_add_empty_fields">Alcuni campi sono vuoti. Per favore compilali.
+    </string>
+    <string name="planned_trips_add_keep_editing">Modifica ancora</string>
+    <string name="planned_trips_add_line">Aggiungi linea/e</string>
+    <string name="planned_trips_add_location">Aggiungi fermata</string>
+    <string name="planned_trips_add_no_lines">Per favore seleziona una linea prima!</string>
+    <string name="planned_trips_add_notification">Aggiungi un altra notifica</string>
+    <string name="planned_trips_add_notification_10">10 minuti prima</string>
+    <string name="planned_trips_add_notification_30">30 minuti prima</string>
+    <string name="planned_trips_add_notification_60">1 ora prima</string>
+    <string name="planned_trips_add_repeat_day_long">Ripeti ogni giorno</string>
+    <string name="planned_trips_add_repeat_day_short">Ogni giorno</string>
+    <string name="planned_trips_add_repeat_never">Non ripeti</string>
+    <string name="planned_trips_add_repeat_week">Ogni settimana</string>
+    <string name="planned_trips_add_title">Inserisci il titolo dell\'evento</string>
+    <string name="save_button">Salva</string>
+    <string name="route_walk_default">5\' cammino</string>
+    <string name="dialog_trips_delete_message">Rimuovere questo viaggio?</string>
+    <string name="planned_trips_add_notification_none">Nessuna</string>
+    <string name="planned_trips_delete_undo">Ristabila</string>
+    <string name="planned_trips_delete_confirmation">Viaggio cancellato</string>
+    <string name="settings_map_refresh">Aggiornamento dei marcatori</string>
+    <string name="notification_bus_stop_sub_click">Clicca per visualizzare dettagli</string>
+    <string name="notification_survey_title">Sondaggio</string>
+    <string name="notification_survey_subtitle">Clicca per valutare il tuo viaggio</string>
+    <string name="retry">Riprova</string>
+    <string name="settings_survey_category">Sondaggi</string>
+    <string name="settings_survey_enable_summary">Riceverai una notifica dopo aver concluso un viaggio. Potrai dare feedback e valutare il servizio.</string>
+    <string name="settings_survey_enable_title">Attiva sondaggi</string>
+    <string name="settings_survey_interval_title">Intervallo tra i sondaggi</string>
+    <string name="settings_survey_interval_summary">Sondaggi appaiono solo una volta nel periodo selezionato.</string>
+    <string name="survey_dialog_error_sub">La tua valutazione sarà inviata al più presto possibile.</string>
+    <string name="survey_dialog_error_title">Impossibile inviare valutazione</string>
+    <string name="survey_dialog_success_sub">Grazie! Se ci dovessero essere dei problemi ti contatteremo al più presto.</string>
+    <string name="survey_dialog_success_title">Valutazione inviata</string>
+    <string name="survey_form_feedback">Feedback (opzionale)</string>
+    <string name="survey_form_submit">Invia</string>
+    <string name="survey_rating_average">Medio</string>
+    <string name="survey_rating_awful">Terribile</string>
+    <string name="survey_rating_poor">Male</string>
+    <string name="survey_rating_good">Bene</string>
+    <string name="survey_rating_excellent">Ottimo</string>
+    <string name="survey_title_form">Per favore inserisci la tua e-mail, così ti potremo contattare.</string>
+    <string name="survey_title_header">Sondaggi ci aiutano a migliorare il servizio autobus tramite l\'analisi di opinioni e reclami dalla parte dei nostri clienti. Per favore descrivi problemi e respettivamente cosa non ti è piaciuto. Grazie!</string>
+    <string name="survey_title_rate">Come valutesresti il tuo viaggio sull\'autobus?</string>
+    <string name="survey">Sondaggio</string>
+    <string name="about_feedback_subtitle">Communicai problemi, errori e proposte</string>
+    <string name="timetable_extract">Estrago orari…</string>
+    <string name="about_traffic_light_loading">Carico…</string>
+    <string name="about_traffic_light_city">Status per %s</string>
+
+</resources>
